@@ -1,4 +1,4 @@
-<title>Recursion Diagram Atlas</title>
+<title>__TITLE__</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,600&family=JetBrains+Mono:wght@500&display=swap">
@@ -102,6 +102,10 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);l
 .thumb .flag{position:absolute;left:4px;top:4px;font:700 10px/1.1 var(--body);background:#454C57;color:#fff;padding:3px 5px;border-radius:3px;max-width:90%}
 .thumb.flagged img{opacity:.55}
 .chip.v{gap:7px}.chip.v .dot{width:9px;height:9px;border-radius:50%}
+.topline{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.lang{font-weight:600;font-size:14px;color:var(--focus);text-decoration:none;border:1px solid var(--hair);border-radius:999px;padding:5px 12px}
+.lang:hover{border-color:var(--focus)}
+.sheet h3 .en{font-family:var(--body);font-size:15px;font-weight:400;color:var(--muted)}
 .empty{color:var(--muted);border:1px dashed var(--hair);border-radius:10px;padding:18px}
 /* lightbox */
 .lb{position:fixed;inset:0;z-index:30;background:rgba(12,14,18,.92);display:flex;flex-direction:column;
@@ -125,18 +129,19 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);l
 <div hidden>__DEFS__</div>
 <div class="wrap">
   <header>
-    <h1>Recursion Diagram Atlas</h1>
+    <div class="topline"><h1>__TITLE__</h1><a class="lang" href="__LANGHREF__" hreflang="__LANGCODE__">__LANGLABEL__</a></div>
     <p class="lede" id="lede"></p>
-    <div class="filters" id="filters" role="group" aria-label="Filter by source"></div>
+    <div class="filters" id="filters" role="group" aria-label="__FILTERLABEL__"></div>
   </header>
   <div class="grid" id="grid"></div>
   <div class="foot" id="foot"></div>
-  <p class="note">Coding is a first pass by one reviewer; each LeetCode diagram was checked against the solution’s recursive code, and three solutions with misleading or no recursion diagrams were left out. LeetCode = solutions with 5 or more votes from the local scrape (votes are the snapshot). Images are copies kept for review; follow “Open original” for the source.</p>
+  <p class="note">__NOTE__</p>
 </div>
 <div id="layer"></div>
 
 <script>
 const DATA = __DATA__;
+const T = __T__;
 const $ = (s, el=document) => el.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const SRC = Object.fromEntries(DATA.sources.map(s => [s.id, s]));
@@ -165,11 +170,11 @@ function tagsFor(id){
   return DATA.sources.filter(s => counts[s.id]).map(s => `<span class="tag${isLC(s.id) ? ' lc' : ''}">${esc(s.id)}${counts[s.id] > 1 || s.id === 'LeetCode' ? `<span class="k">×${counts[s.id]}</span>` : ''}</span>`).join('');
 }
 const icon = k => k && DATA.icons[k] ? `<span class="ic" aria-hidden="true">${DATA.icons[k]}</span>` : '';
-const newB = n => n ? ' <span class="new">new</span>' : '';
+const newB = n => n ? ` <span class="new">${T.new}</span>` : '';
 
 function rowBtn(c, cls){
   const n = examplesFor(c.id).filter(passes).length;
-  return `<button class="row ${cls}${n ? '' : ' dim'}" data-id="${c.id}" aria-label="${esc(c.name)}: ${n} examples">
+  return `<button class="row ${cls}${n ? '' : ' dim'}" data-id="${c.id}" aria-label="${esc(c.name)}: ${T.nEx(n)}">
     <span class="txt"><span class="nm">${esc(c.name)}${newB(c.new)}</span>${c.desc && cls !== 'subrow' ? `<span class="ds">${esc(c.desc)}</span>` : ''}<span class="tags">${tagsFor(c.id)}</span></span>${icon(c.icon)}</button>`;
 }
 const hasAny = id => examplesFor(id).length > 0;  // hide codings with no example in any source
@@ -190,10 +195,10 @@ function render(){
   $('#foot').innerHTML = secHTML(DATA.dims.find(d => d.id === 'code'));
   const exs = DATA.examples.filter(passes), imgs = exs.reduce((a, e) => a + e.imgs.length, 0);
   const nCod = Object.keys(META).filter(hasAny).length;
-  $('#lede').innerHTML = `<b>${nCod} codings</b> across 8 dimensions, backed by <b>${exs.length} examples</b> and <b>${imgs} source images</b>${active.size ? ' in the selected sources' : ' from textbooks and LeetCode'}. Select a coding to see the figures behind it.`;
+  $('#lede').innerHTML = T.lede(nCod, exs.length, imgs, active.size > 0);
   const counts = {}; for (const e of DATA.examples) counts[e.src] = (counts[e.src] || 0) + 1;
-  $('#filters').innerHTML = `<span class="lab">Sources</span>` + DATA.sources.map(s => `<button class="chip${isLC(s.id) ? ' lc' : ''}" data-src="${s.id}" aria-pressed="${active.has(s.id)}" title="${esc(s.name)}">${esc(s.id)}<span class="n">${counts[s.id] || 0}</span></button>`).join('')
-    + (active.size || vact.size ? `<button class="chip reset" data-src="__all">Show all</button>` : '');
+  $('#filters').innerHTML = `<span class="lab">${T.sources}</span>` + DATA.sources.map(s => `<button class="chip${isLC(s.id) ? ' lc' : ''}" data-src="${s.id}" aria-pressed="${active.has(s.id)}" title="${esc(s.name)}">${esc(s.id)}<span class="n">${counts[s.id] || 0}</span></button>`).join('')
+    + (active.size || vact.size ? `<button class="chip reset" data-src="__all">${T.showAll}</button>` : '');
 
 }
 function saveSrc(){ try { localStorage.setItem('atlas-src', JSON.stringify([...active])); } catch(e) {} }
@@ -225,12 +230,12 @@ function openSheet(id, keep){
   const desc = m.desc || (m.parent && m.parent.desc) || '';
   const kids = (KIDS[id] || []).map(k => META[k].name);
   const body = list.length ? list.map((e, i) => exHTML(e, i, id)).join('')
-    : `<div class="empty">${all.length ? 'No examples in the selected sources. Clear the source filter to see the ' + all.length + ' others.' : 'No example coded yet.'}</div>`;
+    : `<div class="empty">${all.length ? T.emptyFiltered(all.length) : T.emptyNone}</div>`;
   $('#layer').innerHTML = `<div class="scrim" data-close></div>
   <aside class="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-t">
-    <div class="sheet-head"><div class="sheet-top"><div><div class="eyebrow">${esc(path)}</div><h3 id="sh-t">${esc(m.name)}${newB(m.new)}</h3></div><button class="x" data-close aria-label="Close">×</button></div>
-      ${desc ? `<p class="ds">${esc(desc)}${kids.length ? ' Includes ' + kids.map(esc).join(', ') + '.' : ''}</p>` : ''}
-      <div class="count">${list.length} examples · ${imgN} images${active.size ? ' · filtered' : ''}</div></div>
+    <div class="sheet-head"><div class="sheet-top"><div><div class="eyebrow">${esc(path)}</div><h3 id="sh-t">${esc(m.name)}${newB(m.new)}${m.en ? ` <span class="en">${esc(m.en)}</span>` : ''}</h3></div><button class="x" data-close aria-label="${T.close}">×</button></div>
+      ${desc ? `<p class="ds">${esc(desc)}${kids.length ? T.includes(kids.map(esc)) : ''}</p>` : ''}
+      <div class="count">${T.count(list.length, imgN, active.size > 0)}</div></div>
     <div class="sheet-body">${body}</div></aside>`;
   if (!keep) $('.sheet .x').focus();
   try { history.replaceState(null, '', '#' + id); } catch(e) {}
@@ -238,11 +243,11 @@ function openSheet(id, keep){
 function exHTML(e, i, cur){
   const src = SRC[e.src];
   const codes = e.codes.map(c => `<button data-goto="${c}" class="${coversOf(cur).includes(c) ? 'cur' : ''}">${esc(META[c].name)}</button>`).join('');
-  const th = e.imgs.map((im, j) => `<button class="thumb${im.flag ? ' flagged' : ''}" data-ex="${i}" data-i="${j}" aria-label="Enlarge image ${j + 1} of ${esc(e.title)}${im.flag ? ' (' + esc(im.flag) + ')' : ''}">${im.flag ? `<span class="flag">${esc(im.flag)}</span>` : ''}<img src="${im.src}" alt="${esc(e.title)}, image ${j + 1}" loading="lazy" width="${im.w}" height="${im.h}">${im.anim ? '<span class="gif">GIF</span>' : ''}</button>`).join('');
+  const th = e.imgs.map((im, j) => `<button class="thumb${im.flag ? ' flagged' : ''}" data-ex="${i}" data-i="${j}" aria-label="${T.enlarge(j + 1, esc(e.title))}${im.flag ? ' (' + esc(im.flag) + ')' : ''}">${im.flag ? `<span class="flag">${esc(im.flag)}</span>` : ''}<img src="${im.src}" alt="${T.alt(esc(e.title), j + 1)}" loading="lazy" width="${im.w}" height="${im.h}">${im.anim ? '<span class="gif">GIF</span>' : ''}</button>`).join('');
   return `<article class="ex"><div class="ex-head"><div class="ex-title"><span class="tag${isLC(e.src) ? ' lc' : ''}" title="${esc(src.name)}">${esc(e.src)}</span>${esc(e.title)}</div>
-    ${e.sub ? `<div class="ex-sub">${esc(e.sub)}</div>` : ''}<p class="ex-note">${esc(e.note)}</p>${e.review ? `<p class="review"><b>Check:</b> ${esc(e.review)}</p>` : ''}
-    <div class="ex-codes" aria-label="Also coded as">${codes}</div>
-    ${e.link ? `<a class="open" href="${esc(e.link)}" target="_blank" rel="noopener">Open original ↗</a>` : ''}</div>
+    ${e.sub ? `<div class="ex-sub">${esc(e.sub)}</div>` : ''}<p class="ex-note">${esc(e.note)}</p>${e.review ? `<p class="review"><b>${T.check}</b> ${esc(e.review)}</p>` : ''}
+    <div class="ex-codes" aria-label="${T.also}">${codes}</div>
+    ${e.link ? `<a class="open" href="${esc(e.link)}" target="_blank" rel="noopener">${T.open}</a>` : ''}</div>
     <div class="thumbs${e.imgs.length === 1 ? ' one' : ''}">${th}</div></article>`;
 }
 let shown = [];
@@ -258,13 +263,13 @@ function closeSheet(){ $('#layer').innerHTML = ''; openId = null; try { history.
 let lb = null;
 function openLB(ei, ii){
   lb = {ei, ii};
-  const box = document.createElement('div'); box.className = 'lb'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-label', 'Image viewer');
+  const box = document.createElement('div'); box.className = 'lb'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-label', T.viewer);
   document.body.appendChild(box); drawLB(); box.querySelector('[data-lbx]').focus();
 }
 function drawLB(){
   const e = shown[lb.ei], im = e.imgs[lb.ii], box = $('.lb');
-  box.innerHTML = `<div class="lb-bar"><div class="lb-cap"><b>${esc(e.src)} · ${esc(e.title)}</b>${e.sub ? ' · ' + esc(e.sub) : ''} — image ${lb.ii + 1} of ${e.imgs.length}${im.flag ? ' · ' + esc(im.flag) : ''}</div><button data-lbx aria-label="Close viewer">×</button></div>
-    <div class="lb-stage"><button class="nav" data-step="-1" aria-label="Previous image" ${lb.ii ? '' : 'disabled'}>‹</button><img src="${im.src}" alt="${esc(e.title)}, image ${lb.ii + 1}"><button class="nav" data-step="1" aria-label="Next image" ${lb.ii < e.imgs.length - 1 ? '' : 'disabled'}>›</button></div>`;
+  box.innerHTML = `<div class="lb-bar"><div class="lb-cap"><b>${esc(e.src)} · ${esc(e.title)}</b>${e.sub ? ' · ' + esc(e.sub) : ''} — ${T.imgOf(lb.ii + 1, e.imgs.length)}${im.flag ? ' · ' + esc(im.flag) : ''}</div><button data-lbx aria-label="${T.closeViewer}">×</button></div>
+    <div class="lb-stage"><button class="nav" data-step="-1" aria-label="${T.prev}" ${lb.ii ? '' : 'disabled'}>‹</button><img src="${im.src}" alt="${T.alt(esc(e.title), lb.ii + 1)}"><button class="nav" data-step="1" aria-label="${T.next}" ${lb.ii < e.imgs.length - 1 ? '' : 'disabled'}>›</button></div>`;
 }
 document.addEventListener('click', e => {
   if (!lb) return;
