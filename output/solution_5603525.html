@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>💢☠💫Easiest👾Faster✅💯 Lesser🧠 🎯 C++✅Python3🐍✅Java✅C✅Python🐍✅C#✅💥🔥💫Explained☠💥🔥 Beats 💯 – Integer to English Words</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_integer-to-english-words.html">Integer to English Words</a> <span class="sep">›</span> <span class="cur">💢☠💫Easiest👾Faster✅💯 Lesser🧠 🎯 C++✅Python3🐍✅Java✅C✅Python🐍✅C#✅💥🔥💫Explained☠💥🔥 Beats 💯</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">💢☠💫Easiest👾Faster✅💯 Lesser🧠 🎯 C++✅Python3🐍✅Java✅C✅Python🐍✅C#✅💥🔥💫Explained☠💥🔥 Beats 💯</div>
+  <div class="meta">
+    <span>👤 Edwards310</span>
+    <span>👍 8</span>
+    <span>2024-08-07</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/integer-to-english-words/solutions/5603525/easiestfaster-lesser-cpython3javacpythoncexplained-beats/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>Intuition</h1>
+<p><img alt="0ehh83fsnh811.jpg" src="https://assets.leetcode.com/users/images/92443d5a-4524-4d3d-8a97-6685e9424083_1723051644.612213.jpeg" /><br />
+<img alt="Screenshot 2024-08-07 225626.png" src="https://assets.leetcode.com/users/images/2484623c-6bdb-435e-8e63-b0f9bde15c17_1723051665.4722939.png" /><br />
+<img alt="Screenshot 2024-08-07 225242.png" src="https://assets.leetcode.com/users/images/5599e662-05cb-4214-b5af-dd8aad2eb984_1723051655.032053.png" /><br />
+<img alt="Screenshot 2024-08-07 225643.png" src="https://assets.leetcode.com/users/images/1943bcbc-f365-4339-a08e-8f0db002df27_1723051683.164459.png" /><br />
+<img alt="Screenshot 2024-08-07 210228.png" src="https://assets.leetcode.com/users/images/35b3b019-7554-4a55-a27f-3dceefc5ffa0_1723051694.4030817.png" /><br />
+```javascript []<br />
+const lessThan20 = [<br />
+    "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",<br />
+    "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen",<br />
+    "Eighteen", "Nineteen"<br />
+];</p>
+<p>const tens = [<br />
+    "", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"<br />
+];</p>
+<p>const thousands = [<br />
+    "", "Thousand", "Million", "Billion"<br />
+];</p>
+<p>/*<em><br />
+ * @param {number} num<br />
+ * @return {string}<br />
+</em>/<br />
+var numberToWords = function (num) {<br />
+    if (num === 0) return "Zero";</p>
+<pre><code>let i = 0;
+let words = '';
+
+while (num &gt; 0) {
+    if (num % 1000 !== 0) {
+        words = helper(num % 1000) + thousands[i] + ' ' + words;
+    }
+    num = Math.floor(num / 1000);
+    i++;
+}
+
+return words.trim();
+</code></pre>
+<p>}</p>
+<p>function helper(num) {<br />
+    if (num === 0) return '';<br />
+    else if (num &lt; 20) return lessThan20[num] + ' ';<br />
+    else if (num &lt; 100) return tens[Math.floor(num / 10)] + ' ' + helper(num % 10);<br />
+    else return lessThan20[Math.floor(num / 100)] + ' Hundred ' + helper(num % 100);<br />
+}</p>
+<pre><code>```Python3 []
+class Solution:
+    def numberToWords(self, num: int) -&gt; str:
+        def number_to_words_helper(num):
+            digit_string = [&quot;Zero&quot;, &quot;One&quot;, &quot;Two&quot;,   &quot;Three&quot;, &quot;Four&quot;, &quot;Five&quot;, &quot;Six&quot;, &quot;Seven&quot;, &quot;Eight&quot;, &quot;Nine&quot;]
+            teens_string = [&quot;Ten&quot;, &quot;Eleven&quot;,  &quot;Twelve&quot;,  &quot;Thirteen&quot;, &quot;Fourteen&quot;, &quot;Fifteen&quot;, &quot;Sixteen&quot;, &quot;Seventeen&quot;, &quot;Eighteen&quot;, &quot;Nineteen&quot;]
+            ty_string = [&quot;&quot;, &quot;&quot;, &quot;Twenty&quot;,  &quot;Thirty&quot;, &quot;Forty&quot;, &quot;Fifty&quot;, &quot;Sixty&quot;, &quot;Seventy&quot;, &quot;Eighty&quot;, &quot;Ninety&quot;]
+            res = &quot;&quot;
+            if num &gt; 99:
+                res += digit_string[num // 100] + &quot; Hundred &quot;
+            num %= 100
+            if num &lt; 20 and num &gt; 9:
+                res += teens_string[num - 10] + &quot; &quot;
+            else:
+                if num &gt;= 20:
+                    res += ty_string[num // 10] + &quot; &quot;
+                num %= 10
+                if num &gt; 0:
+                    res += digit_string[num] + &quot; &quot;
+
+
+            return res
+
+        if num == 0:
+            return &quot;Zero&quot;
+        big_string = [&quot;Thousand&quot;, &quot;Million&quot;, &quot;Billion&quot;]
+        result = number_to_words_helper(num % 1000)
+        num //= 1000
+        for i in range(3):
+            if num &gt; 0 and num % 1000 &gt; 0:
+                result = number_to_words_helper(num % 1000) + big_string[i] + &quot; &quot; + result
+            num //= 1000
+
+        length = len(result)
+        return result if length == 0 else result[: length - 1]
+</code></pre>
+<p>```C++ []<br />
+class Solution {<br />
+public:<br />
+    string numberToWords(int num) {<br />
+        if (num == 0)<br />
+            return "Zero";</p>
+<pre><code>    string bigString[] = {"Thousand", "Million", "Billion"};
+    string result = numberToWordsHelper(num % 1000);
+    num /= 1000;
+
+    for (int i = 0; i &lt; 3; ++i) {
+        if (num &gt; 0 &amp;&amp; num % 1000 &gt; 0) {
+            result = numberToWordsHelper(num % 1000) + bigString[i] + " " +
+                     result;
+        }
+        num /= 1000;
+    }
+
+    return result.empty()
+               ? result
+               : result.substr(0, result.size() - 1); // Trim trailing space
+}
+
+string numberToWordsHelper(int num) {
+    string digitString[] = {"Zero", "One", "Two",   "Three", "Four",
+                            "Five", "Six", "Seven", "Eight", "Nine"};
+    string teenString[] = {"Ten",      "Eleven",  "Twelve",  "Thirteen",
+                           "Fourteen", "Fifteen", "Sixteen", "Seventeen",
+                           "Eighteen", "Nineteen"};
+    string tenString[] = {"",      "",      "Twenty",  "Thirty", "Forty",
+                          "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+
+    string result = "";
+    if (num &gt; 99) {
+        result += digitString[num / 100] + " Hundred ";
+    }
+    num %= 100;
+    if (num &lt; 20 &amp;&amp; num &gt; 9) {
+        result += teenString[num - 10] + " ";
+    } else {
+        if (num &gt;= 20) {
+            result += tenString[num / 10] + " ";
+        }
+        num %= 10;
+        if (num &gt; 0) {
+            result += digitString[num] + " ";
+        }
+    }
+
+    return result;
+}
+</code></pre>
+<p>};</p>
+<pre><code>```Java []
+class Solution {
+    private final String[] belowTwenty = { &quot;&quot;, &quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;, &quot;Four&quot;, &quot;Five&quot;, &quot;Six&quot;, &quot;Seven&quot;, &quot;Eight&quot;, &quot;Nine&quot;,
+            &quot;Ten&quot;, &quot;Eleven&quot;, &quot;Twelve&quot;, &quot;Thirteen&quot;, &quot;Fourteen&quot;, &quot;Fifteen&quot;, &quot;Sixteen&quot;, &quot;Seventeen&quot;, &quot;Eighteen&quot;,
+            &quot;Nineteen&quot; };
+    private final String[] tens = { &quot;&quot;, &quot;&quot;, &quot;Twenty&quot;, &quot;Thirty&quot;, &quot;Forty&quot;, &quot;Fifty&quot;, &quot;Sixty&quot;, &quot;Seventy&quot;, &quot;Eighty&quot;,
+            &quot;Ninety&quot; };
+
+    public String numberToWords(int num) {
+        if (num == 0)
+            return &quot;Zero&quot;;
+        return helper(num);
+    }
+
+    private String helper(int num) {
+        StringBuilder result = new StringBuilder();
+        if (num &lt; 20) {
+            result.append(belowTwenty[num]);
+        } else if (num &lt; 100) {
+            result.append(tens[num / 10]).append(&quot; &quot;).append(belowTwenty[num % 10]);
+        } else if (num &lt; 1000) {
+            result.append(helper(num / 100)).append(&quot; Hundred &quot;).append(helper(num % 100));
+        } else if (num &lt; 1000000) {
+            result.append(helper(num / 1000)).append(&quot; Thousand &quot;).append(helper(num % 1000));
+        } else if (num &lt; 1000000000) {
+            result.append(helper(num / 1000000)).append(&quot; Million &quot;).append(helper(num % 1000000));
+        } else {
+            result.append(helper(num / 1000000000)).append(&quot; Billion &quot;).append(helper(num % 1000000000));
+        }
+        return result.toString().trim();
+    }
+}
+</code></pre>
+<p>```C []<br />
+const char<em> simple[] = {"",     "One", "Two",   "Three", "Four",<br />
+                        "Five", "Six", "Seven", "Eight", "Nine"};<br />
+const char</em> secondary[] = {"",      "",      "Twenty",  "Thirty", "Forty",<br />
+                           "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};<br />
+const char* teens[] = {"Ten",      "Eleven",  "Twelve",  "Thirteen",<br />
+                       "Fourteen", "Fifteen", "Sixteen", "Seventeen",<br />
+                       "Eighteen", "Nineteen"};</p>
+<p>void three(int num, char* result) {<br />
+    bool first = true;</p>
+<pre><code>if (num &gt;= 100) {
+    if (!first) {
+        strcat(result, " ");
+    }
+    strcat(result, simple[num / 100]);
+    strcat(result, " Hundred");
+    num %= 100;
+    first = false;
+}
+if (num &gt;= 20) {
+    if (!first) {
+        strcat(result, " ");
+    }
+    strcat(result, secondary[num / 10]);
+    num %= 10;
+    first = false;
+} else if (num &gt;= 10) {
+    if (!first) {
+        strcat(result, " ");
+    }
+    strcat(result, teens[num - 10]);
+    num = 0;
+    first = false;
+}
+
+if (num &gt; 0) {
+    if (!first) {
+        strcat(result, " ");
+    }
+    strcat(result, simple[num]);
+    num %= 20;
+    first = false;
+}
+</code></pre>
+<p>}</p>
+<p>char<em> numberToWords(int num) {<br />
+    char</em> result = malloc(1000 * sizeof(char));<br />
+    bool first = true;</p>
+<pre><code>*result = '\\0';
+
+if (num &gt;= 1000000000) {
+    if (!first) {
+        strcat(result, " ");
+    }
+    three(num / 1000000000, result);
+    strcat(result, " Billion");
+    num %= 1000000000;
+    first = false;
+}
+if (num &gt;= 1000000) {
+    if (!first) {
+        strcat(result, " ");
+    }
+    three(num / 1000000, result);
+    strcat(result, " Million");
+    num %= 1000000;
+    first = false;
+}
+if (num &gt;= 1000) {
+    if (!first) {
+        strcat(result, " ");
+    }
+    three(num / 1000, result);
+    strcat(result, " Thousand");
+    num %= 1000;
+    first = false;
+}
+if (num &gt; 0) {
+    if (!first) {
+        strcat(result, " ");
+    }
+    three(num, result);
+    num = 0;
+    first = false;
+}
+
+if (first) {
+    strcat(result, "Zero");
+}
+
+return result;
+</code></pre>
+<p>}</p>
+<pre><code>```Python []
+class Solution(object):
+    def numberToWords(self, num):
+        &quot;&quot;&quot;
+        :type num: int
+        :rtype: str
+        &quot;&quot;&quot;
+        def number_to_words_helper(num):
+            digit_string = [&quot;Zero&quot;, &quot;One&quot;, &quot;Two&quot;,   &quot;Three&quot;, &quot;Four&quot;, &quot;Five&quot;, &quot;Six&quot;, &quot;Seven&quot;, &quot;Eight&quot;, &quot;Nine&quot;]
+            teens_string = [&quot;Ten&quot;, &quot;Eleven&quot;,  &quot;Twelve&quot;,  &quot;Thirteen&quot;, &quot;Fourteen&quot;, &quot;Fifteen&quot;, &quot;Sixteen&quot;, &quot;Seventeen&quot;, &quot;Eighteen&quot;, &quot;Nineteen&quot;]
+            ty_string = [&quot;&quot;, &quot;&quot;, &quot;Twenty&quot;,  &quot;Thirty&quot;, &quot;Forty&quot;, &quot;Fifty&quot;, &quot;Sixty&quot;, &quot;Seventy&quot;, &quot;Eighty&quot;, &quot;Ninety&quot;]
+            res = &quot;&quot;
+            if num &gt; 99:
+                res += digit_string[num // 100] + &quot; Hundred &quot;
+            num %= 100
+            if num &lt; 20 and num &gt; 9:
+                res += teens_string[num - 10] + &quot; &quot;
+            else:
+                if num &gt;= 20:
+                    res += ty_string[num // 10] + &quot; &quot;
+                num %= 10
+                if num &gt; 0:
+                    res += digit_string[num] + &quot; &quot;
+
+
+            return res
+
+        if num == 0:
+            return &quot;Zero&quot;
+        big_string = [&quot;Thousand&quot;, &quot;Million&quot;, &quot;Billion&quot;]
+        result = number_to_words_helper(num % 1000)
+        num //= 1000
+        for i in range(3):
+            if num &gt; 0 and num % 1000 &gt; 0:
+                result = number_to_words_helper(num % 1000) + big_string[i] + &quot; &quot; + result
+            num //= 1000
+
+        length = len(result)
+        return result if length == 0 else result[: length - 1]
+
+
+</code></pre>
+<p>```C# []<br />
+public class Solution {<br />
+      private bool _IsRemainderZero(int num, int divisionBy)<br />
+     =&gt; (num % divisionBy) == 0;</p>
+<p>public string NumberToWords(int num)<br />
+ {<br />
+     if (num == 0)<br />
+     {<br />
+         return "Zero";<br />
+     }</p>
+<pre><code> if (num &gt;= 1 &amp;&amp; num &lt;= 19)
+ {
+     string[] arr = { "", "One", "Two", "Three", "Four", "Five",
+                     "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve",
+                     "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen",
+                     "Eighteen", "Nineteen" };
+
+     return arr[num];
+ }
+
+ if (num &gt;= 20 &amp;&amp; num &lt;= 99)
+ {
+     string[] arr = { "", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty",
+                     "Seventy", "Eighty", "Ninety" };
+
+     return $"{arr[num / 10]} {(_IsRemainderZero(num, 10) ? string.Empty : NumberToWords(num % 10))}".Trim();
+ }
+
+ if (num &gt;= 100 &amp;&amp; num &lt;= 999)
+ {
+     return $"{NumberToWords(num / 100)} Hundred {(_IsRemainderZero(num, 100) ? string.Empty : NumberToWords(num % 100))}".Trim();
+ }
+
+ if (num &gt;= 1000 &amp;&amp; num &lt;= 999999)
+ {
+     return $"{NumberToWords(num / 1000)} Thousand {(_IsRemainderZero(num, 1000) ? string.Empty : NumberToWords(num % 1000))}".Trim();
+ }
+
+ if (num &gt;= 1000000 &amp;&amp; num &lt;= 999999999)
+ {
+     return $"{NumberToWords(num / 1000000)} Million {(_IsRemainderZero(num, 1000000) ? string.Empty : NumberToWords(num % 1000000))}".Trim();
+ }
+
+ if (num &gt;= 1000000000)
+ {
+     return $"{NumberToWords(num / 1000000000)} Billion {(_IsRemainderZero(num, 1000000000) ? string.Empty : NumberToWords(num % 1000000000))}".Trim();
+ }
+
+ return string.Empty;
+</code></pre>
+<p>}<br />
+}<br />
+```</p>
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+<h1>Approach</h1>
+<!-- Describe your approach to solving the problem. -->
+
+<h1>Complexity</h1>
+<ul>
+<li>Time complexity:</li>
+</ul>
+<!-- Add your time complexity here, e.g. O(n) -->
+
+<ul>
+<li>Space complexity:</li>
+</ul>
+<!-- Add your space complexity here, e.g. O(n) -->
+
+<p><img alt="th.jpeg" src="https://assets.leetcode.com/users/images/264ca491-1ae0-4a26-bea5-a8c0aacc63d0_1723051849.360701.jpeg" /></p>
+</div>
+</div>
+</body>
+</html>

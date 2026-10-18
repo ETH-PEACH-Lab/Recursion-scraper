@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Decode String – Editorial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+<style>.vimeo-link{display:inline-flex;align-items:center;gap:8px;
+            background:#1ab7ea;color:#fff;font-weight:600;
+            padding:10px 20px;border-radius:6px;margin:12px 0;font-size:.95em}
+.vimeo-link:hover{background:#0d9bd4;color:#fff;text-decoration:none}</style>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_decode-string.html">Decode String</a> <span class="sep">›</span> <span class="cur">Editorial</span></nav>
+<div class="wrap"><div class="page-title">394. Decode String — Official Editorial</div>
+<div class="page-sub" style="margin-bottom:20px">
+  <span class="badge b-medium">Medium</span> <span class="badge b-tag">String</span> <span class="badge b-tag">Stack</span> <span class="badge b-tag">Recursion</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/decode-string/" target="_blank" style="font-size:.85em">↗ Problem</a>
+  &nbsp;·&nbsp;
+  <a href="problem_decode-string.html" style="font-size:.85em">💬 Community Solutions</a>
+</div>
+<div class="sol-body">
+  <p>[TOC]</p>
+<h2>Solution</h2>
+<hr />
+<h3>Overview</h3>
+<p>We are given string $$s$$ in a particular form <code>k[string]</code> and we have to decode it  as <code>string</code> repeated <code>k</code> times . For example,<code>2[b]</code> is decoded as  <code>bb</code>.</p>
+<p>The problem seems straightforward at first glance. But the trick here is that there can be nested encoded strings like <code>k[string k[string]]</code>. For example, string s =<code>3[a2[c]]</code>. In such cases, we must decode the innermost string and continue in an outward direction until the entire string is decoded.</p>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/394/decode_overview.png" /></p>
+<p>If you have solved similar problem such as <a href="https://leetcode.com/problems/evaluate-reverse-polish-notation/">Evaluate Polish Notation</a> or <a href="https://leetcode.com/problems/simplify-path/">Simplify Path</a> , it is clear that <a href="https://en.wikipedia.org/wiki/Stack_(abstract_data_type)">Stack Data Structure</a>  is best suited to implement such problems. We could implement a stack data structure or recursively build the solution by using an internal call stack. Let's understand both approaches in detail.</p>
+<hr />
+<h3>Approach 1: Using Stack</h3>
+<p><strong>Intuition</strong></p>
+<p>We have to decode the result in a particular pattern. We know that the input is always valid. The pattern begins with a number <code>k</code>, followed by opening braces <code>[</code>, followed by <code>string</code>. Post that, there could be one of the following cases :
+1) There is another nested pattern <code>k[string k[string]]</code>
+2) There is a closing bracket  <code>k[string]</code></p>
+<p>Since we have to start decoding the innermost pattern first, continue iterating over the string <code>s</code>, pushing each character to the stack until it is not a closing bracket <code>]</code>.  Once we encounter the closing bracket <code>]</code>, we must start decoding the pattern.</p>
+<p>As we know that stack follows the Last In First Out (LIFO) Principle, the top of the stack would have the data we must decode.</p>
+<p><strong>Algorithm</strong></p>
+<p>The input can contain an alphabet <code>(a-z)</code>, digit <code>(0-9)</code>, opening braces <code>[</code> or closing braces <code>]</code>. Start traversing string <code>s</code> and process each character based on the following rules:</p>
+<p>Case 1) Current character is not a closing bracket <code>]</code>.</p>
+<p>Push the current character to stack.</p>
+<p>Case 2) Current character is a closing bracket <code>]</code>.</p>
+<p>Start decoding the last traversed string by popping the string <code>decodedString</code> and number <code>k</code> from the top of the stack.
+- Pop from the stack while the next character is not an opening bracket <code>[</code> and append each character (<code>a-z</code>) to the <code>decodedString</code>.
+- Pop opening bracket <code>[</code> from the stack.
+- Pop from the stack while the next character is a digit <code>(0-9)</code> and build the number <code>k</code>.</p>
+<p>Now that we have <code>k</code> and <code>decodedString</code> , decode the pattern <code>k[decodedString]</code>  by pushing the <code>decodedString</code> to stack <code>k</code> times.</p>
+<p>Once the entire string is traversed, pop the <code>result</code> from stack and return.</p>
+<p>!?!../Documents/394_LIS.json:1430,1004!?!</p>
+<p><strong>Implementation</strong></p>
+<iframe src="https://leetcode.com/playground/AzNzLDhS/shared" frameBorder="0" width="100%" height="500" name="AzNzLDhS"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>Time Complexity: $\mathcal{O}(    ext{maxK}^{ ext{countK}} \cdot n)$</li>
+</ul>
+<p>where $   ext{maxK}$ is the maximum value of $k$, $   ext{countK}$ is the count of nested $k$ values, and $n$ is the maximum length of the encoded string.</p>
+<p>Example: For $s =     exttt{20[a10[bc]]}$, $  ext{maxK} = 20$, $  ext{countK} = 2$ (since there are 2 nested $k$ values: <code>20</code> and <code>10</code>), and there are 2 encoded strings <code>a</code> and <code>bc</code> with the maximum encoded string length $n = 2$.</p>
+<p>The worst case occurs when there are multiple nested patterns. Suppose all $k$ values ($  ext{maxK}$) are <code>10</code> and all encoded strings ($n$) are of size <code>2</code>.</p>
+<p>For $s =  exttt{10[ab10[cd]]10[ef]}$, the time complexity is roughly: $10 \cdot   exttt{cd} \cdot 10 \cdot    exttt{ab} + 10 \cdot 2 = 10^2 \cdot 2$</p>
+<p>Hence, for an encoded pattern of the form $   ext{maxK[nmaxK[n]]}$, the time complexity to decode is: $\mathcal{O}(   ext{maxK}^{ ext{countK}} \cdot n)$</p>
+<ul>
+<li>Space Complexity: $\mathcal{O}\left(\sum (    ext{maxK}^{ ext{countK}} \cdot n)\right)$</li>
+</ul>
+<p>where $   ext{maxK}$ is the maximum value of $k$, $   ext{countK}$ is the count of nested $k$ values, and $n$ is the maximum length of the encoded string.</p>
+<p>The maximum stack size would be equivalent to the sum of all decoded strings of the form $    ext{maxK[nmaxK[n]]}$.</p>
+<hr />
+<h3>Approach 2: Using 2 Stack</h3>
+<p><strong>Intuition</strong></p>
+<p>In the previous approach, we used a single character stack to store the digits<code>(0-9)</code> as well as letters <code>(a-z)</code>.
+ We could instead maintain 2 separate stacks.
+- <code>countStack</code>: The stack would store all the integer <code>k</code>.
+- <code>stringStack</code>: The stack would store all the decoded strings.</p>
+<p>Also, instead of pushing the decoded string to the stack character by character, we could improve our algorithm by appending all the characters into the string first and then push the entire string into the <code>stringStack</code>. Let's look at the algorithm in detail.</p>
+<p><strong>Algorithm</strong></p>
+<p>Iterate over the string <code>s</code> and process each character as follows:</p>
+<p>Case 1) If the current character is a digit <code>(0-9)</code>, append it to the number <code>k</code>.</p>
+<p>Case 2) If the current character is a letter <code>(a-z)</code>,  append it to the <code>currentString</code>.</p>
+<p>Case 3) If current character is a opening bracket <code>[</code>, push <code>k</code> and <code>currentString</code> into<code>countStack</code> and <code>stringStack</code> respectively.</p>
+<p>Case 4) Closing bracket <code>]</code>: We must begin the decoding process,
+- We must decode the <code>currentString</code>. Pop <code>currentK</code> from the <code>countStack</code> and decode the pattern <code>currentK[currentString]</code></p>
+<ul>
+<li>As the <code>stringStack</code> contains the previously decoded string, pop the <code>decodedString</code> from the <code>stringStack</code>.
+Update the <code>decodedString</code> = <code>decodedString</code> + <code>currentK[currentString]</code></li>
+</ul>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/394/twoStack_diagram.png" /></p>
+<p><strong>Implementation</strong></p>
+<iframe src="https://leetcode.com/playground/ds9neWBo/shared" frameBorder="0" width="100%" height="500" name="ds9neWBo"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<p>Assume, $$n$$ is the length of the string $$s$$.
+* Time Complexity: $$\mathcal{O}(   ext{maxK} \cdot n)$$,  where $$ ext{maxK}$$ is the maximum value of $$k$$ and $$n$$ is the length of a given string $$s$$. We traverse a string of size $$n$$ and iterate $$k$$ times to decode each pattern of form $$ ext{k[string]}$$. This gives us worst case time complexity as $$\mathcal{O}(    ext{maxK} \cdot n)$$.</p>
+<ul>
+<li>Space Complexity: $$\mathcal{O}(m+n)$$, where $$m$$ is the number of <code>letters(a-z)</code> and $$n$$ is the number of <code>digits(0-9)</code> in string $$s$$. In worst case, the maximum size of $$   ext{stringStack}$$ and  $$  ext{countStack}$$ could be $$m$$ and $$n$$ respectively.</li>
+</ul>
+<hr />
+<h3>Approach 3: Using Recursion</h3>
+<p><strong>Intuition</strong></p>
+<p>In the previous approach, we implemented an external stack to keep the track of each character traversed. Ideally, a stack is required when we have nested encoded string in the form <code>k[string k[string]]</code>.</p>
+<p>Using this intuition, we could start by building <code>k</code> and <code>string</code> and recursively decode for each nested substring. The recursion uses an internal call stack to store the previous state. Let's understand the algorithm in detail.</p>
+<p><strong>Algorithm</strong></p>
+<ul>
+<li>Build <code>result</code> while next character is letter <code>(a-z)</code> and build the number k while next character is a digit <code>(0-9)</code> by iterating over string <code>s</code>.</li>
+<li>Ignore the next <code>[</code> character and recursively find the nested <code>decodedString</code>.</li>
+<li>Decode the current pattern <code>k[decodedString]</code> and append it to the result.</li>
+<li>Return the current <code>result</code>.</li>
+</ul>
+<p>The above steps are repeated recursively for each pattern until the entire string <code>s</code> is traversed.</p>
+<p>Base Condition: We must define a base condition that must be satisfied to backtrack from the recursive call.
+In this case, we would backtrack and return the <code>result</code> when we have traversed the string <code>s</code> or the next character is <code>]</code> and there is no nested substring.</p>
+<p>Thanks to <a href="https://leetcode.com/bluedawnstar/">@bluedawnstar</a> for suggesting the solution.</p>
+<p><strong>Implementation</strong></p>
+<iframe src="https://leetcode.com/playground/b9eL4VsZ/shared" frameBorder="0" width="100%" height="500" name="b9eL4VsZ"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<p>Assume, $$n$$ is the length of the string $$s$$.
+* Time Complexity: $$\mathcal{O}(   ext{maxK} \cdot n)$$ as in <em>Approach 2</em></p>
+<ul>
+<li>Space Complexity: $$\mathcal{O}(n)$$. This is the space used to store the internal call stack used for recursion. As we are recursively decoding each nested pattern, the maximum depth of recursive call stack would not be more than $$n$$</li>
+</ul>
+</div></div>
+</body>
+</html>

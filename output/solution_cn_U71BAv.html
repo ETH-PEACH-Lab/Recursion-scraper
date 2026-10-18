@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>带你秒杀5道递归题目 看完不信你还搞不懂递归 – Hanota LCCI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_hanota-lcci.html">Hanota LCCI / 汉诺塔问题</a> <span class="sep">›</span> <span class="cur">带你秒杀5道递归题目 看完不信你还搞不懂递归</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">带你秒杀5道递归题目 看完不信你还搞不懂递归</div>
+  <div class="meta">
+    <span>👤 nuo-nuo-zi-4</span>
+    <span>👍 0</span>
+    <span>2023-09-22</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/hanota-lcci/solution/dai-ni-miao-sha-5dao-di-gui-ti-mu-kan-wa-pahv/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1></h1>
+<p>思路来自于：</p>
+<p><a href="https://leetcode.cn/problems/merge-two-sorted-lists/solutions/103891/yi-kan-jiu-hui-yi-xie-jiu-fei-xiang-jie-di-gui-by-/">腐烂的橘子</a></p>
+<p>[toc]</p>
+<h2>递归的核心思想</h2>
+<p><strong>一个大问题可以分解为一层层的小问题 每一个问题的处理方法完全一样</strong></p>
+<p>拿斐波那契数列举例：</p>
+<p>已知：F(0) = 0; F(1) = 1;</p>
+<p>F(n) = F(n - 1) + F(n - 2) (n &gt; 1)</p>
+<p>求F(6)？</p>
+<p>F(6) = F(5) + F (4) 那F(5)、F(4)分别是多少？</p>
+<p>F(5) = F(4) + F(3) 那F(4)、F(3)分别是多少？</p>
+<p>F(4) = F(3) + F(2) 那F(3)、F(2)分别是多少？</p>
+<p>F(3) = F(2) + F(1) 那F(2)、F(1)分别是多少？</p>
+<p>F(2) = F(1) + F(0) 那F(1)、F(0)分别是多少？</p>
+<p>得到F(1)和F(0)的值--&gt;得到F(2)的值--&gt;得到F(3)的值--&gt;得到F(4)的值--&gt;得到F(5)的值--&gt;得到F(6)的值</p>
+<p>可以看到</p>
+<p>F(6)等于多少这个问题，被转化为一个更小的问题F(5)；</p>
+<p>F(5)等于多少这个问题，被转化为一个更小的问题F(1);</p>
+<p>...</p>
+<p>直到有一个问题得到解决</p>
+<p>F(2)等于多少这个问题，根据初始条件可以解决。</p>
+<p>解决之后再把小问题的答案拿去解决大问题</p>
+<p>F(2)的答案拿去解决F(3)是多少的问题</p>
+<p>F(3)的答案拿去解决F(4)是多少的问题</p>
+<p>...</p>
+<p>最终得到F(6)的答案</p>
+<p>大问题可以被分解为一层层的小问题，而且每一层问题的处理方式完全一样，这种情况可以用递归。</p>
+<p>看图理解：用栈的方式实现递归。每一层都是取上两层值之和得到该层的结果，即每层的处理方式完全一样。</p>
+<p><img alt="递归01.png" src="https://pic.leetcode.cn/1695362730-bafOoR-%E9%80%92%E5%BD%9201.png" /></p>
+<p>看图理解：大问题可以被分解为一层层小问题。</p>
+<p><img alt="递归02.png" src="https://pic.leetcode.cn/1695362738-rAYaNc-%E9%80%92%E5%BD%9202.png" /></p>
+<p><strong>两个重点</strong>：</p>
+<ol>
+<li>一定要有一个小问题有合法答案，不然递归没完没了了，会出现栈溢出的问题。</li>
+<li>既然每一层的处理方式一样，那么我的递归逻辑只需要关注一层的处理逻辑即可。其他层只需要调用同样的方法即可。</li>
+</ol>
+<h2>如何写递归</h2>
+<p>书写递归函数之前需要明确三个要素：</p>
+<ol>
+<li>
+<p>参数和返回值【参数：处理该层递归逻辑需要用到下一层的什么信息 比如处理斐波那契问题求f(n)就需要知道f(n-1)和f(n-2)的值；返回值：上一层需要这一层提供什么信息 比如求f(n+1)需要第n层提供f(n)的值的信息】</p>
+</li>
+<li>
+<p>递归结束条件【即一定要有一个小问题有合法答案】</p>
+</li>
+<li>
+<p>单层递归逻辑</p>
+</li>
+</ol>
+<h2>时空复杂度分析</h2>
+<p><strong>时间复杂度</strong>：O(T) </p>
+<p>递归调用的次数为R；</p>
+<p>单层递归逻辑的计算时间复杂度为O(s)；</p>
+<p>则该递归算法的时间复杂度为O(T) = R * O(s)；</p>
+<p><strong>空间复杂度</strong>：O(T) </p>
+<p>递归的深度 即为使用到的栈帧的个数R；</p>
+<p>每一层递归的空间开销为O(s)；</p>
+<p>则该递归算法的空间复杂度为O(T) = R * O(s)；</p>
+<h2>题目分析</h2>
+<p><a href="https://leetcode.cn/problems/hanota-lcci/">面试题 08.06. 汉诺塔问题</a></p>
+<p>这道题这是第三次做，终于找到自己的方法论。</p>
+<p>同样的这道题也是一个大问题可以分为一层层的小问题，而且每一层问题的解决方式都一样。<br />
+<img alt="QQ图片20230922142951.jpg" src="https://pic.leetcode.cn/1695364211-rEVTuU-QQ%E5%9B%BE%E7%89%8720230922142951.jpg" /></p>
+<p>通过观察上面n=1、2、3汉诺塔的处理过程，可以总结出这样的实现方法</p>
+<p>目标：将A中的圆盘借助B转移到C</p>
+<ul>
+<li>把A的上面n - 1个圆盘借助C转移到B（n的问题转化为n - 1的问题）</li>
+<li>把A的第n个圆盘转移到C（转化为n = 1的问题）</li>
+<li>把B的上面n - 1个圆盘借助A转移到C（n - 1的问题）</li>
+</ul>
+<p>n的问题转化为n - 1的问题，层层递归下去，最终可以转化为n = 1的问题。</p>
+<p>根据上述的分析过程可知，汉诺塔问题处理方法满足递归的思想：一个大问题可以分解为一层层小问题【n的问题转化为n-1的问题，n-1的问题转化为n-2的问题...直到转化为n=1的问题】，且每层问题的处理方式一样。</p>
+<p>递归三部曲：</p>
+<ul>
+<li>参数和返回值：参数 n， A， B， C 【把A的前n个元素借助B转移到C】</li>
+</ul>
+<p>​                返回值 无需返回值，参数传递的是列表A、B、C的引用地址，每一层修改的都是同样的三个列表</p>
+<ul>
+<li>
+<p>递归结束条件：当n==1的时候，把A的最上面的一个元素直接转移到C上</p>
+</li>
+<li>
+<p>单层递归逻辑：</p>
+</li>
+<li>
+<p>把A的上面n - 1个圆盘借助C转移到B（n的问题转化为n - 1的问题）</p>
+</li>
+<li>把A的第n个圆盘转移到C（转化为n = 1的问题）</li>
+<li>把B的上面n - 1个圆盘借助A转移到C（n - 1的问题）</li>
+</ul>
+<h2>实现代码</h2>
+<pre><code class="language-java">/**
+ * 递归三部曲：
+ * ①参数和返回值：参数
+ *              n:把A的最上面n个元素借助B转移到C
+ *              A: From List
+ *              B: By List
+ *              C: To List
+ *            返回值 无需返回值 因为参数传递的是List的引用类型
+ *                  每一层修改的都是同样的三个列表
+ * ②递归结束条件：如果n==1 直接把A的最上面一个元素转移到C
+ * ③单层递归逻辑：把A的前n-1个元素借助C转移到B
+ *             把A的第n个元素转移到C
+ *             把B中前n-1个元素借助A转移到C
+ *
+ * @param n
+ * @param A
+ * @param B
+ * @param C
+ */
+public void move(int n, List&lt;Integer&gt; A, List&lt;Integer&gt; B, List&lt;Integer&gt; C) {
+    // 递归结束条件
+    if (n == 1) {
+        C.add(A.remove(A.size() - 1));
+        return;
+    }
+    // 单层递归逻辑
+    // 把A的前n-1个元素借助C转移到B
+    move(n - 1, A, C, B);
+    // 把A的第n个元素转移到C
+    C.add(A.remove(A.size() - 1));
+    // 把B中前n-1个元素借助A转移到C
+    move(n - 1, B, A, C);
+}
+public void hanota(List&lt;Integer&gt; A, List&lt;Integer&gt; B, List&lt;Integer&gt; C) {
+    move(A.size(), A, B, C);
+}
+</code></pre>
+<p><strong>时间复杂度</strong>：O(2^n - 1)</p>
+<p><strong>空间复杂度</strong>：O(n) 递归最大深度为n，因此最多需要n个栈帧</p>
+<h2>常见错误</h2>
+<h3>错误1：</h3>
+<pre><code class="language-java">/**
+ * List中圆盘的排列[2, 1, 0]
+ * 错误原因：C.add(A.remove(0));用这一句来实现[把A的第n个元素转移到C]
+ * 问题在于，A此时不一定只有一个元素。
+ * 我们的目的是把A的最上面的一个元素转移到C，C.add(A.remove(0))就默认了A[0]就是A列表的最后一个元素，即最上面的一个元素，也就是说认为A此时只有一个元素
+ * 但A不一定只有一个元素的
+ * 举个例子，我想把A[2, 1, 0]中最上面的元素转移到C，如果C.add(A.remove(0))转移的是2，而最上面的元素是0，所以应该使用C.add(A.remove(A.size() - 1));
+ * 如果不能理解看图，或者自己用手模拟一下递归的过程即可 n=3就足够说明问题
+ * @param n
+ * @param A
+ * @param B
+ * @param C
+ */
+public void move(int n, List&lt;Integer&gt; A, List&lt;Integer&gt; B, List&lt;Integer&gt; C) {
+    // 递归结束条件
+    if (n == 1) {
+        C.add(A.remove(0));
+        return;
+    }
+    // 单层递归逻辑
+    // 把A的前n-1个元素借助C转移到B
+    move(n - 1, A, C, B);
+    // 把A的第n个元素转移到C
+    C.add(A.remove(0));
+    // 把B中前n-1个元素借助A转移到C
+    move(n - 1, B, A, C);
+}
+</code></pre>
+<p><img alt="汉诺塔问题02.jpg" src="https://pic.leetcode.cn/1695364300-QOqVLV-%E6%B1%89%E8%AF%BA%E5%A1%94%E9%97%AE%E9%A2%9802.jpg" /></p>
+<h3>错误2：</h3>
+<pre><code class="language-java">/**
+ * 错误原因：move2方法每次都A的全部元素转移到C
+ * 存在一种情况A[1] C[3, 0] 目的是把B放在C的部分[0]移到A，而实际执行是把C的全部[3, 0](包含B放在C的部分[0]以及C原本就有的部分[3]移到A)
+ * 就会出现A[1, 3, 0]的错误 最终导致stackOverflow的报错
+ * @param A
+ * @param B
+ * @param C
+ */
+public void move(List&lt;Integer&gt; A, List&lt;Integer&gt; B, List&lt;Integer&gt; C) {
+    // 递归结束条件
+    if (A.size() == 1) {
+        C.add(A.remove(A.size() - 1));
+        return;
+    }
+    // 单层递归逻辑
+    // 把A的前n-1个元素借助C转移到B
+    move(A, C, B);
+    // 把A的第n个元素转移到C
+    C.add(A.remove(A.size() - 1));
+    // 把B中前n-1个元素借助A转移到C
+    move(B, A, C);
+}
+</code></pre>
+<h2>其它递归题目</h2>
+<h3>21 合并两个有序链表</h3>
+<p><a href="https://leetcode.cn/problems/merge-two-sorted-lists/">21. 合并两个有序链表</a></p>
+<p>难度：easy</p>
+<p>这一道题的思路是怎么样的</p>
+<p>l1.0：1---&gt;2---&gt;4</p>
+<p>l2.0：1---&gt;3---&gt;4</p>
+<p>l1.0：1(node)---&gt;2---&gt;4</p>
+<p>l2.0：1---&gt;3---&gt;4</p>
+<p>合并l1.0和l2.0问题可以转化为：</p>
+<p>合并1.1和2.1，并且node.next设为l1.1和l2.1合并之后的头节点 <strong>①</strong></p>
+<p>l1.1：2---&gt;4</p>
+<p>l2.1：1---&gt;3---&gt;4</p>
+<p>l1.1：2---&gt;4</p>
+<p>l2.1：1(node)---&gt;3---&gt;4</p>
+<p>合并1.1和2.1问题可以转化为：</p>
+<p>合并1.2和2.2，并且node.next设为l1.2和l2.2合并之后的头节点 <strong>②</strong></p>
+<p>l1.2：2---&gt;4</p>
+<p>l2.2：3---&gt;4</p>
+<p>l1.2：2(node)---&gt;4</p>
+<p>l2.2：3---&gt;4</p>
+<p>合并1.2和2.2问题可以转化为：</p>
+<p>合并1.3和2.3，并且node.next设为l1.3和l2.3合并之后的头节点 <strong>③</strong></p>
+<p>l1.3：4</p>
+<p>l2.3：3---&gt;4</p>
+<p>l1.3：4</p>
+<p>l2.3：3(node)---&gt;4</p>
+<p>合并l1.3和l2.3的问题可以转化为：</p>
+<p>合并l1.4和l2.4，并且把node.next设为l1.4和l2.4合并之后的头节点 <strong>④</strong></p>
+<p>l1.4：4</p>
+<p>l2.4：4</p>
+<p>l1.4：4(node)</p>
+<p>l2.4：4</p>
+<p>合并l1.4和l2.4的问题可以转化为：</p>
+<p>合并l1.5和l2.5，并且把node.next设为l1.5和l2.5合并之后的头节点 <strong>⑤</strong></p>
+<p>l1.5：null</p>
+<p>l2.5：4</p>
+<p>合并l1.5和l2.5，由于l1.5为null，故直接返回l2.5</p>
+<p>回溯：</p>
+<p>⑤把4.next设为4：4--&gt;4</p>
+<p>④把3.next设为4：3--&gt;4--&gt;4</p>
+<p>③把2.next设为3：2--&gt;3--&gt;4--&gt;4</p>
+<p>②把1.next设为2：1--&gt;2--&gt;3--&gt;4--&gt;4</p>
+<p>①把1.next设为1：1--&gt;1--&gt;2--&gt;3--&gt;4--&gt;4</p>
+<p>找到l1和l2中val更小的结点作为合并链表的下一个结点。</p>
+<p>如果是l1则l1后移一位；如果是l2则l2后移一位；</p>
+<p>找到l1和l2中val更小的结点作为合并链表的下一个结点。</p>
+<p>如果是l1则l1后移一位；如果是l2则l2后移一位；</p>
+<p>...</p>
+<p>重复上述过程，直到l1或l2为null</p>
+<p>如果l1为null，则直接把l2剩余的结点连接到合并链表末端即可</p>
+<p>如果l2为null，则直接把l1剩余的结点连接到合并链表末端即可</p>
+<p>可以观察到 ，这个题目满足递归的特点。</p>
+<p>①大问题可以分解为一层层小问题：每次层只需要关注l1和l2的头节点。</p>
+<p>②每层的处理逻辑完全一样：找到l1和l2中val更小的结点作为合并链表的下一个结点。如果是l1则l1后移一位；如果是l2则l2后移一位；</p>
+<p>按照写递归的三个要素来做这道题：</p>
+<p>①确定参数和返回值：参数是需要进行合并的两个链表的头节点；返回值是合并之后的头节点</p>
+<p>②递归结束条件：让list1和list2其中一个为null的时候，即可return 另一个，此时已合并结束</p>
+<p>③单层递归逻辑：</p>
+<p>找到l1和l2中val更小的结点作为合并链表的下一个结点node。</p>
+<p>如果是l1则l1后移一位；如果是l2则l2后移一位；</p>
+<p>把node.next设为后移后的两个链表的合并链表头节点</p>
+<pre><code class="language-java">/**
+  * 合并两个有序链表：
+  * 找到list1和list2中val小的结点，作为合并链表的头结点
+  * list1.val &lt; list2.val  --&gt; list1作为合并链表的头结点 并且合并list1.next和list2 合并结果拼接到list1头结点上
+  * list1.val &gt;= list2.val --&gt; list2作为合并链表的头结点 并且合并list2.next和list1 合并结果拼接到list2头结点上
+  *
+  * 所以可以发现 满足递归的思想：一个大问题分解为一层层小问题 且每层问题的处理方式一样 每次只关注当前层(list1和list2当前头节点的val比较)
+  * 递归三部曲：
+  * ①参数和返回值 参数 list1和list2
+  *             返回值 list1和list2两个链表合并之后的头节点
+  * ②递归结束条件 list1==null --&gt; return list2
+  *              list2==null --&gt; return list1
+  * ③单层递归逻辑
+  *      找到list1和list2中val小的结点，作为合并链表的头结点
+  *      list1.val &lt; list2.val  --&gt; list1作为合并链表的头结点 并且合并list1.next和list2 合并结果拼接到list1头结点上
+  *      list1.val &gt;= list2.val --&gt; list2作为合并链表的头结点 并且合并list2.next和list1 合并结果拼接到list2头结点上
+  *
+  * 时间复杂度: 每层递归的时间复杂度为O(1) 最差情况下递归的深度为m+n(m、n分别为list1和list2的长度)
+  *           综上 时间复杂度为O(m+n)
+  * 空间复杂度: 每层递归的空间复杂度为O(1) 栈的最大深度为m+n 即最多要使用m+n个栈帧
+  *           综上 空间复杂度为O(m+n)
+  * @param list1
+  * @param list2
+  * @return
+  */
+public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+    // 递归结束条件
+    if (list1 == null) {
+        return list2;
+    }
+    if (list2 == null) {
+        return list1;
+    }
+    // 单层递归逻辑
+    // 找到list1和list2中val小的结点 作为合并链表的头节点
+    if (list1.val &lt; list2.val) {
+        // list1作为合并链表的头结点 并且合并list1.next和list2 合并结果拼接到list1头结点上
+        list1.next = mergeTwoLists(list1.next, list2);
+        return list1;
+    } else {
+        // list2作为合并链表的头结点 并且合并list2.next和list1 合并结果拼接到list2头结点上
+        list2.next = mergeTwoLists(list1, list2.next);
+        return list2;
+    }
+}
+</code></pre>
+<h3>344 反转字符串</h3>
+<p><a href="https://leetcode.cn/problems/reverse-string/">344. 反转字符串</a></p>
+<p>这一道题也可以分为一层层小问题，且每层问题的处理方式都一样。</p>
+<p>只不过该题层和层之间不需要进行结果的传递，每层处理好本层的事情即可。</p>
+<p>举个例子：反转字符串”hello“</p>
+<p>第一层 把第一个和倒数第一个两个元素进行交换</p>
+<p>第二层 把第二个和倒数第二个两个元素进行交换</p>
+<p>第三层 把第三个和倒数第三个元素进行交换</p>
+<p>结束</p>
+<p>可以看到，每层的处理方式一样，如果使用char[]数组进行字符的存储则不需要进行结果的传递，因为实际上每层都是在修改同一个对象，Java中方法的参数如果是引用类型，则传递的都是参数的地址。</p>
+<p>按照写递归的三个要素来做这道题：</p>
+<p>①参数和返回值：参数 要进行交换的元素的下标，存储字符串中所有字符的字符数组；返回值：无需返回值，因为参数中传递的是数组的地址，即每层修改的是同一个数组。</p>
+<p>②结束条件：我们可以看到 假设index1和index2分别是要进行交换的两个元素的下标。index1每次都右移1位，index2每次都左移一位。当index1&gt;=index2的时候就说明反转已经完成。此时可以结束递归</p>
+<p>③单层递归逻辑：把index1和index2两个位置的元素进行交换</p>
+<p>实现代码：</p>
+<pre><code class="language-java">    /**
+     * 反转字符串
+     * 设置leftIndex和rightIndex 每层只关注leftIndex和rightIndex两个位置的元素进行交换
+     * leftIndex++ rightIndex--
+     *
+     * 递归三部曲：
+     * ①参数和返回值：参数 数组s；要进行交换的两个位置下标leftIndex、rightIndex
+     *             返回值 无需返回值 因为数组参数传递的是数组的地址 即每一层修改的都是同一个数组
+     * ②递归结束条件：leftIndex&gt;=rightIndex  说明反转完成 直接return
+     * ③单层递归逻辑：交换leftIndex和rightIndex两个位置的元素
+     *              leftIndex++ rightIndex-- 进行下一层的元素交换
+     *
+     * 时间复杂度: 单层递归时间复杂度O(1) 递归层数(n+1)/2
+     *           综上 时间复杂度为O(n)
+     * 空间复杂度: 单层递归空间复杂度O(1) 递归深度(n+1)/2 最多需要(n+1)/2个栈帧
+     *           综上 空间复杂度为O(n)
+     * @param s
+     */
+    public void reverse(char[] s, int leftIndex, int rightIndex) {
+        // 递归结束条件
+        if (leftIndex &gt;= rightIndex) {
+            return;
+        }
+        // 单层递归逻辑
+        char tmp = s[leftIndex];
+        s[leftIndex] = s[rightIndex];
+        s[rightIndex] = tmp;
+        leftIndex++;
+        rightIndex--;
+        reverse(s, leftIndex, rightIndex);
+    }
+    public void reverseString(char[] s) {
+        reverse(s, 0, s.length - 1);
+    }
+</code></pre>
+<h3>24. 两两交换链表中的节点</h3>
+<p><a href="https://leetcode.cn/problems/swap-nodes-in-pairs/">24. 两两交换链表中的节点</a></p>
+<p><img alt="4C18E914B1E1C1C972561F0139E1278F.png" src="https://pic.leetcode.cn/1695365136-nDNnFM-4C18E914B1E1C1C972561F0139E1278F.png" /></p>
+<p>同样的这一题也可以把大问题分为一层层的小问题，并且每一层的解决方式完全一样。</p>
+<p>①参数和返回值：参数：当前要进行交换的两个节点中的第一个；返回值：交换之后位于链表前面的那个节点，方便连在前面的节点后面；</p>
+<p>②结束条件：参数传来的节点node为null；或者 node.next为null 此时只剩一个节点 也无需交换</p>
+<p>③单层递归逻辑：同图片</p>
+<p>实现代码：</p>
+<pre><code class="language-java">public ListNode swapPairs(ListNode head) {
+    // 递归结束条件
+    if (head == null || head.next == null) {
+        return head;
+    }
+
+    // 单层递归逻辑
+    ListNode p = head;
+    ListNode q = p.next;
+    ListNode m = q.next;
+    q.next = p;
+    p.next = swapPairs(m);
+    return q; // 相当于图片中的p = p.next 图片为了便于说明 则p = p.next这样表示
+}
+</code></pre>
+<p><strong>时间复杂度</strong>:递归深度：(N+1)/2；单层的时间复杂度：O(1)；因此总的时间复杂度为(N+1)/2 * O(1) ≈ O(N)</p>
+<p><strong>空间复杂度</strong>:最深需要用到(N+1)/2个栈帧，故时间复杂度为O(N)</p>
+<h3>104  二叉树的最大深度</h3>
+<p><a href="https://leetcode.cn/problems/maximum-depth-of-binary-tree/">104. 二叉树的最大深度</a></p>
+<p>求一棵树的最大深度 </p>
+<p>​       ---》 Max(左子树最大深度，右子树最大深度) + 1 </p>
+<p>​   左子树的最大深度</p>
+<p>​           ---》 Max(左子树的左子树的最大深度，左子树的右子树的最大深度) + 1</p>
+<p>​   右子树的最大深度</p>
+<p>​           ---》 Max(右子树的左子树的最大深度，右子树的右子树的最大深度) + 1</p>
+<p>​           .... 直到一个子树为null 返回0</p>
+<p>所以这道题也满足一个大问题，可以分解为一层层的小问题，而且每个小问题的解决方式完全一致。</p>
+<p>①参数和返回值：参数：树的根节点；返回值：该树的最大深度</p>
+<p>②结束条件：当前参数传入的根节点为null，返回0即可</p>
+<p>③单层递归逻辑：</p>
+<p>depth = Max(MaxDepth(root.left), MaxDepth(root.right)) + 1</p>
+<p>实现代码：</p>
+<pre><code class="language-java">public int maxDepth(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+    return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+}
+</code></pre>
+<p><strong>时间复杂度</strong>：单层递归的时间复杂度为O(1)，最坏情况下，树呈链状，此时递归的最大深度为n，故时间复杂度为O(n)。如果树为平衡二叉树，则最大递归深度为树的高度logn，此时时间复杂度为O(logn)</p>
+<p><strong>空间复杂度</strong>：最坏情况下，树呈链状，此时递归的最大深度为n，此时栈中有n个栈帧，空间复杂度为O(n)。如果树为平衡二叉树，则最大递归深度为树的高度logn，此时空间复杂度为O(logn)</p>
+</div>
+</div>
+</body>
+</html>

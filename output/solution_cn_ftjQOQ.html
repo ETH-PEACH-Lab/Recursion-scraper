@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>如何想到用「栈」？思路来自于递归 – Basic Calculator</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_basic-calculator.html">Basic Calculator / 基本计算器</a> <span class="sep">›</span> <span class="cur">如何想到用「栈」？思路来自于递归</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">如何想到用「栈」？思路来自于递归</div>
+  <div class="meta">
+    <span>👤 fuxuemingzhu</span>
+    <span>👍 274</span>
+    <span>2021-03-10</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/basic-calculator/solution/ru-he-xiang-dao-yong-zhan-si-lu-lai-zi-y-gpca/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p>各位题友大家好！ 今天是 <strong><a href="/u/fuxuemingzhu/">@负雪明烛</a></strong> 坚持日更的第 <strong>45</strong> 天。今天力扣上的每日一题是「<a href="https://leetcode.cn/problems/basic-calculator/">224. 基本计算器</a>」。</p>
+<h1>解题思路</h1>
+<p>重点：</p>
+<ul>
+<li>本题目只有 <code>"+"</code>, <code>"-"</code> 运算，没有 <code>"*"</code> , <code>"/"</code> 运算，因此少了不同运算符优先级的比较；</li>
+<li>遇到小括号，应该<strong>先算括号里面的表达式</strong>；</li>
+</ul>
+<h1>递归</h1>
+<p>一个表达式分为三部分：</p>
+<p>左边表达式①，运算符③， 右边表达式②</p>
+<p>本题中，左边和右边的表达式可以是一个数字，也可以是一个括号包起来的表达式；运算符可以是加减。</p>
+<p>小学数学告诉我们，一个只包含加减和括号的表达式，我们可以从左到右计算，遇到括号就先算括号里面的。具体来说就是先计算左边的表达式，再计算右边表达式，最后根据运算符，计算 <code>①和②的运算</code> 。</p>
+<p>用题目示例 <code>"(1+(4+5+2)-3)+(6+8)"</code> 来说明运算符计算的顺序：</p>
+<p><img alt="224.001.jpeg" src="https://pic.leetcode.cn/1615341430-TjSiGC-224.001.jpeg" /></p>
+<p>根据上面的分析可知，当我们在计算一个表达式的时候，需要先计算左边表达式①，然后需要把①的结果和运算符③<strong>保存</strong>起来，再需要计算右边表达式②，最后计算①和②的运算。这个操作就是<strong>递归！！</strong></p>
+<h2>栈</h2>
+<p>递归的程序可以用「栈」来模拟：栈为了保存左边表达式①的计算结果和运算符③，在计算右边表达式③的结果之后，从栈中取出运算符③和①的结果，再进行计算整个表达式的结果。</p>
+<p>肯定有朋友想问了，用栈保存左边表达式结果的话，当遇到嵌套的括号怎么办？比如 <code>(1 + (2 + (3 + 4)))</code>。答案是：栈顶保留的是最里层嵌套的运算，弹出栈的时候，正好先算的是最里面括号的，再算外边括号的。这种情况时，栈里面保存的是 ["1", "+", "2", "+", "3", "+"]，然后遇到 4，此时计算的是 3 + 4，然后算 7 + 2，再算 9 + 1。可以通过<strong>递归</strong>来帮助理解。</p>
+<h1>代码</h1>
+<p>代码里面:</p>
+<ul>
+<li>res 表示左边表达式除去栈内保存元素的计算结果；</li>
+<li>sign 表示运算符；</li>
+<li>num 表示当前遇到的数字，会更新到 res 中；</li>
+<li>用栈保存遇到左括号时前面计算好了的结果和运算符。</li>
+</ul>
+<p>操作的步骤是：</p>
+<ul>
+<li>如果当前是数字，那么更新计算当前数字；</li>
+<li>如果当前是操作符+或者-，那么需要更新计算当前计算的结果 res，并把当前数字 num 设为 0，sign 设为正负，重新开始；</li>
+<li>如果当前是 <code>(</code> ，那么说明遇到了右边的表达式，而后面的小括号里的内容需要优先计算，所以要把 res，sign 进栈，更新 res 和 sign 为新的开始；</li>
+<li>如果当前是 <code>)</code> ，那么说明右边的表达式结束，即当前括号里的内容已经计算完毕，所以要把之前的结果出栈，然后计算整个式子的结果；</li>
+<li>最后，当所有数字结束的时候，需要把最后的一个 num 也更新到 res 中。</li>
+</ul>
+<p><img alt="224.002.jpeg" src="https://pic.leetcode.cn/1615341467-gaVtdq-224.002.jpeg" /></p>
+<p><code>Python []
+class Solution(object):
+    def calculate(self, s):
+        res, num, sign = 0, 0, 1
+        stack = []
+        for c in s:
+            if c.isdigit():
+                num = 10 * num + int(c)
+            elif c == "+" or c == "-":
+                res += sign * num
+                num = 0
+                sign = 1 if c == "+" else -1
+            elif c == "(":
+                stack.append(res)
+                stack.append(sign)
+                res = 0
+                sign = 1
+            elif c == ")":
+                res += sign * num
+                num = 0
+                res *= stack.pop()
+                res += stack.pop()
+        res += sign * num
+        return res</code></p>
+<ul>
+<li>时间复杂度：$O(N)$</li>
+<li>空间复杂度：$O(N)$</li>
+</ul>
+<h1>刷题心得</h1>
+<p>今天的题目其实不难，主要是思路要理清楚。</p>
+<p>参考资料：</p>
+<ol>
+<li><a href="https://www.cnblogs.com/grandyang/p/4570699.html">GrandYang</a></li>
+<li><a href="https://blog.csdn.net/fuxuemingzhu/article/details/84133441">负雪明烛</a></li>
+</ol>
+<hr />
+<p>OK，以上就是 <a href="https://leetcode.cn/u/fuxuemingzhu/">@负雪明烛</a> 写的今天题解的全部内容了，如果你觉得有帮助的话，<strong>求赞、求关注、求收藏</strong>。如果有疑问的话，请在下面评论，我会及时解答。</p>
+<p><strong>关注我</strong>，你将不会错过我的精彩动画题解、面试题分享、组队刷题活动，进入主页 <a href="https://leetcode.cn/u/fuxuemingzhu/">@负雪明烛</a> 右侧有刷题组织，从此刷题不再孤单。</p>
+<p>祝大家牛年大吉！AC 多多，Offer 多多！我们明天再见！</p>
+</div>
+</div>
+</body>
+</html>

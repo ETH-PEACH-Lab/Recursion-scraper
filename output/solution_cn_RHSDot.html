@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>递归，栈等3种解决方式，最好的击败了99.86%的用户 – Palindrome Linked List</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_palindrome-linked-list.html">Palindrome Linked List / 回文链表</a> <span class="sep">›</span> <span class="cur">递归，栈等3种解决方式，最好的击败了99.86%的用户</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">递归，栈等3种解决方式，最好的击败了99.86%的用户</div>
+  <div class="meta">
+    <span>👤 sdwwld</span>
+    <span>👍 213</span>
+    <span>2020-10-23</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/palindrome-linked-list/solution/di-gui-zhan-deng-3chong-jie-jue-fang-shi-zui-hao-d/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h3>1，反转后半部分链表</h3>
+<p>这题是让判断链表是否是回文链表，<strong>所谓的回文链表就是以链表中间为中心点两边对称</strong>。我们常见的有判断一个字符串是否是回文字符串，这个比较简单，可以使用两个指针，一个最左边一个最右边，两个指针同时往中间靠，判断所指的字符是否相等。</p>
+<p>但这题判断的是链表，因为这里是单向链表，只能从前往后访问，不能从后往前访问，所以使用判断字符串的那种方式是行不通的。但我们可以<strong>通过找到链表的中间节点然后把链表后半部分反转</strong>（关于链表的反转可以看下<a href="https://mp.weixin.qq.com/s?__biz=MzU0ODMyNDk0Mw==&amp;mid=2247488340&amp;idx=1&amp;sn=c3d6adc9f737672aab544931502dda2e&amp;chksm=fb418074cc360962b46cb764068a5818f58bed6a4cd05ef61057823918d95f3a192550f02408&amp;scene=21#wechat_redirect">432，剑指 Offer-反转链表的3种方式</a>），<strong>最后再用后半部分反转的链表和前半部分一个个比较即可</strong>。这里以示例2为例画个图看一下。<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1603414119-KfHINu-image.png" /></p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1603414128-PsmRse-image.png" /></p>
+<p>最后再来看下代码</p>
+<pre><code>public boolean isPalindrome(ListNode head) {
+    ListNode fast = head, slow = head;
+    //通过快慢指针找到中点
+    while (fast != null &amp;&amp; fast.next != null) {
+        fast = fast.next.next;
+        slow = slow.next;
+    }
+    //如果fast不为空，说明链表的长度是奇数个
+    if (fast != null) {
+        slow = slow.next;
+    }
+    //反转后半部分链表
+    slow = reverse(slow);
+
+    fast = head;
+    while (slow != null) {
+        //然后比较，判断节点值是否相等
+        if (fast.val != slow.val)
+            return false;
+        fast = fast.next;
+        slow = slow.next;
+    }
+    return true;
+}
+
+//反转链表
+public ListNode reverse(ListNode head) {
+    ListNode prev = null;
+    while (head != null) {
+        ListNode next = head.next;
+        head.next = prev;
+        prev = head;
+        head = next;
+    }
+    return prev;
+}
+</code></pre>
+<p>看下运行结果<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1603414192-apkHbM-image.png" /></p>
+<p><br></p>
+<h3>2，使用栈解决</h3>
+<p>我们知道<strong>栈是先进后出的一种数据结构</strong>，这里还可以使用栈先把链表的节点全部存放到栈中，然后再一个个出栈，这样就相当于链表从后往前访问了，通过这种方式也能解决，看下代码</p>
+<pre><code>public boolean isPalindrome(ListNode head) {
+    ListNode temp = head;
+    Stack&lt;Integer&gt; stack = new Stack();
+    //把链表节点的值存放到栈中
+    while (temp != null) {
+        stack.push(temp.val);
+        temp = temp.next;
+    }
+
+    //然后再出栈
+    while (head != null) {
+        if (head.val != stack.pop()) {
+            return false;
+        }
+        head = head.next;
+    }
+    return true;
+}
+</code></pre>
+<p>这里相当于链表从前往后全部都比较了一遍，其实我们只需要拿链表的后半部分和前半部分比较即可，没必要全部比较，所以这里可以优化一下</p>
+<pre><code>public boolean isPalindrome(ListNode head) {
+    if (head == null)
+        return true;
+    ListNode temp = head;
+    Stack&lt;Integer&gt; stack = new Stack();
+    //链表的长度
+    int len = 0;
+    //把链表节点的值存放到栈中
+    while (temp != null) {
+        stack.push(temp.val);
+        temp = temp.next;
+        len++;
+    }
+    //len长度除以2
+    len &gt;&gt;= 1;
+    //然后再出栈
+    while (len-- &gt;= 0) {
+        if (head.val != stack.pop())
+            return false;
+        head = head.next;
+    }
+    return true;
+}
+</code></pre>
+<p>看一下运行结果，这种效率就差了很多<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1603414335-XdQoJd-image.png" /></p>
+<p><br></p>
+<h3>3，递归方式解决</h3>
+<p>我们知道，如果对链表逆序打印可以这样写</p>
+<pre><code>private void printListNode(ListNode head) {
+    if (head == null)
+        return;
+    printListNode(head.next);
+    System.out.println(head.val);
+}
+</code></pre>
+<p>也就是说最先打印的是链表的尾结点，他是从后往前打印的，<code>如果以后谁再给你说单向链表不能从后往前遍历，你就拿这段代码怼他，哈哈</code>。看到这里是不是有灵感了，我们来对上面的对面进行改造一下</p>
+<pre><code>ListNode temp;
+
+public boolean isPalindrome(ListNode head) {
+    temp = head;
+    return check(head);
+}
+
+private boolean check(ListNode head) {
+    if (head == null)
+        return true;
+    boolean res = check(head.next) &amp;&amp; (temp.val == head.val);
+    temp = temp.next;
+    return res;
+}
+</code></pre>
+<p>再来看下运行结果<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1603414442-flcTKw-image.png" /></p>
+</div>
+</div>
+</body>
+</html>

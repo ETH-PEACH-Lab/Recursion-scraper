@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>找出游戏的获胜者 – Find the Winner of the Circular Game</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_find-the-winner-of-the-circular-game.html">Find the Winner of the Circular Game / 找出游戏的获胜者</a> <span class="sep">›</span> <span class="cur">找出游戏的获胜者</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">找出游戏的获胜者</div>
+  <div class="meta">
+    <span>👤 LeetCode-Solution</span>
+    <span>👍 62</span>
+    <span>2022-05-02</span>
+    <span class="badge" style="background:#fff3c4;color:#9a6700">🏆 Official</span>
+    <a href="https://leetcode.cn/problems/find-the-winner-of-the-circular-game/solution/zhao-chu-you-xi-de-huo-sheng-zhe-by-leet-w2jd/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h4>方法一：模拟 + 队列</h4>
+<p>最直观的方法是模拟游戏过程。使用队列存储圈子中的小伙伴编号，初始时将 $1$ 到 $n$ 的所有编号依次加入队列，队首元素即为第 $1$ 名小伙伴的编号。</p>
+<p>每一轮游戏中，从当前小伙伴开始数 $k$ 名小伙伴，数到的第 $k$ 名小伙伴离开圈子。模拟游戏过程的做法是，将队首元素取出并将该元素在队尾处重新加入队列，重复该操作 $k - 1$ 次，则在 $k - 1$ 次操作之后，队首元素即为这一轮中数到的第 $k$ 名小伙伴的编号，将队首元素取出，即为数到的第 $k$ 名小伙伴离开圈子。上述操作之后，新的队首元素即为下一轮游戏的起始小伙伴的编号。</p>
+<p>每一轮游戏之后，圈子中减少一名小伙伴，队列中减少一个元素。重复上述过程，直到队列中只剩下 $1$ 个元素，该元素即为获胜的小伙伴的编号。</p>
+<p>```Python [sol1-Python3]<br />
+class Solution:<br />
+    def findTheWinner(self, n: int, k: int) -&gt; int:<br />
+        q = deque(range(1, n + 1))<br />
+        while len(q) &gt; 1:<br />
+            for _ in range(k - 1):<br />
+                q.append(q.popleft())<br />
+            q.popleft()<br />
+        return q[0]</p>
+<pre><code>
+```Java [sol1-Java]
+class Solution {
+    public int findTheWinner(int n, int k) {
+        Queue&lt;Integer&gt; queue = new ArrayDeque&lt;Integer&gt;();
+        for (int i = 1; i &lt;= n; i++) {
+            queue.offer(i);
+        }
+        while (queue.size() &gt; 1) {
+            for (int i = 1; i &lt; k; i++) {
+                queue.offer(queue.poll());
+            }
+            queue.poll();
+        }
+        return queue.peek();
+    }
+}
+</code></pre>
+<p>```C# [sol1-C#]<br />
+public class Solution {<br />
+    public int FindTheWinner(int n, int k) {<br />
+        Queue<int> queue = new Queue<int>();<br />
+        for (int i = 1; i &lt;= n; i++) {<br />
+            queue.Enqueue(i);<br />
+        }<br />
+        while (queue.Count &gt; 1) {<br />
+            for (int i = 1; i &lt; k; i++) {<br />
+                queue.Enqueue(queue.Dequeue());<br />
+            }<br />
+            queue.Dequeue();<br />
+        }<br />
+        return queue.Peek();<br />
+    }<br />
+}</p>
+<pre><code>
+```C++ [sol1-C++]
+class Solution {
+public:
+    int findTheWinner(int n, int k) {
+        queue&lt;int&gt; qu;
+        for (int i = 1; i &lt;= n; i++) {
+            qu.emplace(i);
+        }
+        while (qu.size() &gt; 1) {
+            for (int i = 1; i &lt; k; i++) {
+                qu.emplace(qu.front());
+                qu.pop();
+            }
+            qu.pop();
+        }
+        return qu.front();
+    }
+};
+</code></pre>
+<p>```C [sol1-C]<br />
+int findTheWinner(int n, int k){<br />
+    struct ListNode * head = NULL;<br />
+    struct ListNode * tail = NULL;<br />
+    for (int i = 1; i &lt;= n; i++) {<br />
+        struct ListNode * node = (struct ListNode *)malloc(sizeof(struct ListNode));<br />
+        node-&gt;val = i;<br />
+        node-&gt;next = NULL;<br />
+        if (!head) {<br />
+            head = node;<br />
+            tail = node;<br />
+        } else {<br />
+            tail-&gt;next = node;<br />
+            tail = tail-&gt;next;<br />
+        }<br />
+    }<br />
+    while (head != tail) {<br />
+        for (int i = 1; i &lt; k; i++) {<br />
+            struct ListNode * node = head;<br />
+            head = head-&gt;next;<br />
+            tail-&gt;next = node;<br />
+            tail = tail-&gt;next;<br />
+            tail-&gt;next = NULL;<br />
+        }<br />
+        struct ListNode * node = head;<br />
+        head = head-&gt;next;<br />
+        free(node);<br />
+    }<br />
+    int res = head-&gt;val;<br />
+    free(head);<br />
+    return res;<br />
+}</p>
+<pre><code>
+```JavaScript [sol1-JavaScript]
+var findTheWinner = function(n, k) {
+    const queue = [];
+    for (let i = 1; i &lt;= n; i++) {
+        queue.push(i);
+    }
+    while (queue.length &gt; 1) {
+        for (let i = 1; i &lt; k; i++) {
+            queue.push(queue.shift());
+        }
+        queue.shift();
+    }
+    return queue[0];
+};
+</code></pre>
+<p>```go [sol1-Golang]<br />
+func findTheWinner(n, k int) int {<br />
+    q := make([]int, n)<br />
+    for i := range q {<br />
+        q[i] = i + 1<br />
+    }<br />
+    for len(q) &gt; 1 {<br />
+        for i := 1; i &lt; k; i++ {<br />
+            q = append(q, q[0])[1:]<br />
+        }<br />
+        q = q[1:]<br />
+    }<br />
+    return q[0]<br />
+}</p>
+<pre><code>
+**复杂度分析**
+
+- 时间复杂度：$O(nk)$，其中 $n$ 是做游戏的小伙伴数量，$k$ 是每一轮离开圈子的小伙伴的计数。初始时需要将 $n$ 个元素加入队列，每一轮需要将 $k$ 个元素从队列中取出，将 $k - 1$ 个元素加入队列，一共有 $n - 1$ 轮，因此时间复杂度是 $O(nk)$。
+
+- 空间复杂度：$O(n)$，其中 $n$ 是做游戏的小伙伴数量。空间复杂度主要取决于队列，队列中最多有 $n$ 个元素。
+
+#### 方法二：数学 + 递归
+
+以下用 $f(n, k)$ 表示 $n$ 名小伙伴做游戏，每一轮离开圈子的小伙伴的计数为 $k$ 时的获胜者编号。
+
+当 $n = 1$ 时，圈子中只有一名小伙伴，该小伙伴即为获胜者，因此 $f(1, k) = 1$。
+
+当 $n &gt; 1$ 时，将有一名小伙伴离开圈子，圈子中剩下 $n - 1$ 名小伙伴。圈子中的第 $k'$ 名小伙伴离开圈子，$k'$ 满足 $1 \le k' \le n$ 且 $k - k'$ 是 $n$ 的倍数。
+
+由于 $1 \le k' \le n$，因此 $0 \le k' - 1 \le n - 1$。又由于 $k - k'$ 是 $n$ 的倍数等价于 $(k - 1) - (k' - 1)$ 是 $n$ 的倍数，因此 $k' - 1 = (k - 1) \bmod n$，$k' = (k - 1) \bmod n + 1$。
+
+当圈子中剩下 $n - 1$ 名小伙伴时，可以递归地计算 $f(n - 1, k)$，得到剩下的 $n - 1$ 名小伙伴中的获胜者。令 $x = f(n - 1, k)$。
+
+由于在第 $k'$ 名小伙伴离开圈子之后，圈子中剩下的 $n - 1$ 名小伙伴从第 $k' + 1$ 名小伙伴开始计数，获胜者编号是从第 $k' + 1$ 名小伙伴开始的第 $x$ 名小伙伴，因此当圈子中有 $n$ 名小伙伴时，获胜者编号是 $f(n, k) = (k' \bmod n + x - 1) \bmod n + 1 = (k + x - 1) \bmod n + 1$。
+
+将 $x = f(n - 1, k)$ 代入上述关系，可得：$f(n, k) = (k + f(n - 1, k) - 1) \bmod n + 1$。
+
+```Python [sol2-Python3]
+class Solution:
+    def findTheWinner(self, n: int, k: int) -&gt; int:
+        return 1 if n == 1 else (k + self.findTheWinner(n - 1, k) - 1) % n + 1
+</code></pre>
+<p>```Java [sol2-Java]<br />
+class Solution {<br />
+    public int findTheWinner(int n, int k) {<br />
+        if (n == 1) {<br />
+            return 1;<br />
+        }<br />
+        return (k + findTheWinner(n - 1, k) - 1) % n + 1;<br />
+    }<br />
+}</p>
+<pre><code>
+```C# [sol2-C#]
+public class Solution {
+    public int FindTheWinner(int n, int k) {
+        if (n == 1) {
+            return 1;
+        }
+        return (k + FindTheWinner(n - 1, k) - 1) % n + 1;
+    }
+}
+</code></pre>
+<p>```C++ [sol2-C++]<br />
+class Solution {<br />
+public:<br />
+    int findTheWinner(int n, int k) {<br />
+        if (n == 1) {<br />
+            return 1;<br />
+        }<br />
+        return (k + findTheWinner(n - 1, k) - 1) % n + 1;<br />
+    }<br />
+};</p>
+<pre><code>
+```C [sol2-C]
+int findTheWinner(int n, int k){
+    if (n == 1) {
+        return 1;
+    }
+    return (k + findTheWinner(n - 1, k) - 1) % n + 1;
+}
+</code></pre>
+<p>```JavaScript [sol2-JavaScript]<br />
+var findTheWinner = function(n, k) {<br />
+    if (n === 1) {<br />
+        return 1;<br />
+    }<br />
+    return (k + findTheWinner(n - 1, k) - 1) % n + 1;<br />
+};</p>
+<pre><code>
+```go [sol2-Golang]
+func findTheWinner(n, k int) int {
+    if n == 1 {
+        return 1
+    }
+    return (k+findTheWinner(n-1, k)-1)%n + 1
+}
+</code></pre>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>
+<p>时间复杂度：$O(n)$，其中 $n$ 是做游戏的小伙伴数量。需要计算的值有 $n$ 个，每个值的计算时间都是 $O(1)$。</p>
+</li>
+<li>
+<p>空间复杂度：$O(n)$，其中 $n$ 是做游戏的小伙伴数量。空间复杂度主要取决于递归调用栈的深度，为 $O(n)$ 层。</p>
+</li>
+</ul>
+<h4>方法三：数学 + 迭代</h4>
+<p>方法二的递归实现可以改成迭代实现，省略递归调用栈空间。</p>
+<p>```Python [sol3-Python3]<br />
+class Solution:<br />
+    def findTheWinner(self, n: int, k: int) -&gt; int:<br />
+        winner = 1<br />
+        for i in range(2, n + 1):<br />
+            winner = (k + winner - 1) % i + 1<br />
+        return winner</p>
+<pre><code>
+```Java [sol3-Java]
+class Solution {
+    public int findTheWinner(int n, int k) {
+        int winner = 1;
+        for (int i = 2; i &lt;= n; i++) {
+            winner = (k + winner - 1) % i + 1;
+        }
+        return winner;
+    }
+}
+</code></pre>
+<p>```C# [sol3-C#]<br />
+public class Solution {<br />
+    public int FindTheWinner(int n, int k) {<br />
+        int winner = 1;<br />
+        for (int i = 2; i &lt;= n; i++) {<br />
+            winner = (k + winner - 1) % i + 1;<br />
+        }<br />
+        return winner;<br />
+    }<br />
+}</p>
+<pre><code>
+```C++ [sol3-C++]
+class Solution {
+public:
+    int findTheWinner(int n, int k) {
+        int winner = 1;
+        for (int i = 2; i &lt;= n; i++) {
+            winner = (k + winner - 1) % i + 1;
+        }
+        return winner;
+    }
+};
+</code></pre>
+<p>```C [sol3-C]<br />
+int findTheWinner(int n, int k){<br />
+    int winner = 1;<br />
+    for (int i = 2; i &lt;= n; i++) {<br />
+        winner = (k + winner - 1) % i + 1;<br />
+    }<br />
+    return winner;<br />
+}</p>
+<pre><code>
+```JavaScript [sol3-JavaScript]
+var findTheWinner = function(n, k) {
+    let winner = 1;
+    for (let i = 2; i &lt;= n; i++) {
+        winner = (k + winner - 1) % i + 1;
+    }
+    return winner;
+};
+</code></pre>
+<p><code>go [sol3-Golang]
+func findTheWinner(n, k int) int {
+    winner := 1
+    for i := 2; i &lt;= n; i++ {
+        winner = (k+winner-1)%i + 1
+    }
+    return winner
+}</code></p>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>
+<p>时间复杂度：$O(n)$，其中 $n$ 是做游戏的小伙伴数量。需要 $O(n)$ 的时间遍历并计算结果。</p>
+</li>
+<li>
+<p>空间复杂度：$O(1)$。</p>
+</li>
+</ul>
+</div>
+</div>
+</body>
+</html>

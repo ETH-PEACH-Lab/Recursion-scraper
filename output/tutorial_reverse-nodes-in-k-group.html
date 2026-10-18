@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reverse Nodes in k-Group – Editorial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+<style>.vimeo-link{display:inline-flex;align-items:center;gap:8px;
+            background:#1ab7ea;color:#fff;font-weight:600;
+            padding:10px 20px;border-radius:6px;margin:12px 0;font-size:.95em}
+.vimeo-link:hover{background:#0d9bd4;color:#fff;text-decoration:none}</style>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_reverse-nodes-in-k-group.html">Reverse Nodes in k-Group</a> <span class="sep">›</span> <span class="cur">Editorial</span></nav>
+<div class="wrap"><div class="page-title">25. Reverse Nodes in k-Group — Official Editorial</div>
+<div class="page-sub" style="margin-bottom:20px">
+  <span class="badge b-hard">Hard</span> <span class="badge b-tag">Linked List</span> <span class="badge b-tag">Recursion</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/reverse-nodes-in-k-group/" target="_blank" style="font-size:.85em">↗ Problem</a>
+  &nbsp;·&nbsp;
+  <a href="problem_reverse-nodes-in-k-group.html" style="font-size:.85em">💬 Community Solutions</a>
+</div>
+<div class="sol-body">
+  <p>[TOC]</p>
+<h2>Solution</h2>
+<p>The problem statement clearly mentions that we are not to use any additional space for our solution. So naturally, a recursive solution is not acceptable here because of the space utilized by the recursion stack. However, for the sake of completeness, we shall go over the recursive approach first before moving on to the iterative approach. The interviewer may not specify the space constraint initially and so, a recursive solution would be a quick first approach followed by the iterative version.</p>
+<p>A Linked list is a recursive structure. A sub-list in itself is a linked list. So, if you think about it, reversing a list consisting of k nodes is simply a linked list reversal algorithm. So, before we look at our actual approaches, we need to know that we will essentially be making use of a linked list reversal function here. There are many ways of reversing a linked list. A lot of programmers like to reverse the links themselves for reversing a linked list. What I personally like to do is to combine linked list traversal with insertion in beginning. </p>
+<ul>
+<li>Say the linked list we need to reverse has the starting node called <code>head</code>.</li>
+<li>Now, we will consider another pointer which will act as the head of the reversed linked list. Let's call this <code>rev_head</code>.</li>
+<li>We will use a pointer, <code>ptr</code> to traverse the original list. </li>
+<li>For every element, we basically insert it at the beginning of the reverse list which has <code>rev_head</code> as its head. </li>
+<li>That's it! We keep on moving <code>ptr</code> one step forward and keep inserting the nodes in the beginning of our reverse list and we will end up reversing the entire list.</li>
+</ul>
+<p><img src="https://leetcode.com/articles/Figures/25/img1.png"/></p>
+<p><img src="https://leetcode.com/articles/Figures/25/img2.png"/></p>
+<p>Now that we have the basic linked list reversal stuff out of the way, we can move on with our actual problem which is to reverse the linked list, <code>k</code> nodes at a time. The basic idea is to make use of our reversal function for a linked list. Usually, we start with the head of the list and keep running the reversal algorithm all the way to the end. However, in this case, we will only process <code>k nodes</code>. </p>
+<p>However, the problem statement also mentions that if there are <code>&lt; k nodes</code> left in the linked list, then we don't have to reverse them. This implies that we first need to <code>count k nodes</code> before we get on with our reversal. If at any point, we find that we don't have <code>k nodes</code>, then we don't reverse that portion of the linked list. Right off the bat, this implies at least two traversals of the list overall. One for counting, and the next, for reversals. </p>
+<h3>Approach 1: Recursion</h3>
+<p><strong>Intuition</strong></p>
+<p>The recursive approach is a natural fit for this problem since the problem asks us to perform a modification operation on a fixed portion of the linked list, one portion at a time. Since a sub-list of a linked list is a linked list in itself, we can make use of recursion to do the heavy lifting for us. All we need to focus here is how we are going to reverse those k nodes. This part is sorted because we already discussed how general linked list reversal works. </p>
+<p>We also need to make sure we are hooking up the right connections as recursion backtracks. For e.g. say we are given a linked list <code>1,2,3,4,5</code> and we are to reverse two nodes at a time. In the recursive approach, we will first reverse the first two nodes thus getting <code>2,1</code>. When recursion backtracks, we assume that we will have <code>4,3,5</code>. Now, we need to ensure that we hookup <code>1-&gt;4</code> correctly so that the overall list is what we expect.</p>
+<p><strong>Algorithm</strong></p>
+<ol>
+<li>Assuming we have a <code>reverse()</code> function already defined for a linked list. This function would take the head of the linked list and also an integer value representing <code>k</code>. We don't have to reverse till the end of the linked list. Only <code>k</code> nodes are to be touched at a time.</li>
+<li>In every recursive call, we first count the number of nodes in the linked list. As soon as the count reaches <code>k</code>, we break. </li>
+<li>If there are less than <code>k</code> nodes left in the list, we return the head of the list. </li>
+<li>However, if there are at least <code>k</code> nodes in the list, then we reverse these nodes by calling our <code>reverse()</code> function defined in the first step. </li>
+<li>Our recursion function needs to return the head of the reversed linked list. This would simply be the $$k^th$$ nodes in the list passed to the recursion function because after reversing the first <code>k</code> nodes, the $$k^th$$ node will become the new head and so on. </li>
+<li>So, in every recursive call, we first reverse <code>k</code> nodes, then recurse on the rest of the linked list. When recursion returns, we establish the proper connections.</li>
+</ol>
+<p>Let's look at a quick example of the algorithm's dry run. So, in the first recursive step, we process the first two nodes of the list and then make a recursive call.</p>
+<center>
+<img src="https://leetcode.com/articles/Figures/25/img3.png"/>
+</center>
+
+<p>Here again, we process the two nodes and then make the final recursive call for this example linked list.</p>
+<center>
+<img src="https://leetcode.com/articles/Figures/25/img4.png"/>
+</center>
+
+<p>Now here we don't have enough nodes to reverse. So, in the recursive call we simply return the only remaining node here which is "5". Once that node is returned from the recursive call, we need to establish the proper connections i.e. from 3-&gt;5.</p>
+<center>
+<img src="https://leetcode.com/articles/Figures/25/img5.png"/>
+</center>
+
+<p>Similarly, recursion would return <code>4</code> as the new head node of the modified list ahead. We need to establish the connection from <code>1</code> to <code>4</code> and then return <code>2</code> as the head of the modified list.</p>
+<center>
+<img src="https://leetcode.com/articles/Figures/25/img6.png"/>
+</center>
+
+<iframe src="https://leetcode.com/playground/ejCGzPai/shared" frameBorder="0" width="100%" height="500" name="ejCGzPai"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>Time Complexity: $$O(N)$$ since we process each node exactly twice. Once when we are counting the number of nodes in each recursive call, and then once when we are actually reversing the sub-list. A slightly optimized implementation here could be that we don't count the number of nodes at all and simply reverse k nodes. If at any point we find that we didn't have enough nodes, we can re-reverse the last set of nodes so as to keep the original structure as required by the problem statement. That ways, we can get rid of the extra counting.</li>
+<li>Space Complexity: $$O(N/k)$$ used up by the recursion stack. The number of recursion calls is determined by both $$k$$ and $$N$$. In every recursive call, we process $$k$$ nodes and then make a recursive call to process the rest. 
+<br>
+<br></li>
+</ul>
+<hr />
+<h3>Approach 2: Iterative O(1) space</h3>
+<p><strong>Intuition</strong></p>
+<p>The idea here is the same as before except that we won't be making use of the stack here and rather use a couple additional variables to maintain the proper connections along the way. We still count <code>k</code> nodes at a time. If we find <code>k</code> nodes, then we reverse them. </p>
+<blockquote>
+<p>In addition to the "head" and "rev_head" variables from before, we need to know the "tail" node of the previous set of k nodes as well. The recursive approach reverses k nodes from left to right, but it establishes the connections from right to left or back to front. In this approach we will be reversing and establishing the connections while going from front to back. </p>
+</blockquote>
+<p><strong>Algorithm</strong></p>
+<ol>
+<li>Assuming we have a <code>reverse()</code> function already defined for a linked list. This function would take the head of the linked list and also an integer value representing <code>k</code>. We don't have to reverse till the end of the linked list. Only <code>k</code> nodes are to be touched at a time.</li>
+<li>We need to maintain four different variables in this algorithm as we chug along:<ol>
+<li><em>head</em> ~ which will always point to the original head of the next set of <code>k</code> nodes.</li>
+<li><em>revHead</em> ~ which is basically the tail node of the original set of <code>k</code> nodes. Hence, this becomes the new head after reversal.</li>
+<li><em>ktail</em> ~ is the tail node of the previous set of <code>k</code> nodes after reversal.</li>
+<li><em>newHead</em> ~ acts as the head of the final list that we need to return as the output. Basically, this is the $$k^{th}$$ node from the beginning of the original list.</li>
+</ol>
+</li>
+<li>The core algorithm remains the same as before. Given the <code>head</code>, we first count <code>k</code> nodes. If we are able to find at least <code>k</code> nodes, we reverse them and get our <code>revHead</code>.</li>
+<li>At this point we check if we already have the variable <code>ktail</code> set or not. It won't be set when we reverse the very first set of <code>k</code> nodes. However, if this variable is set, then we attach <code>ktail.next</code> to the <code>revHead</code>. Also, we need to update <code>ktail</code> to point to the tail of the reversed set of <code>k</code> nodes that we just processed. Remember, the <code>head</code> node becomes the new tail and hence, we set <code>ktail = head</code>.</li>
+<li>We keep doing this until we reach the end of the list or we encounter that there are <code>&lt; k</code> nodes left in the list. </li>
+</ol>
+<p>Let's look at the same linked list that we use for a dry run in the first approach. The first step simply assigns all the relevant pointers and reverses the first two nodes.</p>
+<center>
+<img src="https://leetcode.com/articles/Figures/25/img7.png"/>
+</center>
+
+<p>This step is really important since it highlights the use case of the <code>ktail</code> pointer here.</p>
+<center>
+<img src="https://leetcode.com/articles/Figures/25/img8.png"/>
+</center>
+
+<iframe src="https://leetcode.com/playground/bsnbWKaj/shared" frameBorder="0" width="100%" height="500" name="bsnbWKaj"></iframe>
+
+<ul>
+<li>Time Complexity: $$O(N)$$ since we process each node exactly twice. Once when we are counting the number of nodes in each recursive call, and then once when we are actually reversing the sub-list. </li>
+<li>Space Complexity: $$O(1)$$.
+<br>
+<br></li>
+</ul>
+</div></div>
+</body>
+</html>

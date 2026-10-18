@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>找规律 递归拆分 – 数字 1 的个数</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_1nzheng-shu-zhong-1chu-xian-de-ci-shu-lcof.html">数字 1 的个数 / 数字 1 的个数</a> <span class="sep">›</span> <span class="cur">找规律 递归拆分</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">找规律 递归拆分</div>
+  <div class="meta">
+    <span>👤 littlefean</span>
+    <span>👍 0</span>
+    <span>2022-04-07</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/1nzheng-shu-zhong-1chu-xian-de-ci-shu-lcof/solution/zhao-gui-lu-by-littlefean-px6w/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p>上来先找的规律，看到标签里有递归属性，直觉里就意识到整个数字结果看上去就很像递归。</p>
+<h4>0~9里面：</h4>
+<p>只有1是1，其他9个数字都没有1。</p>
+<p>所以0~9里只有1个1，结果是<strong>1</strong></p>
+<h4>0~99里面：</h4>
+<p>可以看成10个部分，【0~9、10~19、20~29、....90~99】</p>
+<p>第二段【<strong>1</strong>0 <strong>1</strong>1 <strong>1</strong>2 <strong>1</strong>3 <strong>1</strong>4 <strong>1</strong>5 <strong>1</strong>6 <strong>1</strong>7 <strong>1</strong>8 <strong>1</strong>9】比较特殊，都是1开头的。</p>
+<p>相当于有10个1 ，再加上统计 【0 1 2 3 4 5 6 7 8 9】里面有多少个1</p>
+<p>相当于上一个0~9部分的所有1的数量的总和 再加上10个1，</p>
+<p>其他9个部分都是开头部分都不是1，所以都是 （0~9）里面统计1</p>
+<p>所以，0~99里有 <code>（0~9）里1的数量 x 10 + 10</code>，其中 <code>（0~9）里1的数量</code>就是前一项的结果</p>
+<p>结果是<strong>20</strong></p>
+<h4>0~999里面：</h4>
+<p>同理可以分成10段，【0~99、100~199、200~299、...900~999】</p>
+<p>只有第二段特殊【<strong>1</strong>00、<strong>1</strong>01...<strong>1</strong>09、<strong>1</strong>10、<strong>1</strong>11...<strong>1</strong>20...<strong>1</strong>99】</p>
+<p>1的数量等效于 100个1 + 统计0~99里有多少个1</p>
+<p>所以，0~999里有 <code>（0~99）里1的数量 x 10 + 100</code>，其中<code>（0~99）里1的数量</code> 就是前一项的结果</p>
+<p>规律出来了</p>
+<h4>0~99...999（n个9）里面：</h4>
+<p>有多少个1？ </p>
+<p><code>（0~99...n-1个9）里1的数量 x 10 + 10^(n-1)</code> ，依赖于前一项</p>
+<p>得到了递推公式，根据题目数据范围，12个次递推就已经完全够用了。</p>
+<pre><code class="language-python">dp = [1]
+for _ in range(12):
+    last = dp[-1]
+    w = len(dp)
+    dp.append(last * 9 + last + 10 ** w)
+</code></pre>
+<p><code>dp[i]</code> 的含义表示如下</p>
+<pre><code>i        dp[i]含义
+0       0~9中有多少个1
+1       0~99中有多少个1
+2       0~999中有多少个1
+...
+</code></pre>
+<h4>但是</h4>
+<p>题目给出的又不是这么特殊的9、99、999的数字</p>
+<p>所以就要拆分，累加求各段的合。有了上面的递推数组方便我们接下来运算。</p>
+<h4>举个例子，拆 2340</h4>
+<p>0~2340，1的数量。 相当于 0~999、1000~1999 、2000~ 2340  三段中1的数量之和</p>
+<p>这个数是四位数，我们按1000来拆它。余下的部分340递归解决。</p>
+<p><img alt="t1.jpg" src="https://pic.leetcode.cn/1649308968-dqLzKx-t1.jpg" /></p>
+<h5>前面的整块部分</h5>
+<p>0~999 里1的数量 = dp[2]</p>
+<p>1000~1999 ，因为开头是1 开头的，所以可以等效成 ===&gt; 1000 + 0~999 1的数量  == 1000 + dp[2]</p>
+<p>这里注意，只要当前要拆的数，不是1开头的，则必然含有 100..0~199..9 这特殊段，所以要在递归的时候特殊情况判断，要不要额外加上 100..0</p>
+<h5>剩余尾部部分</h5>
+<p>2000~ 2340 里统计1 的数量和 0~340里统计1的数量是等效的，因为开头不是1。</p>
+<p>要统计340的数量？</p>
+<p>所以直接递归，再把 340传入这个方法就可以了。（如果开头是1，则结果再加340就行了，依然可以等效转化）</p>
+<h4>递归1层：拆340</h4>
+<p>用100来拆，0~99、10~199、200~299、300~340</p>
+<p>0~99 里1的数量 = dp[1]</p>
+<p>剩余的300~340又可以等效于0~40</p>
+<h4>递归2层：拆40</h4>
+<p>用10来拆，0~9、10~19、20~29、30~39、40</p>
+<p>其实用10拆40可以整除，余数是0，所以下一层再拆的时候就是拆这个余数0了。也相当于不用拆这单独的一个40了。</p>
+<h4>递归终止条件</h4>
+<p>数字小于10，就不用再拆了，要么有1个要么没有，直接判断一下返回结果。</p>
+<p><img alt="t2.jpg" src="https://pic.leetcode.cn/1649308980-rLRYqv-t2.jpg" /></p>
+<h4>代码</h4>
+<pre><code class="language-python">class Solution:
+    def countDigitOne(self, n: int) -&gt; int:
+        dp = [1]
+        for _ in range(12):
+            last = dp[-1]
+            w = len(dp)
+            dp.append(last * 9 + last + 10 ** w)
+
+        def deep(num: int):
+
+            if num &lt; 10:
+                if num &lt; 1:
+                    return 0
+                else:
+                    return 1
+            res = 0
+            length = len(str(num))
+            div = 10 ** (length - 1)
+            count = num // div
+            remain = num % div
+            res += dp[length - 2] * count
+            if count != 1:
+                res += div
+            else:
+                res += remain + 1
+            return res + deep(remain)
+
+        return deep(n)
+</code></pre>
+</div>
+</div>
+</body>
+</html>

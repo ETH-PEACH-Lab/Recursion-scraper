@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>使用自动机状态转换图分析正则表达式字符串匹配问题 – Regular Expression Matching</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_regular-expression-matching.html">Regular Expression Matching / 正则表达式匹配</a> <span class="sep">›</span> <span class="cur">使用自动机状态转换图分析正则表达式字符串匹配问题</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">使用自动机状态转换图分析正则表达式字符串匹配问题</div>
+  <div class="meta">
+    <span>👤 DForest</span>
+    <span>👍 0</span>
+    <span>2023-06-26</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/regular-expression-matching/solution/shi-yong-zi-dong-ji-zhuang-tai-zhuan-hua-21jz/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>解法一：递归</h1>
+<p>正则表达式匹配字符串可以使用自动机状态转换图分析，剑指offer上面的解法，比如模式字符串p = "ab<em>cd",那么可以简单画下下图所示的状态转换图<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1687745749-SUUJHe-image.png" width="400" /><br />
+题目主要难点在于</em>的分析：<br />
+*可以复制前一个字符，可以复制0次、1次、n次，我们需要从这些策略中找出一种能匹配上的复制次数就行，我们使用SP记录字符串S的位置，PP记录模式字符串P的位置，那么上面的复制次数我们可以使用如下表达式表示</p>
+<pre><code>matchCore(S, SP, P, PP + 2) || matchCore(S, SP + 1, P, PP + 2) || matchCore(S, SP+1, P, PP)
+</code></pre>
+<p>S：匹配字符串<br />
+P：模式字符串<br />
+SP：指向S的指针<br />
+PP：指向P的指针<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1687748242-QpqRRb-image.png" width="400" /></p>
+<p>matchCore(S, SP, P, PP + 2)：指向P的指针跳过了当前字符和<em>，复制0次<br />
+matchCore(S, SP + 1, P, PP + 2)：指向S的指针指向下一个字符，指向P的指针跳过当前字符和</em>，复制1次<br />
+matchCore(S, SP+1, P, PP)：指向S的指针指向下一个字符，指向P的指针不动，说明还要继续使用P的当前字符去匹配S后面的字符，复制n次<br />
+完整代码：</p>
+<pre><code>class Solution {
+    int len_s,len_p;
+    public boolean isMatch(String s, String p) {
+        if (null == s || null == p) {
+            return false;
+        }
+        len_s = s.length();
+        len_p = p.length();
+        return matchCore(s,0,p,0);
+    }
+    private boolean matchCore(String s, int sp, String p, int pp) {
+        //sp、pp分别代表指向s,p的指针
+        //终止条件，两个字符串都匹配完了
+        if (sp == len_s &amp;&amp; pp == len_p) {
+            return true;
+        }
+        //模式不足以匹配字符串时
+        if (sp &lt; len_s &amp;&amp; pp == len_p) {
+            return false;
+        }
+        if (pp &lt; len_p - 1 &amp;&amp; p.charAt(pp + 1) == '*') {
+            if ((sp &lt; len_s &amp;&amp; s.charAt(sp) == p.charAt(pp)) || (p.charAt(pp) == '.' &amp;&amp; sp &lt; len_s)) {
+                //*复制前面一个字符一次
+                return matchCore(s, sp+1, p, pp+2)
+                        //复制k次
+                        || matchCore(s, sp+1, p, pp)
+                        //复制0次
+                        || matchCore(s, sp, p, pp+2);
+            }
+            else {
+                return matchCore(s, sp, p, pp+2);
+            }
+        }
+        //模式字符串p下一个字符不是*且与字符串能匹配上，sp,pp后移一位进入下一个字符的匹配
+        if ((sp &lt; len_s &amp;&amp; s.charAt(sp) == p.charAt(pp)) || (p.charAt(pp) == '.' &amp;&amp; sp &lt; len_s)) {
+            return matchCore(s, sp+1, p, pp+1);
+        }
+        return false;
+    }
+}
+</code></pre>
+<p>上述代码可以通过352个测试用例，有一两个用例使用上述代码递归处理会超时，结果是正确的，所以后面再尝试下动态规划算法应该可以ac了。</p>
+<h1>解法二：动态规划</h1>
+<ol>
+<li>定义dp：dp[i][j]表示s中前i个字符和p中前j个字符是否匹配。</li>
+<li>初始化dp</li>
+</ol>
+<pre><code>//为防止一些边界问题处理，定义dp数组时长度为字符串长度+1
+boolean[][] dp = new boolean[len_s + 1][len_p + 1];
+//两个字符串的前0个字符当然匹配
+dp[0][0] = true;
+//dp[0][n]这个有个特殊处理，当p.charAt(n) == '*'时，必须匹配0次可能匹配上，所以可能为true,不能直接设置为false
+for (int i = 1; i &lt;= len_p; i++) {
+    if (p.charAt(i) == '*') {
+        //匹配0次就相当于删除p中第i和i-1个字符
+        dp[0][i] = dp[0][i - 2];
+    }
+}
+</code></pre>
+<ol start="3">
+<li>递推公式推导：比较难处理的就是p中字符为<em>的情况<br />
+- p.charAt(j - 1) != '</em>'：注意下这个dp中和字符串中index的关系，dp中的i对应字符串中的i-1,因为字符串中index是从0开始的，比如s.charAt(0)是第一个字符。<br />
+    $dp[i][j] = dp[i - 1][j - 1]$,   (s[i - 1] = p[j - 1] || p.charAt(j - 1) == '.')<br />
+- p.charAt(j - 1) == '<em>'：</em>复制前一个字符的次数是不确定的<br />
+    复制0次：$dp[i][j] = dp[i][j-2]$<br />
+    复制1次：$dp[i][j] = dp[i-1][j-2],\kern{20pt}            s[i-1] = p[j-2]$<br />
+    复制2次：$dp[i][j] = dp[i-2][j-2],\kern{20pt}            s[i-2,i-1] = p[j-2]$<br />
+    复制k次：$dp[i][j] = dp[i-k][j-2],\kern{20pt}            s[i-k,i-1] = p[j-2]$<br />
+//在等式后面的条件都满足的情况下，可以推导出如下等式<br />
+==&gt;$dp[i][j] = dp[i][j-2] || dp[i-1][j-2] || dp[i-2][j-2] || .....||dp[i-k][j-2]$<br />
+∵ $dp[i-1][j] = dp[i-1][j-2] || dp[i-2][j-2] || .....||dp[i-k][j-2]$<br />
+==&gt;$dp[i][j] = dp[i][j-2] || dp[i-1][j]$<br />
+- 综上我们可以整理出完整的递推公式<br />
+dp[i][j] = \begin{cases} </li>
+</ol>
+<p>dp[i][j-2], &amp;   ext{if } p[j] = '<em>'\kern{2pt} and\kern{2pt}s[i]<br />
+ot=p[j-1]\kern{2pt} and\kern{2pt}p[j-1] <br />
+ot= '.' \<br />
+dp[i][j-2] || dp[i-1][j],&amp;  ext{if } p[j] = '</em>'\kern{2pt} and\kern{2pt}s[i]==p[j-1]\kern{2pt}\<br />
+dp[i-1][j-1],&amp;  ext{if } p[j] <br />
+ot= '*'\kern{2pt} and\kern{2pt}s[i]==p[j]\kern{2pt}||\kern{2pt}p[j] == '.'<br />
+\end{cases}</p>
+<p>4.代码</p>
+<pre><code>class Solution {
+    public boolean isMatch(String s, String p) {
+        if (null == s || null == p) {
+            return false;
+        }
+        int len_s = s.length();
+        int len_p = p.length();
+
+        //定义dp:dp[i][j]表示S中前i个字符和P中前j个字符匹配
+        boolean[][] dp = new boolean[len_s + 1][len_p + 1];
+        //为减少边界判断，dp[0][0]表示两个空
+        dp[0][0] = true;
+        //当p.charAt(j - 1) == '*',dp[0][j] = dp[0][j - 2]
+        for (int n = 1; n &lt;= len_p; n++) {
+            if (p.charAt(n - 1) == '*') {
+                //这是初始化的第一个坑，因为dp[0]是表示字符串s的第0个字符，也就是空，那么*就只能复制前一个字符复制0次两个字符串才能匹配上
+                //也就是忽略*和前一个字符，即dp[i][j-2]
+                dp[0][n] = dp[0][n - 2];
+            }
+        }
+        //状态更新
+        //i=1才是字符串S的第一个字符，j=1同理
+        for (int i = 1; i &lt;= len_s; i++) {
+            for (int j = 1; j &lt;= len_p; j++) {
+                if (s.charAt(i - 1) == p.charAt(j - 1) || p.charAt(j - 1) == '.') {
+                    dp[i][j] = dp[i - 1][j - 1];
+                }
+                else if (p.charAt(j - 1) == '*') {
+                    //如果s当前字符和*复制的字符不一样，*只能复制0次了
+                    if (s.charAt(i - 1) != p.charAt(j - 2) &amp;&amp; p.charAt(j - 2) != '.') {
+                        //复制0次即忽略*及前一个字符，由于题目保证不会第一个字符就为*，所以j&gt;=2
+                        dp[i][j] = dp[i][j - 2];
+                    }
+                    else {
+                        //递推关系推导
+                        dp[i][j] = dp[i][j -2] || dp[i - 1][j];
+                    }
+                }
+            }
+        }
+        return dp[len_s][len_p];
+    }
+
+}
+</code></pre>
+<p>参考题解：https://leetcode.cn/problems/regular-expression-matching/solution/by-flix-musv/</p>
+</div>
+</div>
+</body>
+</html>

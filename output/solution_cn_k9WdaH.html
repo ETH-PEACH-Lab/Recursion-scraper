@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🍥前端食堂题解，超好理解，带你轻松拿下两两交换链表中的节点 – Swap Nodes in Pairs</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_swap-nodes-in-pairs.html">Swap Nodes in Pairs / 两两交换链表中的节点</a> <span class="sep">›</span> <span class="cur">🍥前端食堂题解，超好理解，带你轻松拿下两两交换链表中的节点</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">🍥前端食堂题解，超好理解，带你轻松拿下两两交换链表中的节点</div>
+  <div class="meta">
+    <span>👤 tongobama</span>
+    <span>👍 0</span>
+    <span>2021-01-29</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/swap-nodes-in-pairs/solution/qian-duan-shi-tang-ti-jie-chao-hao-li-ji-oiae/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h2>链表基础知识</h2>
+<p>数组想必大家都很熟悉，几乎我们每天都会操作它，我们可以对比数组来学习链表。</p>
+<p>首先要明确的是，链表和数组的底层存储结构不同，数组要求存储在一块连续的内存中，而链表是通过指针将一组零散的内存块串联起来。</p>
+<p>可见链表对内存的要求降低了，但是随机访问的性能就没有数组好了，需要 O(n) 的时间复杂度。</p>
+<p>下图中展示了单链表及单链表的添加和删除操作，<code>其实链表操作的本质就是处理链表结点之间的指针</code>。</p>
+<p><img alt="list.jpg" src="https://pic.leetcode.cn/1611944952-PENuRy-list.jpg" /></p>
+<p>在删除链表结点的操作中，我们只需要将需要删除结点的前驱结点的 next 指针，指向其后继即可。这样，当前被删除的结点就被丢弃在内存中，等待着它的是被垃圾回收器清除。</p>
+<p>为了更便于你理解，链表可以类比现实生活中的火车，火车的每节车厢就是链表的一个个结点。车厢之间相互连接，可以添加或者移除掉。春运时，客运量比较大，列车一般会加挂车厢。</p>
+<p>链表的结点结构由数据域和指针域组成，在 JavaScript 中，以嵌套的对象形式实现。</p>
+<pre><code class="language-js">{
+    // 数据域
+    val: 1,
+    // 指针域
+    next: {
+        val:2,
+        next: ...
+    }
+}  
+</code></pre>
+<h2>迭代 + 哨兵节点</h2>
+<p>回到本题，先明确想要交换节点共需要有三个指针进行改变。</p>
+<p>1.所以我们需要在链表头部添加一个哨兵节点。<br />
+2.循环中首先操作三个指针完成节点交换。<br />
+3.指针右移，进行下一对节点的交换。</p>
+<p><img alt="21991611945157_.pic_hd.jpg" src="https://pic.leetcode.cn/1611945194-lOoWok-21991611945157_.pic_hd.jpg" /></p>
+<pre><code class="language-javascript">const swapPairs = (head) =&gt; {
+  const dummy = new ListNode(0);
+  dummy.next = head; // 头部添加哨兵节点
+  let prev = dummy;
+
+  while (head &amp;&amp; head.next) {
+    const next = head.next; // 保存 head.next
+    head.next = next.next;
+    next.next = head;
+    prev.next = next;
+    // 下面两个操作将指针更新
+    prev = head;      
+    head = head.next;
+  }
+  return dummy.next;
+};
+</code></pre>
+<ul>
+<li>时间复杂度：O(n)</li>
+<li>空间复杂度：O(1)</li>
+</ul>
+<h2>递归</h2>
+<p>如果你对递归还觉得掌握的不够透彻，可以移步我的这篇专栏 <a href="https://juejin.cn/post/6844904161872461831">你真的懂递归吗？</a></p>
+<p>回到本题的递归解法：</p>
+<p>1.写递归解法的话，老套路，先明确终止条件，链表中没有节点或只有一个节点时无法进行交换。<br />
+2.接下来递归的进行两两交换节点并更新指针关系。<br />
+3.返回新链表的头节点 newHead。</p>
+<pre><code class="language-javascript">const swapPairs = function (head) {
+    // 递归终止条件
+    if (head === null || head.next === null) {
+        return head;
+    }
+    // 获得第 2 个节点
+    let newHead = head.next;
+    // 将第 1 个节点指向第 3 个节点，并从第 3 个节点开始递归
+    head.next = swapPairs(newHead.next);
+    // 将第 2 个节点指向第 1 个节点
+    newHead.next = head;
+    return newHead;
+}
+</code></pre>
+<ul>
+<li>时间复杂度：O(n)</li>
+<li>空间复杂度：O(n)</li>
+</ul>
+<p>更多题解汇总请移步<a href="https://github.com/Geekhyt/javascript-leetcode">前端食堂的 LeetCode 题解仓库</a></p>
+<p>欢迎关注公众号：前端食堂</p>
+<p>你的前端食堂，吃好每一顿饭！</p>
+<p><img alt="透明的footer.png" src="https://pic.leetcode.cn/1611945059-HfpoKR-%E9%80%8F%E6%98%8E%E7%9A%84footer.png" /></p>
+</div>
+</div>
+</body>
+</html>

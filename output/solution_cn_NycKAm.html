@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>列出各行找规律，利用本行和上一行的关系，递归实现 golang – K-th Symbol in Grammar</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_k-th-symbol-in-grammar.html">K-th Symbol in Grammar / 第K个语法符号</a> <span class="sep">›</span> <span class="cur">列出各行找规律，利用本行和上一行的关系，递归实现 golang</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">列出各行找规律，利用本行和上一行的关系，递归实现 golang</div>
+  <div class="meta">
+    <span>👤 wwsw</span>
+    <span>👍 0</span>
+    <span>2022-10-20</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/k-th-symbol-in-grammar/solution/by-wwsw-c2kw/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p>@[toc]</p>
+<h1>一、题目</h1>
+<p><a href="https://leetcode.cn/problems/k-th-symbol-in-grammar/solutions/">题目</a></p>
+<h1>二、思路</h1>
+<p>注意本题题目说的n和k都是从1开始的</p>
+<p>列出数字，找规律<br />
+第n=1行，0<br />
+第n=2行，01<br />
+第n=3行，0110<br />
+第n=4行，01101001<br />
+第n=5行，0110100110010110</p>
+<p>我们可以发现如下规律：<br />
+- 每行有 math.pow(2, n-1) 个数字<br />
+- 对于第n行的第k个数字，若k在第n行的前半部分，其值与第n-1行的第k个数字的值相同，可利用递归思想，逐步减少数据范围，最终递归到第1行求解。<br />
+- 对于第n行的第k个数组，若k在第n行的后半部分，其值与第n-1行的第 (k - (第n-1行的总数字个数)) 个数字的值相反。<br />
+    - 剩下的就是如何用公示描述上述问题了，具体如下： <br />
+    - 第n-1行的总数字个数，可通过 math.pow(2, n-2) 表示<br />
+    - 数字的取反（即数字0翻转为1，数字1翻转为0），可通过异或操作实现，即 1 ^ 1 = 0，1 ^ 0 = 1。<br />
+- 递归会逐步缩小数据范围，终止条件即为到第n=1行，该行只有一个数字，返回该数字即可。</p>
+<p>有了这些规律，我们即可实现代码了，具体编码如下：</p>
+<pre><code class="language-go">func kthGrammar(n int, k int) int {
+    if n == 1 {
+        return 0
+    }
+    halfNumsInThisLine := 1 &lt;&lt; (n-2)
+    if k &gt; halfNumsInThisLine {
+        posInPrevLine := k - halfNumsInThisLine
+        return 1 ^ kthGrammar(n-1, posInPrevLine)
+    }
+    return kthGrammar(n-1, k)
+}
+</code></pre>
+<h1>三、编码</h1>
+<p>完整的go程序，结合指定的输入数据，最终输出结果如下：</p>
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;math&quot;
+)
+
+func main() {
+    lines := 6
+    for n := 1; n &lt; lines; n++ {
+        numsInLine := int(math.Pow(float64(2), float64(n-1)))
+        for k := 1; k &lt;= numsInLine; k++ {
+            x := kthGrammar(n, k)
+            fmt.Printf(&quot;第%v行, 第%2d个数, 值为%v
+&quot;, n, k, x)
+        }
+        println()
+    }
+    select {}
+}
+
+func kthGrammar(n, k int) int {
+    if k == 1 {
+        return 0
+    }
+    if k &gt; 1&lt;&lt;(n-2) {
+        return 1 ^ kthGrammar(n-1, k-1&lt;&lt;(n-2))
+    }
+    return kthGrammar(n-1, k)
+}
+</code></pre>
+<p>输出结果如下：</p>
+<pre><code class="language-bash">第1行, 第 1个数, 值为0
+
+第2行, 第 1个数, 值为0
+第2行, 第 2个数, 值为1
+
+第3行, 第 1个数, 值为0
+第3行, 第 2个数, 值为1
+第3行, 第 3个数, 值为1
+第3行, 第 4个数, 值为0
+
+第4行, 第 1个数, 值为0
+第4行, 第 2个数, 值为1
+第4行, 第 3个数, 值为1
+第4行, 第 4个数, 值为0
+第4行, 第 5个数, 值为1
+第4行, 第 6个数, 值为0
+第4行, 第 7个数, 值为0
+第4行, 第 8个数, 值为1
+
+第5行, 第 1个数, 值为0
+第5行, 第 2个数, 值为1
+第5行, 第 3个数, 值为1
+第5行, 第 4个数, 值为0
+第5行, 第 5个数, 值为1
+第5行, 第 6个数, 值为0
+第5行, 第 7个数, 值为0
+第5行, 第 8个数, 值为1
+第5行, 第 9个数, 值为1
+第5行, 第10个数, 值为0
+第5行, 第11个数, 值为0
+第5行, 第12个数, 值为1
+第5行, 第13个数, 值为0
+第5行, 第14个数, 值为1
+第5行, 第15个数, 值为1
+第5行, 第16个数, 值为0
+</code></pre>
+<h1>四、逐行代码断点</h1>
+<h2>n=1, k=1</h2>
+<p>直接 return 0 返回，如下：</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1666240782-IdevSh-image.png" /></p>
+<p>程序日志输出如下：<code>第1行, 第 1个数, 值为0</code>。</p>
+<h2>n=2, k=1</h2>
+<p>直接 return 0 返回，如下：</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1666240793-LtSKcO-image.png" /></p>
+<p>最终返回0。</p>
+<p>程序日志输出如下：<code>第2行, 第 1个数, 值为0</code>。</p>
+<h2>n=2, k=2</h2>
+<p>【代码第25行】1&lt;&lt;(n-2) 即为 math.pow(2, (n-2)) 之意，此表达式结果为1，说明第n=2行，的上一行（即第n-1行），有1个元素</p>
+<p>【代码第25行】而 k &gt; 1 成立，即 k 是第 n 行的后半部分，则进入【第30行】，断点如下：</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1666240806-KhjTyY-image.png" /></p>
+<p>【代码第30行】用 n - 1 行，的第k个元素，的取反即可。递归调用 KthGrammar(1, 1), 在其中用 <code>return 0</code> 终止递归条件。断点如下：</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1666240817-IDNbTp-image.png" /></p>
+<p>【代码第30行】递归结束后的结果0，需与【代码第30行】的 1 做异或运算，得到 1 ^ 0 = 1, 最终结果为1，结束。</p>
+<p>程序日志输出如下：<code>第2行, 第 2个数, 值为1</code>。</p>
+<h2>n = 3, k = 1</h2>
+<p>用 return 0 直接返回，断点如下：</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1666240830-QDlotI-image.png" /></p>
+<p>程序日志输出如下：<code>第3行, 第 1个数, 值为0</code>。</p>
+<h2>n = 3, k = 2</h2>
+<p>【代码第25行】第n=3行，的上一行（即第 n=2行），共 math.pow(2, 3-2) = 2 个数字，而 k 在第n行的前半部分，因此【代码第25行】的判断不成立，未进入【代码第30行】，而进入【代码第32行】</p>
+<p>【代码第32行】递归调用 kthGrammar(2, 2)，断点如下：</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1666240841-VhaAYI-image.png" /></p>
+<p>【递归到代码第25行】kthGrammar(2, 2) 即意为求第n=2行的第k=2个数字，因为第2行的上一行（即第1行）有1个数字，而第k=2个数字大于1，因此【代码第25行】的判断成立，进入【代码第30行】</p>
+<p>【代码第30行】n-1即为2-1即为1，k-math.pow(2,(n-2))即为2-math.pow(2,0)即为2-1即为1，即调用1 ^ KthGrammar(1,1)，即意为第n-1行（第1行）的第1个数字的取反。</p>
+<p>【代码第23行】递归调用 KthGrammar(1,1) ，通过 return 0，终结递归条件。递归结束后，向上层函数（即KthGrammar(2,2)）返回。</p>
+<p>【代码第30行】n = 2, k = 2 时，1 ^ KthGrammar(1,1) 得到 1 ^ 0 = 1。递归结束后，向上层函数（即KthGrammar(3,2)）返回。</p>
+<p>【代码第32行】n = 3, k = 2 时，直接返回 KthGrammar(2, 2) 的结果 1，因为再没有更上层的递归函数了，因此最终返回 1，结束。</p>
+<p>程序日志输出如下：<code>第3行, 第 2个数, 值为1</code>。</p>
+<p><a href="https://blog.csdn.net/jiaoyangwm/article/details/127423340?csdn_share_tail=%7B%22type%22%3A%22blog%22%2C%22rType%22%3A%22article%22%2C%22rId%22%3A%22127423340%22%2C%22source%22%3A%22jiaoyangwm%22%7D">题解笔记</a></p>
+</div>
+</div>
+</body>
+</html>

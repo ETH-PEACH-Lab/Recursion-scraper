@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reverse Nodes in k-Group – Solutions</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <span class="cur">Reverse Nodes in k-Group</span></nav>
+<div class="wrap">
+<div class="page-title">25. Reverse Nodes in k-Group</div>
+<div class="page-sub">
+  <span class="badge b-hard">Hard</span> <span class="badge b-tag">Linked List</span> <span class="badge b-tag">Recursion</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/reverse-nodes-in-k-group/" target="_blank" style="font-size:.85em">↗ LeetCode</a>
+  &nbsp;·&nbsp;<a href="tutorial_reverse-nodes-in-k-group.html" style="font-size:.85em">📖 Tutorial</a>
+</div>
+<div style="display:flex;gap:20px;flex-wrap:wrap;font-size:.88em;
+                             background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+                             padding:12px 16px;margin-bottom:20px">
+  <span>Total: <b>49</b></span>
+  <span style="color:#1a7f37">✅ Kept: <b>22</b></span>
+  <span style="color:#cf222e">🚫 Removed: <b>27</b></span>
+</div>
+<details open>
+  <summary style="color:#1a7f37;border-left:3px solid #1a7f37;padding-left:10px;margin:24px 0 12px;cursor:pointer;list-style:none;font-weight:600;font-size:1.05em">
+    ✅ Kept Solutions <span style="font-weight:400;font-size:.9em;margin-left:6px">22</span>
+  </summary>
+  <div class="card sol-card-wrap" data-votes="5" data-video="1" data-image="0" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_3865908.html" target="_blank"><div class="card-title">BEST Recursive and iterative approach with VIDEO explanation || Beats 100% !!</div></a>
+    <div class="meta">
+      <span>👤 prathams29</span>
+      <span>👍 5</span>
+      <span class="badge b-video">📹</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://img.youtube.com/vi/fi2vh0nQLi0/default.jpg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="3" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_2430932.html" target="_blank"><div class="card-title">✅C++ Accepted || Best approach with steps explanation || Easy to understand</div></a>
+    <div class="meta">
+      <span>👤 Pranjal9424</span>
+      <span>👍 3</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/555638ce-0be2-4a18-aaca-761ec92a0daa_1660591800.5138576.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="7" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_3431696.html" target="_blank"><div class="card-title">EASY TO UNDERSTAND RECURSIVE APPROACH | C++</div></a>
+    <div class="meta">
+      <span>👤 Krishnaroy7</span>
+      <span>👍 7</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/9deb0470-dff9-4582-96f2-0bb7ff79689a_1681834820.5916502.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="5" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_4844525.html" target="_blank"><div class="card-title">Best C++ ✅✅ Solution || Optimized Approach 🔥🔥 with Explanation 💙💙 || Striver Solution ⚡⚡</div></a>
+    <div class="meta">
+      <span>👤 Vishal_Singh7</span>
+      <span>👍 5</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/31705453-d59e-4e43-910a-46087a4be998_1709924284.5475707.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/e33af51f-7ee6-4cbb-bab2-d1e30a830a6c_1709924350.670217.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/d1376bc5-9418-4b7f-8979-dd619ab2a01e_1709924357.8959017.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/8f757d67-4ec7-4eee-933e-6ab93956d60a_1709924601.5630517.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/d43f6bef-fcf1-47cf-8c1e-45f3ebb7b259_1709924590.9423769.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/53531780-e79c-4e9f-aaad-ec2a0f696edd_1709924611.2043374.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="1" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_2222867.html" target="_blank"><div class="card-title">C++ O(n) with visual explanation</div></a>
+    <div class="meta">
+      <span>👤 bhumika1998</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/9aa0b453-917e-43cf-ab0a-977f927638b5_1656677052.5054197.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/dd8c7f67-3f16-4fe9-882c-976e858cedd0_1656677072.5679505.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/779beaa5-5a90-46f3-adeb-169d79f14ed2_1656677097.6672812.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="1" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_4539115.html" target="_blank"><div class="card-title">C++ Recursive Solution With Dry Run</div></a>
+    <div class="meta">
+      <span>👤 Anubhav_03</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/cf3d5b3f-9324-4b43-9e7d-049485e1a356_1704867962.078633.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/d2d6af83-09f3-4d14-8249-5bcb250f938e_1704867957.295729.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_5831548.html" target="_blank"><div class="card-title">Beats 100% || Intuitive and Easy Solution || Explained with visuals || Best Solution|Recursion</div></a>
+    <div class="meta">
+      <span>👤 rai_0912_kartik</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/05c0ddba-e1e3-49fe-8fb5-33716f9a0d4e_1727256926.052292.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/c2266c79-8521-4753-ac5d-9a1dfec103e7_1727257187.531197.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_4800177.html" target="_blank"><div class="card-title">swap with additional function, remember before and after nodes, break when kth node none</div></a>
+    <div class="meta">
+      <span>👤 abhiHegde28</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/fc43fcef-ec87-4db8-bd71-5ec7fe2a345f_1709213224.2820077.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/44380cf8-719c-4b73-be30-9e7cdaaf6798_1709213229.0338316.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/eb4b8891-c249-41ce-b922-ddc064172b8e_1709213247.974022.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/1af61f67-967e-4d05-b6ae-a4f5542c9e33_1709213255.752653.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/e723262e-2927-48c3-9f94-f369274b1105_1709213268.6269631.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/729873dc-36e0-44a5-82e0-6477aceff480_1709213274.8657134.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/f09ae766-03d1-4275-a3b1-681d40ec7328_1709213280.0138583.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/ad41bc4b-42de-4555-a388-c43f95c74c0e_1709213284.8862789.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_4794444.html" target="_blank"><div class="card-title">✅🟢100% time & 99.83% space || Recursive approach || Very Easy to Undst.</div></a>
+    <div class="meta">
+      <span>👤 e_sumit</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/239464fb-f50c-46fc-9b91-67de781919eb_1709118755.7178133.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="1" data-image="0" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_4703643.html" target="_blank"><div class="card-title">very easy 100% , love babbar solution with little change</div></a>
+    <div class="meta">
+      <span>👤 pabanbisoi</span>
+      <span>👍 0</span>
+      <span class="badge b-video">📹</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://img.youtube.com/vi/fi2vh0nQLi0/default.jpg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_4671828.html" target="_blank"><div class="card-title">📚Reverse Nodes In K Group💡💡Logic Explained in much detail, easiest for complete beginners💡💡</div></a>
+    <div class="meta">
+      <span>👤 utsav_dev_23</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/2ea6df5f-e1d8-4e57-a39d-97548283260d_1706975619.8546038.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/942d8096-f0cf-4c3b-b1ef-023b9b3b50ba_1706975625.5562074.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/c193dca8-5f14-486c-96b2-9b2261a28039_1706975629.34488.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_4663037.html" target="_blank"><div class="card-title">Python | Recursion with comments and diagram</div></a>
+    <div class="meta">
+      <span>👤 xaviercc</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/9b4aa2ff-5205-46ea-ad71-77e28190e41c_1706838928.7761588.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="1" data-image="0" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_3790582.html" target="_blank"><div class="card-title">C++ iterative and recursive solution</div></a>
+    <div class="meta">
+      <span>👤 yashpratapsingh11</span>
+      <span>👍 0</span>
+      <span class="badge b-video">📹</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://img.youtube.com/vi/KBcDO24Tj3Y/default.jpg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="1" data-image="0" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_3726925.html" target="_blank"><div class="card-title">✅2 Approaches || Easy || C++ || Iterative & Recursive || 97% Beats || Time & Space Complexity</div></a>
+    <div class="meta">
+      <span>👤 d1v_</span>
+      <span>👍 0</span>
+      <span class="badge b-video">📹</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://img.youtube.com/vi/Of0HPkk3JgI/default.jpg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="1" data-image="0" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_3162771.html" target="_blank"><div class="card-title">✅Python Simple Solution✅ Efficient Solution</div></a>
+    <div class="meta">
+      <span>👤 GeekErrra</span>
+      <span>👍 0</span>
+      <span class="badge b-video">📹</span>
+    </div>
+    
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_3116939.html" target="_blank"><div class="card-title">C++: recursive sol</div></a>
+    <div class="meta">
+      <span>👤 jimmy3769tw</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/uploads/2020/10/03/swap_ex1.jpg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_3025131.html" target="_blank"><div class="card-title">0ms - Beats 100% | Intuitive Solution & Explanation | Java | Recursive - O(n)</div></a>
+    <div class="meta">
+      <span>👤 rakeshks7</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/5bb54765-2099-45ba-a6fb-e2bbc59e2f80_1673271220.1215131.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="1" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_1737546.html" target="_blank"><div class="card-title">Python3 O(n) Time Recursive Solution (Recursion depth = k)</div></a>
+    <div class="meta">
+      <span>👤 scic0</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/634bce97-fb3f-4fea-aacd-e86481c96116_1643745141.5279877.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="1" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_1704875.html" target="_blank"><div class="card-title">C++ Recursive solution with explanation(img) || O(n)</div></a>
+    <div class="meta">
+      <span>👤 aum24042001</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/dba0be98-5a96-45dc-8140-cc6e2ffed9d0_1642688422.1996264.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="1" data-video="1" data-image="0" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_1001188.html" target="_blank"><div class="card-title">Recursive c++ approach with code as well as video explanation.</div></a>
+    <div class="meta">
+      <span>👤 astha77</span>
+      <span>👍 1</span>
+      <span class="badge b-video">📹</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://img.youtube.com/vi/hNCF_m_7jQo/default.jpg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="1" data-image="0" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_2319128.html" target="_blank"><div class="card-title">easy c++ recursion solution | based on love babbar video |</div></a>
+    <div class="meta">
+      <span>👤 adnan_ali_777</span>
+      <span>👍 0</span>
+      <span class="badge b-video">📹</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://img.youtube.com/vi/fi2vh0nQLi0/default.jpg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="1" data-image="0" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_2094193.html" target="_blank"><div class="card-title">✅[Java] 0ms, 100% faster || Iterative and Recursive || Explanation</div></a>
+    <div class="meta">
+      <span>👤 2000shivam659</span>
+      <span>👍 0</span>
+      <span class="badge b-video">📹</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://img.youtube.com/vi/Of0HPkk3JgI/default.jpg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div>
+</details>
+<details>
+  <summary style="color:#cf222e;border-left:3px solid #cf222e;padding-left:10px;margin:24px 0 12px;cursor:pointer;list-style:none;font-weight:600;font-size:1.05em">
+    🚫 Filtered Out <span style="font-weight:400;font-size:.9em;margin-left:6px">27</span>
+  </summary>
+  <div class="card sol-card-wrap" data-votes="3" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_6076308.html" target="_blank"><div class="card-title">✅0ms🔥 Beats 100% in Runtime🔥🔥, Easiest using Recursion✨,Subdividing Problem✨,Clear Explanation✨</div></a>
+    <div class="meta">
+      <span>👤 ching_Xiang</span>
+      <span>👍 3</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/3c07d420-b733-4760-86a2-0632e9c3a5c3_1732383385.3212132.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/c44b12c5-7c83-46f4-b6fd-293a133b9221_1732385905.7725992.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="16" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_5507611.html" target="_blank"><div class="card-title">✅💯🔥Simple Code🚀📌|| 🔥✔️Easy to understand🎯 || 🎓🧠Beats 100%🔥|| Beginner friendly💀💯</div></a>
+    <div class="meta">
+      <span>👤 atishayj4in</span>
+      <span>👍 16</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/fe5117c9-43b1-4ec8-8979-20c4c7f78d98_1721303757.4674635.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="47" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_5625213.html" target="_blank"><div class="card-title">2 Easy and Simple C++ Approaches | Beginner Friendly ✅ | Detailed Explanation 🔥🔥🔥</div></a>
+    <div class="meta">
+      <span>👤 AyushBansalCodes</span>
+      <span>👍 47</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/48b755ae-c41b-474d-966e-aa5674e41ff4_1720943081.9620614.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="2" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_3718811.html" target="_blank"><div class="card-title">❇ reverse-nodes-in-k-group👌 🏆O(N)❤️ Javascript❤️ Runtime👀88.6%🕕 Meaningful Vars✍️ 🔴❇ ✅ 👉 💪🙏</div></a>
+    <div class="meta">
+      <span>👤 anurag-sindhu</span>
+      <span>👍 2</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/a778809c-c8d2-453b-8ea8-50d63c162ebc_1688495095.9079423.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="2" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_5254210.html" target="_blank"><div class="card-title">easy Solution | No Explanation needed</div></a>
+    <div class="meta">
+      <span>👤 Sachinonly__</span>
+      <span>👍 2</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/1771b754-8b1a-4959-8e98-3f25f57998e2_1717437523.3577101.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="24" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_3521559.html" target="_blank"><div class="card-title">[Python3] Iterative + recursive solutions</div></a>
+    <div class="meta">
+      <span>👤 yourick</span>
+      <span>👍 24</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/23207cea-9dec-4462-acd9-b5e9732060c4_1691024788.7471995.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/b4a03976-433e-4ee0-b939-8d792674dcea_1691021437.7787385.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="16" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_6073691.html" target="_blank"><div class="card-title">✅ 🔥 0 ms Runtime Beats 100% User🔥||  Code Idea ✅ ||  Algorithm & Solving Step  ✅ ||</div></a>
+    <div class="meta">
+      <span>👤 DishAnK_22</span>
+      <span>👍 16</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/66ada83d-3dd2-44af-a5ea-3861e19a262a_1732333889.087342.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/8b445614-f7fb-416d-ba84-b755952cd8d6_1732334046.3175242.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="4" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_3387398.html" target="_blank"><div class="card-title">✅[Python] Iterative, Simple and Clean, beats 98.09%✅</div></a>
+    <div class="meta">
+      <span>👤 _Tanmay</span>
+      <span>👍 4</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/b8e25620-d320-420a-ae09-94c7453bd033_1678818986.7001078.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="2" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_4746798.html" target="_blank"><div class="card-title">Easy Simple fast C // C++ // Java Solution</div></a>
+    <div class="meta">
+      <span>👤 Edwards310</span>
+      <span>👍 2</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/1ac48ff0-c334-450b-a990-c8b715700a38_1708262615.8739815.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_5630630.html" target="_blank"><div class="card-title">|| ✅✅🥇Beats 90.33%🥇✅✅ ||</div></a>
+    <div class="meta">
+      <span>👤 Coding_With_Stars</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/5890dd6c-2679-408c-903d-166d05b5bdc9_1723547270.655732.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_5492935.html" target="_blank"><div class="card-title">Recursive Approach in C to Reverse Linked List in Groups of K Nodes</div></a>
+    <div class="meta">
+      <span>👤 hijazih24</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/9d052dc0-e8f8-43c8-a688-58664f9bc69a_1721242178.2564723.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/c075d588-977e-4af5-9c67-766fd05b59c2_1721242772.1389425.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_5352782.html" target="_blank"><div class="card-title">Divide and conquer | C++</div></a>
+    <div class="meta">
+      <span>👤 omsl9850</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/075f31ef-5fd3-4a73-ae80-051290fcd004_1719071583.3599677.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_5292967.html" target="_blank"><div class="card-title">Best and Easy Approach ✅ || Simple to Understand 🎯</div></a>
+    <div class="meta">
+      <span>👤 rckrockerz</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/0669a34b-4fbf-451f-a8ba-069539c39539_1716463256.564444.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_5129530.html" target="_blank"><div class="card-title">Reverse Nodes in k-Group 🚦 Optimal Implementation in Swift</div></a>
+    <div class="meta">
+      <span>👤 lebon</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/b6fd47b5-9158-4ad0-8fd6-649866faea58_1715161890.9628096.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_4959516.html" target="_blank"><div class="card-title">JAVA 🚀 | Easy Approach ✅| Beats 100.00% 📈 | 0ms⌛ | Reverse Nodes In K Group</div></a>
+    <div class="meta">
+      <span>👤 flexncode</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/974fc332-e443-46ea-ae82-67f1617d739a_1712000517.0799923.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/e6835ceb-a1b3-4e85-a894-3b78e31e4128_1712000661.9278529.gif" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_4809106.html" target="_blank"><div class="card-title">C++ || Easy to understand || Recursive Approach</div></a>
+    <div class="meta">
+      <span>👤 dp_187</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/b09e79b0-2fb9-4ef8-82fc-3f6731ba868f_1709362044.3758278.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_4478191.html" target="_blank"><div class="card-title">94.31% Faster, Easy Recursive Soln</div></a>
+    <div class="meta">
+      <span>👤 harsh007kumar</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/4a5e77e9-f7ba-41ab-b0a4-92875c2bf0f8_1703934604.6806824.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_4396198.html" target="_blank"><div class="card-title">99% SPACETIME</div></a>
+    <div class="meta">
+      <span>👤 XMD5A</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/4b7c5d77-2973-4984-93c2-32e9d5ceec86_1702397545.9015296.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_4013666.html" target="_blank"><div class="card-title">JAVA ✅ || BEATS 💯%   0️⃣ MS  || SHORT AND EASY || TWO POINTERS AND RECURSION</div></a>
+    <div class="meta">
+      <span>👤 ashishxsoni</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/8c6984d4-7f47-4e9b-b7a3-3c576f1ce778_1694081911.1170442.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_3955243.html" target="_blank"><div class="card-title">Beats 98% of python solution|| Easy explaination...</div></a>
+    <div class="meta">
+      <span>👤 sbjunaid14</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/1764d69a-54a2-4db5-b2eb-a09cee8ab828_1692895995.461917.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_3812339.html" target="_blank"><div class="card-title">Efficient Solution Very Less Lines of Code 🔥🔥🔥</div></a>
+    <div class="meta">
+      <span>👤 crytondre</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/eee0c4eb-53a6-466d-b458-9f1c07a6306b_1690256708.7483644.webp" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_3204617.html" target="_blank"><div class="card-title">BEATS 100% || EASY APPROACH || EXPLAINED ||</div></a>
+    <div class="meta">
+      <span>👤 B_I_T</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/5542c82f-d3fc-4c31-a574-e271a79a0b18_1720957741.4972656.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_3195242.html" target="_blank"><div class="card-title">🐍 python, easy, O(N) time, O(1) space ||better than 99.9%}||how you solve linked list in interview</div></a>
+    <div class="meta">
+      <span>👤 smvthirteen</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/2a61b6cc-4d26-4733-b121-f66896a317e2_1676593997.504345.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_3025860.html" target="_blank"><div class="card-title">✔✔Java 0ms beats 100% with comments</div></a>
+    <div class="meta">
+      <span>👤 vvish_all</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/c16cb6d9-415b-4d81-8bd7-165cc9a8336d_1673281384.8281898.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_3025858.html" target="_blank"><div class="card-title">✔✔Java 0ms beats 100% with comments</div></a>
+    <div class="meta">
+      <span>👤 vvish_all</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/c16cb6d9-415b-4d81-8bd7-165cc9a8336d_1673281384.8281898.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_2476179.html" target="_blank"><div class="card-title">Python Approach - Easy and Optimal</div></a>
+    <div class="meta">
+      <span>👤 deleted_user</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/f6354065-bc50-4b36-8f00-cc29fb23dadb_1661398723.9567657.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_2147955.html" target="_blank"><div class="card-title">98.75% Fast solution in python</div></a>
+    <div class="meta">
+      <span>👤 Abhi-Jit</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/9493e77b-f272-4e4b-bc8b-a084c11230b0_1655138458.144357.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div>
+</details>
+</div>
+</body>
+</html>

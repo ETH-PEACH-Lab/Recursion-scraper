@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>英语数词  先算数最后加单位 – Integer to English Words</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_integer-to-english-words.html">Integer to English Words / 整数转换英文表示</a> <span class="sep">›</span> <span class="cur">英语数词  先算数最后加单位</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">英语数词  先算数最后加单位</div>
+  <div class="meta">
+    <span>👤 te-yue-ai-xin-da-shi</span>
+    <span>👍 0</span>
+    <span>2024-06-29</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/integer-to-english-words/solution/xian-suan-shu-zui-hou-jia-dan-wei-by-te-3n7sr/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <blockquote>
+<p>Problem: <a href="https://leetcode.cn/problems/integer-to-english-words/description/">273. 整数转换英文表示</a></p>
+</blockquote>
+<p>[TOC]</p>
+<h1>思路</h1>
+<blockquote>
+<p>核心思路就是“先算数，最后加单位”，跟我们上学老师教的方法是一样的</p>
+</blockquote>
+<pre><code>1、准备基础数据：
+
+定义基本的单词表示，包括个位数（如 "One" 到 "Nine"）、十几（如 "Ten" 到 "Nineteen"）、
+整十数（如 "Twenty" 到 "Ninety"）和大数单位（如 "Hundred", "Thousand", "Million", "Billion"）。
+处理特殊情况：
+
+2、对于个位和十位数，直接利用预定义的数组进行转换。
+如果数字是0，直接返回 "Zero"。
+递归处理大数：
+
+3、对于百位及以上的数，通过递归将数字按三位一组分割，从最低位开始处理。
+在每个递归层次，处理当前三位数，并根据递归的深度添加相应的大数单位（如 "Thousand", "Million", "Billion" 等）。
+辅助函数处理十位数：
+
+4、单独定义一个辅助函数来处理十位数，特别是十几的特殊情况。
+对于20及以上的整十数，通过组合对应的整十和个位的单词来表示。
+结果字符串的清理：
+
+5、使用字符串操作方法链，移除多余的连接词（如 "And"）和不必要的字符（如 "-"），并确保单词之间的空格处理正确。
+整合并返回结果：
+
+递归处理所有三位组后，将结果整合成一个完整的英文单词字符串。
+返回最终的结果字符串。
+</code></pre>
+<h1>解题方法</h1>
+<blockquote></blockquote>
+<pre><code>base_bigs = ["Hundred", "Thousand", "Million", "Billion"]
+英语数词中只有：
+10^3 (千): Thousand
+10^6 (百万): Million
+10^9 (十亿): Billion
+10^12 (万亿): Trillion
+</code></pre>
+<blockquote></blockquote>
+<pre><code>因为英语中是每三位数就进行单位的改变，所有解决方法是：
+    三位数三位数的拆分，先解决掉当前的三位数，然后进行递归解决下一个三位数，
+    单位也需要随之前进（base_bigs）第一个三位是 Hundred、
+    第二个是 Thousand.....(小学知识不赘述了)
+</code></pre>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1719679505-JzIIUl-image.png" /></p>
+<h1>知识扩展</h1>
+<blockquote></blockquote>
+<pre><code>英文数词规律：
+    从右到左，每三位一组。
+    确定每组对应的数词单位。
+    逐组转化为英文。
+    从大到小组合成最终表达。
+</code></pre>
+<blockquote></blockquote>
+<pre><code>英文数词规律：
+    规律一：每三级（即每增加三个零）换一个单位，单位依次为 thousand, million, billion, trillion。
+    规律二：大数词通过组合基数词和单位构成，先大单位后小单位。
+    规律三：大数词内部按顺序表示千位、百位、十位和个位。
+        例如 123,456,789 是 “one hundred twenty-three million four hundred fifty-six thousand seven hundred eighty-nine”。
+    这样每个单位的增加都是三个数量级的增加，形成了一个规律性的模式。这就是英语中数词的基本规律。
+</code></pre>
+<h1>Code</h1>
+<p>```Python3 []<br />
+class Solution:<br />
+    def numberToWords(self, num: int) -&gt; str:<br />
+        # single digit<br />
+        base_singles = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"]<br />
+        # tens digit<br />
+        base_tens = ["Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"]<br />
+        # whole<br />
+        base_wholes = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"]<br />
+        # big<br />
+        base_bigs = ["Hundred", "Thousand", "Million", "Billion"]</p>
+<pre><code>    str_num = str(num)
+    def dfs(val, digit):
+        nonlocal base_singles, base_tens, base_wholes, base_bigs
+        # 先算数，最后加单位
+        res = ""
+        curr = int(val) if len(val) &lt; 3 else int(val[len(val) - 3:])
+        if curr &lt; 10:
+            # 分组之后，当前为个位
+            res = base_singles[curr]
+        elif curr &lt; 100:
+            # 分组之后，当前为十位
+            res = tens_digit_handle(curr)
+        else:
+            # 分组之后，当前组是百位
+            hundred = int(curr / 100)
+            surplus = curr - hundred * 100
+            ten = ""
+            if surplus &lt; 10:
+                ten = base_singles[surplus]
+            else:
+                ten = tens_digit_handle(surplus)
+            res = base_singles[hundred] + " Hundred And " + ten
+        # 最后是单位
+        if res != "":
+            res += "" if digit == 0 else " " + base_bigs[digit]
+        # 下一次递归
+        next = "" if len(val) - 3 &lt; 1 else val[:len(val) - 3]
+        if len(next) &gt; 0:
+            res = dfs(next, digit + 1) + (" " + res if res != "" else "")
+        return res
+    def tens_digit_handle(curr):
+        # 处理十位数
+        nonlocal base_singles, base_tens, base_wholes
+        sun = ""
+        if curr == 0:
+            pass
+        elif curr &lt; 20:
+            # 特殊十位
+            ten = curr - 10
+            sun = base_tens[ten]
+        else:
+            # 组合十位
+            ten = int(curr / 10)
+            single = curr - ten * 10
+            sun = base_wholes[ten] + " - " + base_singles[single]
+        return sun
+
+    sun = ""
+    if num == 0:
+        # 零特殊处理
+        sun = "Zero"
+    elif len(str_num) == 1:
+        # 个位
+        sun = base_singles[num]
+    elif len(str_num) == 2:
+        # 十位
+        sun = tens_digit_handle(num)
+    else:
+        # 大位数，进行递归
+        sun = dfs(str_num, 0)
+
+    # 多个 replace 方法链式调用时，可能会遇到意外的结果
+    # sun = (sun.replace(" And", "").replace(" -", "").replace("  ", " "))
+    # 移除 And 和 -
+    sun = str.join("",str.join("", sun.split(' And')).split(" -"))
+    # 移除前后空格
+    sun = sun.strip()
+    # 移除连续空格
+    sun = str.join(" ", list(filter(lambda a: a != "", sun.split(' '))))
+    return sun
+</code></pre>
+<p>```</p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lisp 语法解析 [语法分析：递归下降子程序] – Parse Lisp Expression</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_parse-lisp-expression.html">Parse Lisp Expression / Lisp 语法解析</a> <span class="sep">›</span> <span class="cur">Lisp 语法解析 [语法分析：递归下降子程序]</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">Lisp 语法解析 [语法分析：递归下降子程序]</div>
+  <div class="meta">
+    <span>👤 blueriver-7</span>
+    <span>👍 6</span>
+    <span>2022-07-06</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/parse-lisp-expression/solution/by-blueriver-7-c0s0/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p>这个方法比较繁琐，实际可以精简很多。</p>
+<p>按照题设，给出如下的语法：</p>
+<pre><code class="language-antlr4">init    : expr    // 测试样例不全是 let 开始
+        ;
+assign  : &quot;let&quot; (id expr)+ expr
+        ;
+addExpr : &quot;add&quot; expr expr
+        ;
+mulExpr : &quot;mult&quot; expr expr
+        ;
+base    : addExpr
+        | mulExpr
+        | assign
+        ;
+expr    : &quot;(&quot; base &quot;)&quot;
+        | num
+        | id
+        ;
+</code></pre>
+<p>按照语法分析的方法，这里建立一个符号表。</p>
+<p>这里建立的是命令式符号表。</p>
+<ul>
+<li>使用一个 <code>unordered_map&lt;std::string, std::int32_t&gt; m_memory</code> 保存当前环境。</li>
+<li>使用一个 <code>std::vector&lt;std::unordered_map&lt;std::string, std::int32_t&gt;&gt; m_chg_log{{}};</code> 保存回溯信息。</li>
+</ul>
+<blockquote>
+<p>回溯信息用于恢复环境。</p>
+</blockquote>
+<p>环境的功能就是通过标识符名称获得标识符对应的值，也就是通过字符串 <code>x</code> 获得 <code>x</code> 的值。这里重载了运算符 <code>[]</code> 用于实现 <code>symtbl["x"]</code> 这样的搜索。</p>
+<p><code>insert()</code> 功能是</p>
+<ul>
+<li>如果发现冲突，先检查是否已经有了回溯信息。<br />
+        - 如果有，那么视为赋值运算，只要修改环境。<br />
+        - 如果没有，视为新定义，覆盖原来定义并更新回溯信息。</li>
+<li>如果没有冲突，插入环境中。</li>
+</ul>
+<pre><code class="language-cpp">class SymbolTable {
+private:
+    // 环境信息
+    unordered_map&lt;std::string, std::int32_t&gt; m_memory;
+
+    // 回溯信息
+    std::vector&lt;std::unordered_map&lt;std::string, std::int32_t&gt;&gt; m_chg_log{{}};
+public:
+    void insert(std::string _n, std::int32_t _v) {
+        auto x = m_memory.find(_n);
+        if (x != m_memory.end()) {
+            auto y = m_chg_log.back().find(_n);
+            if (y == m_chg_log.back().end())
+                m_chg_log.back().emplace(x-&gt;first, x-&gt;second);
+            x-&gt;second = _v;
+        } else {
+            m_memory.emplace(_n, _v);
+        }
+    }
+
+    // 用于增加回溯信息。回溯信息保存使用了栈。
+    void enterLet() {
+        m_chg_log.push_back({});
+    }
+
+    // 用于恢复环境，使用最新的回溯信息恢复环境。
+    // 因为题目特殊性，这里没有删除新定义的信息。
+    void leaveLet() {
+        for (auto &amp;x: m_chg_log.back()) {
+            m_memory[x.first] = x.second;
+        }
+        m_chg_log.pop_back();
+    }
+
+    std::int32_t operator [] (std::string &amp;s) {
+        return m_memory[s];
+    }
+
+    std::int32_t operator [] (std::string &amp;&amp;s) {
+        return m_memory[s];
+    }
+};
+</code></pre>
+<p>接下来是语法分析的递归下降子程序法：</p>
+<p><img alt="递归下降子程序示意图" src="https://pic.leetcode.cn/1657077237-wHWfVE-Untitled%20Diagram.drawio.svg" /></p>
+<p>实现代码：</p>
+<pre><code class="language-cpp">
+class Parser {
+private:
+    SymbolTable symtbl;
+    std::string code;
+    std::size_t sptr;
+
+    bool skip(std::string &amp;&amp;v) {
+        if (code.substr(sptr, v.size()) == v) {
+            sptr += v.size();
+            return true;
+        }
+        return false;
+    }
+
+    void WS() {
+        if (std::isblank(code[sptr])) {
+            ++sptr;
+        }
+    }
+
+    std::string read_id() {
+        std::string res;
+        while (std::isalnum(code[sptr])) {
+            res += code[sptr];
+            ++sptr;
+        }
+        return res;
+    }
+
+    std::int32_t read_num() {
+        std::string res;
+        std::int32_t sign = 1;
+        if (code[sptr] == '-') {
+            sign = -sign;
+            ++sptr;
+        }
+        while (std::isdigit(code[sptr])) {
+            res += code[sptr];
+            ++sptr;
+        }
+        return sign * std::stoi(res);
+    }
+
+public:
+    Parser(std::string &amp;&amp;s): code(s), sptr(0) { }
+
+    std::int32_t init() {
+        return expr();
+    }
+
+    std::int32_t assign() {
+        auto &amp;&amp;x = read_id();
+        WS();
+        auto &amp;&amp;res = expr();
+        WS();
+        symtbl.insert(x, res);
+        while (true) {
+            if (std::isalpha(code[sptr])) {
+                x = read_id();
+                WS();
+                if (skip(&quot;)&quot;)) {
+                    return symtbl[x];
+                }
+                res = expr();
+                WS();
+                symtbl.insert(x, res);
+            } else {
+                return expr();
+            }
+        }
+        return 0;
+    }
+
+    std::int32_t expr() {
+        if (skip(&quot;(&quot;)) {
+            auto res = base();
+            skip(&quot;)&quot;);
+            return res;
+        } else {
+            if (std::isdigit(code[sptr]) || code[sptr] == '-') {
+                return read_num();
+            } else {
+                return symtbl[read_id()];
+            }
+        }
+        return 0;
+    }
+
+    std::int32_t base() {
+        if (skip(&quot;let&quot;)) {
+            WS();
+            symtbl.enterLet();
+            auto res = assign();
+            symtbl.leaveLet();
+            return res;
+        } else if (skip(&quot;add&quot;)) {
+            WS();
+            return add();
+        } else if (skip(&quot;mult&quot;)) {
+            WS();
+            return mult();
+        }
+        return 0;
+    }
+
+    std::int32_t add() {
+        auto x = expr();
+        WS();
+        auto y = expr();
+        return x + y;
+    }
+
+    std::int32_t mult() {
+        auto x = expr();
+        WS();
+        auto y = expr();
+        return x * y;
+    }
+};
+</code></pre>
+<p>最终，在 <code>Solution</code> 中调用：</p>
+<pre><code class="language-cpp">class Solution {
+public:
+    int evaluate(string expression) {
+        Parser parser(std::move(expression));
+        return parser.init();
+    }
+};
+</code></pre>
+</div>
+</div>
+</body>
+</html>

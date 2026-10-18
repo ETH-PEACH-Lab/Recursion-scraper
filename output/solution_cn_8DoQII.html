@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>反转链表「汇总级别整理 🔥🔥🔥」 – Reverse Nodes in k-Group</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_reverse-nodes-in-k-group.html">Reverse Nodes in k-Group / K 个一组翻转链表</a> <span class="sep">›</span> <span class="cur">反转链表「汇总级别整理 🔥🔥🔥」</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">反转链表「汇总级别整理 🔥🔥🔥」</div>
+  <div class="meta">
+    <span>👤 lfool</span>
+    <span>👍 6</span>
+    <span>2022-07-21</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/reverse-nodes-in-k-group/solution/by-lfool-0qzw/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1><a href="https://lfool.github.io/LFool-Notes/">如果想要查看作者更多文章，可以点击此处！！！🔥🔥🔥</a></h1>
+<h1><a href="https://lfool.github.io/LFool-Notes/algorithm/反转链表.html">为了本篇文章更好的观感，可以点击此处！！！</a></h1>
+<p><a href="https://leetcode.cn/problems/reverse-linked-list/">206. 反转链表</a></p>
+<p><a href="https://leetcode.cn/problems/reverse-linked-list-ii/">92. 反转链表 II</a></p>
+<p><a href="https://leetcode.cn/problems/reverse-nodes-in-k-group/">25. K 个一组翻转链表</a></p>
+<hr />
+<p>这是这是这是最最最基础的一个题目，也是出现频率最高的一个题目</p>
+<p>感觉每次都是稀里糊涂的把它写出来的，但是过很长时间重新去写的话，又会变得生疏很多</p>
+<p>今天就痛定思痛，把这一个类型的题目好好梳理一下</p>
+<h2>反转整个链表</h2>
+<p>首先我们先来看一看最最最基础的一种方式，反转整个链表，<strong>题目详情可见 <a href="https://leetcode.cn/problems/reverse-linked-list/">反转链表</a></strong>。这里将给出两种方式：「迭代」和「递归」</p>
+<p><img alt="1319221649222362otf6Yyrev1ex1.jpeg" src="https://pic.leetcode.cn/1649654206-hRjNvV-1319221649222362otf6Yyrev1ex1.jpeg" /></p>
+<h3>先介绍迭代吧吧吧吧！！！</h3>
+<p><img alt="1342401649223760Xdg.svg" src="https://pic.leetcode.cn/1649654231-UALoei-1342401649223760Xdg.svg" /></p>
+<pre><code class="language-java">// 迭代
+public ListNode reverse(ListNode head) {
+    ListNode prev, curr, next;
+    // 刚刚开始，只有 curr 是有具体值的
+    // prev &amp;&amp; next 均为空
+    prev = null;
+    curr = head;
+    next = null;
+
+    while (curr != null) {
+        // 首先我们需要记录下 curr.next 的值
+        // 原因：下一步 我们会改变 curr.next 的值，但是原来的 curr.next 的值在后面依然会用到，所以需要记录一下
+        next = curr.next;
+        // 改变 curr.next 的值指向 prev，反转指针方向
+        curr.next = prev;
+
+        // 前进：prev, curr 均向前进一步
+        prev = curr;
+        curr = next;
+    }
+    return prev;
+}
+</code></pre>
+<h3>下面介绍第二种递归方式</h3>
+<p>再递归之前，我们需要明确几个内容，即递归四件套，明确 「当前节点」「该做什么」「什么时候做」「注意返回值」</p>
+<ul>
+<li>当前节点：head 节点</li>
+<li>该做什么：具体看下图</li>
+<li>什么时候做：后序</li>
+<li>注意返回值：子链表完成反转后的头节点</li>
+</ul>
+<p><img alt="1.svg" src="https://pic.leetcode.cn/1652112212-IctheT-1.svg" /></p>
+<p>执行完 <code>reverse(head.next)</code> 后，结果如下</p>
+<p><img alt="2.svg" src="https://pic.leetcode.cn/1652112217-VydnzG-2.svg" /></p>
+<p>此时我们需要对当前节点，也就是 head 节点做的就是：<code>head.next.next = head; head.next = null;</code></p>
+<pre><code class="language-java">// 递归
+public ListNode reverse(ListNode head) {
+    // if (head == null) 说明链表为 null
+    // if (head.next == null) 说明此时的 head 节点为最后一个节点
+    if (head == null || head.next == null) return head;
+    // 遍历
+    ListNode last = reverse(head.next);
+    // 后序
+    head.next.next = head;
+    head.next = null;
+    // 注意：永远返回的是最底层递归的结果。递归中途，返回值是没有改变的
+    return last; 
+}
+</code></pre>
+<h2>反转链表前 N 个元素</h2>
+<h3>先介绍迭代吧吧吧吧！！！</h3>
+<p><img alt="11111.svg" src="https://pic.leetcode.cn/1649654265-UCxEwj-11111.svg" /></p>
+<p>反转前 4 个元素，有没有很相似的感觉，就是改变了结束的最后一个元素。对于反转整个链表，结束元素是最后一个 <code>null</code>；而对于反转前 <code>N</code> 个元素，结束元素是第 <code>N + 1</code> 个元素，即最初时应该 <code>prev = 5</code></p>
+<p>我们需要先进行一个遍历，得到第五个节点</p>
+<p>所以迭代的代码稍微修改一下就可以了</p>
+<pre><code class="language-java">// 迭代
+public ListNode reverseN(ListNode head, int n) {
+    // 获得右边界节点
+    ListNode rightNode = null;
+    ListNode p = head;
+    int count = 0;
+    while (p != null) {
+        count++;
+        if (count == n + 1) {
+            rightNode = p;
+            break;
+        }
+        p = p.next;
+    }
+    ListNode prev, curr, next;
+    prev = rightNode;
+    curr = head;
+    next = null;
+
+    // 此处也需要随之变化，到 rightNode 即停止
+    while (curr != rightNode) {
+        next = curr.next;
+        curr.next = prev;
+
+        prev = curr;
+        curr = next;
+    }
+    return prev;
+}
+</code></pre>
+<h3>下面介绍第二种递归方式</h3>
+<p>「反转链表前 <code>N</code> 个元素」和「反转整个链表」其实前面都一样，唯一不同的就是结束条件，也就是 base case 不一样</p>
+<p>对于「反转整个链表」，base case 为 <code>head.next = null</code>；而对于「反转链表前 N 个元素」，base case 为 <code>head.next = the Node of (N+1)th</code></p>
+<p>先直接看代码：</p>
+<pre><code class="language-java">private ListNode successor = null;
+public ListNode reverseN(ListNode head, int n) {
+    if (n == 1) {
+        // 记录 the Node of (N+1)th
+        // 因为第一个节点最后需要接上去
+        successor = head.next;
+        return head;
+    }
+    ListNode last = reverseN(head.next, n - 1);
+    head.next.next = head;
+    head.next = successor;
+    return last;
+}
+</code></pre>
+<h2>反转链表区间 [m, n] 的元素</h2>
+<p><strong>题目详情可见 <a href="https://leetcode.cn/problems/reverse-linked-list-ii/">反转链表 II</a></strong></p>
+<h3>先介绍迭代吧吧吧吧！！！</h3>
+<p><img alt="2323.svg" src="https://pic.leetcode.cn/1649654313-ElSBuy-2323.svg" /></p>
+<p>反转第 2-4 个元素，有没有更加熟悉的感觉，这种情况不仅改变了结束的最后一个元素，而且改变了起始的元素。对于反转整个链表，起始元素是<code>head</code>，结束元素是最后一个 <code>null</code>；而对于反转前 N 个元素，起始元素是 <code>head</code>，结束元素是第 <code>N + 1</code> 个元素；而对于反转区间 <code>[m, n]</code> 的元素，起始元素是第 <code>m - 1</code> 个元素，结束元素是第 <code>n + 1</code> 个元素</p>
+<p>所以迭代的代码稍微修改一下就可以了</p>
+<pre><code class="language-java">public ListNode reverseBetween(ListNode head, int m, int n) {
+    ListNode beginNode = null;
+    ListNode endNode = null;
+    ListNode p = head;
+    int count = 0;
+    while (p != null) {
+        count++;
+        if (count == m - 1) beginNode = p;
+        if (count == n + 1) {
+            endNode = p;
+            break;
+        }
+        p = p.next;
+    }
+    // 结束元素是第 n+1 个
+    ListNode prev = endNode;
+    // 结束元素是第 m-1 个
+    // 这里需要对一种特殊情况进行判断，即 m=1 的情况
+    // 当 m=1 时，beginNode = null
+    // 此时起始元素应该直接为 head
+    // 否则，起始元素应该为 beginNode.next
+    ListNode curr = beginNode == null ? head : beginNode.next;
+    ListNode next = null;
+    while (curr != endNode) {
+        next = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = next;
+    }
+    // 同理，如果 beginNode = null，「反转后的头节点」直接为 prev，和反转整个链表同理
+    // 否在，需要把 beginNode 和「反转后的头节点」连接起来
+    if (beginNode == null) return prev;
+    beginNode.next = prev;
+    return head;
+}
+</code></pre>
+<h3>下面介绍第二种递归方式</h3>
+<p>「反转链表区间 <code>[m, n]</code> 的元素」和「反转链表前 <code>N</code> 个元素」其实就是开始节点不一样而已</p>
+<p>先直接看代码：</p>
+<pre><code class="language-java">public ListNode reverseBetween(ListNode head, int m, int n) {
+    if (m == 1) {
+        // 直接调用 reverseN() 方法
+        return reverseN(head, n);
+    }
+    head.next = reverseBetween(head.head, m - 1, n - 1);
+    return head;
+}
+</code></pre>
+<h2>K 个一组翻转链表</h2>
+<p>今天 (2022-04-16 17:06:52) 更新一下本篇文章，新增一个内容，即：K 个一组翻转链表。<strong>题目详情可见 <a href="https://leetcode.cn/problems/reverse-nodes-in-k-group/">K 个一组翻转链表</a></strong></p>
+<p>思考了很久，本来想用迭代的方法去解决它，可是遇到了一个问题。处理第 <code>i</code> 组的时候无法获得第 <code>i + 1</code> 组的头节点，如图：</p>
+<p><img alt="1714321650100472iE8d4B1.svg" src="https://pic.leetcode.cn/1650458197-dXcWbB-1714321650100472iE8d4B1.svg" /></p>
+<p>设 <code>k = 2</code>，当我们处理节点 1、2 的时候，最后我们需要把 1 -&gt; 4，可是我们在处理 1、2 的时候暂时无法得到 3、4 处理完的头节点 4</p>
+<p>很容易可以想到，其实这很类似于二叉树的后续遍历。处理当前节点时，需要用到子问题的结果</p>
+<p>直接上代码：</p>
+<pre><code class="language-java">public ListNode reverseKGroup(ListNode head, int k) {
+    if (head == null) return null;
+    ListNode start = head, end = head;
+    for (int i = 0; i &lt; k; i++) {
+        // 不满 k 个，直接返回 head
+        if (end == null) return start;
+        end = end.next;
+    }
+    // 翻转 [start, end)
+    ListNode newHead = reverse(start, end);
+    // 翻转后，start 变成了尾节点
+    // 尾节点需要指向子问题的头节点
+    start.next = reverseKGroup(end, k);
+    // 返回当前问题的头节点
+    return newHead;
+}
+// 翻转 [start, end) 区间的链表
+private ListNode reverse(ListNode start, ListNode end) {
+    ListNode prev = null;
+    ListNode curr = start;
+    ListNode next = null;
+    while (curr != end) {
+        next = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = next;
+    }
+    return prev;
+}
+</code></pre>
+</div>
+</div>
+</body>
+</html>

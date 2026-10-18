@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>动画演示  21. 合并两个有序链表 – Merge Two Sorted Lists</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_merge-two-sorted-lists.html">Merge Two Sorted Lists / 合并两个有序链表</a> <span class="sep">›</span> <span class="cur">动画演示  21. 合并两个有序链表</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">动画演示  21. 合并两个有序链表</div>
+  <div class="meta">
+    <span>👤 wang_ni_ma</span>
+    <span>👍 22</span>
+    <span>2019-10-15</span>
+    <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞 Slide</span>
+    <a href="https://leetcode.cn/problems/merge-two-sorted-lists/solution/die-dai-he-di-gui-ban-ben-dong-tai-tu-xiang-jie-by/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>题解</h1>
+<p>按照题目的要求，最终要把L1和L2两个链表合并成一个链表，实例图如下<br />
+<img alt="静态图_1.jpg" src="https://pic.leetcode.cn/cff71b0d4b6b532e662d3dcd7bbbb1ca47ce06bdde5e472d709b086e9a2403e8-%E9%9D%99%E6%80%81%E5%9B%BE_1.jpg" /></p>
+<p>我们要注意一种特殊的情况，链表L1为空，或者链表L2也为空，甚至L1和L2都是空<br />
+在面试的时候，碰到这种题目，第一时间在函数的入口处把边界条件处理了。<br />
+<img alt="静态图_2.jpg" src="https://pic.leetcode.cn/de6faa08abc0fdd96eb55579d2341ca540613b03ec944685c521c0284e87bcf1-%E9%9D%99%E6%80%81%E5%9B%BE_2.jpg" /></p>
+<p>这里用个三目表达式就可以搞定了<br />
+```python []<br />
+class Solution(object):<br />
+    def mergeTwoLists(self, l1, l2):<br />
+        """<br />
+        :type l1: ListNode<br />
+        :type l2: ListNode<br />
+        :rtype: ListNode<br />
+        """<br />
+        if not (l1 and l2):<br />
+            return l1 if l1 else l2<br />
+    #...</p>
+<pre><code>```java []
+class Solution {
+    public ListNode mergeTwoLists(ListNode L1, ListNode L2) {
+        //如果L1，L2有一个为空，直接返回就可以了
+        //如果L1为空，返回L2(如果此时L2也是空就返回null)
+        //如果L2不为空就返回L1
+        if(L1==null || L2==null) {
+            return (L1==null)? L2 : L1;
+        }
+        //...
+    }
+</code></pre>
+<p>示例中的L1和L2两个链表一样长，但我们也要考虑到另外一种场景，L1和L2不一样长<br />
+<img alt="静态图_4.jpg" src="https://pic.leetcode.cn/f84d6a6ab92e7969032006f12773d6a20be236c9360a907bf6e30361e86be455-%E9%9D%99%E6%80%81%E5%9B%BE_4.jpg" /></p>
+<p>这种情况也好办，我们在合并链表的时候，就假设L1和L2是一样长的。等合并完之后，要不L1和L2都为空，要不就是L1和L2中的某一个不为空，我们只需要将合并完的链表尾巴指向那个不为空的L1或者L2就可以<br />
+<img alt="静态图_3.jpg" src="https://pic.leetcode.cn/b4e80daf360d2dd25944c6e0f3bc9321c28dc064ebda90b27339ec37a608105b-%E9%9D%99%E6%80%81%E5%9B%BE_3.jpg" /></p>
+<p>动态示例如下<br />
+<img alt="迭代版.gif" src="https://pic.leetcode.cn/64a575ae56a81ca7253edb32b2e96d8e5430404b8c933b7450b110e4068fde44-%E8%BF%AD%E4%BB%A3%E7%89%88.gif" /></p>
+<p>代码如下：<br />
+```java []<br />
+class Solution {<br />
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {<br />
+        ListNode p = new ListNode(-1);<br />
+        ListNode head = p;<br />
+        while(l1!=null &amp;&amp; l2!=null) {<br />
+            //如果l1的值小于l2的值，就将p.next指向l1<br />
+            //然后l1继续往后移动一位<br />
+            if(l1.val&lt;=l2.val) {<br />
+                p.next=l1;<br />
+                l1=l1.next;<br />
+            } else {<br />
+                p.next=l2;<br />
+                l2=l2.next; <br />
+            }<br />
+            p=p.next;<br />
+        }<br />
+        //如果l1和l2不一样长，等遍历完后，将p的next指向没遍历完的链表即可<br />
+        //比如l1长度是3，1-&gt;2-&gt;3，l2长度是5 1-&gt;2-&gt;3-&gt;8-&gt;9<br />
+        //等循环结束时，l1就指向8-&gt;9，只要将p.next指向8-&gt;9即可<br />
+        p.next = (l1==null? l2:l1);<br />
+        return head.next;<br />
+    }<br />
+}</p>
+<pre><code>```python []
+class Solution(object):
+    def mergeTwoLists(self, l1, l2):
+        &quot;&quot;&quot;
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        &quot;&quot;&quot;
+        #增加一个冗余的节点，方便后续处理
+        p = ListNode(-1)
+        head = p
+        #这里的意思是l1!=null &amp;&amp; l2!=null
+        while l1 and l2:
+            #如果l1的val&lt;=l2的val，就将p指向l1
+            #p.next,l1 = l1,l1.next这里是将两行合并了
+            #只是为了代码简洁，面试时如果没有十足把握尽量分多行写
+            if l1.val&lt;=l2.val:
+                p.next,l1 = l1,l1.next
+            #else时，将p指向l2节点
+            else:
+                p.next,l2 = l2,l2.next
+            p = p.next
+        #这里是一个三目表达式，类似
+        # l1==null? l2:l1
+        # 如果l1不为空就将p.next指向l2
+        # 如果l1为空就指向l2，如果l2也为空那就指向空
+        p.next = l1 if l1 else l2
+        return head.next
+</code></pre>
+<h1>递归版本</h1>
+<p>对于这道题，还有一个更骚气的递归解法，用递归的话，难度就陡增了，如果没有十足的把握尽量不要用递归，用上面那种迭代版本就可以了。<br />
+注意递归的三个条件：<br />
+终止条件：当<code>l1</code>或者<code>l2</code>中有一个为空时，就返回<br />
+函数内要做什么：如果<code>l1.val</code>小于<code>l2.val</code>，那么将<code>l1.next</code>指向 <strong>l1的后续节点和l2中较小的一个</strong><br />
+终止条件比较好理解，函数内做的事情就不那么好懂了，这段话一定要明白：l1的后续节点和l2中较小的一个。  <br />
+<code>l1.val&lt;=l2.val</code>后，我们就能确定一个较小的节点了，比如是<code>l1</code>。因为链表还没结束，我们要继续比较，这时候比较的是<code>l1.next</code>和<code>l2</code>。 <br />
+<code>l1.next</code>和<code>l2</code>是在下一层递归函数中处理的，再下一层函数中，也会确定一个较小的节点，我们将这个较小的节点记做<code>x</code>，然后上一层的<code>l1.next</code>就指向这个<code>x</code>节点。<br />
+后面就是不断的递归，最终把整个链表给串起来。 </p>
+<p>递归的动态图如下，注意下图紫色的箭头，这是当整个链表遍历完时，达到了递归终止条件后，每一层的递归函数就不断的返回。 <br />
+于是下一层的节点就跟当前层的节点<strong>串联</strong>起来了。 <br />
+<img alt="递归版.gif" src="https://pic.leetcode.cn/4ba94519f9dc7692d7ce4fad3a815f2f6c6df44995ee5a34e3c896d37efe51ab-%E9%80%92%E5%BD%92%E7%89%88.gif" /></p>
+<p>代码实现如下：<br />
+```python []<br />
+class Solution(object):<br />
+    def mergeTwoLists(self, l1, l2):<br />
+        """<br />
+        :type l1: ListNode<br />
+        :type l2: ListNode<br />
+        :rtype: ListNode<br />
+        """<br />
+        #递归的结束点就是L1或者L2为空就返回<br />
+        #如果L1为空就返回L2，L2为空返回L1<br />
+        if not (l1 and l2):<br />
+            return l1 if l1 else l2<br />
+        #L1的val&lt;=L2的val，那么继续递归<br />
+        #当前L1的next指向一个递归函数<br />
+        #意思是L1的下一个和L2哪个大，就作为当前L1的next<br />
+        if l1.val&lt;=l2.val:<br />
+            l1.next = self.mergeTwoLists(l1.next,l2)<br />
+            return l1<br />
+        else:<br />
+            l2.next = self.mergeTwoLists(l1,l2.next)<br />
+            return l2</p>
+<pre><code>```java []
+class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        //递归的结束条件，如果l1和l2中有一个为空就返回
+        if(l1==null || l2==null) {
+            return (l1==null)? l2:l1;
+        }
+        //如果l1的值&lt;=l2的值，就继续递归，比较l1.next的值和l2的值
+        //l1.next和l2比较完后，会产生一个更小的节点x，将x加到当前l1的后面
+        if (l1.val&lt;=l2.val) {
+            l1.next = mergeTwoLists(l1.next,l2);
+            return l1;
+        //如果l1的值&gt;l2的值，就继续递归，比较l1的值和l2.next的值
+        } else {
+            l2.next = mergeTwoLists(l1,l2.next);
+            return l2;
+        }
+    }
+}
+</code></pre>
+<p><strong>更多图解文章请关注 👉👉👉  <a href="https://oscimg.oschina.net/oscnet/95a30f75-0d64-4b3c-8747-db31496b46dd.jpg">【公众号】</a> 👈👈👈</strong>   </p>
+<p><strong>如果能再点个赞👍👍 就更感激啦💓💓</strong></p>
+<p>链表相关文章汇总   </p>
+<table>
+<thead>
+<tr>
+<th>题号</th>
+<th>题目</th>
+<th>题解</th>
+<th>难度等级</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>19</td>
+<td><a href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/">删除链表的倒数第N个节点</a></td>
+<td><a href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/solution/dong-hua-yan-shi-19-shan-chu-lian-biao-de-dao-shu-/">两种实现+图解</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td>21</td>
+<td><a href="https://leetcode.cn/problems/merge-two-sorted-lists/">合并两个有序链表</a></td>
+<td><a href="https://leetcode.cn/problems/merge-two-sorted-lists/solution/die-dai-he-di-gui-ban-ben-dong-tai-tu-xiang-jie-by/">两种实现+图解</a></td>
+<td>简单</td>
+</tr>
+<tr>
+<td>23</td>
+<td><a href="https://leetcode.cn/problems/merge-k-sorted-lists/">合并K个升序链表</a></td>
+<td><a href="https://leetcode.cn/problems/merge-k-sorted-lists/solution/duo-tu-yan-shi-23-he-bing-kge-pai-xu-lian-biao-by-/">四种实现+图解</a></td>
+<td>困难</td>
+</tr>
+<tr>
+<td>24</td>
+<td><a href="https://leetcode.cn/problems/swap-nodes-in-pairs/">两两交换链表中的节点</a></td>
+<td><a href="https://leetcode.cn/problems/swap-nodes-in-pairs/solution/dong-hua-yan-shi-24-liang-liang-jiao-huan-lian-bia/">三种实现+图解</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td>25</td>
+<td><a href="https://leetcode.cn/problems/reverse-nodes-in-k-group/">K 个一组翻转链表</a></td>
+<td><a href="https://leetcode.cn/problems/reverse-nodes-in-k-group/solution/dong-hua-yan-shi-25-k-ge-yi-zu-fan-zhuan-lian-biao/">两种实现+图解</a></td>
+<td>困难</td>
+</tr>
+<tr>
+<td>61</td>
+<td><a href="https://leetcode.cn/problems/rotate-list/">旋转链表</a></td>
+<td><a href="https://leetcode.cn/problems/rotate-list/solution/dong-hua-yan-shi-61-xuan-zhuan-lian-biao-by-user74/">两种实现+图解</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td>82</td>
+<td><a href="https://leetcode.cn/problems/remove-duplicates-from-sorted-list-ii/">删除排序链表中的重复元素 II</a></td>
+<td><a href="https://leetcode.cn/problems/remove-duplicates-from-sorted-list-ii/solution/san-chong-jie-fa-duo-tu-zhan-shi-82-shan-chu-pai-x/">三种实现+图解</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td>83</td>
+<td><a href="https://leetcode.cn/problems/remove-duplicates-from-sorted-list/">删除排序链表中的重复元素</a></td>
+<td><a href="https://leetcode.cn/problems/remove-duplicates-from-sorted-list/solution/dong-hua-yan-shi-83-shan-chu-pai-xu-lian-biao-zhon/">两种实现+图解</a></td>
+<td>简单</td>
+</tr>
+<tr>
+<td>141</td>
+<td><a href="https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/">二叉树展开为链表</a></td>
+<td><a href="https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/solution/dong-hua-yan-shi-si-chong-jie-fa-114-er-cha-shu-zh/">四种实现+图解</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td>138</td>
+<td><a href="https://leetcode.cn/problems/copy-list-with-random-pointer/">复制带随机指针的链表</a></td>
+<td><a href="https://leetcode.cn/problems/copy-list-with-random-pointer/solution/liang-chong-shi-xian-tu-jie-138-fu-zhi-dai-sui-ji-/">两种实现+图解</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td>141</td>
+<td><a href="https://leetcode.cn/problems/linked-list-cycle/">环形链表</a></td>
+<td><a href="https://leetcode.cn/problems/linked-list-cycle/solution/dong-hua-yan-shi-141-huan-xing-lian-biao-by-user74/">两种实现+图解</a></td>
+<td>简单</td>
+</tr>
+<tr>
+<td>160</td>
+<td><a href="https://leetcode.cn/problems/intersection-of-two-linked-lists/">相交链表</a></td>
+<td><a href="https://leetcode.cn/problems/intersection-of-two-linked-lists/solution/dong-hua-yan-shi-160-xiang-jiao-lian-biao-by-user7/">两种实现+图解</a></td>
+<td>简单</td>
+</tr>
+<tr>
+<td>203</td>
+<td><a href="https://leetcode.cn/problems/remove-linked-list-elements/">移除链表元素</a></td>
+<td><a href="https://leetcode.cn/problems/remove-linked-list-elements/solution/dong-hua-yan-shi-203-yi-chu-lian-biao-yuan-su-by-u/">两种实现+图解</a></td>
+<td>简单</td>
+</tr>
+<tr>
+<td>206</td>
+<td><a href="https://leetcode.cn/problems/reverse-linked-list/">反转链表</a></td>
+<td><a href="https://leetcode.cn/problems/reverse-linked-list/solution/dong-hua-yan-shi-206-fan-zhuan-lian-biao-by-user74/">两种实现+图解</a></td>
+<td>简单</td>
+</tr>
+<tr>
+<td>234</td>
+<td><a href="https://leetcode.cn/problems/palindrome-linked-list/">回文链表</a></td>
+<td><a href="https://leetcode.cn/problems/palindrome-linked-list/solution/dong-hua-yan-shi-234-hui-wen-lian-biao-by-user7439/">图解</a></td>
+<td>简单</td>
+</tr>
+<tr>
+<td>237</td>
+<td><a href="https://leetcode.cn/problems/delete-node-in-a-linked-list/">删除链表中的节点</a></td>
+<td><a href="https://leetcode.cn/problems/delete-node-in-a-linked-list/solution/dong-hua-yan-shi-237-shan-chu-lian-biao-zhong-de-j/">图解</a></td>
+<td>简单</td>
+</tr>
+<tr>
+<td>876</td>
+<td><a href="https://leetcode.cn/problems/middle-of-the-linked-list/">链表的中间结点</a></td>
+<td><a href="https://leetcode.cn/problems/middle-of-the-linked-list/solution/dong-hua-yan-shi-876-lian-biao-de-zhong-jian-jie-d/">图解</a></td>
+<td>简单</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</body>
+</html>

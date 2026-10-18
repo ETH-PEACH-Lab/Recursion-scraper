@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>All Possible Full Binary Trees – Editorial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+<style>.vimeo-link{display:inline-flex;align-items:center;gap:8px;
+            background:#1ab7ea;color:#fff;font-weight:600;
+            padding:10px 20px;border-radius:6px;margin:12px 0;font-size:.95em}
+.vimeo-link:hover{background:#0d9bd4;color:#fff;text-decoration:none}</style>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_all-possible-full-binary-trees.html">All Possible Full Binary Trees</a> <span class="sep">›</span> <span class="cur">Editorial</span></nav>
+<div class="wrap"><div class="page-title">930. All Possible Full Binary Trees — Official Editorial</div>
+<div class="page-sub" style="margin-bottom:20px">
+  <span class="badge b-medium">Medium</span> <span class="badge b-tag">Dynamic Programming</span> <span class="badge b-tag">Tree</span> <span class="badge b-tag">Recursion</span> <span class="badge b-tag">Memoization</span> <span class="badge b-tag">Binary Tree</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/all-possible-full-binary-trees/" target="_blank" style="font-size:.85em">↗ Problem</a>
+  &nbsp;·&nbsp;
+  <a href="problem_all-possible-full-binary-trees.html" style="font-size:.85em">💬 Community Solutions</a>
+</div>
+<div class="sol-body">
+  <p>[TOC]</p>
+<h2>Solution</h2>
+<hr />
+<h3>Overview</h3>
+<p>Given an integer <code>n</code>, our task is to return a list of root nodes of all possible full binary trees with <code>n</code> nodes.</p>
+<hr />
+<h3>Approach 1: Recursion + Memoization (Top-Down DP)</h3>
+<h4>Intuition</h4>
+<p>As stated in the description, each node in a full binary tree has either <code>0</code> or <code>2</code> children. Because there is a root node, a full binary tree will always have an <strong>odd</strong> number of nodes (root node + even child nodes).</p>
+<p>To find all the possible permutations of full binary trees with <code>n</code> nodes, we can use one node as the <code>root</code> node and split the other <code>n - 1</code> nodes between the left and right subtrees in all possible ways. Let us say we place <code>i</code> nodes in the left subtree and <code>n - i - 1</code> in the right subtree.</p>
+<p>Now, we create a list of root nodes called <code>left</code> for all possible full binary trees that can be formed using <code>i</code> nodes. Similarly, we create a list of root nodes called <code>right</code> for all the full binary trees using <code>n - i - 1</code> nodes. We can now create a new full binary tree by choosing one element from <code>left</code> to be the left child and one element from <code>right</code> to be the right child. To generate all full binary trees, we will iterate over all pairs between <code>left, right</code>.</p>
+<p>As we know any full binary tree must have an odd number of nodes, <code>i</code> and <code>n - 1 - i</code> should be odd as well to form full binary trees that are being used as the left and right subtrees. As a result, we move the value of <code>i</code> from <code>i = 1</code> till <code>n - 1</code> incrementing <code>i</code> by <code>2</code> each time so that we just loop on odd numbers of <code>i</code>. Since we have odd <code>n</code> and odd <code>i</code>, <code>n - 1 - i</code> would also be an odd number.</p>
+<p>Notice that generating the lists <code>left</code> and <code>right</code> is the same as the original problem, just with a different value of <code>n</code>. We can implement this approach using recursion as we are breaking down a problem with <code>n</code> nodes to smaller, repetitive subproblems with <code>i</code> and <code>n - i - 1</code> nodes (for <code>i = 1</code> till <code>n - 1</code>, incrementing <code>i</code> by <code>2</code>) to compute the answer for <code>n</code> nodes.</p>
+<p>We can convert the given method <code>allPossibleFBT</code> in the implementation into a recursive function as we only need the number of nodes as the parameter to create a list of nodes for all possible full binary tree using recursion. Here is a visual representation of the recursion tree with <code>7</code> nodes:</p>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/894/894-1.png" /></p>
+<p>Several subproblems, such as <code>allPossibleFBT(3)</code>, <code>allPossibleFBT(5)</code>, etc., are solved multiple times in the partial recursion tree shown above. If we draw the entire recursion tree, we can see that there are many subproblems that are solved repeatedly.</p>
+<p>To avoid this issue, we store the solution of the subproblem in a hashmap that stores the mapping from the number of nodes to the list of root nodes of all possible full binary trees that can be formed with the same number of nodes. When we encounter the same subproblem again, we simply refer to this map to get the required list of <code>TreeNode</code>. This is called <strong>memoization</strong>.</p>
+<h4>Algorithm</h4>
+<ol>
+<li>Create a hash map <code>memo</code> where <code>memo[i]</code> contains the list of root nodes of all possible full binary trees with <code>i</code> nodes.</li>
+<li>If <code>n</code> is even, we return an empty list as we cannot form any full binary tree with even number of nodes.</li>
+<li>If <code>n == 1</code>, we simply return a list with single node.</li>
+<li>If we already have solved this subproblem, i.e., <code>memo</code> contains the key <code>n</code>, we return <code>memo[n]</code>.</li>
+<li>We have odd <code>n</code>. We declare a list of <code>TreeNode</code> called <code>res</code> to store the list of root nodes of all possible full binary trees with <code>n</code> nodes.</li>
+<li>Iterate from <code>i = 1</code> to <code>n - 1</code> incrementing <code>i</code> by <code>2</code> after each iteration:<ul>
+<li>Create a list of <code>TreeNode</code> called <code>left</code> to store the root nodes for all possible full binary trees using <code>i</code> nodes. We perform <code>left = allPossibleFBT(i)</code>.</li>
+<li>Create a list of <code>TreeNode</code> called <code>right</code> to store the root nodes for all possible full binary trees using <code>n - 1 - i</code> nodes. We perform <code>right = allPossibleFBT(n - i - 1)</code>.</li>
+<li>Iterate over both the lists <code>left</code> and <code>right</code> using two loops. For each element <code>count</code> in <code>left</code> and <code>r</code> in <code>right</code>, we create a new <code>root</code> node and set <code>root.left = l</code> and <code>root.right = r</code>. We add <code>root</code> into our answer variable <code>res</code>.</li>
+</ul>
+</li>
+<li>Set <code>memo[n]</code> equal to <code>res</code>.</li>
+<li>Return <code>res</code>.</li>
+</ol>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/KpYEVWSK/shared" frameBorder="0" width="100%" height="500" name="KpYEVWSK"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Note, the time and space complexity of this problem is difficult to derive exactly. In an interview, do your best to calculate an upper bound while explaining your thought process.</p>
+<ul>
+<li>
+<p>Time complexity: $O(2^{n/2})$.</p>
+<ul>
+<li>The maximum number of nodes that can be in the left subtree of a full binary tree with <code>n</code>nodes is <code>n - 2</code>, since one node is the root of the tree and one node must be in the right subtree. Therefore, the total number of possible full binary trees with <code>n</code> nodes can be calculated by considering all possible combinations of the number of nodes in the left and right subtrees, such that the sum of the number of nodes in the left and right subtrees is equal to <code>n - 1</code>.</li>
+<li>We can express the total number of possible full binary trees with <code>n</code> nodes as a recurrence relation <code>T(n) = T(1) * T(n - 2) + T(3) * T(n - 4) + ... + T(n - 2) * T(1)</code>, where the summation goes over all odd numbers from <code>1</code> to <code>n - 2</code>. Solving this recurrence relation using dynamic programming shows that <code>T(n)</code> is equal to the $n^{th}$ <a href="https://en.wikipedia.org/wiki/Catalan_number">Catalan number</a>, which is bounded by $2^{n/2}$.</li>
+<li>Our implementation generates all of these trees taking $O(2^{n/2})$ time.</li>
+</ul>
+</li>
+<li>
+<p>Space complexity: $O(n \cdot 2^{n/2})$.</p>
+<ul>
+<li>The algorithm uses memoization to store the results of subproblems. Specifically, it uses a hash map called <code>memo</code> to store the results of subproblems that have already been solved.</li>
+<li>For every subproblem with <code>n</code> nodes, the algorithm may need to store up to $2^{n/2}$ <code>TreeNode</code> objects in the <code>memo</code> hash map. This is because there can be up to $2^{n/2}$ possible full binary trees with <code>n</code> nodes, and the algorithm needs to store all of them in order to return the result for the subproblem with <code>n</code> number of nodes. There are maximum of <code>n/2</code> subproblems (with nodes <code>1</code>, <code>3</code>, .. <code>n - 1</code>) and hence the space complexity of the algorithm is $O(n \cdot 2^{n/2})$.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>Approach 2: Iterative Dynamic Programming</h3>
+<h4>Intuition</h4>
+<p>We used memoization in the preceding approach to store the answers to subproblems in order to solve a larger problem. We can also use a bottom-up approach to solve such problems without using recursion. We build answers to subproblems iteratively first, then use them to build answers to larger problems.</p>
+<p>We create a list <code>dp[n + 1]</code> where <code>dp[i]</code> will store a list of root nodes for all possible full binary trees using <code>i</code> nodes. This is analogous to what <code>memo[i]</code> was in the previous approach.</p>
+<p>We push a single node to <code>dp[1]</code> which acts as the base case. </p>
+<p>We form the answer with a smaller number of nodes and move on to form answers for a bigger number of nodes. We run an outer loop from <code>count = 3</code> to <code>count = n</code> incrementing <code>count</code> by <code>2</code> after each iteration. This loop controls the total number of nodes <code>count</code> under consideration. Please keep in mind that we are only iterating over odd numbers of nodes because the answer for even numbers of nodes is an empty list. Note that here, <code>count</code> represents <code>n</code> in the previous approach. We have to use a different variable name since we are now implementing the algorithm iteratively and <code>n</code> is static per test case.</p>
+<p>To get the list of root nodes for all possible full binary trees with <code>count</code> nodes, we would split the <code>count</code> nodes with <code>i</code> nodes in the left subtree and <code>count - i - 1</code> in the right subtree in the same manner as described previously. As we are executing in bottom-up manner, we will already have the list of root nodes for all possible full binary trees with <code>i</code> and <code>count - i - 1</code> nodes.</p>
+<p>We create a new instance of <code>TreeNode</code> called <code>root</code> and set the left child of <code>root</code> to an element in <code>dp[i]</code> and set the right child of <code>root</code> to an element in <code>dp[l - i - 1]</code> to form a new full binary tree with <code>count</code> nodes. We will iterate over all the elements in <code>dp[i]</code> and <code>dp[count - i - 1]</code> to form all the full binary trees in this split.</p>
+<p>We would run an inner loop to move <code>i</code> from <code>1</code> to <code>count - 2</code> (one node is used as root, <code>count - 2</code> nodes are used in the left subtree, leaving at least one node for the right subtree) incrementing <code>i</code> by <code>2</code> to split the <code>count</code> nodes in all the possible ways between the left and right subtree.</p>
+<h4>Algorithm</h4>
+<ol>
+<li>If <code>n</code> is even, we return an empty list as we cannot form any full binary tree with even number of nodes.</li>
+<li>Create a list <code>dp[n + 1]</code> where <code>dp[i]</code> will store a list of root nodes for all possible full binary trees using <code>i</code> nodes. We initialize each list <code>dp[i]</code> to an empty list for <code>i = 0</code> to <code>n</code>.</li>
+<li>We push a single node into <code>dp[1]</code> because with <code>n = 1</code> we can just have a root node in the tree.</li>
+<li>Iterate from <code>count = 3</code> till <code>count = n</code> incrementing <code>count</code> by <code>2</code> after each iteration. The outer loop corresponds to the total number of nodes under consideration. We start an inner loop from <code>i = 1</code> to <code>count - 2</code> incrementing <code>i</code> by <code>2</code> which represents the number of nodes in the left subtree under consideration. We perform the following in this loop:<ul>
+<li>Create a variable <code>j = n - i - 1</code>. It presents the number of nodes in the right subtree under consideration.</li>
+<li>We can form a new full binary tree by creating a new node which acts as a root node and assigning its left child to any element in <code>dp[i]</code> and right child to any element in <code>dp[j]</code>. As a result, we iterate over both the lists <code>dp[i]</code> and <code>dp[j]</code> using two loops. For each element <code>left</code> in <code>dp[i]</code> and <code>right</code> in <code>dp[j]</code>, we create a new <code>root</code> node and set <code>root.left = left</code> and <code>root.right = right</code> to form all the full binary trees in this split. We add <code>root</code> to <code>dp[count]</code>.</li>
+</ul>
+</li>
+<li>Return <code>dp[n]</code>.</li>
+</ol>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/Vxs5u5PG/shared" frameBorder="0" width="100%" height="500" name="Vxs5u5PG"></iframe>
+
+<h4>Complexity Analysis</h4>
+<ul>
+<li>
+<p>Time complexity: $O(2^{n/2})$.</p>
+<ul>
+<li>There are a maximum of $2^{n/2}$ possible full binary trees with <code>n</code> nodes (where <code>n</code> is an odd number) and the algorithm generates all of them without solving any subproblem twice. The time complexity is similar to the previous approach.</li>
+</ul>
+</li>
+<li>
+<p>Space complexity: $O(n \cdot 2^{n/2})$.</p>
+<ul>
+<li>Similar to the <code>memo</code> hash map used in the previous approach, <code>dp[i]</code> will store the list of root nodes for all possible full binary trees with <code>i</code> nodes. As there can be a maximum of $2^{n/2}$ possible full binary trees with <code>n</code> nodes, <code>dp</code> will consume $O(n \cdot 2^{n/2})$ space to store the list of nodes corresponding to all the number of nodes from <code>1</code> to <code>n</code>.</li>
+</ul>
+</li>
+</ul>
+</div></div>
+</body>
+</html>

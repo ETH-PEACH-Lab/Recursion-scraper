@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>24. 两两交换链表中的节点（三种解答方法） – Swap Nodes in Pairs</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_swap-nodes-in-pairs.html">Swap Nodes in Pairs / 两两交换链表中的节点</a> <span class="sep">›</span> <span class="cur">24. 两两交换链表中的节点（三种解答方法）</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">24. 两两交换链表中的节点（三种解答方法）</div>
+  <div class="meta">
+    <span>👤 sun-wu-kong-8</span>
+    <span>👍 2</span>
+    <span>2023-04-13</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/swap-nodes-in-pairs/solution/24-liang-liang-jiao-huan-lian-biao-zhong-jqcn/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <blockquote>
+<p>Problem: <a href="https://leetcode.cn/problems/swap-nodes-in-pairs/description/">24. 两两交换链表中的节点</a></p>
+</blockquote>
+<p>[TOC]</p>
+<h1>方法一：递归</h1>
+<h1>思路与算法</h1>
+<p>递归常用来解答链表和二叉树中的题目，在用递归时，牢记一点：递归的本质是反复调用自身，不要过度关系递归每一层的实现，只需要明白一级递归的过程即可。<br />
+写递归的套路（只需明白的三个地方）：<br />
+1、递归什么时候结束？<br />
+2、递归的返回值是什么？<br />
+3、本级递归的目的是什么？（本级递归的操作是什么？）<br />
+本题中，题目要求我们两两交换链表中的节点，我们按照套路思考：<br />
+1、递归什么时候结束：<br />
+在只剩下一个节点或者没有节点的时候结束递归，因为只有一个节点时和没有节点时不需要再进行操作。<br />
+2、递归的返回值是什么？<br />
+可以将当前递归看作为三个节点的操作，使当前头节点指向第三个节点，第二个节点指向头节点，需要注意的时：第三个节点是需要继续递归的链表，他的头节点是第二个节点。如图所示：<br />
+<img alt="489D5DF57EDC1A744F95DEBABB2BDF3A.png" src="https://pic.leetcode.cn/1681380081-aqDlzO-489D5DF57EDC1A744F95DEBABB2BDF3A.png" /><br />
+递归的主体部分就是交换三个节点的前两个而已。</p>
+<h1>Code</h1>
+<p>```C++ []</p>
+<p>/<em><em><br />
+ * Definition for singly-linked list.<br />
+ * struct ListNode {<br />
+ *     int val;<br />
+ *     ListNode </em>next;<br />
+ *     ListNode() : val(0), next(nullptr) {}<br />
+ *     ListNode(int x) : val(x), next(nullptr) {}<br />
+ *     ListNode(int x, ListNode </em>next) : val(x), next(next) {}<br />
+ * };<br />
+ */</p>
+<p>class Solution {<br />
+public:<br />
+    ListNode<em> swapPairs(ListNode</em> head) {<br />
+        //递归牢记：不用管函数每一层做了是什么，只要知道第一层做了什么就行！<br />
+        //解题套路：1、找结束时的条件2、找递归返回值3、找当前这层执行什么<br />
+        //1、找结束条件：只有一个节点或者没节点的时候结束递归<br />
+        if(head==nullptr||head-&gt;next==nullptr)<br />
+        {<br />
+            return head;<br />
+        }<br />
+        //3、找当前执行语句：实现两个节点交换<br />
+        //下面的任务便是交换这3个节点中的前两个节点<br />
+        ListNode* second=head-&gt;next;//记录第二个节点，不然会找不到<br />
+        head-&gt;next=swapPairs(second-&gt;next);<br />
+        //头节点指向第三个节点，第三个节点是待处理的节点，它需要继续递归，传入的是它当前的头节点，即second-&gt;next<br />
+        second-&gt;next=head;<br />
+        //2、找返回值,返回的是当前这层递归结束后的头节点,这里是next<br />
+        return second;//返回second，因为此时的头节点已经变成了second<br />
+    }<br />
+};</p>
+<pre><code># 方法二：迭代
+# 思路与算法
+迭代法主要思路就是：通过循环两两交换节点
+1、设置一个虚拟头节点dummary_head，并使dummary_head的next指向头节点，代码如下：
+        ListNode* dummy_head=new ListNode(0);
+        dummy_head-&gt;next=head;
+2、如果直接对虚拟头节点进行操作的话，随着交换会使得交换后新的头节点位置不清除，所有需要设置一个操作节点，使其初始值和虚拟节点相同。
+ListNode* cur=dummy_head;
+3、通过循环进行节点交换，先考虑什么时候停止循环，当操作节点的下一个节点或下下个节点为空时，停止循环。如图所示：
+![F687ABA9042B13E7B8F4B7B9CF21E46F.png](https://pic.leetcode.cn/1681397696-cwxuSQ-F687ABA9042B13E7B8F4B7B9CF21E46F.png)
+4、判断返回类型，由于在交换时，虚拟头节点的位置不变，其next指向的永远是新的头节点，所以return dummy_head-&gt;next;
+# Code
+```C++ []
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        ListNode* dummy_head=new ListNode(0);
+        dummy_head-&gt;next=head;
+        ListNode* cur=dummy_head;
+        while(cur-&gt;next!=nullptr&amp;&amp;cur-&gt;next-&gt;next!=nullptr)
+        {
+            ListNode* temp=cur-&gt;next-&gt;next-&gt;next;
+            ListNode* temp1=cur-&gt;next;
+            cur-&gt;next=cur-&gt;next-&gt;next;
+            cur-&gt;next-&gt;next=temp1;
+            temp1-&gt;next=temp;
+            cur=cur-&gt;next-&gt;next;
+        }
+        return dummy_head-&gt;next;
+    }
+};
+
+</code></pre>
+<h1>方法三：双指针</h1>
+<h1>思路与算法</h1>
+<p>1、双指针法中，定义first和second两个节点，将first节点赋值为head，second节点的位置用于是first-&gt;next。<br />
+2、由于直接对first进行操作，因此first的位置一直在改变，无法确定新的头节点在哪，因此需要进行判断，如果链表中只有一个节点或链表中没有节点，直接return head;<br />
+3、只有当链表中节点大于等于2时，才能继续进行，否则在执行head=first-&gt;next;这一步操作会对空节点进行操作，语法错误。<br />
+4、通过循环进行节点交换，先考虑什么时候停止循环，当first节点或下个节点为空时，停止循环。如图所示：<br />
+<img alt="1E208A3D1D42AD422CAF465ED60E987E.png" src="https://pic.leetcode.cn/1681400261-XUROMl-1E208A3D1D42AD422CAF465ED60E987E.png" /></p>
+<h1>Code</h1>
+<p>```C++ []<br />
+/<em><em><br />
+ * Definition for singly-linked list.<br />
+ * struct ListNode {<br />
+ *     int val;<br />
+ *     ListNode </em>next;<br />
+ *     ListNode() : val(0), next(nullptr) {}<br />
+ *     ListNode(int x) : val(x), next(nullptr) {}<br />
+ *     ListNode(int x, ListNode </em>next) : val(x), next(next) {}<br />
+ * };<br />
+<em>/<br />
+class Solution {<br />
+public:<br />
+    ListNode</em> swapPairs(ListNode<em> head) {<br />
+        if(head==nullptr||head-&gt;next==nullptr) return head;<br />
+        ListNode</em> first=head;<br />
+        ListNode<em> temp=first;<br />
+        ListNode</em> second=nullptr;<br />
+        head=first-&gt;next;<br />
+        while(first!=nullptr&amp;&amp;first-&gt;next!=nullptr)<br />
+        {<br />
+            second=first-&gt;next;<br />
+            first-&gt;next=second-&gt;next;<br />
+            second-&gt;next=first;<br />
+            if(temp-&gt;next==second-&gt;next)<br />
+            {<br />
+                temp-&gt;next=second;<br />
+            }<br />
+            temp=first;<br />
+            first=first-&gt;next;<br />
+        }<br />
+        return head;<br />
+    }<br />
+};</p>
+</div>
+</div>
+</body>
+</html>

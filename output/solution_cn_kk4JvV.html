@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Python简单易懂的递归 时间超越98% – Reverse Nodes in k-Group</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_reverse-nodes-in-k-group.html">Reverse Nodes in k-Group / K 个一组翻转链表</a> <span class="sep">›</span> <span class="cur">Python简单易懂的递归 时间超越98%</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">Python简单易懂的递归 时间超越98%</div>
+  <div class="meta">
+    <span>👤 mzh1996</span>
+    <span>👍 0</span>
+    <span>2020-07-18</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/reverse-nodes-in-k-group/solution/pythonjian-dan-yi-dong-de-di-gui-shi-jian-chao-yue/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h3>解题思路</h3>
+<p><img alt="image.png" src="https://pic.leetcode.cn/ec8c155da9a35e12a48258a8fabbe4218eba23646717f538b8e697a3ea3f893c-image.png" /></p>
+<p>步骤<br />
+主函数思路：<br />
+不断地调用另一个递归函数<br />
+每次调用的递归函数可以将当前节点开始到第k个节点的区段反转，并记录当前区段后面的下一个节点<br />
+以便调整下一段区段的时候 有头结点可用</p>
+<p>递归函数函数<br />
+其输入是起始节点，目前节点对应在本区段的序号以及k <br />
+功能是尝试对k个元素进行反转<br />
+输出是反转后的新头节点（原本的这一区段的尾节点），下一段的头结点（原本尾结点的next）以及新尾节点（原本这一区段的头节点）<br />
+一开始先判断<br />
+1、如果起始起点（含）后面不够k个元素(if cnt &lt;= k and root == None:)<br />
+则反回三个None<br />
+2、如果到了第k个节点（if cnt == k:）<br />
+则先记录下一阶段的新头结点next_stage_head = root.next<br />
+再记录这个节点作为新的头结点new_head = root<br />
+最后返回return root,next_stage_head,new_head<br />
+3、如果还没到k且非空<br />
+递归到下一个节点 <br />
+new,next_stage_head,new_head = self.recurse(root.next,cnt+1,k)<br />
+这里的返回值中，next_stage_head,new_head是递归到第k个节点时返回的 <br />
+一层一层往外传出来<br />
+3.1如果此时new_head 意味着 这段链表中元素不够k个了 根据示例，不需要反转 则直接返回None 到主函数<br />
+3.2new是上一层的节点 也就是正序中自身的下一个节点 因为要反转 需要将这个节点调整为自身的父节点<br />
+new.next = root<br />
+return root,next_stage_head,new_head</p>
+<h3>代码</h3>
+<pre><code class="language-python3">class Solution:
+    def reverseKGroup(self, head: ListNode, k: int) -&gt; ListNode:
+        if head == None:
+            return None
+        faker = ListNode('skt')#从韩国请来一个家伙作为伪头节点
+        faker.next = head#伪头结点自然认为是原head的父节点
+        last_tail = faker#可以将伪头节点视作上一个反转区段的尾节点
+        last_tail,next_stage_head,new_head = self.recurse(head,1,k)
+        #第一次调用递归函数 
+        #递归函数的输入是 本阶段待反转的原节点（即反转后是本区段的尾节点）
+        #第二个输入是 当前节点对应在本区段的序号 从1开始算
+        #第三个是k
+        if new_head == None:#如果第一次调用即失败 说明原链表长度不够k个 
+            return faker.next#直接返回原链表头节点即可
+        faker.next = new_head#第一次调用后 伪头节点指新头结点
+        while next_stage_head != None:#如果上一次反转成功
+            beifen = next_stage_head#留一个备份 如果本次反转失败 则直接以原本的头结点作为上一阶段尾结点的next
+            new_tail,next_stage_head,new_head = self.recurse(next_stage_head,1,k)#反转
+            if new_head == None:#反转失败
+                last_tail.next = beifen#使用备份
+                return faker.next
+            last_tail.next = new_head#反转成功 记录本阶段反转后的新头结点为上次递归的尾节点的next
+            last_tail = new_tail#记录本阶段的新尾节点为下次递归的上阶段尾结点
+        last_tail.next = next_stage_head
+        return faker.next
+
+    def recurse(self,root,cnt,k):
+        if cnt &lt;= k and root == None:#还没到第k个 即为None 反转失败
+            return None,None,None#返回三个None
+        if cnt == k:#到了第k个 反转成功
+            next_stage_head = root.next#将这个节点的下一个作为下一阶段的头结点
+            new_head = root#将这个节点作为本阶段的新头结点
+            return root,next_stage_head,new_head#返回当前节点 下一阶段的头结点和新头结点 其中后两个一层层传出去，在递归完最后一层后 往外传递时不改变
+        else:#还没到最后一层 也不是空
+            new,next_stage_head,new_head = self.recurse(root.next,cnt+1,k)#先递归下一层
+            if new_head == None:#看看递归结果是否成功 不成功即返回3个None
+                return None,None,None
+            new.next = root#成功 将原来自己的next  改为自己的父节点
+            return root,next_stage_head,new_head#返回三个节点
+</code></pre>
+</div>
+</div>
+</body>
+</html>

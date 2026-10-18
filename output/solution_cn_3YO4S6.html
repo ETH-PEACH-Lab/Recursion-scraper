@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LCR 141. 训练计划 III – 训练计划 III</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_fan-zhuan-lian-biao-lcof.html">训练计划 III / 训练计划 III</a> <span class="sep">›</span> <span class="cur">LCR 141. 训练计划 III</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">LCR 141. 训练计划 III</div>
+  <div class="meta">
+    <span>👤 stormsunshine</span>
+    <span>👍 3</span>
+    <span>2024-03-19</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/fan-zhuan-lian-biao-lcof/solution/lcr-141-xun-lian-ji-hua-iii-by-stormsuns-b9pp/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>解法一</h1>
+<h2>思路和算法</h2>
+<p>原始链表中，每个结点的 $   extit{next}$ 指针都指向后一个结点。反转链表之后，每个结点的 $  extit{next}$ 指针都指向前一个结点。因此，反转链表需要改变每个结点的 $  extit{next}$ 指针指向的结点。</p>
+<p>由于单链表中的每个结点都只有指向后一个结点的 $    extit{next}$ 指针，因此需要另外存储前一个结点，在遍历链表的过程中完成反转。</p>
+<p>具体做法是，维护两个变量 $  extit{prev}$ 和 $    extit{curr}$ 分别表示前一个结点和当前结点，初始时 $   extit{prev} =   ext{null}$，$    extit{curr} =   extit{head}$。改变 $   extit{curr}$ 的 $    extit{next}$ 指针指向时，需要先得到其后面一个结点 $   extit{next}$，然后令 $  extit{curr}.    extit{next}$ 指向 $   extit{prev}$，再将 $   extit{prev}$ 和 $    extit{curr}$ 都向后移动一步。对于链表中的每个结点进行上述操作，当 $   extit{curr}$ 变成 $   ext{null}$ 时，遍历结束，此时完成链表的反转，$   extit{prev}$ 指向反转后的链表的头结点。</p>
+<p>下图为反转链表的例子。对于每个结点，需要将指向后一个结点的 $ extit{next}$ 指针变成指向前一个结点。虚线表示 $ extit{next}$ 指针原来的指向。</p>
+<p><img alt="图 1" src="https://pic.leetcode.cn/1633224461-UubBSM-10_1.png" /></p>
+<h2>代码</h2>
+<p>```Java [sol1-Java]<br />
+class Solution {<br />
+    public ListNode trainningPlan(ListNode head) {<br />
+        ListNode prev = null, curr = head;<br />
+        while (curr != null) {<br />
+            ListNode next = curr.next;<br />
+            curr.next = prev;<br />
+            prev = curr;<br />
+            curr = next;<br />
+        }<br />
+        return prev;<br />
+    }<br />
+}</p>
+<pre><code>
+```C# [sol1-C#]
+public class Solution {
+    public ListNode TrainningPlan(ListNode head) {
+        ListNode prev = null, curr = head;
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+}
+</code></pre>
+<p>```C++ [sol1-C++]<br />
+class Solution {<br />
+public:<br />
+    ListNode<em> trainningPlan(ListNode</em> head) {<br />
+        ListNode <em>prev = nullptr, </em>curr = head;<br />
+        while (curr) {<br />
+            ListNode *next = curr-&gt;next;<br />
+            curr-&gt;next = prev;<br />
+            prev = curr;<br />
+            curr = next;<br />
+        }<br />
+        return prev;<br />
+    }<br />
+};</p>
+<pre><code>
+```Python [sol1-Python3]
+class Solution:
+    def trainningPlan(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:
+        prev, curr = None, head
+        while curr != None:
+            next = curr.next
+            curr.next = prev
+            prev = curr
+            curr = next
+        return prev
+</code></pre>
+<p>```C [sol1-C]<br />
+struct ListNode<em> trainningPlan(struct ListNode</em> head) {<br />
+    struct ListNode <em>prev = NULL, </em>curr = head;<br />
+    while (curr) {<br />
+        struct ListNode *next = curr-&gt;next;<br />
+        curr-&gt;next = prev;<br />
+        prev = curr;<br />
+        curr = next;<br />
+    }<br />
+    return prev;<br />
+}</p>
+<pre><code>
+```Go [sol1-Go]
+func trainningPlan(head *ListNode) *ListNode {
+    var prev *ListNode
+    curr := head
+    for curr != nil {
+        next := curr.Next
+        curr.Next = prev
+        prev = curr
+        curr = next
+    }
+    return prev
+}
+</code></pre>
+<p>```JavaScript [sol1-JavaScript]<br />
+var trainningPlan = function(head) {<br />
+    let prev = null, curr = head;<br />
+    while (curr !== null) {<br />
+        let next = curr.next;<br />
+        curr.next = prev;<br />
+        prev = curr;<br />
+        curr = next;<br />
+    }<br />
+    return prev;<br />
+};</p>
+<pre><code>
+```TypeScript [sol1-TypeScript]
+function trainningPlan(head: ListNode | null): ListNode | null {
+    let prev = null, curr = head;
+    while (curr !== null) {
+        let next = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = next;
+    }
+    return prev;
+};
+</code></pre>
+<h2>复杂度分析</h2>
+<ul>
+<li>
+<p>时间复杂度：$O(n)$，其中 $n$ 是链表的长度。需要遍历链表中的每个结点一次，每个结点的反转操作的时间都是 $O(1)$。</p>
+</li>
+<li>
+<p>空间复杂度：$O(1)$。</p>
+</li>
+</ul>
+<h1>解法二</h1>
+<h2>思路和算法</h2>
+<p>也可以使用递归的方法反转列表。迭代的方法较简单，递归的方法相对复杂。</p>
+<p>对于递归问题，首先需要考虑终止条件。这道题的终止条件是链表为空或者只有 $1$ 个结点，此时不需要反转，直接返回链表即可。</p>
+<p>当链表至少有 $2$ 个结点时，首先将除了头结点以外的部分反转，然后改变头结点和头结点后面一个结点的 $    extit{next}$ 指针的指向。</p>
+<p>例如，原始链表为：</p>
+<p>1 \rightarrow 2 \rightarrow 3</p>
+<p>到达结点 $3$ 时为递归的终止条件，回到结点 $2$。</p>
+<p>到达结点 $2$ 时，$3$ 已经反转完毕，将 $3$ 的 $ extit{next}$ 指针变成指向 $2$，将 $2$ 的 $   extit{next}$ 指针变成指向 $   ext{null}$。此时链表为：</p>
+<p>1 \rightarrow 2 \leftarrow 3</p>
+<p>到达结点 $1$ 时，$2$ 和 $3$ 已经反转完毕，将 $2$ 的 $   extit{next}$ 指针变成指向 $1$，将 $1$ 的 $   extit{next}$ 指针变成指向 $   ext{null}$。此时链表为：</p>
+<p>1 \leftarrow 2 \leftarrow 3</p>
+<p>反转链表结束。</p>
+<p>需要注意的是，递归过程中将当前结点的 $    extit{next}$ 指针变成指向 $   ext{null}$ 是不可缺少的操作，否则链表中会出现环。</p>
+<h2>代码</h2>
+<p>```Java [sol2-Java]<br />
+class Solution {<br />
+    public ListNode trainningPlan(ListNode head) {<br />
+        if (head == null || head.next == null) {<br />
+            return head;<br />
+        }<br />
+        ListNode second = head.next;<br />
+        ListNode newHead = trainningPlan(second);<br />
+        second.next = head;<br />
+        head.next = null;<br />
+        return newHead;<br />
+    }<br />
+}</p>
+<pre><code>
+```C# [sol2-C#]
+public class Solution {
+    public ListNode TrainningPlan(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode second = head.next;
+        ListNode newHead = TrainningPlan(second);
+        second.next = head;
+        head.next = null;
+        return newHead;
+    }
+}
+</code></pre>
+<p>```C++ [sol2-C++]<br />
+class Solution {<br />
+public:<br />
+    ListNode<em> trainningPlan(ListNode</em> head) {<br />
+        if (!head || !head-&gt;next) {<br />
+            return head;<br />
+        }<br />
+        ListNode<em> second = head-&gt;next;<br />
+        ListNode</em> newHead = trainningPlan(second);<br />
+        second-&gt;next = head;<br />
+        head-&gt;next = nullptr;<br />
+        return newHead;<br />
+    }<br />
+};</p>
+<pre><code>
+```Python [sol2-Python3]
+class Solution:
+    def trainningPlan(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:
+        if not head or not head.next:
+            return head
+        second = head.next
+        newHead = self.trainningPlan(second)
+        second.next = head
+        head.next = None
+        return newHead
+</code></pre>
+<p>```C [sol2-C]<br />
+struct ListNode<em> trainningPlan(struct ListNode</em> head) {<br />
+    if (!head || !head-&gt;next) {<br />
+        return head;<br />
+    }<br />
+    struct ListNode<em> second = head-&gt;next;<br />
+    struct ListNode</em> newHead = trainningPlan(second);<br />
+    second-&gt;next = head;<br />
+    head-&gt;next = NULL;<br />
+    return newHead;<br />
+}</p>
+<pre><code>
+```Go [sol2-Go]
+func trainningPlan(head *ListNode) *ListNode {
+    if head == nil || head.Next == nil {
+        return head
+    }
+    second := head.Next
+    newHead := trainningPlan(second)
+    second.Next = head
+    head.Next = nil
+    return newHead
+}
+</code></pre>
+<p>```JavaScript [sol2-JavaScript]<br />
+var trainningPlan = function(head) {<br />
+    if (head === null || head.next === null) {<br />
+        return head;<br />
+    }<br />
+    let second = head.next;<br />
+    let newHead = trainningPlan(second);<br />
+    second.next = head;<br />
+    head.next = null;<br />
+    return newHead;<br />
+};</p>
+<pre><code>
+```TypeScript [sol2-TypeScript]
+function trainningPlan(head: ListNode | null): ListNode | null {
+    if (head === null || head.next === null) {
+        return head;
+    }
+    let second = head.next;
+    let newHead = trainningPlan(second);
+    second.next = head;
+    head.next = null;
+    return newHead;
+};
+</code></pre>
+<h2>复杂度分析</h2>
+<ul>
+<li>
+<p>时间复杂度：$O(n)$，其中 $n$ 是链表的长度。需要对链表的每个结点进行反转操作，每个结点的反转操作的时间都是 $O(1)$。</p>
+</li>
+<li>
+<p>空间复杂度：$O(n)$，其中 $n$ 是链表的长度。空间复杂度主要取决于递归调用栈的深度，递归调用栈最多不会超过 $n$ 层。</p>
+</li>
+</ul>
+<h1>解法三</h1>
+<h2>思路和算法</h2>
+<p>解法二使用递归，空间复杂度是 $O(n)$。如果使用尾递归，则可以将空间复杂度优化至 $O(1)$。</p>
+<p>尾递归的含义是，一个方法或函数中所有递归形式的调用都出现在方法或函数的末尾，则这个递归方法或函数是尾递归的。当递归调用是整个方法或函数体中最后执行的语句，且返回值不属于表达式的一部分时，递归调用就是尾递归。尾递归的特点是在回归过程中不用做任何操作，当编译器检测到尾递归时，会覆盖当前的栈帧而不是新建一个栈帧，从而优化栈空间。</p>
+<p>这道题可以使用尾递归实现。使用尾递归实现，需要创建一个辅助方法，该辅助方法包含两个参数，分别是前一个结点 $  extit{prev}$ 和当前结点 $    extit{curr}$。尾递归的具体实现如下：</p>
+<ul>
+<li>
+<p>终止条件是 $   extit{curr} =   ext{null}$，此时返回 $   extit{prev}$；</p>
+</li>
+<li>
+<p>当 $   extit{curr} <br />
+e   ext{null}$ 时，用 $    extit{next}$ 表示 $   extit{curr}$ 的后一个结点，令 $ extit{curr}.    extit{next}$ 指向 $   extit{prev}$，然后用 $  extit{curr}$ 和 $    extit{next}$ 作为参数调用尾递归，返回值即为尾递归调用的返回值。</p>
+</li>
+</ul>
+<p>在主方法中调用尾递归方法时，参数为 $ extit{prev} =   ext{null}$，$    extit{curr} =   extit{head}$，反转后的链表的头结点即为调用尾递归方法的返回值。</p>
+<h2>代码</h2>
+<p>```Java [sol3-Java]<br />
+class Solution {<br />
+    public ListNode trainningPlan(ListNode head) {<br />
+        return trainningPlanTail(null, head);<br />
+    }</p>
+<pre><code>public ListNode trainningPlanTail(ListNode prev, ListNode curr) {
+    if (curr == null) {
+        return prev;
+    }
+    ListNode next = curr.next;
+    curr.next = prev;
+    return trainningPlanTail(curr, next);
+}
+</code></pre>
+<p>}</p>
+<pre><code>
+```C# [sol3-C#]
+public class Solution {
+    public ListNode TrainningPlan(ListNode head) {
+        return TrainningPlanTail(null, head);
+    }
+
+    public ListNode TrainningPlanTail(ListNode prev, ListNode curr) {
+        if (curr == null) {
+            return prev;
+        }
+        ListNode next = curr.next;
+        curr.next = prev;
+        return TrainningPlanTail(curr, next);
+    }
+}
+</code></pre>
+<p>```C++ [sol3-C++]<br />
+class Solution {<br />
+public:<br />
+    ListNode<em> trainningPlan(ListNode</em> head) {<br />
+        return trainningPlanTail(nullptr, head);<br />
+    }</p>
+<pre><code>ListNode* trainningPlanTail(ListNode* prev, ListNode* curr) {
+    if (!curr) {
+        return prev;
+    }
+    ListNode* next = curr-&gt;next;
+    curr-&gt;next = prev;
+    return trainningPlanTail(curr, next);
+}
+</code></pre>
+<p>};</p>
+<pre><code>
+```Python [sol3-Python3]
+class Solution:
+    def trainningPlan(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:
+        return self.trainningPlanTail(None, head)
+
+    def trainningPlanTail(self, prev: Optional[ListNode], curr: Optional[ListNode]) -&gt; Optional[ListNode]:
+        if not curr:
+            return prev
+        next = curr.next
+        curr.next = prev
+        return self.trainningPlanTail(curr, next)
+</code></pre>
+<p>```C [sol3-C]<br />
+struct ListNode<em> trainningPlanTail(struct ListNode</em> prev, struct ListNode<em> curr) {<br />
+    if (!curr) {<br />
+        return prev;<br />
+    }<br />
+    struct ListNode</em> next = curr-&gt;next;<br />
+    curr-&gt;next = prev;<br />
+    return trainningPlanTail(curr, next);<br />
+}</p>
+<p>struct ListNode<em> trainningPlan(struct ListNode</em> head) {<br />
+    return trainningPlanTail(NULL, head);<br />
+}</p>
+<pre><code>
+```Go [sol3-Go]
+func trainningPlan(head *ListNode) *ListNode {
+    return trainningPlanTail(nil, head)
+}
+
+func trainningPlanTail(prev *ListNode, curr *ListNode) *ListNode {
+    if (curr == nil) {
+        return prev;
+    }
+    next := curr.Next;
+    curr.Next = prev;
+    return trainningPlanTail(curr, next);
+}
+</code></pre>
+<p>```JavaScript [sol3-JavaScript]<br />
+var trainningPlan = function(head) {<br />
+    return trainningPlanTail(null, head);<br />
+};</p>
+<p>var trainningPlanTail = function(prev, curr) {<br />
+    if (curr === null) {<br />
+        return prev;<br />
+    }<br />
+    let next = curr.next;<br />
+    curr.next = prev;<br />
+    return trainningPlanTail(curr, next);<br />
+};</p>
+<pre><code>
+```TypeScript [sol3-TypeScript]
+function trainningPlan(head: ListNode | null): ListNode | null {
+    return trainningPlanTail(null, head);
+};
+
+function trainningPlanTail(prev: ListNode | null, curr: ListNode | null): ListNode | null {
+    if (curr === null) {
+        return prev;
+    }
+    let next = curr.next;
+    curr.next = prev;
+    return trainningPlanTail(curr, next);
+};
+</code></pre>
+<h2>复杂度分析</h2>
+<ul>
+<li>
+<p>时间复杂度：$O(n)$，其中 $n$ 是链表的长度。需要对链表的每个结点进行反转操作，每个结点的反转操作的时间都是 $O(1)$。</p>
+</li>
+<li>
+<p>空间复杂度：$O(1)$。</p>
+</li>
+</ul>
+</div>
+</div>
+</body>
+</html>

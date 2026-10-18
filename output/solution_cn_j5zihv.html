@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>两种做法：递归 / 迭代（Python/Java/C++/Go） – Find the K-th Character in String Game II</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_find-the-k-th-character-in-string-game-ii.html">Find the K-th Character in String Game II / 找出第 K 个字符 II</a> <span class="sep">›</span> <span class="cur">两种做法：递归 / 迭代（Python/Java/C++/Go）</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">两种做法：递归 / 迭代（Python/Java/C++/Go）</div>
+  <div class="meta">
+    <span>👤 endlesscheng</span>
+    <span>👍 162</span>
+    <span>2024-09-29</span>
+    <span class="badge b-video">📹</span>
+    <a href="https://leetcode.cn/problems/find-the-k-th-character-in-string-game-ii/solution/liang-chong-zuo-fa-di-gui-die-dai-python-5f6z/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h2>方法一：递归</h2>
+<p>设 $ extit{operations}$ 的长度为 $n$。</p>
+<p>由于每次操作，都会把字符串的长度扩大一倍，所以 $n$ 次操作后，最终字符串 $S$ 的长度为 $2^n$。</p>
+<p>分类讨论：</p>
+<ul>
+<li>如果 $k \le 2^{n-1}$，那么第 $k$ 个字母在 $S$ 的左半段，不会受到 $   extit{operations}[n-1]$ 的影响，问题等价于去掉 $   extit{operations}[n-1]$ 的子问题。</li>
+<li>如果 $k &gt; 2^{n-1}$，那么第 $k$ 个字母在 $S$ 的右半段，问题等价于去掉 $  extit{operations}[n-1]$，计算右半段的第 $k-2^{n-1}$ 个字母的子问题。如果 $    extit{operations}[n-1]=1$，那么子问题返回的字母需要加 $1$（变成下一个字母），否则不变。也相当于子问题返回的字母需要增加 $    extit{operations}[n-1]$。</li>
+</ul>
+<p>递归边界：如果 $n=0$，没有操作，返回 Alice 最初的字母 $ exttt{a}$。 </p>
+<p>具体请看 [视频讲解](<a href="https://www.bilibili.com/video/BV1TqxCeZEmb" target="_blank" class="vimeo-link" style="background:#00a1d6">▶ 在 Bilibili 观看</a> 第四题，欢迎点赞关注~</p>
+<p>```py [sol-Python3]<br />
+class Solution:<br />
+    def kthCharacter(self, k: int, operations: List[int]) -&gt; str:<br />
+        if not operations:<br />
+            return 'a'<br />
+        op = operations.pop()<br />
+        # 注意 pop 之后 operations 的长度减少了 1，所以下面写的是 1&lt;&lt;n 而不是 1&lt;&lt;(n-1)<br />
+        m = 1 &lt;&lt; len(operations)<br />
+        if k &lt;= m:  # k 在左半段<br />
+            return self.kthCharacter(k, operations)<br />
+        # k 在右半段<br />
+        ans = self.kthCharacter(k - m, operations)<br />
+        return ascii_lowercase[(ord(ans) - ord('a') + op) % 26]</p>
+<pre><code>
+```java [sol-Java]
+class Solution {
+    public char kthCharacter(long k, int[] operations) {
+        // 从 k-1 的二进制长度减一开始，详细解释见下文
+        return f(k, operations, 63 - Long.numberOfLeadingZeros(k - 1));
+    }
+
+    private char f(long k, int[] operations, int i) {
+        if (i &lt; 0) {
+            return 'a';
+        }
+        int op = operations[i];
+        if (k &lt;= (1L &lt;&lt; i)) { // k 在左半段
+            return f(k, operations, i - 1);
+        }
+        // k 在右半段
+        char ans = f(k - (1L &lt;&lt; i), operations, i - 1);
+        return (char) ('a' + (ans - 'a' + op) % 26);
+    }
+}
+</code></pre>
+<p>```cpp [sol-C++]<br />
+class Solution {<br />
+public:<br />
+    char kthCharacter(long long k, vector<int>&amp; operations) {<br />
+        if (operations.empty()) {<br />
+            return 'a';<br />
+        }<br />
+        int op = operations.back();<br />
+        operations.pop_back();<br />
+        int n = operations.size(); // 注意这里是减一后的 n<br />
+        if (n &gt;= 63 || k &lt;= (1LL &lt;&lt; n)) { // k 在左半段<br />
+            return kthCharacter(k, operations);<br />
+        }<br />
+        // k 在右半段<br />
+        char ans = kthCharacter(k - (1LL &lt;&lt; n), operations);<br />
+        return 'a' + (ans - 'a' + op) % 26;<br />
+    }<br />
+};</p>
+<pre><code>
+```go [sol-Go]
+func kthCharacter(k int64, operations []int) byte {
+    n := len(operations)
+    if n == 0 {
+        return 'a'
+    }
+    n-- // 注意这里减一了
+    op := operations[n]
+    operations = operations[:n]
+    if n &gt;= 63 || k &lt;= 1&lt;&lt;n { // k 在左半段
+        return kthCharacter(k, operations)
+    }
+    // k 在右半段
+    ans := kthCharacter(k-1&lt;&lt;n, operations)
+    return 'a' + (ans-'a'+byte(op))%26
+}
+</code></pre>
+<h2>方法二：迭代</h2>
+<p>写出上面的递归代码后，可以发现：</p>
+<ol>
+<li>本质上，我们在计算 $  exttt{a}$ 需要增加的次数，这可以用一个变量 $    extit{inc}$ 记录。</li>
+<li>我们在倒序遍历 $    extit{operations}$。当 $k$ 在字符串的右半段，也就是 $k &gt; 2^i$ 时，我们会把 $    extit{inc}$ 增加 $    extit{operations}[i]$。 </li>
+</ol>
+<p>由于 $k &gt; 2^i$ 等价于 $k-1\ge 2^i$，解得</p>
+<p>i\le \lfloor \log_2 (k-1) \rfloor</p>
+<p>也就是 $i$ 小于等于 $k-1$ 的二进制长度减一。</p>
+<p>注意题目保证执行完所有操作后字符串至少有 $k$ 个字母，所以无需担心下标 $i$ 越界的情况。</p>
+<h3>写法一</h3>
+<p>```py [sol-Python3]<br />
+class Solution:<br />
+    def kthCharacter(self, k: int, operations: List[int]) -&gt; str:<br />
+        m = (k - 1).bit_length()<br />
+        inc = 0<br />
+        for i in range(m - 1, -1, -1):<br />
+            if k &gt; 1 &lt;&lt; i:  # k 在右半段<br />
+                inc += operations[i]<br />
+                k -= 1 &lt;&lt; i<br />
+        return ascii_lowercase[inc % 26]</p>
+<pre><code>
+```java [sol-Java]
+class Solution {
+    public char kthCharacter(long k, int[] operations) {
+        int inc = 0;
+        for (int i = 63 - Long.numberOfLeadingZeros(k - 1); i &gt;= 0; i--) {
+            if (k &gt; (1L &lt;&lt; i)) { // k 在右半段
+                inc += operations[i];
+                k -= 1L &lt;&lt; i;
+            }
+        }
+        return (char) ('a' + inc % 26);
+    }
+}
+</code></pre>
+<p>```cpp [sol-C++]<br />
+class Solution {<br />
+public:<br />
+    char kthCharacter(long long k, vector<int>&amp; operations) {<br />
+        int m = bit_width((uint64_t) k - 1);<br />
+        int inc = 0;<br />
+        for (int i = m - 1; i &gt;= 0; i--) {<br />
+            if (k &gt; (1LL &lt;&lt; i)) { // k 在右半段<br />
+                inc += operations[i];<br />
+                k -= 1LL &lt;&lt; i;<br />
+            }<br />
+        }<br />
+        return 'a' + inc % 26;<br />
+    }<br />
+};</p>
+<pre><code>
+```go [sol-Go]
+func kthCharacter(k int64, operations []int) byte {
+    inc := 0
+    for i := bits.Len(uint(k-1)) - 1; i &gt;= 0; i-- {
+        if k &gt; 1&lt;&lt;i { // k 在右半段
+            inc += operations[i]
+            k -= 1 &lt;&lt; i
+        }
+    }
+    return 'a' + byte(inc%26)
+}
+</code></pre>
+<h3>写法二</h3>
+<p>本质上，我们相当于在遍历 $k-1$ 二进制的每个比特 $1$，累加 $1$ 对应的 $    extit{operations}[i]$。</p>
+<p>```py [sol-Python3]<br />
+class Solution:<br />
+    def kthCharacter(self, k: int, operations: List[int]) -&gt; str:<br />
+        k -= 1<br />
+        m = k.bit_length()<br />
+        inc = sum(op for i, op in enumerate(operations[:m]) if k &gt;&gt; i &amp; 1)<br />
+        return ascii_lowercase[inc % 26]</p>
+<pre><code>
+```java [sol-Java]
+class Solution {
+    public char kthCharacter(long k, int[] operations) {
+        k--;
+        int inc = 0;
+        for (int i = 63 - Long.numberOfLeadingZeros(k); i &gt;= 0; i--) {
+            if ((k &gt;&gt; i &amp; 1) &gt; 0) {
+                inc += operations[i];
+            }
+        }
+        return (char) ('a' + inc % 26);
+    }
+}
+</code></pre>
+<p>```cpp [sol-C++]<br />
+class Solution {<br />
+public:<br />
+    char kthCharacter(long long k, vector<int>&amp; operations) {<br />
+        k--;<br />
+        int m = bit_width((uint64_t) k);<br />
+        int inc = 0;<br />
+        for (int i = m - 1; i &gt;= 0; i--) {<br />
+            if (k &gt;&gt; i &amp; 1) {<br />
+                inc += operations[i];<br />
+            }<br />
+        }<br />
+        return 'a' + inc % 26;<br />
+    }<br />
+};</p>
+<pre><code>
+```go [sol-Go]
+func kthCharacter(k int64, operations []int) byte {
+    k--
+    inc := 0
+    for i, op := range operations[:bits.Len(uint(k))] {
+        if k&gt;&gt;i&amp;1 &gt; 0 {
+            inc += op
+        }
+    }
+    return 'a' + byte(inc%26)
+}
+</code></pre>
+<h3>写法三</h3>
+<p>当「$k-1$ 第 $i$ 位是 $1$」和「$    extit{operations}[i]=1$」两个条件同时满足时，才把 $  extit{inc}$ 加一。</p>
+<p>这两个条件可以合并为：把 $k-1$ 右移 $i$ 位，与 $ extit{operations}[i]$ 计算 AND，如果结果是 $1$，把 $  extit{inc}$ 加一。也可以直接把结果加到 $ extit{inc}$ 中。</p>
+<p>```py [sol-Python3]<br />
+class Solution:<br />
+    def kthCharacter(self, k: int, operations: List[int]) -&gt; str:<br />
+        k -= 1<br />
+        m = k.bit_length()<br />
+        inc = sum(k &gt;&gt; i &amp; op for i, op in enumerate(operations[:m]))<br />
+        return ascii_lowercase[inc % 26]</p>
+<pre><code>
+```java [sol-Java]
+class Solution {
+    public char kthCharacter(long k, int[] operations) {
+        k--;
+        int inc = 0;
+        for (int i = 63 - Long.numberOfLeadingZeros(k); i &gt;= 0; i--) {
+            inc += k &gt;&gt; i &amp; operations[i];
+        }
+        return (char) ('a' + inc % 26);
+    }
+}
+</code></pre>
+<p>```cpp [sol-C++]<br />
+class Solution {<br />
+public:<br />
+    char kthCharacter(long long k, vector<int>&amp; operations) {<br />
+        k--;<br />
+        int m = bit_width((uint64_t) k);<br />
+        int inc = 0;<br />
+        for (int i = m - 1; i &gt;= 0; i--) {<br />
+            inc += k &gt;&gt; i &amp; operations[i];<br />
+        }<br />
+        return 'a' + inc % 26;<br />
+    }<br />
+};</p>
+<pre><code>
+```go [sol-Go]
+func kthCharacter(k int64, operations []int) byte {
+    k--
+    inc := 0
+    for i, op := range operations[:bits.Len(uint(k))] {
+        inc += int(k) &gt;&gt; i &amp; op
+    }
+    return 'a' + byte(inc%26)
+}
+</code></pre>
+<h4>复杂度分析</h4>
+<ul>
+<li>时间复杂度：$\mathcal{O}(\log k)$。注意题目保证 $  extit{operations}$ 数组足够长。</li>
+<li>空间复杂度：$\mathcal{O}(1)$。</li>
+</ul>
+<h2>相似题目</h2>
+<ul>
+<li><a href="https://leetcode.cn/problems/find-kth-bit-in-nth-binary-string/">1545. 找出第 N 个二进制字符串中的第 K 位</a> 做到 $\mathcal{O}(\log k)$</li>
+</ul>
+<h2>分类题单</h2>
+<p><a href="https://leetcode.cn/circle/discuss/RvFUtj/">如何科学刷题？</a></p>
+<ol>
+<li><a href="https://leetcode.cn/circle/discuss/0viNMK/">滑动窗口与双指针（定长/不定长/单序列/双序列/三指针/分组循环）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/SqopEo/">二分算法（二分答案/最小化最大值/最大化最小值/第K小）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/9oZFK9/">单调栈（基础/矩形面积/贡献法/最小字典序）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/YiXPXW/">网格图（DFS/BFS/综合应用）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/dHn9Vk/">位运算（基础/性质/拆位/试填/恒等式/思维）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/01LUak/">图论算法（DFS/BFS/拓扑排序/基环树/最短路/最小生成树/网络流）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/tXLS3i/">动态规划（入门/背包/划分/状态机/区间/状压/数位/数据结构优化/树形/博弈/概率期望）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/mOr1u6/">常用数据结构（前缀和/差分/栈/队列/堆/字典树/并查集/树状数组/线段树）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/IYT3ss/">数学算法（数论/组合/概率期望/博弈/计算几何/随机算法）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/g6KTKL/">贪心与思维（基本贪心策略/反悔/区间/字典序/数学/思维/脑筋急转弯/构造）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/K0n2gO/">链表、二叉树与回溯（前后指针/快慢指针/DFS/BFS/直径/LCA/一般树）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/SJFwQI/">字符串（KMP/Z函数/Manacher/字符串哈希/AC自动机/后缀数组/子序列自动机）</a></li>
+</ol>
+<p><a href="https://github.com/EndlessCheng/codeforces-go/blob/master/leetcode/SOLUTIONS.md">我的题解精选（已分类）</a></p>
+<p>欢迎关注 <a href="https://space.bilibili.com/206214">B站@灵茶山艾府</a></p>
+</div>
+</div>
+</body>
+</html>

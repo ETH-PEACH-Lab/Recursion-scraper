@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>✅☑8 Approaches || [C++/Java/Python/JavaScript] || EXPLAINED🔥 – Power of Two</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_power-of-two.html">Power of Two</a> <span class="sep">›</span> <span class="cur">✅☑8 Approaches || [C++/Java/Python/JavaScript] || EXPLAINED🔥</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">✅☑8 Approaches || [C++/Java/Python/JavaScript] || EXPLAINED🔥</div>
+  <div class="meta">
+    <span>👤 MarkSPhilip31</span>
+    <span>👍 313</span>
+    <span>2024-02-19</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/power-of-two/solutions/4748857/8-approaches-cjavapythonjavascript-explained/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>DO GIVE IT A LIKE IF THAT WAS HELPFUL</h1>
+<hr />
+<p><img alt="Screenshot 2024-02-19 062220.png" src="https://assets.leetcode.com/users/images/1355b266-6ed0-49da-b0ed-84f9dd632126_1708304061.8877835.png" /></p>
+<hr />
+<p><strong>Approach 1(Power function)</strong> -  <code>O(1)</code><br />
+<strong>Approach 2(Dividing by 2)</strong> -  <code>O(logn)</code><br />
+<strong>Approach 3(left shift)</strong> - <code>O(logn)</code><br />
+<strong>Approach 4(Ceil and Floor)</strong> -  <code>O(1)</code><br />
+<strong>Approach 5(And operator)</strong> - <code>O(1)</code><br />
+<strong>Approach 6(Counting 1's)</strong> - <code>O(logn)</code><br />
+<strong>Approach 7(Modulo with n)</strong> -  <code>O(1)</code><br />
+<strong>Approach 8(Recursion)</strong> - <code>O(logn)</code></p>
+<hr />
+<h1>Approaches</h1>
+<p>(Also explained in the code)</p>
+<h4><strong><em>Approach 1(Using Power Function)</em></strong></h4>
+<ol>
+<li>Generating all possible numbers in the range.</li>
+<li>Using pow() function for calculating power of 2.</li>
+<li>If n is equal to <code>ans</code>, return true else will return false after the loop end.</li>
+</ol>
+<h1>Complexity</h1>
+<ul>
+<li>
+<p>Time complexity:<br />
+   O(1)</p>
+</li>
+<li>
+<p>Space complexity:<br />
+   O(1)</p>
+</li>
+</ul>
+<h1>Code</h1>
+<p>```C++ []<br />
+class Solution {<br />
+public:<br />
+    bool isPowerOfTwo(int n) {</p>
+<pre><code>    for(int i =0;i&lt;31;i++){
+    int ans = pow(2,i);
+
+        if(ans == n)return true;
+
+    }
+    return false;
+}
+</code></pre>
+<p>};</p>
+<pre><code>```Java []
+public class Solution {
+    public boolean isPowerOfTwo(int n) {
+        for (int i = 0; i &lt; 31; i++) {
+            int ans = (int) Math.pow(2, i);
+            if (ans == n) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+</code></pre>
+<p>```python3 []<br />
+class Solution:<br />
+    def isPowerOfTwo(self, n: int) -&gt; bool:<br />
+        for i in range(31):<br />
+            ans = 2 ** i<br />
+            if ans == n:<br />
+                return True<br />
+        return False</p>
+<pre><code>```javascript []
+class Solution {
+    isPowerOfTwo(n) {
+        for (let i = 0; i &lt; 31; i++) {
+            let ans = Math.pow(2, i);
+            if (ans === n) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+</code></pre>
+<hr />
+<h4><strong><em>Approach 2(Dividing n by 2)</em></strong></h4>
+<ol>
+<li>If n is divisible by 2 , every time we will encounter 1 at the end.</li>
+<li>And at any point if n isn't divisible by 2 we will return false.</li>
+</ol>
+<h1>Complexity</h1>
+<ul>
+<li>
+<p>Time complexity:<br />
+   O(logn)</p>
+</li>
+<li>
+<p>Space complexity:<br />
+   O(1)</p>
+</li>
+</ul>
+<h1>Code</h1>
+<p>```C++ []<br />
+class Solution {<br />
+public:<br />
+    bool isPowerOfTwo(int n) {<br />
+        if(n==0)return false;</p>
+<pre><code>    while(n&gt;0){
+        if(n==1)return true;
+        if(n %2 !=0)break;
+        n /=2;
+    }
+    return false;
+}
+</code></pre>
+<p>};</p>
+<pre><code>```Java []
+public class Solution {
+    public boolean isPowerOfTwo(int n) {
+        if (n == 0) return false;
+
+        while (n &gt; 0) {
+            if (n == 1) return true;
+            if (n % 2 != 0) break;
+            n /= 2;
+        }
+        return false;
+    }
+}
+</code></pre>
+<p>```python3 []<br />
+class Solution:<br />
+    def isPowerOfTwo(self, n: int) -&gt; bool:<br />
+        if n == 0:<br />
+            return False</p>
+<pre><code>    while n &gt; 0:
+        if n == 1:
+            return True
+        if n % 2 != 0:
+            break
+        n //= 2
+    return False
+</code></pre>
+<pre><code>```javascript []
+class Solution {
+    isPowerOfTwo(n) {
+        if (n === 0) return false;
+
+        while (n &gt; 0) {
+            if (n === 1) return true;
+            if (n % 2 !== 0) break;
+            n /= 2;
+        }
+        return false;
+    }
+}
+</code></pre>
+<hr />
+<h4><strong><em>Approach 3(Left Shift)</em></strong></h4>
+<ol>
+<li>If n is 0 or less will never enter the loop and will return false.</li>
+<li>taking x = 1.</li>
+<li>
+<p>example : <code>let n = 8</code><br />
+    which be represented as 1000<br />
+    now we will left left shift x until it get equals to n or exceed it.</p>
+<p>1st left shift: <code>x&lt;&lt;1 =&gt; 10</code><br />
+2nd left shift: <code>x&lt;&lt;1 =&gt; 100</code><br />
+3rd left shift: <code>x&lt;&lt;1 =&gt; 1000</code></p>
+</li>
+<li>
+<p>now n is equal to x (<code>1000 = 1000</code>) which implies it is divisible by 2 because numbers divisible by 2 will only have a single 1 in their binary representation.</p>
+</li>
+</ol>
+<h1>Complexity</h1>
+<ul>
+<li>
+<p>Time complexity:<br />
+   O(logn)</p>
+</li>
+<li>
+<p>Space complexity:<br />
+   O(1)</p>
+</li>
+</ul>
+<h1>Code</h1>
+<p>```C++ []<br />
+class Solution {<br />
+public:<br />
+    bool isPowerOfTwo(int n) {<br />
+        int x =1;<br />
+        while(x&lt;=n){<br />
+            if(x==n)return true;<br />
+            if(x &gt; INT_MAX /2)break;<br />
+            x = x&lt;&lt;1;<br />
+        }<br />
+        return false;<br />
+    }<br />
+};</p>
+<pre><code>```Java []
+public class Solution {
+    public boolean isPowerOfTwo(int n) {
+        int x = 1;
+        while (x &lt;= n) {
+            if (x == n) return true;
+            if (x &gt; Integer.MAX_VALUE / 2) break;
+            x = x &lt;&lt; 1;
+        }
+        return false;
+    }
+}
+</code></pre>
+<p>```python3 []<br />
+class Solution:<br />
+    def isPowerOfTwo(self, n: int) -&gt; bool:<br />
+        x = 1<br />
+        while x &lt;= n:<br />
+            if x == n:<br />
+                return True<br />
+            if x &gt; 2 ** 30:<br />
+                break<br />
+            x = x &lt;&lt; 1<br />
+        return False</p>
+<pre><code>```javascript []
+class Solution {
+    isPowerOfTwo(n) {
+        let x = 1;
+        while (x &lt;= n) {
+            if (x === n) return true;
+            if (x &gt; Math.pow(2, 30)) break;
+            x = x &lt;&lt; 1;
+        }
+        return false;
+    }
+}
+</code></pre>
+<hr />
+<h4><strong><em>Approach 4(Ceil and floor)</em></strong></h4>
+<ol>
+<li>
+<p><strong>Ceil() = rounds up to the nearest integer.<br />
+floot() = rounds down to the nearest integer.</strong></p>
+</li>
+<li>
+<p>example 1 : <br />
+<code>ceil(log2(5)) = 2</code> <br />
+<code>floor(log2(5)) = 3</code></p>
+</li>
+<li>
+<p>example 2 : <br />
+<code>ceil(log2(8)) = 3</code> <br />
+<code>floor(log2(8)) = 3</code></p>
+</li>
+<li>
+<p>Incase of number multiple of 2 ceil and floor will always be equal.</p>
+</li>
+</ol>
+<h1>Complexity</h1>
+<ul>
+<li>
+<p>Time complexity:<br />
+   O(1)</p>
+</li>
+<li>
+<p>Space complexity:<br />
+   O(1)</p>
+</li>
+</ul>
+<h1>Code</h1>
+<p>```C++ []<br />
+class Solution {<br />
+public:<br />
+    bool isPowerOfTwo(int n) {<br />
+        if(n==0)return false;</p>
+<pre><code>    return floor(log2(n)) == ceil(log2(n)) ? true : false;
+}
+</code></pre>
+<p>};</p>
+<pre><code>```Java []
+public class Solution {
+    public boolean isPowerOfTwo(int n) {
+        if (n == 0) return false;
+        return Math.floor(Math.log(n) / Math.log(2)) == Math.ceil(Math.log(n) / Math.log(2));
+    }
+}
+</code></pre>
+<p>```python3 []<br />
+import math<br />
+class Solution:<br />
+    def isPowerOfTwo(self, n: int) -&gt; bool:<br />
+        if n == 0:<br />
+            return False<br />
+        return math.floor(math.log2(n)) == math.ceil(math.log2(n))</p>
+<pre><code>```javascript []
+class Solution {
+    isPowerOfTwo(n) {
+        if (n === 0) return false;
+        return Math.floor(Math.log2(n)) === Math.ceil(Math.log2(n));
+    }
+}
+</code></pre>
+<hr />
+<h4><strong><em>Approach 5(And Operator)</em></strong></h4>
+<ol>
+<li>And operation between multiple of 2 and next lower number will always give 0 and other wise it will never be 0.</li>
+<li>
+<p>example 1:  <code>8 &amp; 7</code><br />
+<code>1000(8) &amp; 0111(7) =&gt; 0000(0)</code></p>
+</li>
+<li>
+<p>example 1: = <code>10 &amp; 9</code><br />
+<code>1010(10) &amp; 1001(9) =&gt; 1000(8)</code></p>
+</li>
+</ol>
+<h1>Complexity</h1>
+<ul>
+<li>
+<p>Time complexity:<br />
+   O(1)</p>
+</li>
+<li>
+<p>Space complexity:<br />
+   O(1)</p>
+</li>
+</ul>
+<h1>Code</h1>
+<p>```C++ []<br />
+class Solution {<br />
+public:<br />
+    bool isPowerOfTwo(int n) {</p>
+<pre><code>    return  (n&gt;0 &amp;&amp; (n &amp; (n-1))==0) ? true:false;
+}
+</code></pre>
+<p>};</p>
+<pre><code>```Java []
+public class Solution {
+    public boolean isPowerOfTwo(int n) {
+        return (n &gt; 0) &amp;&amp; ((n &amp; (n - 1)) == 0);
+    }
+}
+</code></pre>
+<p>```python3 []<br />
+class Solution:<br />
+    def isPowerOfTwo(self, n: int) -&gt; bool:<br />
+        return n &gt; 0 and (n &amp; (n - 1)) == 0</p>
+<pre><code>```javascript []
+class Solution {
+    isPowerOfTwo(n) {
+        return n &gt; 0 &amp;&amp; (n &amp; (n - 1)) === 0;
+    }
+}
+</code></pre>
+<hr />
+<h4><strong><em>Approach 6(Counting 1's)</em></strong></h4>
+<ol>
+<li>As we know multuple of 2 will only have a single 1 in their binary representation.</li>
+<li>So counting it with the help of built-in function.</li>
+</ol>
+<h1>Complexity</h1>
+<ul>
+<li>
+<p>Time complexity:<br />
+   O(logn)</p>
+</li>
+<li>
+<p>Space complexity:<br />
+   O(1)</p>
+</li>
+</ul>
+<h1>Code</h1>
+<p>```C++ []<br />
+class Solution {<br />
+public:<br />
+    bool isPowerOfTwo(int n) {<br />
+        if(n&lt;=0)return false;<br />
+        int cnt = __builtin_popcount(n);<br />
+        return  (cnt==1) ? true:false;<br />
+    }<br />
+};</p>
+<pre><code>```Java []
+public class Solution {
+    public boolean isPowerOfTwo(int n) {
+        if (n &lt;= 0) return false;
+        int cnt = Integer.bitCount(n);
+        return cnt == 1;
+    }
+}
+</code></pre>
+<p>```python3 []<br />
+class Solution:<br />
+    def isPowerOfTwo(self, n: int) -&gt; bool:<br />
+        if n &lt;= 0:<br />
+            return False<br />
+        cnt = bin(n).count('1')<br />
+        return cnt == 1</p>
+<pre><code>```javascript []
+class Solution {
+    isPowerOfTwo(n) {
+        if (n &lt;= 0) return false;
+        const cnt = (n).toString(2).split('1').length - 1;
+        return cnt === 1;
+    }
+}
+</code></pre>
+<hr />
+<h4><strong><em>Approach 7(Modulo with n)</em></strong></h4>
+<ol>
+<li>multiple of 2 will always divide 2^30.</li>
+<li>example :<br />
+<code>16 % 8 = 0</code><br />
+<code>36 % 2 = 0</code></li>
+</ol>
+<h1>Complexity</h1>
+<ul>
+<li>
+<p>Time complexity:<br />
+   O(1)</p>
+</li>
+<li>
+<p>Space complexity:<br />
+   O(1)</p>
+</li>
+</ul>
+<h1>Code</h1>
+<p>```C++ []<br />
+class Solution {<br />
+public:<br />
+    bool isPowerOfTwo(int n) {<br />
+        if(n&lt;=0)return false;<br />
+        return ((1&lt;&lt;30) % n == 0)? true:false;<br />
+    }<br />
+};</p>
+<pre><code>```Java []
+public class Solution {
+    public boolean isPowerOfTwo(int n) {
+        if (n &lt;= 0) return false;
+        return (1 &lt;&lt; 30) % n == 0;
+    }
+}
+</code></pre>
+<p>```python3 []<br />
+class Solution:<br />
+    def isPowerOfTwo(self, n: int) -&gt; bool:<br />
+        if n &lt;= 0:<br />
+            return False<br />
+        return (1 &lt;&lt; 30) % n == 0</p>
+<pre><code>```javascript []
+class Solution {
+    isPowerOfTwo(n) {
+        if (n &lt;= 0) return false;
+        return (1 &lt;&lt; 30) % n === 0;
+    }
+}
+</code></pre>
+<hr />
+<h4><strong><em>Approach 8(Recursion)</em></strong></h4>
+<ol>
+<li>Recursively divide n by 2, if we reach 1 then it means it is multiple of 2  and will return true else it will be false.</li>
+</ol>
+<h1>Complexity</h1>
+<ul>
+<li>
+<p>Time complexity:<br />
+   O(logn)</p>
+</li>
+<li>
+<p>Space complexity:<br />
+   O(logn)</p>
+</li>
+</ul>
+<h1>Code</h1>
+<p>```C++ []<br />
+class Solution {<br />
+public:<br />
+    bool isPowerOfTwo(int n) {<br />
+        if(n&lt;=0)return false;<br />
+        if(n==1)return true;<br />
+        return (n%2 ==0 &amp;&amp; isPowerOfTwo(n/2));<br />
+    }<br />
+};</p>
+<pre><code>```Java []
+public class Solution {
+    public boolean isPowerOfTwo(int n) {
+        if (n &lt;= 0) return false;
+        if (n == 1) return true;
+        return (n % 2 == 0) &amp;&amp; isPowerOfTwo(n / 2);
+    }
+}
+</code></pre>
+<p>```python3 []<br />
+class Solution:<br />
+    def isPowerOfTwo(self, n: int) -&gt; bool:<br />
+        if n &lt;= 0:<br />
+            return False<br />
+        if n == 1:<br />
+            return True<br />
+        return (n % 2 == 0) and self.isPowerOfTwo(n // 2)</p>
+<pre><code>```javascript []
+class Solution {
+    isPowerOfTwo(n) {
+        if (n &lt;= 0) return false;
+        if (n === 1) return true;
+        return (n % 2 === 0) &amp;&amp; this.isPowerOfTwo(n / 2);
+    }
+}
+</code></pre>
+<hr />
+<h1>DO GIVE IT A LIKE IF THAT WAS HELPFUL</h1>
+<h2>---</h2>
+<hr />
+</div>
+</div>
+</body>
+</html>

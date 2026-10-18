@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>数位 DP 通用模板，两种写法：参数/贡献（Python/Java/C++/Go） – Number of Digit One</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_number-of-digit-one.html">Number of Digit One / 数字 1 的个数</a> <span class="sep">›</span> <span class="cur">数位 DP 通用模板，两种写法：参数/贡献（Python/Java/C++/Go）</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">数位 DP 通用模板，两种写法：参数/贡献（Python/Java/C++/Go）</div>
+  <div class="meta">
+    <span>👤 endlesscheng</span>
+    <span>👍 223</span>
+    <span>2021-08-10</span>
+    <span class="badge b-video">📹</span>
+    <a href="https://leetcode.cn/problems/number-of-digit-one/solution/by-endlesscheng-h9ua/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h2>方法一：把 1 的个数作为参数</h2>
+<p>请看 [视频讲解](<a href="https://www.bilibili.com/video/BV1rS4y1s721" target="_blank" class="vimeo-link" style="background:#00a1d6">▶ 在 Bilibili 观看</a></p>
+<p>为方便计算，首先把 $n$ 转换成字符串 $s$。</p>
+<p>定义 $    extit{dfs}(i,   extit{cnt}_1,   extit{isLimit})$ 表示在前 $i$ 位有 $  extit{cnt}_1$ 个 $1$ 的前提下，我们能构造出的数中的 $1$ 的个数总和。</p>
+<p>例如 $n=9999$，如果前三位我们都填了 $1$，那么填到最后一位，此时 $    extit{dfs}$ 计算的就是 $1110,1111,1112,\ldots,1119$ 这 $10$ 个数中一共有多少个 $1$（一共有 $31$ 个 $1$）。</p>
+<p>$   extit{dfs}$ 中的 $    extit{isLimit}$ 表示当前是否受到了 $n$ 的约束（我们要构造的数字不能超过 $    extit{n}$）。若为真，则第 $i$ 位填入的数字至多为 $   extit{n}[i]$，否则至多为 $9$，把这个上限记作 $    extit{up}$。如果在受到约束的情况下填了数字 $    extit{up}$，那么后续填入的数字仍会受到 $  extit{n}$ 的约束。例如 $  extit{n}=123$，那么 $i=0$ 填的是 $1$ 的话，$i=1$ 的这一位至多填 $2$。</p>
+<p><strong>递归边界</strong>：当所有数字填完时，返回 $  extit{cnt}_1$。</p>
+<p><strong>递归入口</strong>：$  extit{dfs}(0,0, exttt{true})$，一开始没有填数字，并且会受到 $n$ 的约束。</p>
+<h3>答疑</h3>
+<p><strong>问</strong>：记忆化三个状态有点麻烦，可以不记录 $   extit{isLimit}$ 吗？</p>
+<p><strong>答</strong>：可以。想一想 $  extit{isLimit}= exttt{true}$ 只在什么情况下成立？只在我们填入的数字都等于 $n$ 对应位置的数字时成立。比如 $ extit{n}=234$，第一位填 $2$，第二位填 $3$，此时 $    extit{isLimit}= exttt{true}$。但我们不会再次递归到第一位填 $2$，第二位填 $3$ 的情况，记忆化这样的状态是没有意义的。（注：想象我们在写一个三重循环，去枚举每一位填什么数字。第一位填 $2$，第二位填 $3$ 已经是快要结束循环的情况了，不可能再次枚举到。）</p>
+<p>根据这个例子，我们可以只记录不受到 $n$ 约束时的状态 $(i,   extit{cnt}_1)$。相当于记忆化的是 $(i,    extit{cnt}_1,   exttt{false})$ 这个状态。比如 $    extit{n}=234$，第一位填 $1$，第二位填 $2$，或者第一位填 $2$，第二位填 $1$，都会递归到 $(2,1,    exttt{false})$ 这个状态，那么第二次递归到这个状态时，就可以直接返回第一次递归记忆化的结果了。</p>
+<p>```py [sol-Python3]<br />
+class Solution:<br />
+    def countDigitOne(self, n: int) -&gt; int:<br />
+        s = list(map(int, str(n)))  # 避免在 dfs 中频繁调用 int()</p>
+<pre><code>    @cache  # 缓存装饰器，避免重复计算 dfs 的结果（一行代码实现记忆化）
+    def dfs(i: int, cnt1: int, is_limit: bool) -&gt; int:
+        if i == len(s):
+            return cnt1
+
+        up = s[i] if is_limit else 9
+        res = 0
+        for d in range(up + 1):  # 枚举要填入的数字 d
+            res += dfs(i + 1, cnt1 + (d == 1), is_limit and d == up)
+
+        return res
+
+    return dfs(0, 0, True)
+</code></pre>
+<pre><code>
+```java [sol-Java]
+class Solution {
+    public int countDigitOne(int n) {
+        char[] s = Integer.toString(n).toCharArray();
+        int m = s.length;
+        int[][] memo = new int[m][m];
+        for (int[] row : memo) {
+            Arrays.fill(row, -1); // -1 表示没有计算过
+        }
+        return dfs(0, 0, true, s, memo);
+    }
+
+    private int dfs(int i, int cnt1, boolean isLimit, char[] s, int[][] memo) {
+        if (i == s.length) {
+            return cnt1;
+        }
+        if (!isLimit &amp;&amp; memo[i][cnt1] &gt;= 0) { // 之前计算过
+            return memo[i][cnt1];
+        }
+
+        int up = isLimit ? s[i] - '0' : 9;
+        int res = 0;
+        for (int d = 0; d &lt;= up; d++) { // 枚举要填入的数字 d
+            res += dfs(i + 1, cnt1 + (d == 1 ? 1 : 0), isLimit &amp;&amp; d == up, s, memo);
+        }
+
+        if (!isLimit) {
+            memo[i][cnt1] = res; // 记忆化
+        }
+        return res;
+    }
+}
+</code></pre>
+<p>```cpp [sol-C++]<br />
+class Solution {<br />
+public:<br />
+    int countDigitOne(int n) {<br />
+        string s = to_string(n);<br />
+        int m = s.size();<br />
+        vector memo(m, vector<int>(m, -1)); // -1 表示没有计算过</p>
+<pre><code>    auto dfs = [&amp;](this auto&amp;&amp; dfs, int i, int cnt1, bool is_limit) -&gt; int {
+        if (i == m) {
+            return cnt1;
+        }
+        if (!is_limit &amp;&amp; memo[i][cnt1] &gt;= 0) { // 之前计算过
+            return memo[i][cnt1];
+        }
+
+        int up = is_limit ? s[i] - '0' : 9;
+        int res = 0;
+        for (int d = 0; d &lt;= up; d++) { // 枚举要填入的数字 d
+            res += dfs(i + 1, cnt1 + (d == 1), is_limit &amp;&amp; d == up);
+        }
+
+        if (!is_limit) {
+            memo[i][cnt1] = res;
+        }
+        return res;
+    };
+
+    return dfs(0, 0, true);
+}
+</code></pre>
+<p>};</p>
+<pre><code>
+```go [sol-Go]
+func countDigitOne(n int) int {
+    s := strconv.Itoa(n)
+    m := len(s)
+    memo := make([][]int, m)
+    for i := range memo {
+        memo[i] = make([]int, m)
+        for j := range memo[i] {
+            memo[i][j] = -1 // -1 表示没有计算过
+        }
+    }
+
+    var dfs func(int, int, bool) int
+    dfs = func(i, cnt1 int, isLimit bool) (res int) {
+        if i == m {
+            return cnt1
+        }
+        if !isLimit {
+            p := &amp;memo[i][cnt1]
+            if *p &gt;= 0 { // 之前计算过
+                return *p
+            }
+            defer func() { *p = res }() // 记忆化
+        }
+
+        up := 9
+        if isLimit {
+            up = int(s[i] - '0')
+        }
+
+        for d := range up + 1 { // 枚举要填入的数字 d
+            c := cnt1
+            if d == 1 {
+                c++
+            }
+            res += dfs(i+1, c, isLimit &amp;&amp; d == up)
+        }
+        return
+    }
+
+    return dfs(0, 0, true)
+}
+</code></pre>
+<h4>复杂度分析</h4>
+<ul>
+<li>时间复杂度：$\mathcal{O}(Dm^2)$，其中 $m=\mathcal{O}(\log n)$，$D=10$。由于每个状态只会计算一次，动态规划的时间复杂度 $=$ 状态个数 $    imes$ 单个状态的计算时间。本题 $i$ 和 $  extit{cnt}_1$ 都有 $\mathcal{O}(m)$ 个，所以状态个数为 $\mathcal{O}(m^2)$，单个状态的计算时间为 $\mathcal{O}(D)$，所以动态规划的时间复杂度为 $\mathcal{O}(Dm^2)$。</li>
+<li>空间复杂度：$\mathcal{O}(m^2)$。即状态个数。</li>
+</ul>
+<h2>方法二：贡献法</h2>
+<p>去掉 $    extit{dfs}$ 中的 $    extit{cnt}_1$ 参数，写在返回值中。也就是<strong>自底向上</strong>计算所有 $   extit{cnt}_1$ 的总和 $ extit{sum}$。</p>
+<p>回想一下如何统计一棵二叉树的节点个数：</p>
+<ul>
+<li>递归左子树，拿到左子树的节点个数 $    extit{leftSize}$。</li>
+<li>递归右子树，拿到右子树的节点个数 $    extit{rightSize}$。</li>
+<li>加上当前节点（$1$ 个），得到当前子树的节点个数 $   extit{leftSize} +   extit{rightSize} + 1$。</li>
+</ul>
+<p>本题如果只考虑每个数位怎么填，可以视作一棵<strong>十叉树</strong>。</p>
+<p>统计 $1$ 的总出现次数 $ extit{sum}$：</p>
+<ul>
+<li>递归子树，累加子树中产生的 $1$ 的出现次数，加到 $  extit{sum}$ 中。</li>
+<li>对于当前数位 $i$，如果填 $1$，那么这个 $1$ 会对后面所有剩余数位的填法都<strong>贡献</strong>一次。比如剩余数位有 $42$ 种填法，那么这 $42$ 个数都在 $i$ 处有 $1$，所以 $ extit{sum}$ 增加 $42$。</li>
+</ul>
+<p>从上面的讨论中，我们还需要知道剩余数位有多少种填法，<strong>每种填法都对应着十叉树的一个叶子</strong>。虽然本题数位可以随便填，没有特殊的约束，但为了代码的可扩展性，我把剩余数位的合法填法也作为返回值。</p>
+<p>也就是说，$  extit{dfs}$ 返回两个数，第一个数是剩余数位有多少种合法填法，第二个数是 $ extit{sum}$。剩余数位有多少种合法填法怎么算？这与统计十叉树的<strong>叶子</strong>个数的计算方式是一样的。</p>
+<p>```py [sol-Python3]<br />
+class Solution:<br />
+    def countDigitOne(self, n: int) -&gt; int:<br />
+        s = list(map(int, str(n)))  # 避免在 dfs 中频繁调用 int()</p>
+<pre><code>    # dfs 返回两个数：合法数字个数，1 的总数
+    @cache  # 缓存装饰器，避免重复计算 dfs 的结果（一行代码实现记忆化）
+    def dfs(i: int, is_limit: bool) -&gt; Tuple[int, int]:
+        if i == len(s):
+            return 1, 0  # 本题无特殊约束，能递归到终点的都是合法数字
+
+        up = s[i] if is_limit else 9
+        cnt = sum_ = 0
+        for d in range(up + 1):  # 枚举要填入的数字 d
+            sub_cnt, sub_sum = dfs(i + 1, is_limit and d == up)
+            cnt += sub_cnt  # 累加子树的合法数字个数
+            sum_ += sub_sum  # 累加子树的 1 的总数
+            if d == 1:  # 当前位置填 1
+                sum_ += sub_cnt  # 这个 1 会出现在 sub_cnt 个数字中
+
+        return cnt, sum_
+
+    return dfs(0, True)[1]
+</code></pre>
+<pre><code>
+```java [sol-Java]
+class Solution {
+    public int countDigitOne(int n) {
+        char[] s = Integer.toString(n).toCharArray();
+        int[][] memo = new int[s.length][];
+        return dfs(0, true, s, memo)[1];
+    }
+
+    // dfs 返回两个数：合法数字个数，1 的总数
+    private int[] dfs(int i, boolean isLimit, char[] s, int[][] memo) {
+        if (i == s.length) {
+            return new int[]{1, 0};
+        }
+        if (!isLimit &amp;&amp; memo[i] != null) { // 之前计算过
+            return memo[i];
+        }
+
+        int up = isLimit ? s[i] - '0' : 9;
+        int cnt = 0;
+        int sum = 0;
+        for (int d = 0; d &lt;= up; d++) { // 枚举要填入的数字 d
+            int[] sub = dfs(i + 1, isLimit &amp;&amp; d == up, s, memo);
+            cnt += sub[0]; // 累加子树的合法数字个数
+            sum += sub[1]; // 累加子树的 1 的总数
+            if (d == 1) { // 当前位置填 1
+                sum += sub[0]; // 这个 1 会出现在 sub[1] 个数字中
+            }
+        }
+
+        int[] res = new int[]{cnt, sum};
+        if (!isLimit) {
+            memo[i] = res; // 记忆化
+        }
+        return res;
+    }
+}
+</code></pre>
+<p>```cpp [sol-C++]<br />
+class Solution {<br />
+public:<br />
+    int countDigitOne(int n) {<br />
+        string s = to_string(n);<br />
+        int m = s.size();<br />
+        vector<pair\<int, int>> memo(m, {-1, -1}); // -1 表示没有计算过</p>
+<pre><code>    // dfs 返回两个数：合法数字个数，1 的总数
+    auto dfs = [&amp;](this auto&amp;&amp; dfs, int i, bool is_limit) -&gt; pair&lt;int, int&gt; {
+        if (i == m) {
+            return {1, 0}; // 本题无特殊约束，能递归到终点的都是合法数字
+        }
+        if (!is_limit &amp;&amp; memo[i].first &gt;= 0) { // 之前计算过
+            return memo[i];
+        }
+
+        int up = is_limit ? s[i] - '0' : 9;
+        int cnt = 0, sum = 0;
+        for (int d = 0; d &lt;= up; d++) { // 枚举要填入的数字 d
+            auto [sub_cnt, sub_sum] = dfs(i + 1, is_limit &amp;&amp; d == up);
+            cnt += sub_cnt; // 累加子树的合法数字个数
+            sum += sub_sum; // 累加子树的 1 的总数
+            if (d == 1) { // 当前位置填 1
+                sum += sub_cnt; // 这个 1 会出现在 sub_cnt 个数字中
+            }
+        }
+
+        pair&lt;int, int&gt; res = {cnt, sum};
+        if (!is_limit) {
+            memo[i] = res;
+        }
+        return res;
+    };
+
+    return dfs(0, true).second;
+}
+</code></pre>
+<p>};</p>
+<pre><code>
+```go [sol-Go]
+func countDigitOne(n int) int {
+    s := strconv.Itoa(n)
+    m := len(s)
+    type pair struct{ cnt, sum int } // 合法数字个数，1 的总数
+    memo := make([]pair, m)
+    for i := range memo {
+        memo[i].cnt = -1
+    }
+
+    var dfs func(int, bool) pair
+    dfs = func(i int, isLimit bool) (res pair) {
+        if i == m {
+            return pair{1, 0} // 本题无特殊约束，能递归到终点的都是合法数字
+        }
+        if !isLimit {
+            p := &amp;memo[i]
+            if p.cnt &gt;= 0 { // 之前计算过
+                return *p
+            }
+            defer func() { *p = res }() // 记忆化
+        }
+
+        up := 9
+        if isLimit {
+            up = int(s[i] - '0')
+        }
+
+        for d := range up + 1 { // 枚举要填入的数字 d
+            sub := dfs(i+1, isLimit &amp;&amp; d == up)
+            res.cnt += sub.cnt // 累加子树的合法数字个数
+            res.sum += sub.sum // 累加子树的 1 的总数
+            if d == 1 { // 当前位置填 1
+                res.sum += sub.cnt // 这个 1 会出现在 sub.cnt 个数字中
+            }
+        }
+        return
+    }
+
+    return dfs(0, true).sum
+}
+</code></pre>
+<h4>复杂度分析</h4>
+<ul>
+<li>时间复杂度：$\mathcal{O}(Dm)$，其中 $m=\mathcal{O}(\log n)$，$D=10$。由于每个状态只会计算一次，动态规划的时间复杂度 $=$ 状态个数 $  imes$ 单个状态的计算时间。本题状态个数等于 $\mathcal{O}(m)$，单个状态的计算时间为 $\mathcal{O}(D)$，所以总的时间复杂度为 $\mathcal{O}(Dm)$。</li>
+<li>空间复杂度：$\mathcal{O}(m)$。即状态个数。</li>
+</ul>
+<h2>专题训练</h2>
+<p>见下面动态规划题单的「<strong>十、数位 DP</strong>」。</p>
+<h2>分类题单</h2>
+<p><a href="https://leetcode.cn/circle/discuss/RvFUtj/">如何科学刷题？</a></p>
+<ol>
+<li><a href="https://leetcode.cn/circle/discuss/0viNMK/">滑动窗口与双指针（定长/不定长/单序列/双序列/三指针/分组循环）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/SqopEo/">二分算法（二分答案/最小化最大值/最大化最小值/第K小）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/9oZFK9/">单调栈（基础/矩形面积/贡献法/最小字典序）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/YiXPXW/">网格图（DFS/BFS/综合应用）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/dHn9Vk/">位运算（基础/性质/拆位/试填/恒等式/思维）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/01LUak/">图论算法（DFS/BFS/拓扑排序/基环树/最短路/最小生成树/网络流）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/tXLS3i/">动态规划（入门/背包/划分/状态机/区间/状压/数位/数据结构优化/树形/博弈/概率期望）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/mOr1u6/">常用数据结构（前缀和/差分/栈/队列/堆/字典树/并查集/树状数组/线段树）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/IYT3ss/">数学算法（数论/组合/概率期望/博弈/计算几何/随机算法）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/g6KTKL/">贪心与思维（基本贪心策略/反悔/区间/字典序/数学/思维/脑筋急转弯/构造）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/K0n2gO/">链表、树与回溯（前后指针/快慢指针/DFS/BFS/直径/LCA）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/SJFwQI/">字符串（KMP/Z函数/Manacher/字符串哈希/AC自动机/后缀数组/子序列自动机）</a></li>
+</ol>
+<p><a href="https://github.com/EndlessCheng/codeforces-go/blob/master/leetcode/SOLUTIONS.md">我的题解精选（已分类）</a></p>
+<p>欢迎关注 <a href="https://space.bilibili.com/206214">B站@灵茶山艾府</a></p>
+</div>
+</div>
+</body>
+</html>

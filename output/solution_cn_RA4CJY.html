@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>拆解复杂问题：实现一个完整计算器 – Basic Calculator</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_basic-calculator.html">Basic Calculator / 基本计算器</a> <span class="sep">›</span> <span class="cur">拆解复杂问题：实现一个完整计算器</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">拆解复杂问题：实现一个完整计算器</div>
+  <div class="meta">
+    <span>👤 labuladong</span>
+    <span>👍 132</span>
+    <span>2020-10-29</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/basic-calculator/solution/chai-jie-fu-za-wen-ti-shi-xian-yi-ge-wan-zheng-j-2/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p><a href="https://leetcode.cn/problems/basic-calculator">224.基本计算器</a></p>
+<p><a href="https://leetcode.cn/problems/basic-calculator-ii">227.基本计算器II</a></p>
+<p><a href="https://leetcode.cn/problems/basic-calculator-iii">772.基本计算器III</a></p>
+<p><strong>-----------</strong></p>
+<p>我们最终要实现的计算器功能如下：</p>
+<p>1、输入一个字符串，可以包含<code>+ - * /</code>、数字、括号以及空格，你的算法返回运算结果。</p>
+<p>2、要符合运算法则，括号的优先级最高，先乘除后加减。</p>
+<p>3、除号是整数除法，无论正负都向 0 取整（5/2=2，-5/2=-2）。</p>
+<p>4、可以假定输入的算式一定合法，且计算过程不会出现整型溢出，不会出现除数为 0 的意外情况。</p>
+<p>比如输入如下字符串，算法会返回 9：</p>
+<p><code>3 * (2-6 /(3 -7))</code></p>
+<p>可以看到，这就已经非常接近我们实际生活中使用的计算器了，虽然我们以前肯定都用过计算器，但是如果简单思考一下其算法实现，就会大惊失色：</p>
+<p>1、按照常理处理括号，要先计算最内层的括号，然后向外慢慢化简。这个过程我们手算都容易出错，何况写成算法呢！</p>
+<p>2、要做到先乘除，后加减，这一点教会小朋友还不算难，但教给计算机恐怕有点困难。</p>
+<p>3、要处理空格。我们为了美观，习惯性在数字和运算符之间打个空格，但是计算之中得想办法忽略这些空格。</p>
+<p>我记得很多大学数据结构的教材上，在讲栈这种数据结构的时候，应该都会用计算器举例，但是有一说一，讲的真的垃圾，不知道多少未来的计算机科学家就被这种简单的数据结构劝退了。</p>
+<p>那么本文就来聊聊怎么实现上述一个功能完备的计算器功能，<strong>关键在于层层拆解问题，化整为零，逐个击破</strong>，相信这种思维方式能帮大家解决各种复杂问题。</p>
+<p>下面就来拆解，从最简单的一个问题开始。</p>
+<h3>一、字符串转整数</h3>
+<p>是的，就是这么一个简单的问题，首先告诉我，怎么把一个字符串形式的<strong>正</strong>整数，转化成 int 型？</p>
+<pre><code class="language-cpp">string s = &quot;458&quot;;
+
+int n = 0;
+for (int i = 0; i &lt; s.size(); i++) {
+    char c = s[i];
+    n = 10 * n + (c - '0');
+}
+// n 现在就等于 458
+</code></pre>
+<p>这个还是很简单的吧，老套路了。但是即便这么简单，依然有坑：<strong><code>(c - '0')</code>的这个括号不能省略，否则可能造成整型溢出</strong>。</p>
+<p>因为变量<code>c</code>是一个 ASCII 码，如果不加括号就会先加后减，想象一下<code>s</code>如果接近 INT_MAX，就会溢出。所以用括号保证先减后加才行。</p>
+<h3>二、处理加减法</h3>
+<p>现在进一步，<strong>如果输入的这个算式只包含加减法，而且不存在空格</strong>，你怎么计算结果？我们拿字符串算式<code>1-12+3</code>为例，来说一个很简单的思路：</p>
+<p>1、先给第一个数字加一个默认符号<code>+</code>，变成<code>+1-12+3</code>。</p>
+<p>2、把一个运算符和数字组合成一对儿，也就是三对儿<code>+1</code>，<code>-12</code>，<code>+3</code>，把它们转化成数字，然后放到一个栈中。</p>
+<p>3、将栈中所有的数字求和，就是原算式的结果。</p>
+<p>我们直接看代码，结合一张图就看明白了：</p>
+<pre><code class="language-cpp">int calculate(string s) {
+    stack&lt;int&gt; stk;
+    // 记录算式中的数字
+    int num = 0;
+    // 记录 num 前的符号，初始化为 +
+    char sign = '+';
+    for (int i = 0; i &lt; s.size(); i++) {
+        char c = s[i];
+        // 如果是数字，连续读取到 num
+        if (isdigit(c)) 
+            num = 10 * num + (c - '0');
+        // 如果不是数字，就是遇到了下一个符号，
+        // 之前的数字和符号就要存进栈中
+        if (!isdigit(c) || i == s.size() - 1) {
+            switch (sign) {
+                case '+':
+                    stk.push(num); break;
+                case '-':
+                    stk.push(-num); break;
+            }
+            // 更新符号为当前符号，数字清零
+            sign = c;
+            num = 0;
+        }
+    }
+    // 将栈中所有结果求和就是答案
+    int res = 0;
+    while (!stk.empty()) {
+        res += stk.top();
+        stk.pop();
+    }
+    return res;
+}
+</code></pre>
+<p>我估计就是中间带<code>switch</code>语句的部分有点不好理解吧，<code>i</code>就是从左到右扫描，<code>sign</code>和<code>num</code>跟在它身后。当<code>s[i]</code>遇到一个运算符时，情况是这样的：</p>
+<p><img alt="" src="https://pic.leetcode.cn/1603946982-wHKngR-file_1603946982861" width="450" />}{:align=center</p>
+<p>所以说，此时要根据<code>sign</code>的 case 不同选择<code>nums</code>的正负号，存入栈中，然后更新<code>sign</code>并清零<code>nums</code>记录下一对儿符合和数字的组合。</p>
+<p>另外注意，不只是遇到新的符号会触发入栈，当<code>i</code>走到了算式的尽头（<code>i == s.size() - 1</code>），也应该将前面的数字入栈，方便后续计算最终结果。</p>
+<p><img alt="" src="https://pic.leetcode.cn/1603946982-ScHSpu-file_1603946982869" width="450" />}{:align=center</p>
+<p>至此，仅处理紧凑加减法字符串的算法就完成了，请确保理解以上内容，后续的内容就基于这个框架修修改改就完事儿了。</p>
+<h3>三、处理乘除法</h3>
+<p>其实思路跟仅处理加减法没啥区别，拿字符串<code>2-3*4+5</code>举例，核心思路依然是把字符串分解成符号和数字的组合。</p>
+<p>比如上述例子就可以分解为<code>+2</code>，<code>-3</code>，<code>*4</code>，<code>+5</code>几对儿，我们刚才不是没有处理乘除号吗，很简单，<strong>其他部分都不用变</strong>，在<code>switch</code>部分加上对应的 case 就行了：</p>
+<pre><code class="language-cpp">for (int i = 0; i &lt; s.size(); i++) {
+    char c = s[i];
+    if (isdigit(c)) 
+        num = 10 * num + (c - '0');
+
+    if (!isdigit(c) || i == s.size() - 1) {
+        switch (sign) {
+            int pre;
+            case '+':
+                stk.push(num); break;
+            case '-':
+                stk.push(-num); break;
+            // 只要拿出前一个数字做对应运算即可
+            case '*':
+                pre = stk.top();
+                stk.pop();
+                stk.push(pre * num);
+                break;
+            case '/':
+                pre = stk.top();
+                stk.pop();
+                stk.push(pre / num);
+                break;
+        }
+        // 更新符号为当前符号，数字清零
+        sign = c;
+        num = 0;
+    }
+}
+</code></pre>
+<p><img alt="" src="https://pic.leetcode.cn/1603946982-CoCdLY-file_1603946982872" width="450" />}{:align=center</p>
+<p><strong>乘除法优先于加减法体现在，乘除法可以和栈顶的数结合，而加减法只能把自己放入栈</strong>。</p>
+<p>现在我们思考一下<strong>如何处理字符串中可能出现的空格字符</strong>。其实也非常简单，想想空格字符的出现，会影响我们现有代码的哪一部分？</p>
+<pre><code class="language-cpp">// 如果 c 非数字
+if (!isdigit(c) || i == s.size() - 1) {
+    switch (c) {...}
+    sign = c;
+    num = 0;
+}
+</code></pre>
+<p>显然空格会进入这个 if 语句，但是我们并不想让空格的情况进入这个 if，因为这里会更新<code>sign</code>并清零<code>nums</code>，空格根本就不是运算符，应该被忽略。</p>
+<p>那么只要多加一个条件即可：</p>
+<pre><code class="language-cpp">if ((!isdigit(c) &amp;&amp; c != ' ') || i == s.size() - 1) {
+    ...
+}
+</code></pre>
+<p>好了，现在我们的算法已经可以按照正确的法则计算加减乘除，并且自动忽略空格符，剩下的就是如何让算法正确识别括号了。</p>
+<h3>四、处理括号</h3>
+<p>处理算式中的括号看起来应该是最难的，但真没有看起来那么难。</p>
+<p>为了规避编程语言的繁琐细节，我把前面解法的代码翻译成 Python 版本：</p>
+<pre><code class="language-python">def calculate(s: str) -&gt; int:
+
+    def helper(s: List) -&gt; int:
+        stack = []
+        sign = '+'
+        num = 0
+
+        while len(s) &gt; 0:
+            c = s.pop(0)
+            if c.isdigit():
+                num = 10 * num + int(c)
+
+            if (not c.isdigit() and c != ' ') or len(s) == 0:
+                if sign == '+':
+                    stack.append(num)
+                elif sign == '-':
+                    stack.append(-num)
+                elif sign == '*':
+                    stack[-1] = stack[-1] * num
+                elif sign == '/':
+                    # python 除法向 0 取整的写法
+                    stack[-1] = int(stack[-1] / float(num))                    
+                num = 0
+                sign = c
+
+        return sum(stack)
+    # 需要把字符串转成列表方便操作
+    return helper(list(s))
+</code></pre>
+<p>这段代码跟刚才 C++ 代码完全相同，唯一的区别是，不是从左到右遍历字符串，而是不断从左边<code>pop</code>出字符，本质还是一样的。</p>
+<p>那么，为什么说处理括号没有看起来那么难呢，<strong>因为括号具有递归性质</strong>。我们拿字符串<code>3*(4-5/2)-6</code>举例：</p>
+<p>calculate(<code>3*(4-5/2)-6</code>)<br />
+= 3 * calculate(<code>4-5/2</code>) - 6<br />
+= 3 * 2 - 6<br />
+= 0</p>
+<p>可以脑补一下，无论多少层括号嵌套，通过 calculate 函数递归调用自己，都可以将括号中的算式化简成一个数字。<strong>换句话说，括号包含的算式，我们直接视为一个数字就行了</strong>。</p>
+<p>现在的问题是，递归的开始条件和结束条件是什么？<strong>遇到<code>(</code>开始递归，遇到<code>)</code>结束递归</strong>：</p>
+<pre><code class="language-python">def calculate(s: str) -&gt; int:
+
+    def helper(s: List) -&gt; int:
+        stack = []
+        sign = '+'
+        num = 0
+
+        while len(s) &gt; 0:
+            c = s.pop(0)
+            if c.isdigit():
+                num = 10 * num + int(c)
+            # 遇到左括号开始递归计算 num
+            if c == '(':
+                num = helper(s)
+
+            if (not c.isdigit() and c != ' ') or len(s) == 0:
+                if sign == '+': ...
+                elif sign == '-': ... 
+                elif sign == '*': ...
+                elif sign == '/': ...
+                num = 0
+                sign = c
+            # 遇到右括号返回递归结果
+            if c == ')': break
+        return sum(stack)
+
+    return helper(list(s))
+</code></pre>
+<p><img alt="" src="https://pic.leetcode.cn/1603946982-jQKFQc-file_1603946982873" width="450" />}{:align=center</p>
+<p><img alt="" src="https://pic.leetcode.cn/1603946982-kUIdyx-file_1603946982874" width="450" />}{:align=center</p>
+<p><img alt="" src="https://pic.leetcode.cn/1603946982-TlgSjE-file_1603946982875" width="450" />}{:align=center</p>
+<p>你看，加了两三行代码，就可以处理括号了，这就是递归的魅力。至此，计算器的全部功能就实现了，通过对问题的层层拆解化整为零，再回头看，这个问题似乎也没那么复杂嘛。</p>
+<h3>五、最后总结</h3>
+<p>本文借实现计算器的问题，主要想表达的是一种处理复杂问题的思路。</p>
+<p>我们首先从字符串转数字这个简单问题开始，进而处理只包含加减法的算式，进而处理包含加减乘除四则运算的算式，进而处理空格字符，进而处理包含括号的算式。</p>
+<p><strong>可见，对于一些比较困难的问题，其解法并不是一蹴而就的，而是步步推进，螺旋上升的</strong>。如果一开始给你原题，你不会做，甚至看不懂答案，都很正常，关键在于我们自己如何简化问题，如何以退为进。</p>
+<p><strong>退而求其次是一种很聪明策略</strong>。你想想啊，假设这是一道***，你不会实现这个计算器，但是你写了字符串转整数的算法并指出了容易溢出的陷阱，那起码可以得 20 分吧；如果你能够处理加减法，那可以得 40 分吧；如果你能处理加减乘除四则运算，那起码够 70 分了；再加上处理空格字符，80 有了吧。我就是不会处理括号，那就算了，80 已经很 OK 了好不好。</p>
+<p>相关推荐：<br />
+  * <a href="https://labuladong.gitbook.io/algo">经典动态规划：0-1 背包问题</a><br />
+  * <a href="https://labuladong.gitbook.io/algo">手把手带你刷二叉树（第三期）</a></p>
+<p><strong>＿＿＿＿＿＿＿＿＿＿＿＿＿</strong></p>
+<p><strong>点击 <a href="https://labuladong.gitbook.io/algo/">我的主页</a> 看更多优质文章</strong>。</p>
+</div>
+</div>
+</body>
+</html>

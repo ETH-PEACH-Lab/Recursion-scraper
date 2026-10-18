@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wildcard Matching – Solutions</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <span class="cur">Wildcard Matching</span></nav>
+<div class="wrap">
+<div class="page-title">44. Wildcard Matching</div>
+<div class="page-sub">
+  <span class="badge b-hard">Hard</span> <span class="badge b-tag">String</span> <span class="badge b-tag">Dynamic Programming</span> <span class="badge b-tag">Greedy</span> <span class="badge b-tag">Recursion</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/wildcard-matching/" target="_blank" style="font-size:.85em">↗ LeetCode</a>
+  &nbsp;·&nbsp;<a href="tutorial_wildcard-matching.html" style="font-size:.85em">📖 Tutorial</a>
+</div>
+<div style="display:flex;gap:20px;flex-wrap:wrap;font-size:.88em;
+                             background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+                             padding:12px 16px;margin-bottom:20px">
+  <span>Total: <b>15</b></span>
+  <span style="color:#1a7f37">✅ Kept: <b>6</b></span>
+  <span style="color:#cf222e">🚫 Removed: <b>9</b></span>
+</div>
+<details open>
+  <summary style="color:#1a7f37;border-left:3px solid #1a7f37;padding-left:10px;margin:24px 0 12px;cursor:pointer;list-style:none;font-weight:600;font-size:1.05em">
+    ✅ Kept Solutions <span style="font-weight:400;font-size:.9em;margin-left:6px">6</span>
+  </summary>
+  <div class="card sol-card-wrap" data-votes="9" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_4246336.html" target="_blank"><div class="card-title">✨💯💥Linear Time Solution | Detailed Explanation | Images | Visualisations💥💯✨</div></a>
+    <div class="meta">
+      <span>👤 sthetix</span>
+      <span>👍 9</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/4f0fbee5-91d8-44ee-9f23-7ae7d562ca37_1699066595.5983377.gif" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/ae014f02-b52e-445d-ada2-a367243f8846_1699068400.8442802.gif" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/b714383c-c690-47b0-b2b3-a09b6039d556_1699069692.372215.gif" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_4853888.html" target="_blank"><div class="card-title">Memoization, Tabulation and Space Optimization | C++ | Striver DP Series  | Time & Space Complexity</div></a>
+    <div class="meta">
+      <span>👤 kapilyadav22</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/94ce4dd2-75f1-45e6-a5cf-639026807e84_1710070949.003993.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/08cf4a1e-17e9-4c31-817f-842a9e10bd0b_1710070953.4530003.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/0540aedc-56e0-45be-8cdb-3fb1968279c3_1710070960.1865318.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/8ec5030e-2004-4db2-8d38-30bc2c9538c5_1710070965.898046.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/1c220f2b-97fb-44a0-b633-cd1184fe3792_1710070969.0683692.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="1" data-image="0" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_4539812.html" target="_blank"><div class="card-title">Java || easy || 100% beats || dp</div></a>
+    <div class="meta">
+      <span>👤 tanisha_modii</span>
+      <span>👍 0</span>
+      <span class="badge b-video">📹</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://img.youtube.com/vi/ZmlQ3vgAOMo/default.jpg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_3176491.html" target="_blank"><div class="card-title">Easy to understand solution in java using bottom up dp approach similar to lcs beats 100% in O(mn)</div></a>
+    <div class="meta">
+      <span>👤 sarja830</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/6f909e27-1507-4b50-a864-622f0b1cfdb8_1676212608.3231726.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_2821514.html" target="_blank"><div class="card-title">Java || Recursion || Memoisation || Tabulation || With Comments</div></a>
+    <div class="meta">
+      <span>👤 JoseDJ2010</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/0e5b2c3c-dcfc-4448-b2cc-dcccb85ed1c2_1668620571.7845223.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="1" data-image="0" data-kept="1">
+  <div class="card-inner">
+    <a href="solution_2453250.html" target="_blank"><div class="card-title">C++|| dp ||memoization</div></a>
+    <div class="meta">
+      <span>👤 NehaGupta_09</span>
+      <span>👍 0</span>
+      <span class="badge b-video">📹</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://img.youtube.com/vi/K0L4OJ-hsIQ/default.jpg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div>
+</details>
+<details>
+  <summary style="color:#cf222e;border-left:3px solid #cf222e;padding-left:10px;margin:24px 0 12px;cursor:pointer;list-style:none;font-weight:600;font-size:1.05em">
+    🚫 Filtered Out <span style="font-weight:400;font-size:.9em;margin-left:6px">9</span>
+  </summary>
+  <div class="card sol-card-wrap" data-votes="5" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_5752925.html" target="_blank"><div class="card-title">4 Approaches ||  Recursion || Memoization || Tabulation || Space-Optimized Solution</div></a>
+    <div class="meta">
+      <span>👤 prayashbhuria931</span>
+      <span>👍 5</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/59dec2d2-bcf8-462c-990d-5b61cb78c3a2_1725752865.5187407.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="30" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_3402050.html" target="_blank"><div class="card-title">🚀 ✅ Detailed explaination 🔥 with Pictures ✅ 🔥 🚀 in C++,Java , Python , DP top down tabulation.</div></a>
+    <div class="meta">
+      <span>👤 chandra0918</span>
+      <span>👍 30</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/20f32b02-f04f-4d07-a667-a47e38e0fe02_1681159815.5575788.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/0ba8ee63-53aa-40f7-994a-663b1bc3c77f_1681159079.630099.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="3" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_5693132.html" target="_blank"><div class="card-title">WildCard Matched ✅✅ | Beats 93.21% 🔥🔥| Two Approaches (Recursion + Memo , DP) ✅✅</div></a>
+    <div class="meta">
+      <span>👤 its_kartike</span>
+      <span>👍 3</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/34340c0a-7b0c-4b28-9e42-db6a742bd9cd_1724664960.1436946.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="5" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_4021991.html" target="_blank"><div class="card-title">✅EASIEST JAVA SOLUTION✅||🚀BEATS 99.87%🚀||🔥O(m x n) 🔥</div></a>
+    <div class="meta">
+      <span>👤 avizittt</span>
+      <span>👍 5</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/709d0c14-8874-4577-ab95-e75574cf7458_1694256507.3541515.jpeg" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="5" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_2489651.html" target="_blank"><div class="card-title">✅C++ || Recursion->Memoization->Tabulation->SpaceOptimization</div></a>
+    <div class="meta">
+      <span>👤 abhinav_0107</span>
+      <span>👍 5</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/51e10645-e2f4-4b78-b2bd-7880beb409cb_1661582208.273855.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/49215323-5577-4559-90a2-e8d8ec335fcc_1661582342.8689756.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/de78b6e7-c220-4b83-8fb3-2b9031909db2_1661593846.1921206.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/d723d4e6-b015-489c-8bed-ef95f203be68_1661594465.8915417.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="14" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_963049.html" target="_blank"><div class="card-title">0ms runtime. 3 golang solutions with optimization and explaination. Recursive | Iterative | DP.</div></a>
+    <div class="meta">
+      <span>👤 broook</span>
+      <span>👍 14</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/de901b4d-393d-42e1-9a8c-c0c11a7218b6_1607409296.4703355.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"><img src="https://assets.leetcode.com/users/images/dfb37fff-ed39-456b-95b1-be03e16e69fe_1607334056.0733168.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_5771350.html" target="_blank"><div class="card-title">3ms || Simple Recursion || No DP || Bifurcated a big problem into smaller and simple methods, Greedy</div></a>
+    <div class="meta">
+      <span>👤 Priyanshu_pandey15</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/975a2814-ba95-4fdd-905c-9a7657ad2727_1726061337.6680846.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_5352192.html" target="_blank"><div class="card-title">Easy C++ Solution ✅|| Beats 100% || Recursion + Memoization + DP ✅|| Leetcode Daily challenge 🚀🚀🚀</div></a>
+    <div class="meta">
+      <span>👤 krgtm05</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/cd57c718-1f50-4a6d-bddd-61e1cdfad73c_1719062019.799848.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div><div class="card sol-card-wrap" data-votes="0" data-video="0" data-image="1" data-kept="0" style="opacity:.45;filter:grayscale(.4)">
+  <div class="card-inner">
+    <a href="solution_3562933.html" target="_blank"><div class="card-title">Recursion -> Memoization -> Tabulation</div></a>
+    <div class="meta">
+      <span>👤 Shadab_Ahmad_Khan</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><img src="https://assets.leetcode.com/users/images/23d8443e-ac59-49d5-99f0-9273a2147be2_1687635435.0337658.png" loading="lazy" style="height:80px;width:auto;border-radius:5px;border:1px solid #d0d7de;object-fit:cover" onerror="this.style.display='none'"></div>
+  </div>
+</div>
+</details>
+</div>
+</body>
+</html>

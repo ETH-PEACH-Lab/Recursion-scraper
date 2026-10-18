@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>从40ms到2ms！30%和100%就差灵光一现！详细思路解析 – Regular Expression Matching</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_regular-expression-matching.html">Regular Expression Matching / 正则表达式匹配</a> <span class="sep">›</span> <span class="cur">从40ms到2ms！30%和100%就差灵光一现！详细思路解析</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">从40ms到2ms！30%和100%就差灵光一现！详细思路解析</div>
+  <div class="meta">
+    <span>👤 LittleFogCat</span>
+    <span>👍 1</span>
+    <span>2020-07-01</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/regular-expression-matching/solution/sui-ran-zhi-chao-guo-35dan-wo-jin-li-liao-by-littl/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p><img alt="10.png" src="https://pic.leetcode.cn/d47a6d3b21a819e2851689a4b7e9bbdf18e2476504611daaeab678b993ac18eb-10.png" /></p>
+<h1>思路</h1>
+<p>首先，对于<code>*</code>来说，它无法单独存在，只能跟在<code>.</code>或者字母之后。所以，我们可以把<code>.*</code>或者<code>a*</code>这样的组合看做是单个的组合字符。<br />
+<strong>定义</strong>：由<code>.</code>或者字母与<code>*</code>组成的组合字符，称之为<strong>通配符</strong>。</p>
+<p>从第0项开头开始依次进行字符匹配，有几种情况？（暂不考虑到字符串结尾）</p>
+<ol>
+<li>
+<p><code>p[0]</code>是通配符<br />
+1.1 <code>p[0] == '.'</code>或者<code>p[0] == s[0]</code><br />
+这说明第0项是可以匹配的。当然，也可以选择不将<code>s[0]</code>和<code>p[0]</code>进行匹配，例如：<br />
+字符串<code>s = "a", p = "a*a"</code>，s[0]的<code>a</code>需要匹配p[2]的<code>a</code>，而不是p[0]的<code>a*</code>。<br />
+如果<code>s[0]</code>和<code>p[0]</code>匹配上了，那么接下来就让<code>s[1]</code>和<code>p[0]</code>匹配；反之则让<code>s[0]</code>和<code>p[2]</code>匹配。二者都能化成较小子集的问题，符合动态规划的需求。<br />
+1.2 否则，<code>s[0]</code>和<code>p[0]</code>匹配不上，那么就让<code>s[0]</code>和<code>p[2]</code>进行匹配。</p>
+</li>
+<li>
+<p><code>p[0]</code>是字母<br />
+如果<code>s[0] == p[0]</code>，匹配成功，接下来匹配<code>s[1]</code>和<code>p[1]</code>。<br />
+反之，匹配失败，返回false；</p>
+</li>
+<li>
+<p><code>p[0]</code>是<code>.</code><br />
+匹配成功，接下来配<code>s[1]</code>和<code>p[1]</code>。</p>
+</li>
+</ol>
+<p>总而言之，核心的思想是把大的问题转化为小一点的问题，递推得出最后的答案。</p>
+<h1>代码</h1>
+<p><strong>初版</strong></p>
+<p>使用动态规划，只超过35%……<br />
+好在空间复杂度是O(1)，时间复杂度就让他去吧~（貌似是O(2^n)？</p>
+<pre><code class="language-java">    public boolean isMatch(String s, String p) {
+        return isMatch(s, 0, p, 0);
+    }
+
+    private boolean isMatch(String s, int si, String p, int pi) {
+        if (si == s.length()) {
+            if (pi == p.length()) return true;
+            if (pi == p.length() - 1) return false;
+            if (p.charAt(pi + 1) == '*') return isMatch(s, si, p, pi + 2);
+            return false;
+        }
+        if (pi == p.length()) return false;
+
+        char cs = s.charAt(si);
+        char cp = p.charAt(pi);
+
+        // 这是一个通配符
+        if (pi &lt; p.length() - 1 &amp;&amp; p.charAt(pi + 1) == '*') {
+            // 可以匹配，是否配？
+            if (cp == '.' || cs == cp) {
+                return isMatch(s, si + 1, p, pi) || // 配
+                        isMatch(s, si, p, pi + 2); // 不配
+            } else { // 不能匹配
+                return isMatch(s, si, p, pi + 2);
+            }
+        } else { // 这是一个普通字符
+            if (cp == '.' || cs == cp) return isMatch(s, si + 1, p, pi + 1);
+            return false;
+        }
+    }
+</code></pre>
+<p>这时候，我突然想到之前做斐波拉契数列的时候，递归调用的结果可以通过数组来保存！这样当参数相同的方法调用时，就可以直接从数组里取结果了！优化一下：</p>
+<p><strong>优化版</strong></p>
+<pre><code class="language-java">    public boolean isMatch(String s, String p) {
+        // 用来保存函数运行的结果，1代表true，-1代表false，0代表未执行过
+        int[][] arr = new int[s.length()][p.length()];
+        return isMatch(s, 0, p, 0, arr);
+    }
+    private boolean isMatch(String s, int si, String p, int pi, int[][] arr) {
+        boolean r;
+        if (si == s.length()) {
+            if (pi == p.length()) r = true;
+            else if (pi == p.length() - 1) r = false;
+            else if (p.charAt(pi + 1) == '*') r = isMatch(s, si, p, pi + 2, arr);
+            else r = false;
+        } else if (pi == p.length()) {
+            r = false;
+        } else {
+            int result = arr[si][pi];
+            if (result == 1) return true;
+            if (result == -1) return false;
+
+            char cs = s.charAt(si);
+            char cp = p.charAt(pi);
+
+            // 这是一个通配符
+            if (pi &lt; p.length() - 1 &amp;&amp; p.charAt(pi + 1) == '*') {
+                // 可以匹配，是否配？
+                if (cp == '.' || cs == cp) {
+                    r = isMatch(s, si + 1, p, pi, arr) || // 配
+                            isMatch(s, si, p, pi + 2, arr); // 不配
+                } else { // 不能匹配
+                    r = isMatch(s, si, p, pi + 2, arr);
+                }
+            } else { // 这是一个普通字符
+                if (cp == '.' || cs == cp) r = isMatch(s, si + 1, p, pi + 1, arr);
+                else r = false;
+            }
+            arr[si][pi] = r ? 1 : -1;
+        }
+
+        return r;
+    }
+</code></pre>
+<p>这下时间复杂度就到了O(m*n)，最多把数组填满吧，然而实际上到不了这种地步。</p>
+</div>
+</div>
+</body>
+</html>

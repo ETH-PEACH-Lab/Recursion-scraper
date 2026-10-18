@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>图解汉诺塔的故事：据说，当64个盘子全部移完的那天，世界就毁灭了 – Hanota LCCI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_hanota-lcci.html">Hanota LCCI / 汉诺塔问题</a> <span class="sep">›</span> <span class="cur">图解汉诺塔的故事：据说，当64个盘子全部移完的那天，世界就毁灭了</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">图解汉诺塔的故事：据说，当64个盘子全部移完的那天，世界就毁灭了</div>
+  <div class="meta">
+    <span>👤 z1m</span>
+    <span>👍 324</span>
+    <span>2020-02-14</span>
+    <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞 Slide</span>
+    <a href="https://leetcode.cn/problems/hanota-lcci/solution/tu-jie-yi-nuo-ta-de-gu-shi-ju-shuo-dang-64ge-pan-z/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h3>Tower of Hanoi</h3>
+<blockquote>
+<p>相传在很久以前，有个寺庙里的几个和尚整天不停地移动着 64 个盘子，日复一日，年复一年。据说，当 64 个盘子全部移完的那一天就是世界末日...</p>
+</blockquote>
+<h3>问题描述</h3>
+<p>有 A,B,C 三根柱子，A 上面有 n 个盘子，我们想把 A 上面的盘子移动到 C 上，但是要满足以下三个条件：<br />
+1. 每次只能移动一个盘子;<br />
+2. 盘子只能从柱子顶端滑出移到下一根柱子;<br />
+3. 盘子只能叠在比它大的盘子上。</p>
+<p><img alt="p1.png" src="https://pic.leetcode.cn/7043dec266338d396d186805072660d5f9517e2c1008af80d461b553c5b32470-p1.png" width="500" /></p>
+<h3>解题思路：递归与分治</h3>
+<p>这是一道递归方法的经典题目，乍一想还挺难理清头绪的，我们不妨先从简单的入手。</p>
+<p>假设 <code>n = 1</code>,只有一个盘子，很简单，直接把它从 A 中拿出来，移到 C 上；</p>
+<p>如果 <code>n = 2</code> 呢？这时候我们就要借助 B 了，因为小盘子必须时刻都在大盘子上面，共需要 4 步。</p>
+<p><img alt="0806.gif" src="https://pic.leetcode.cn/f6f3b97651247c9ff846f115e1866ab364b1c0e265fd51689ddd6a8ca1758482-0806.gif" width="500" /></p>
+<p>如果  <code>n &gt; 2</code> 呢？思路和上面是一样的，我们把 n 个盘子也看成两个部分，一部分有 1 个盘子，另一部分有 n - 1 个盘子。</p>
+<p><img alt="08061.gif" src="https://pic.leetcode.cn/3bffd1a1faf4323a92b659e37d7e2cd6c79fe074602b2977f4a7931fe82bbb13-08061.gif" width="500" /></p>
+<p>观察上图，你可能会问：“那 n - 1 个盘子是怎么从 A 移到 C 的呢？”</p>
+<p>注意，<strong>当你在思考这个问题的时候，就将最初的 n 个盘子从 A 移到 C 的问题，转化成了将 n - 1 个盘子从 A 移到 C 的问题，</strong> 依次类推，直至转化成 1 个盘子的问题时，问题也就解决了。这就是分治的思想。 </p>
+<p>而实现分治思想的常用方法就是递归。不难发现，如果原问题可以分解成若干个与原问题结构相同但规模较小的子问题时，往往可以用递归的方法解决。具体解决办法如下：<br />
+- <code>n = 1</code> 时，直接把盘子从 A 移到 C；<br />
+- <code>n &gt; 1</code> 时，<br />
+    - 先把上面 n - 1 个盘子从 A 移到 B（子问题，递归）；<br />
+    - 再将最大的盘子从 A 移到 C；<br />
+    - 再将 B 上 n - 1 个盘子从 B 移到 C（子问题，递归）。</p>
+<h3>代码</h3>
+<p>```python []<br />
+class Solution:<br />
+    def hanota(self, A: List[int], B: List[int], C: List[int]) -&gt; None:<br />
+        n = len(A)<br />
+        self.move(n, A, B, C)<br />
+    # 定义move 函数移动汉诺塔<br />
+    def move(self,n, A, B, C):<br />
+        if n == 1:<br />
+            C.append(A[-1])<br />
+            A.pop()<br />
+            return <br />
+        else:<br />
+            self.move(n-1, A, C, B)  # 将A上面n-1个通过C移到B<br />
+            C.append(A[-1])          # 将A最后一个移到C<br />
+            A.pop()                  # 这时，A空了<br />
+            self.move(n-1,B, A, C)   # 将B上面n-1个通过空的A移到C</p>
+<pre><code>
+```cpp []
+class Solution {
+public:
+    void hanota(vector&lt;int&gt;&amp; A, vector&lt;int&gt;&amp; B, vector&lt;int&gt;&amp; C) {
+        int n = A.size();
+        move(n, A, B, C);
+    }
+
+    void move(int n, vector&lt;int&gt;&amp; A, vector&lt;int&gt;&amp; B, vector&lt;int&gt;&amp; C){
+        if (n == 1){
+            C.push_back(A.back());
+            A.pop_back();
+            return;
+        }
+
+        move(n-1, A, C, B);    // 将A上面n-1个通过C移到B
+        C.push_back(A.back());  // 将A最后一个移到C
+        A.pop_back();          // 这时，A空了
+        move(n-1, B, A, C);     // 将B上面n-1个通过空的A移到C
+    }
+};
+</code></pre>
+<h3>复杂度分析：世界会毁灭吗</h3>
+<ul>
+<li>时间复杂度：$O(2^n-1)$。一共需要移动的次数。</li>
+<li>空间复杂度：$O(1)$。</li>
+</ul>
+<p>当 <code>n = 64</code>时，也就是有 64 个盘子的时候，如果每秒移动一个盘子，大约需要 $1.8 imes10^{19}$ 秒...</p>
+<p>那个时候地球会毁灭吗？</p>
+<p>也许会，也许不会。</p>
+</div>
+</div>
+</body>
+</html>

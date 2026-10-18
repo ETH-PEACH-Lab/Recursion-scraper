@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>两种实现+详细图解 44. 通配符匹配 – Wildcard Matching</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_wildcard-matching.html">Wildcard Matching / 通配符匹配</a> <span class="sep">›</span> <span class="cur">两种实现+详细图解 44. 通配符匹配</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">两种实现+详细图解 44. 通配符匹配</div>
+  <div class="meta">
+    <span>👤 wang_ni_ma</span>
+    <span>👍 25</span>
+    <span>2021-03-23</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/wildcard-matching/solution/liang-chong-shi-xian-xiang-xi-tu-jie-44-i7p61/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h2>递归</h2>
+<p>假设字符串 s 为<code>adceb</code>，模式串 p 为<code>*a?*b</code>，匹配过程如下：<br />
+<img alt="1.jpg" src="https://pic.leetcode.cn/1616475531-TRyIuH-1.jpg" /></p>
+<p>当两个字符相等，或者模式串的字符为<code>?</code>时，<code>s[i]</code>就和<code>p[j]</code>匹配。 <br />
+匹配后，下一步还需要继续比较，所以去掉 S 的当前字符，去掉 P 的当前字符，继续比较<code>s[i + 1:]</code>和<code>p[i + 1:]</code>。 <br />
+如果模式串 p 的当前字符为<code>*</code>怎么匹配呢？ <br />
+<code>*</code>是个万能字符，可以<strong>连续</strong>匹配任意字符： <br />
+- <code>aaa</code> 和 <code>*a</code>， 这样是匹配的，因为 <code>*</code> 可以匹配  <code>aa</code><br />
+- <code>aaba</code> 和 <code>*a</code>，这样也是匹配的，因为 <code>*</code> 可以匹配 <code>aab</code><br />
+- <code>ba</code> 和 <code>*ba</code>，也是匹配的，因为 <code>*</code> 可以匹配 0 到多个空字符</p>
+<p><code>*</code>匹配 跟单个字符匹配，其后续步骤是不一样的，单个字符匹配后，只有一条分支可以走，而<code>*</code>匹配后，有两条分支可以走：<br />
+<img alt="2.jpg" src="https://pic.leetcode.cn/1616475546-KJnbqy-2.jpg" /></p>
+<p>我们定义<code>i</code>表示字符串 S 的下标位置 <br />
+定义<code>j</code>表示模式串 P 的下标位置 <br />
+那么递归的终止条件就是<code>i == len(S)</code> 或者<code>j == len(P)</code>:<br />
+- i == len(S) 说明字符串遍历到头了，如果模式串也遍历到头了，那么可以返回 true了<br />
+- i == len(S) 还有另一种场景，即模式串没有遍历到头(字符串 aaa,模式串aaa<em><em> 这种场景)，但模式串当前字符是</em>，</em> 可以匹配任意字符，所以要去掉当前字符，再往后面递归<br />
+- 如果是模式串遍历到头了，那说明两个字符串不匹配，返回 false</p>
+<p>有了上面的边界条件，加上图解的说明，我们就可以把递归写出来了，请看下面代码</p>
+<p>```java []<br />
+class Solution {<br />
+    public boolean isMatch(String s, String p) {<br />
+        return new Helper(s,p).dfs(0,0);<br />
+    }<br />
+    //增加一个工具类，完成递归调用<br />
+    private class Helper {<br />
+        private String s;<br />
+        private String p;<br />
+        //用来缓存结果<br />
+        private Map<Pair,Boolean> map = new HashMap&lt;&gt;();<br />
+        private int n;<br />
+        private int m;<br />
+        Helper(String s, String p) {<br />
+            this.s = s;<br />
+            this.p = p;<br />
+            this.n = s.length();<br />
+            this.m = p.length();<br />
+        }</p>
+<pre><code>    private boolean dfs(int i, int j) {
+        Pair pair = new Pair(i,j);
+        if(map.containsKey(pair)) {
+            return map.get(pair);
+        }
+        //i==n说明字符串匹配完了，如果p的首字符是*，可以忽略，然后再递归检查
+        //比如"aaa"和"aaa**"就是匹配的
+        if(i == n) {
+            return (j == m) || (p.charAt(j) == '*' &amp;&amp; dfs(i, j + 1));
+        }
+        //如果模式串到头了，说明没匹配上
+        if(j == m) {
+            return false;
+        }
+        boolean res = false;
+        //模式串当前字符为 *，有两条分支可以走
+        //可以去掉S的首字符(i + 1)，也可以去掉P的首字符(j + 1)
+        if(p.charAt(j) == '*') {
+            res = dfs(i + 1, j) || dfs(i, j + 1);
+        }
+        else {
+            //检查S和P的首字符是否相同，或者P首字符为?
+            boolean isFirstMathc = p.charAt(j) == s.charAt(i) || p.charAt(j) == '?';
+            //如果匹配则去掉S和P的首字符，继续递归
+            res= isFirstMathc &amp;&amp; dfs(i + 1, j + 1);
+        }
+        map.put(pair, res);
+        return map.get(pair);
+    }
+}
+//一个辅助类，用来包装字符串S的下标i，和模式串P的下标j
+//把i和j两个int作为一个整体封装为一个对象，hashmap的key会用到这个对象
+class Pair {
+    private int i;
+    private int j;
+    public Pair(int i, int j) {
+        this.i = i;
+        this.j = j;
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        Pair other = (Pair)o;
+        return this.i == other.i &amp;&amp; this.j == other.j;
+    }
+
+    public int hashCode() {
+        return this.i * 97 + this.j;
+    }
+}
+</code></pre>
+<p>}</p>
+<pre><code>```python []
+class Solution(object):
+    def isMatch(self, s, p):
+        n = len(s)
+        m = len(p)
+        d = {}
+        def dfs(i, j):
+            if (i,j) in d:
+                return d[i,j]
+            #i==n说明字符串匹配完了，如果p的首字符是*，可以忽略，然后再递归检查
+            #比如&quot;aaa&quot;和&quot;aaa**&quot;就是匹配的                
+            if i == n:
+                return j == m or (p[j] == &quot;*&quot; and dfs(i, j + 1))
+            #如果模式串到头了，说明没匹配上    
+            if j == m:
+                return False
+            #模式串当前字符为 *，有两条分支可以走
+            #可以去掉S的首字符(i + 1)，也可以去掉P的首字符(j + 1)
+            if p[j] == &quot;*&quot;:
+                d[i,j] = dfs(i + 1, j) or dfs(i, j + 1)
+            #如果匹配则去掉S和P的首字符，继续递归    
+            else:
+                d[i,j]  = p[j] in (s[i], &quot;?&quot;) and dfs(i + 1, j + 1)
+            return d[i,j]
+        return dfs(0,0)
+</code></pre>
+<h2>动态规划</h2>
+<p>既然递归已经写出来了，那么我们按照递归的思路，去实现动态规划。 <br />
+我们定义<code>dp[n][m]</code>数组，这里的<code>n</code>是字符<code>S</code>长度 + 1，<code>m</code>是模式串<code>p</code>长度 + 1。    <br />
+<code>dp[i][j]</code>，表示<code>S</code>从开始到下标<code>i</code>，<code>P</code>从开始到下标<code>j</code>是否匹配。初的时候<code>dp[0][0]</code>为<code>true</code>，因为两个字符串都为空时是匹配的。如下图： <br />
+<img alt="3.jpg" src="https://pic.leetcode.cn/1616474648-xznDjS-3.jpg" /></p>
+<blockquote>
+<p>注意，我们定义的数组长度，要比原始字符长度 + 1。这是因为我们推导的时<br />
+候，有<code>i - 1</code>、<code>j - 1</code>这种情况。 <br />
+核心代码，也就是那两层<code>for</code>循环，是从下标<code>1</code>开始的，而取得<br />
+的当前字符是需<strong>减一</strong>的。 <br />
+比如当前的<code>i</code>是<code>1</code>，<code>j</code>也是<code>1</code>。 <br />
+那么<code>s[i - 1]</code>拿的就是<code>s</code>的第一个字符，<code>p[j - 1]</code><br />
+拿的是<code>p</code>的第一个字符。 <br />
+所以<code>p[j - 1] == s[i - 1]</code>比较的是当个字符串的第一个字符。 <br />
+很多字符串类型的动态规划，都会有这种问题，刚开始看可能很变扭，多看看，习惯了就好^_^   </p>
+</blockquote>
+<p>写递归的时候，如果<code>s</code>和<code>p</code>的当前字符相同，或者<code>p</code>的当前字符为<code>?</code>，就将<code>s</code>和<code>p</code>的当前字符删掉，继续递归比较两者的后续字符。 <br />
+到动态规划，其转移公式为：</p>
+<pre><code>dfs(i + 1, j + 1)                递归，忽略S和P的当前字符，继续比较后面的
+dp[i][j] = dp[i - 1][j - 1]      动态规划，当前结果由S的上一个和P的上一个的值转移而来
+</code></pre>
+<p>单个字符相对好理解一些，比较难的是<code>*</code>这种情况。 <br />
+对于递归，当模式串<code>p</code>当前字符是<code>*</code>会有两条分支: <br />
+- 可以忽略掉 S 的当前字符，继续递归比较 S[i + 1:] 和 P<br />
+- 可以忽略掉 P 的当前字符，继续递归比较 p[j + 1:] 和 S</p>
+<p>那么动态规划也是类似的，<code>dp[i][j]</code>的值由两条路径转移而来：   </p>
+<pre><code>递归，忽略掉S当前字符，或者P当前字符
+dfs(i + 1, j) or dfs(i, j + 1)
+
+动态规划，当前结果由S的上一个字符和P当前字符的值， 或者P的上一个字符和S的当前字符的值 转移而来
+dp[i][j] = dp[i - 1][j] || dp[i][j - 1]  
+</code></pre>
+<p>我们还需要处理下，字符串为空，模式串包含<code>*</code>的情况。 <br />
+字符串为空，对应的就是第一行，具体实现过程请参考代码部分<br />
+<img alt="4.jpg" src="https://pic.leetcode.cn/1616474657-cBcXHo-4.jpg" /></p>
+<p>假设字符串<code>S</code>为<code>adceb</code>，模式串<code>p</code>为<code>*a?*b</code>。 <br />
+来看下完整的推导过程：</p>
+<p>&lt;<img alt="1.jpg" src="https://pic.leetcode.cn/1616474683-JkghEH-1.jpg" />,<img alt="2.jpg" src="https://pic.leetcode.cn/1616474688-TLYHTF-2.jpg" />,<img alt="3.jpg" src="https://pic.leetcode.cn/1616474692-VbeLfX-3.jpg" />,<img alt="4.jpg" src="https://pic.leetcode.cn/1616474697-mxRFzB-4.jpg" />,<img alt="5.jpg" src="https://pic.leetcode.cn/1616474701-lFjHJV-5.jpg" />,<img alt="1.jpg" src="https://pic.leetcode.cn/1616474709-fFazEZ-1.jpg" />,<img alt="2.jpg" src="https://pic.leetcode.cn/1616474713-rymmUX-2.jpg" />,<img alt="3.jpg" src="https://pic.leetcode.cn/1616474718-AHVOMj-3.jpg" />,<img alt="4.jpg" src="https://pic.leetcode.cn/1616474722-mDsrjF-4.jpg" />,<img alt="5.jpg" src="https://pic.leetcode.cn/1616474726-LiRsOT-5.jpg" />,<img alt="1.jpg" src="https://pic.leetcode.cn/1616474733-jKhNJW-1.jpg" />,<img alt="2.jpg" src="https://pic.leetcode.cn/1616474738-jQeCRT-2.jpg" />,<img alt="3.jpg" src="https://pic.leetcode.cn/1616474742-BaPBda-3.jpg" />,<img alt="4.jpg" src="https://pic.leetcode.cn/1616474746-fGqBuo-4.jpg" />,<img alt="5.jpg" src="https://pic.leetcode.cn/1616474750-bpnSCz-5.jpg" />,<img alt="1.jpg" src="https://pic.leetcode.cn/1616474763-WbnGgA-1.jpg" />,<img alt="2.jpg" src="https://pic.leetcode.cn/1616474767-fHdOMD-2.jpg" />,<img alt="3.jpg" src="https://pic.leetcode.cn/1616474771-waxwRo-3.jpg" />,<img alt="4.jpg" src="https://pic.leetcode.cn/1616474775-iFKlon-4.jpg" />,<img alt="5.jpg" src="https://pic.leetcode.cn/1616474780-QCimop-5.jpg" />,<img alt="1.jpg" src="https://pic.leetcode.cn/1616474787-fbDzmi-1.jpg" />,<img alt="2.jpg" src="https://pic.leetcode.cn/1616474792-FokJXP-2.jpg" />,<img alt="3.jpg" src="https://pic.leetcode.cn/1616474796-zXlXxR-3.jpg" />,<img alt="4.jpg" src="https://pic.leetcode.cn/1616474800-jNDMAl-4.jpg" />,<img alt="5.jpg" src="https://pic.leetcode.cn/1616474805-jiwnBI-5.jpg" />,<img alt="6.jpg" src="https://pic.leetcode.cn/1616474809-rCNJWW-6.jpg" />&gt;</p>
+<p>```java []<br />
+class Solution {<br />
+    public boolean isMatch(String _s, String _p) {<br />
+        int n = _s.length();<br />
+        int m = _p.length();<br />
+        char[] s = _s.toCharArray();<br />
+        char[] p = _p.toCharArray();<br />
+        boolean[][] dp = new boolean[n + 1][m + 1];<br />
+        //S为空，P为空时两个字符串相等<br />
+        dp[0][0] = true;<br />
+        //当字符串S为空，模式串P不空，检查P中是否有<em><br />
+        for(int j = 1; j &lt;= m; ++j) {<br />
+            if(p[j - 1] == '</em>') {<br />
+                dp[0][j] = true;<br />
+            } else {<br />
+                break;<br />
+            }<br />
+        }<br />
+        for(int i = 1; i &lt;= n; ++i) {<br />
+            for(int j = 1; j &lt;=m; ++j) {<br />
+                //如果P当前是 <em>，从递归的角度看<br />
+                //可以将S的当前字符去掉(dp[i-1][j])<br />
+                //也可以去掉P的当前字符(dp[i][j-1])<br />
+                if(p[j - 1] == '</em>') {<br />
+                    dp[i][j] = dp[i - 1][j] || dp[i][j - 1];<br />
+                }<br />
+                //否则，要看P和S的当前字符是否匹配，或者P当前字符为?<br />
+                //如果当前字符匹配，从递归的角度看<br />
+                //可以去掉S的当前字符，P的当前字符(dp[i-1][j-1])<br />
+                else {<br />
+                    boolean isFirstMatch = p[j - 1] == s[i - 1] || p[j - 1] == '?';<br />
+                    dp[i][j] = isFirstMatch &amp;&amp; dp[i - 1][j - 1];<br />
+                }<br />
+            }<br />
+        }<br />
+        return dp[n][m];<br />
+    }<br />
+}</p>
+<pre><code>```python []
+class Solution(object):
+    def isMatch(self, s, p):
+        n = len(s)
+        m = len(p)
+        dp = [[False] * (m + 1) for _ in range(n + 1)]
+        #S为空，P为空时两个字符串相等
+        dp[0][0] = True
+        #当字符串S为空，模式串P不空，检查P中是否有*
+        for j in range(1, m + 1):
+            if p[j - 1] == '*':
+                dp[0][j] = True
+            else:
+                break
+        for i in range(1, n + 1):
+            for j in range(1, m + 1):
+                #如果P当前是 *，从递归的角度看
+                #可以将S的当前字符去掉(dp[i-1][j])
+                #也可以去掉P的当前字符(dp[i][j-1])
+                if p[j - 1] == '*':
+                    dp[i][j] = dp[i][j - 1] or dp[i - 1][j]
+                #否则，要看P和S的当前字符是否匹配，或者P当前字符为?
+                #如果当前字符匹配，从递归的角度看
+                #可以去掉S的当前字符，P的当前字符(dp[i-1][j-1])
+                else:
+                    if p[j - 1] == s[i -1] or p[j - 1] == &quot;?&quot;:
+                        dp[i][j] = dp[i - 1][j - 1]
+
+        return dp[-1][-1]
+
+</code></pre>
+<p>还有一道类似的题目推荐也一起做了，<strong><a href="https://leetcode.cn/problems/regular-expression-matching/">正则表达式匹配</a></strong> ，题解链接点<a href="https://leetcode.cn/problems/regular-expression-matching/solution/liang-chong-shi-xian-xiang-xi-tu-jie-10-48bgj/">这里</a></p>
+<p><strong>画图不容易，如果对你有帮助，请帮忙点个赞哦 👍👍</strong></p>
+</div>
+</div>
+</body>
+</html>

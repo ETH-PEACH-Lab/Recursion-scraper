@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Beats 100 % || O(n) || Elegant Recursion||  Iterative  Approach – Reverse Linked List</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_reverse-linked-list.html">Reverse Linked List</a> <span class="sep">›</span> <span class="cur">Beats 100 % || O(n) || Elegant Recursion||  Iterative  Approach</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">Beats 100 % || O(n) || Elegant Recursion||  Iterative  Approach</div>
+  <div class="meta">
+    <span>👤 ankitsingh01818</span>
+    <span>👍 1</span>
+    <span>2024-10-09</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/reverse-linked-list/solutions/5890693/beats-100-on-elegant-recursion-iterative-approach/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p><img alt="image.png" src="https://assets.leetcode.com/users/images/917702dc-0cf5-41cd-8576-7921ecd4e708_1728465004.318168.png" /></p>
+<h3>Intuition</h3>
+<p>The key idea in reversing a linked list recursively is to focus on each node’s next pointer. By adjusting these pointers in reverse order as we return from each recursive call, we achieve the reversal. We start with the last node as the new head of the reversed list and work backward to connect all nodes.</p>
+<h3>Approach</h3>
+<ol>
+<li><strong>Base Case:</strong> If the list is empty (<code>head == null</code>) or contains only one node (<code>head.next == null</code>), return <code>head</code> as it is already reversed.</li>
+<li><strong>Recursive Step:</strong> Call <code>reverseList(head.next)</code> to reverse all nodes after the current node. This call will eventually reach the end of the list, returning the last node as <code>newNode</code>.</li>
+<li><strong>Reversal Step:</strong> <br />
+   - Reverse the current node’s connection by setting <code>head.next.next = head</code>, making <code>head</code> the next node of <code>head.next</code>.<br />
+   - Set <code>head.next = null</code> to mark the original head’s position as the end of the reversed list.</li>
+<li><strong>Return New Head:</strong> At each level of recursion, return <code>newNode</code>, which points to the new head of the reversed list.</li>
+</ol>
+<hr />
+<h3>Complexity</h3>
+<ul>
+<li><strong>Time Complexity:</strong> O(n), where \( n \) is the number of nodes in the linked list. Each node is visited once as the recursion unfolds and returns.</li>
+<li><strong>Space Complexity:</strong> O(n) due to the recursion stack, where \( n \) recursive calls are made in total.</li>
+</ul>
+<hr />
+<h3>Code</h3>
+<pre><code class="language-java">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if (head == null || head.next == null) { // Base case
+            return head;
+        }
+        ListNode newHead = reverseList(head.next); // Recursive step
+        head.next.next = head; // Reverse the link
+        head.next = null; // Mark the original head as end
+        return newHead; // Return the new head
+    }
+}
+</code></pre>
+<p>Let’s walk through a dry run and explanation of the recursive linked list reversal code.</p>
+<h3>Code</h3>
+<pre><code class="language-java">class Solution {
+    public ListNode reverseList(ListNode head) {
+        if (head == null || head.next == null) { // Base case
+            return head;
+        }
+        ListNode newHead = reverseList(head.next); // Recursive step
+        head.next.next = head; // Reverse the link
+        head.next = null; // Mark the original head as end
+        return newHead; // Return the new head
+    }
+}
+</code></pre>
+<h3>Explanation</h3>
+<ul>
+<li><strong>Goal</strong>: Reverse the linked list by adjusting pointers so that each node’s <code>next</code> points to its previous node.</li>
+<li><strong>Process</strong>:</li>
+<li>The recursion dives to the end of the list, reaching the last node, which will become the new head of the reversed list.</li>
+<li>As the recursion unwinds, each node points back to the previous node, effectively reversing the direction.</li>
+</ul>
+<hr />
+<h3>Dry Run</h3>
+<p>Suppose the list is <code>1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; NULL</code>.</p>
+<ol>
+<li><strong>Initial Call</strong>: <code>reverseList(head)</code> where <code>head</code> is pointing to the node with value <code>1</code>.</li>
+<li><strong>Recursive Steps</strong>: Each recursive call goes one step deeper until it reaches the end node (<code>5</code>).</li>
+</ol>
+<h4>Step-by-Step Recursive Calls</h4>
+<table>
+<thead>
+<tr>
+<th>Call Depth</th>
+<th>Input (head)</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>1</code></td>
+<td>Calls <code>reverseList(2)</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>2</code></td>
+<td>Calls <code>reverseList(3)</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>3</code></td>
+<td>Calls <code>reverseList(4)</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>4</code></td>
+<td>Calls <code>reverseList(5)</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>5</code></td>
+<td>Base case: returns <code>5</code></td>
+</tr>
+</tbody>
+</table>
+<h4>Unwinding the Recursion</h4>
+<p>Now, the recursion begins unwinding, and each step reverses the <code>next</code> pointer.</p>
+<ol>
+<li>
+<p><strong>Returning to Call 4</strong> (<code>head = 4</code>):<br />
+   - <code>newHead = 5</code> (from the recursive call).<br />
+   - <code>head.next.next = head</code> → <code>4.next.next = 4</code> → <code>5.next = 4</code>.<br />
+   - <code>head.next = null</code> → <code>4.next = null</code>.<br />
+   - Returns <code>newHead</code>, which is <code>5</code>.</p>
+</li>
+<li>
+<p><strong>Returning to Call 3</strong> (<code>head = 3</code>):<br />
+   - <code>newHead = 5</code> (reversed list starting with <code>5 -&gt; 4 -&gt; NULL</code>).<br />
+   - <code>head.next.next = head</code> → <code>3.next.next = 3</code> → <code>4.next = 3</code>.<br />
+   - <code>head.next = null</code> → <code>3.next = null</code>.<br />
+   - Returns <code>newHead</code>, which is <code>5</code>.</p>
+</li>
+<li>
+<p><strong>Returning to Call 2</strong> (<code>head = 2</code>):<br />
+   - <code>newHead = 5</code> (reversed list <code>5 -&gt; 4 -&gt; 3 -&gt; NULL</code>).<br />
+   - <code>head.next.next = head</code> → <code>2.next.next = 2</code> → <code>3.next = 2</code>.<br />
+   - <code>head.next = null</code> → <code>2.next = null</code>.<br />
+   - Returns <code>newHead</code>, which is <code>5</code>.</p>
+</li>
+<li>
+<p><strong>Returning to Call 1</strong> (<code>head = 1</code>):<br />
+   - <code>newHead = 5</code> (reversed list <code>5 -&gt; 4 -&gt; 3 -&gt; 2 -&gt; NULL</code>).<br />
+   - <code>head.next.next = head</code> → <code>1.next.next = 1</code> → <code>2.next = 1</code>.<br />
+   - <code>head.next = null</code> → <code>1.next = null</code>.<br />
+   - Returns <code>newHead</code>, which is <code>5</code>.</p>
+</li>
+</ol>
+<hr />
+<h3>Final Result</h3>
+<p>After all recursive calls complete, the list is reversed as <code>5 -&gt; 4 -&gt; 3 -&gt; 2 -&gt; 1 -&gt; NULL</code>.<br />
+This code defines a recursive function <code>reverseList</code> to reverse a singly linked list in Java. Let's go step-by-step through the flow control and the recursive execution of this function:</p>
+<h3>Code Breakdown</h3>
+<ol>
+<li>
+<p><strong>Base Case Check:</strong> The function first checks if <code>head</code> is <code>null</code> or if <code>head.next</code> is <code>null</code> (i.e., if there's only one node left in the list).</p>
+<ul>
+<li><strong>Purpose:</strong> If the list is empty or we’ve reached the last node, we return <code>head</code> as the new head of the reversed list. This acts as the termination condition for the recursion.</li>
+</ul>
+</li>
+<li>
+<p><strong>Recursive Step:</strong> If the base case isn’t met, the function calls itself recursively with <code>head.next</code>.</p>
+<ul>
+<li><strong>Purpose:</strong> This continues moving down the list until we reach the end. Essentially, we’re pushing recursive calls onto the stack, each moving one node further down the list until we hit the last node, which becomes the new head of the reversed list.</li>
+</ul>
+</li>
+<li>
+<p><strong>Reversing the Link:</strong> Once we start returning from the recursive calls, we begin to reverse the links.</p>
+<ul>
+<li>After the recursive call returns, the <code>newHead</code> variable points to the head of the reversed portion of the list.</li>
+<li><code>head.next.next = head</code> reverses the link by pointing the next node's <code>next</code> back to <code>head</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Marking the End:</strong> <code>head.next = null</code> sets the <code>next</code> pointer of the current <code>head</code> to <code>null</code>, effectively marking it as the new end of the list.</p>
+</li>
+<li>
+<p><strong>Returning the New Head:</strong> Finally, <code>newHead</code> is returned up the recursive stack until it becomes the return value of the initial function call.</p>
+</li>
+</ol>
+<h3>Example Execution</h3>
+<p>Let’s say the list is: <code>1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; null</code></p>
+<p><strong>Step-by-Step Execution:</strong></p>
+<ol>
+<li>
+<p><strong>Call Stack</strong>:<br />
+   - <code>reverseList(1)</code>: head = 1, next = 2</p>
+<ul>
+<li>Calls <code>reverseList(2)</code>: head = 2, next = 3<ul>
+<li>Calls <code>reverseList(3)</code>: head = 3, next = 4<ul>
+<li>Calls <code>reverseList(4)</code>: head = 4, next = 5<ul>
+<li>Calls <code>reverseList(5)</code>: head = 5, next = null<ul>
+<li>Returns <code>5</code> (base case reached)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Returning and Reversing</strong>:<br />
+   - <strong><code>reverseList(4)</code></strong> (with <code>newHead</code> = 5): Reverses the link (5 -&gt; 4), sets <code>4.next = null</code>, returns <code>newHead</code> (5)<br />
+   - <strong><code>reverseList(3)</code></strong> (with <code>newHead</code> = 5): Reverses the link (4 -&gt; 3), sets <code>3.next = null</code>, returns <code>newHead</code> (5)<br />
+   - <strong><code>reverseList(2)</code></strong> (with <code>newHead</code> = 5): Reverses the link (3 -&gt; 2), sets <code>2.next = null</code>, returns <code>newHead</code> (5)<br />
+   - <strong><code>reverseList(1)</code></strong> (with <code>newHead</code> = 5): Reverses the link (2 -&gt; 1), sets <code>1.next = null</code>, returns <code>newHead</code> (5)</p>
+</li>
+</ol>
+<h3>Final State of the List</h3>
+<p>After the last recursive call returns, the list is now reversed: <code>5 -&gt; 4 -&gt; 3 -&gt; 2 -&gt; 1 -&gt; null</code>.</p>
+<h3>Summary of Control Flow</h3>
+<ol>
+<li><strong>Recursive Calls:</strong> Move to the end of the list.</li>
+<li><strong>Returning Phase:</strong> Reverse the link at each recursive return.</li>
+<li><strong>End Condition:</strong> Each node’s <code>next</code> is set to <code>null</code> in the reversed list, creating a new head of the reversed linked list.</li>
+</ol>
+<h3>Summary of Key Points</h3>
+<ul>
+<li><strong>Recursive Approach</strong>: Each function call moves one step deeper until it reaches the last node.</li>
+<li><strong>Reversal Logic</strong>: Each <code>head.next.next = head</code> reverses the pointer, while <code>head.next = null</code> breaks the original link.</li>
+<li><strong>Return</strong>: <code>newHead</code> always points to the last node (now the new head), which propagates back up through each recursive call.</li>
+</ul>
+<h3>To reverse a linked list iteratively, we can use a <strong>three-pointer approach</strong>. This approach eliminates the need for recursion by iteratively adjusting the pointers of each node to reverse the list.</h3>
+<h3>Iterative Solution in Java:</h3>
+<pre><code class="language-java">class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null;      // Initially, there's no previous node
+        ListNode current = head;    // The current node starts at the head
+        ListNode next = null;       // Used to temporarily store the next node
+
+        // Iterate through the list until current becomes null
+        while (current != null) {
+            next = current.next;    // Store the next node
+            current.next = prev;    // Reverse the link (current.next points to prev)
+            prev = current;         // Move prev forward to the current node
+            current = next;         // Move current to the next node in the original list
+        }
+
+        return prev; // At the end, prev will be the new head of the reversed list
+    }
+}
+</code></pre>
+<h3>Explanation of the Flow Control</h3>
+<ol>
+<li>
+<p><strong>Initialize Three Pointers</strong>:<br />
+   - <code>prev</code> is set to <code>null</code> since it will eventually point to the new end of the list.<br />
+   - <code>current</code> points to <code>head</code> initially (the node we’re currently processing).<br />
+   - <code>next</code> is a temporary pointer that will store the original <code>current.next</code> during each iteration.</p>
+</li>
+<li>
+<p><strong>Iterate Through the List</strong>:<br />
+   - <strong>Store the Next Node:</strong> <code>next = current.next</code> stores the next node in the list before we change <code>current.next</code>.<br />
+   - <strong>Reverse the Link:</strong> <code>current.next = prev</code> reverses the current node's <code>next</code> pointer, making it point backward to <code>prev</code>.<br />
+   - <strong>Move <code>prev</code> Forward:</strong> <code>prev = current</code> moves <code>prev</code> one step forward to become the current node. This prepares <code>prev</code> for the next iteration as the new "last processed" node.<br />
+   - <strong>Move <code>current</code> Forward:</strong> <code>current = next</code> advances <code>current</code> to the next node in the original list (which we stored in <code>next</code>).</p>
+</li>
+<li>
+<p><strong>Termination</strong>:<br />
+   - The loop continues until <code>current</code> is <code>null</code>, meaning we’ve processed every node in the original list.<br />
+   - At the end, <code>prev</code> will point to the last node of the original list, which becomes the new head of the reversed list.</p>
+</li>
+</ol>
+<h3>Example Execution with List: <code>1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; null</code></h3>
+<ol>
+<li>
+<p>Initial State:<br />
+   - <code>prev = null</code><br />
+   - <code>current = 1</code></p>
+</li>
+<li>
+<p><strong>First Iteration</strong>:<br />
+   - <code>next = 2</code> (store <code>current.next</code>)<br />
+   - <code>current.next = prev</code> (<code>1.next = null</code>)<br />
+   - Move <code>prev</code> to <code>current</code> (<code>prev = 1</code>)<br />
+   - Move <code>current</code> to <code>next</code> (<code>current = 2</code>)<br />
+   - List state: <code>1 &lt;- null</code> with <code>prev</code> at 1 and <code>current</code> at 2</p>
+</li>
+<li>
+<p><strong>Second Iteration</strong>:<br />
+   - <code>next = 3</code><br />
+   - <code>current.next = prev</code> (<code>2.next = 1</code>)<br />
+   - Move <code>prev</code> to <code>current</code> (<code>prev = 2</code>)<br />
+   - Move <code>current</code> to <code>next</code> (<code>current = 3</code>)<br />
+   - List state: <code>2 -&gt; 1 &lt;- null</code> with <code>prev</code> at 2 and <code>current</code> at 3</p>
+</li>
+<li>
+<p>Continue until the list is fully reversed:<br />
+   - <strong>Final State</strong>: <code>5 -&gt; 4 -&gt; 3 -&gt; 2 -&gt; 1 -&gt; null</code> with <code>prev</code> pointing to <code>5</code>, which is the new head of the reversed list.</p>
+</li>
+<li>
+<p><strong>Return</strong> <code>prev</code>, which is now the head of the reversed list.</p>
+</li>
+</ol>
+<p>This iterative approach has <strong>O(n) time complexity</strong> and <strong>O(1) space complexity</strong>, making it efficient in both time and space.</p>
+<p><img alt="UpVote.png" src="https://assets.leetcode.com/users/images/2d6a23fb-9893-4b46-aa6b-fdd1df3dd104_1728465171.7232926.png" /></p>
+</div>
+</div>
+</body>
+</html>

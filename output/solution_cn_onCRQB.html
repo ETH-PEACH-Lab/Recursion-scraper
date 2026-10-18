@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>【C++】剑指 Offer 24. 反转链表 题解：迭代（辅助三指针）、递归/隐式栈、显式栈 – 训练计划 III</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_fan-zhuan-lian-biao-lcof.html">训练计划 III / 训练计划 III</a> <span class="sep">›</span> <span class="cur">【C++】剑指 Offer 24. 反转链表 题解：迭代（辅助三指针）、递归/隐式栈、显式栈</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">【C++】剑指 Offer 24. 反转链表 题解：迭代（辅助三指针）、递归/隐式栈、显式栈</div>
+  <div class="meta">
+    <span>👤 Algo-Goer</span>
+    <span>👍 0</span>
+    <span>2022-04-27</span>
+    <span class="badge b-video">📹</span><span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/fan-zhuan-lian-biao-lcof/solution/by-algo-goer-xdp2/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h2>题目</h2>
+<p><a href="/problems/fan-zhuan-lian-biao-lcof/">剑指 Offer 24. 反转链表</a> Easy<br />
+<a href="/problems/UHnkqh/">剑指 Offer II 024. 反转链表</a> Easy<br />
+<a href="/problems/reverse-linked-list/">206. 反转链表</a> Easy</p>
+<p>进阶题：<a href="/problems/reverse-linked-list-ii/">92. 反转链表 II</a> Medium<br />
+题解：<a href="https://leetcode.cn/problems/reverse-linked-list-ii/solution/c-by-algo-goer-ao7w/">【C++】【高频面试】92. 反转链表 II 题解：分三段&amp;反转&amp;拼接、一次遍历/头插法 | 头插法、尾插法<br />
+</a></p>
+<p>进阶：链表可以选用迭代或递归方式完成反转。你能否用两种方法解决这道题？</p>
+<h2>题解</h2>
+<p>本题是很多国内外IT公司的必考题。可以通过递归和非递归方式来解答</p>
+<p><strong>方法一：辅助三指针/迭代</strong>（剑指Offer、小白学算法、抖码课堂）（code1、2、5）<br />
+解决与链表相关的问题总是有大量的指针操作，而指针操作的代码总是容易出错的。很多面试官喜欢出链表相关的题目，就是想通过指针操作来观察应聘者的编码功底。为了避免出错，我们最好先进行全面分析。在实际软件开发周期中，设计的时间通常不会比编码的时间短。<strong>在面试时不要急于动手写代码，而是一开始仔细分析和设计，这将会给面试官留下很好的印象。</strong> 与其很快写出一段漏洞百出的代码，倒不如仔细分析再写出鲁棒的代码</p>
+<p>首先确定函数的返回值。需要返回的是反转后链表的头节点。显然，反转后链表的头节点是原始链表的尾节点，也就是说，原始链表中的next指针指向NULL节点</p>
+<p>然后借助图形直观分析如何通过调整链表中指针的方向来正确地反转链表</p>
+<p>为了正确地反转一个链表，需要调整链表中指针的方向。为了将调整指针这个复杂过程分析清楚，我们可以借助图形来直观分析。在图(a)所示的链表中，h、i和j是3个相邻的节点。假设经过若干操作，我们已经把节点h之前的指针调整完毕，这些节点的m_pNext都指向前一个节点。接下来，我们把i的m_pNext指向h，此时链表结构如图：反转链表中节点的m_pNext指针导致链表出现断裂</p>
+<p>(a)一个链表<br />
+(b)把i之前所有节点的m_pNext都指向前一个节点，导致链表在节点i、j之间断裂<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650955562-skQFcr-image.png" /></p>
+<p>不难注意到，由于节点i的m_pNext指向了它的前一个节点，导致我们无法在链表中遍历到节点j。<strong>为了避免链表在节点i处断开，我们需要在调整节点i的m_pNext之前，把节点j保存下来</strong>。也就是说我们在调整节点i的m_pNext指针时，除了需要知道节点i本身以外，还需要i的前一个节点h，因为我们需要把节点i的m_pNext指针指向结点h。同时，我们还事先需要保存i的一个节点j，以防止链表断开。因此相应地我们需要定义3个指针，分别指向当前遍历到的节点、它的前一个节点以及后一个节点</p>
+<p>最后我们试着找到反转后链表的头节点。不难分析出反转后链表的头节点是原始链表的尾节点。什么节点是尾节点？自然是m_pNext为NULL的节点</p>
+<p>这个思路是很经典的O(n)时间、O(1)空间反转链表的做法，利用了三个指针（原本的head以及新建的prev和cur），prev始终作为新的头节点，head始终作为旧链表的头节点，cur作为过渡将head位置上的节点搬运到prev指向链表的前头，同时head指向head-&gt;next（head指向的下一个节点），prev指向新的头节点。本质是一种栈结构的变形，利用栈的原理对链表进行反转：旧链表头节点出栈，并且进入新链表的栈中<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650968722-IWOnJA-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650968760-haVhDC-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650968767-DoRszA-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650968775-hZZhuZ-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650968782-wFyemD-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650968788-lTmver-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650968795-jWahgP-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650968818-ZfxEsI-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650968876-QAlpAD-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650968883-VVDLNA-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650969238-eoPDOH-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650969310-YupRVj-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650969339-PpMNoQ-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650979902-vqKfis-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650979908-kkCBEV-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650979915-aJVWOu-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650979925-IkdYjH-image.png" /></p>
+<hr />
+<p><strong>方法二：递归</strong>（抖码课堂）（code3）<br />
+递归的做法更符合人们直观的逻辑思维，而且相较于迭代法更简洁易懂，但递归过程中过多的函数调用和栈调用会导致严重的性能惩罚，更好的性能就是迭代法的优势所在</p>
+<ol>
+<li>通过递归函数，一直递归到链表最后一个节点，该节点就是反转成功后的头节点，是最终返回结果</li>
+<li>在递归函数中，让当前节点的下一个节点的next指针指向当前节点</li>
+<li>在递归函数中，让当前节点的next指针指向NULL</li>
+<li>通过2和3，已经让递归函数中的链表实现局部反转，将结果返回给上一层递归函数</li>
+<li>所有递归结束后，链表反转成功</li>
+</ol>
+<p>除了递归调用函数外，还需要<br />
+- 反转指针的指向<br />
+- 返回新的链表头<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650969773-lrocxh-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650969849-ECqUCd-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650969871-XObQjT-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650969885-pIByRL-image.png" /></p>
+<hr />
+<p><strong>方法三：显式栈</strong>（code4）<br />
+把链表中的节点入栈，判断若栈为空，则返回NULL。从栈中取出元素，然后组成链表，则为反转后的链表。最后一个节点的next置为空，否则会构成环</p>
+<h2>面试问题（剑指Offer）</h2>
+<p>在面试过程中，应聘者代码经常出现如下3种问题：<br />
+- 输入的链表头指针为NULL或者整个链表只有一个节点时，程序立即崩溃<br />
+- 反转后链表出现断裂<br />
+- 返回的反转之后的头节点不是原始链表的尾节点</p>
+<p>在实际面试时，不同应聘者思路不同，因此代码不同。<strong>那么应聘者如何及时发现纠正代码问题，以确保不出现上述问题？一个很好的办法就是提前想好测试用例。在写出代码后，立即用事先准备好的测试用例检查测试。</strong> 如果面试是手写代码的方式，那也要在心里默默运行代码做单元测试，只有确保代码通过测试，才能提交给面试官。我们要记住一点：自己多花时间找出问题并修改问题，比在面试官找出问题后再去慌慌张张修改代码要好得多。其实面试官检查应聘者代码的方法也是用他事先准备好的测试用例来测试。如果应聘者能够想到这些测试用例，并用它们来检查测试自己的代码，那就能保证有备无患、万无一失</p>
+<p>以这道题为例，我们至少应该想到几类测试用例对代码做功能测试：<br />
+- 输入的链表头指针是NULL<br />
+- 输入的链表只有一个节点<br />
+- 输入的链表有多个节点</p>
+<p>如果我们确信代码能够通过这3类测试用例的测试，那我们就有很大把握通过这轮面试</p>
+<p>测试用例<br />
+- 功能测试：输入的链表含有多个节点，链表中只有一个节点<br />
+- 特殊输入测试：链表头节点为NULL指针</p>
+<p>本题考点<br />
+- 应聘者对链表、指针的编程能力<br />
+- 应聘者思维的全面性以及写出来的代码的鲁棒性</p>
+<h2>AC代码</h2>
+<p>```C++ []<br />
+/<em><em><br />
+ * Definition for singly-linked list.<br />
+ * struct ListNode {<br />
+ *     int val;<br />
+ *     ListNode </em>next;<br />
+ *     ListNode(int x) : val(x), next(NULL) {}<br />
+ * };<br />
+</em>/<br />
+// code1 迭代（辅助三指针）写法一<br />
+class Solution {<br />
+public:<br />
+    ListNode<em> reverseList(ListNode</em> head) {<br />
+        ListNode <em>pre = NULL;<br />
+        ListNode </em>cur = head;<br />
+        while (cur)<br />
+        {<br />
+            ListNode *next = cur-&gt;next;<br />
+            cur-&gt;next = pre;<br />
+            pre = cur;<br />
+            cur = next;<br />
+        }    <br />
+        return pre;<br />
+    }<br />
+};</p>
+<pre><code>```C++ []
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+// code2 迭代（辅助三指针）写法二
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode *pre = NULL;
+        ListNode *cur = head;
+        ListNode *newHead = NULL;
+        while (cur)
+        {
+            ListNode *next = cur-&gt;next;
+            if (next == NULL) // 到达链表尾节点
+                newHead = cur;
+            cur-&gt;next = pre;
+            pre = cur;
+            cur = next;
+        }      
+        return newHead;
+    }
+};
+</code></pre>
+<p>```C++ []<br />
+/<em><em><br />
+ * Definition for singly-linked list.<br />
+ * struct ListNode {<br />
+ *     int val;<br />
+ *     ListNode </em>next;<br />
+ *     ListNode() : val(0), next(nullptr) {}<br />
+ *     ListNode(int x) : val(x), next(nullptr) {}<br />
+ *     ListNode(int x, ListNode </em>next) : val(x), next(next) {}<br />
+ * };<br />
+<em>/<br />
+// code3 recursion<br />
+class Solution<br />
+{<br />
+public:<br />
+    ListNode </em>reverseList(ListNode <em>head)<br />
+    {<br />
+        // 递归终止条件：head指向节点为NULL，head指向节点的下一个节点为NULL<br />
+        // 这两种情况下，反转之后的结果还是它自身<br />
+        if (head == NULL || head-&gt;next == NULL)<br />
+            return head;<br />
+        // 不断通过递归调用，直到无法递归，到最后一个节点，由于当前节点head的next节点为空，所以会直接返回head<br />
+        ListNode </em>cur = reverseList(head-&gt;next);<br />
+        /<em><br />
+        比如原链表为1-&gt;2-&gt;3-&gt;4-&gt;5<br />
+        第一次执行下面的代码时候，head为4，head-&gt;next为5<br />
+        head-&gt;next-&gt;next就是5-&gt;next，设置5的下一个节点<br />
+        等号右侧为head，设置5的下一个节点为4<br />
+        出现两个next<br />
+        第一个next是获取head的下一个节点<br />
+        第二个next是设置当前节点的下一个节点为等号右侧的值<br />
+</em>/<br />
+        head-&gt;next-&gt;next = head;<br />
+        /<em><br />
+        head原来的下一个节点指向自己，所以head自己本身就不能再指向原来的下一个节点<br />
+        否则无限循环<br />
+</em>/<br />
+        head-&gt;next = NULL;<br />
+        // 把每次反转后的结果传递给上一层<br />
+        return cur;<br />
+    }<br />
+};</p>
+<pre><code>```C++ []
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+// code4 stack
+class Solution
+{
+public:
+    ListNode *reverseList(ListNode *head)
+    {
+        stack&lt;ListNode *&gt; st;
+        ListNode *p = head;
+        // 把链表中的节点入栈
+        while (p)
+        {
+            st.push(p);
+            p = p-&gt;next;
+        }
+        // 判断若栈为空，则返回NULL
+        if (st.empty())
+            return NULL;
+        // 从栈中取出元素，然后组成链表，则为反转后的链表
+        ListNode *newHead = st.top();
+        st.pop();
+        ListNode *pNew = newHead;
+        while (!st.empty())
+        {
+            pNew-&gt;next = st.top();
+            st.pop();
+            pNew = pNew-&gt;next;
+        }
+        // 最后一个节点的next置为空，否则会构成环
+        pNew-&gt;next = NULL;
+        return newHead;
+    }
+};
+</code></pre>
+<p><code>C++ []
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+// code5 新建链表法 辅助三指针/迭代 写法三
+class Solution
+{
+public:
+    ListNode *reverseList(ListNode *head)
+    {
+        // 定义哑结点dummy
+        ListNode *dummy = NULL;
+        while (head)
+        {
+            // 先保存下一个节点
+            ListNode *next = head-&gt;next;
+            // 原链表中的第一个节点指向dummy
+            head-&gt;next = dummy;
+            // 暂存当前节点
+            dummy = head;
+            // 访问下一节点
+            head = next;
+        }
+        return dummy;
+    }
+};</code></p>
+<h2>复杂度</h2>
+<ul>
+<li>
+<p>迭代（code1、code2和code5）：时间复杂度O(n)；空间复杂度O(1)<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1651036033-QVlurZ-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1651036088-FHpTmP-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1651036339-JcYDDy-image.png" /></p>
+</li>
+<li>
+<p>递归（code3）：时间复杂度O(n)；空间复杂度O(n)，隐式栈调用最多为n层<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1651035981-LbBxjZ-image.png" /></p>
+</li>
+<li>
+<p>显式栈（code4）：同递归<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1651036253-NxfhkF-image.png" /></p>
+</li>
+</ul>
+<h2>Reference</h2>
+<p>何海涛.剑指Offer[M].2012/01<br />
+何海涛.剑指Offer（专项突破版）：数据结构与算法名企面试题精讲[M].2021/07<br />
+吕云翔等编著.数据结构：用Python语言描述[M].2020/07<br />
+吴师兄学算法（递归）<br />
+<a href="&lt;a href=&quot;https://www.bilibili.com/video/BV1Lg411K7py&quot; target=&quot;_blank&quot; class=&quot;vimeo-link&quot; style=&quot;background:#00a1d6&quot;&gt;▶ 在 Bilibili 观看&lt;/a&gt;
+[leetcode 206 号算法题：反转单链表【数据结构与算法】](&lt;a href=&quot;https://www.bilibili.com/video/BV13v411h7HR&quot; target=&quot;_blank&quot; class=&quot;vimeo-link&quot; style=&quot;background:#00a1d6&quot;&gt;▶ 在 Bilibili 观看&lt;/a&gt;
+[反转链表](https://segmentfault.com/a/119000000452468">【小白学算法】反转链表</a>)</p>
+</div>
+</div>
+</body>
+</html>

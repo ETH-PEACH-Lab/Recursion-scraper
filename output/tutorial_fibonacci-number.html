@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fibonacci Number – Editorial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+<style>.vimeo-link{display:inline-flex;align-items:center;gap:8px;
+            background:#1ab7ea;color:#fff;font-weight:600;
+            padding:10px 20px;border-radius:6px;margin:12px 0;font-size:.95em}
+.vimeo-link:hover{background:#0d9bd4;color:#fff;text-decoration:none}</style>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_fibonacci-number.html">Fibonacci Number</a> <span class="sep">›</span> <span class="cur">Editorial</span></nav>
+<div class="wrap"><div class="page-title">1013. Fibonacci Number — Official Editorial</div>
+<div class="page-sub" style="margin-bottom:20px">
+  <span class="badge b-easy">Easy</span> <span class="badge b-tag">Math</span> <span class="badge b-tag">Dynamic Programming</span> <span class="badge b-tag">Recursion</span> <span class="badge b-tag">Memoization</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/fibonacci-number/" target="_blank" style="font-size:.85em">↗ Problem</a>
+  &nbsp;·&nbsp;
+  <a href="problem_fibonacci-number.html" style="font-size:.85em">💬 Community Solutions</a>
+</div>
+<div class="sol-body">
+  <p>[TOC]</p>
+<h2>Solution</h2>
+<hr />
+<h3>Approach 1: Recursion</h3>
+<p><strong>Intuition</strong></p>
+<p>Use recursion to compute the Fibonacci number of a given integer.</p>
+<p><img alt="fib(5) Recursion diagram" src="https://leetcode.com/articles/Figures/509/fibonacciRecursion5.png" /></p>
+<p><em>Figure 1. An example tree representing what <code>fib(5)</code> would look like</em></p>
+<p><strong>Algorithm</strong></p>
+<ul>
+<li>Check if the provided input value, $$N$$, is less than or equal to 1. If true, return $$N$$.</li>
+<li>
+<p>Otherwise, the function <code>fib(int N)</code> calls itself, with the result of the 2 previous numbers being added to each other, passed in as the argument.
+This is derived directly from the <code>recurrence relation</code>:
+$$F_{n} = F_{n-1} + F_{n-2}$$</p>
+</li>
+<li>
+<p>Do this until all numbers have been computed, then return the resulting answer.</p>
+</li>
+</ul>
+<p><strong>Implementation</strong></p>
+<iframe src="https://leetcode.com/playground/WZveQzdi/shared" frameBorder="0" width="100%" height="191" name="WZveQzdi"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>
+<p>Time complexity: $$O(2^N)$$. This is the slowest way to solve the <code>Fibonacci Sequence</code> because it takes exponential time. The amount of operations needed, for each level of recursion, grows exponentially as the depth approaches <code>N</code>.</p>
+</li>
+<li>
+<p>Space complexity: $$O(N)$$. We need space proportional to <code>N</code> to account for the max size of the stack, in memory. This stack keeps track of the function calls to <code>fib(N)</code>. This has the potential to be bad in cases that there isn't enough physical memory to handle the increasingly growing stack, leading to a <code>StackOverflowError</code>. The <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/StackOverflowError.html">Java docs</a> have a good explanation of this, describing it as an error that occurs because an application recurses too deeply.</p>
+</li>
+</ul>
+<p><br /></p>
+<hr />
+<h3>Approach 2: Bottom-Up Approach using Tabulation</h3>
+<p><strong>Intuition</strong></p>
+<p>Improve upon the recursive approach by using iteration, still solving for all of the sub-problems and returning the answer for $$N$$, using already computed Fibonacci values. While using a bottom-up approach, we can iteratively compute and store the values, only returning once we reach the result.</p>
+<p><strong>Algorithm</strong></p>
+<ul>
+<li>If <code>N</code> is less than or equal to 1, return <code>N</code></li>
+<li>Otherwise, iterate through <code>N</code>, storing each computed answer in an array along the way.</li>
+<li>Use this array as a reference to the 2 previous numbers to calculate the current Fibonacci number.</li>
+<li>Once we've reached the last number, return it's Fibonacci number.</li>
+</ul>
+<p><strong>Implementation</strong></p>
+<iframe src="https://leetcode.com/playground/752hRLRe/shared" frameBorder="0" width="100%" height="310" name="752hRLRe"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>
+<p>Time complexity: $$O(N)$$. Each number, starting at 2 up to and including <code>N</code>, is visited, computed and then stored for $$O(1)$$ access later on.</p>
+</li>
+<li>
+<p>Space complexity: $$O(N)$$. The size of the data structure is proportional to <code>N</code>.</p>
+</li>
+</ul>
+<p><br /></p>
+<hr />
+<h3>Approach 3: Top-Down Approach using Memoization</h3>
+<p><strong>Intuition</strong></p>
+<p>Solve for all of the sub-problems, use memoization to store the pre-computed answers, then return the answer for $$N$$. We will leverage recursion, but in a smarter way by not repeating the work to calculate existing values.</p>
+<p><strong>Algorithm</strong></p>
+<ul>
+<li>At first, create a map with <code>0</code> -&gt; <code>0</code> and <code>1</code> -&gt; <code>1</code> pairs.</li>
+<li>Call <code>fib(N)</code> function.<ul>
+<li>At every recursive call of <code>fib(N)</code>, if <code>N</code> exists in the map, return the cached value for <code>N</code>.</li>
+<li>Otherwise, set the key <code>N</code>, in our mapping, to the value of <code>fib(N - 1) + fib(N - 2)</code> and return the computed value.</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>For Python, instead of manually maintaining a dictionary (<code>cache</code>) we can use the built-in decorator @cache or @lru_cache(None). You can read more about these decorators <a href="https://docs.python.org/3/library/functools">here</a>. We decided not to use the decorators in this approach so that the solution gives a clear idea about what actually happens when memoization is added to a function.</p>
+</blockquote>
+<p><strong>Implementation</strong></p>
+<iframe src="https://leetcode.com/playground/fnNGtVWw/shared" frameBorder="0" width="100%" height="259" name="fnNGtVWw"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>
+<p>Time complexity: $$O(N)$$. Each number, starting at 2 up to and including <code>N</code>, is visited, computed and then stored for $$O(1)$$ access later on.</p>
+</li>
+<li>
+<p>Space complexity: $$O(N)$$. The size of the stack in memory is proportional to <code>N</code>. Also, the memoization hash table is used, which occupies $$O(N)$$ space.</p>
+</li>
+</ul>
+<p><br /></p>
+<hr />
+<h3>Approach 4: Iterative Bottom-Up Approach</h3>
+<p><strong>Intuition</strong></p>
+<p>Let's get rid of the need to use all of that space and instead use the minimum amount of space required.  Notice that during each recursive call in the top-down approach and each iteration in the bottom-up approach, we only needed to look at the results of <code>fib(N-1)</code> and <code>fib(N-2)</code> to determine the result of <code>fib(N)</code>.  Therefore, we can achieve $$O(1)$$ space complexity by only storing the value of the two previous numbers and updating them as we iterate to <code>N</code>.</p>
+<p><strong>Algorithm</strong></p>
+<ul>
+<li>Check if <code>N &lt;= 1</code>, if it is, then we should return <code>N</code>.</li>
+<li>We need 3 variables to store each state <code>fib(N)</code>, <code>fib(N-1)</code>, and <code>fib(N-2)</code>.</li>
+<li>Preset the initial values:<ul>
+<li>Initialize <code>current</code> with 0.</li>
+<li>Initialize <code>prev1</code> with 1, since this will represent <code>fib(N-1)</code> when computing the current value.</li>
+<li>Initialize <code>prev2</code> with 0, since this will represent <code>fib(N-2)</code> when computing the current value.</li>
+</ul>
+</li>
+<li>Iterate, incrementally by 1, all the way up to and including <code>N</code>. Starting at 2, since <code>0</code> and <code>1</code> are pre-computed.</li>
+<li>Set the <code>current</code> value to <code>prev1 + prev2</code> because that is the value we are currently computing.</li>
+<li>Set the <code>prev2</code> value to <code>prev1</code>.</li>
+<li>Set the <code>prev1</code> value to <code>current</code>.</li>
+<li>When we reach <code>N+1</code>, we will exit the loop and return the previously set <code>current</code> value.</li>
+</ul>
+<p><strong>Implementation</strong></p>
+<iframe src="https://leetcode.com/playground/7Cx6e4Ek/shared" frameBorder="0" width="100%" height="361" name="7Cx6e4Ek"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>
+<p>Time complexity: $$O(N)$$. Each value from <code>2</code> to <code>N</code> is computed once. Thus, the time it takes to find the answer is directly proportional to <code>N</code> where <code>N</code> is the Fibonacci Number we are looking to compute.</p>
+</li>
+<li>
+<p>Space complexity: $$O(1)$$. This requires 1 unit of space for the integer <code>N</code> and 3 units of space to store the computed values (<code>current</code>, <code>prev1</code>, and <code>prev2</code>) for every loop iteration. The amount of space used is independent of $$N$$, so this approach uses a constant amount of space.</p>
+</li>
+</ul>
+<p><br /></p>
+<hr />
+<h3>Approach 5: Matrix Exponentiation</h3>
+<p><strong>Intuition</strong></p>
+<p>Use Matrix Exponentiation to get the Fibonacci number from the element at (0, 0) in the resultant matrix.</p>
+<p>In order to do this we can rely on the matrix equation for the Fibonacci sequence, to find the <code>Nth</code> Fibonacci number:
+$$
+\begin{pmatrix}
+ 1\,\,1 \
+ 1\,\,0
+\end{pmatrix}^{n}=\begin{pmatrix}
+ \: F_{(n+1)}\;\;\:F_{(n)}\
+ \: F_{(n)}\;\;\:F_{(n-1)}
+\end{pmatrix}
+$$</p>
+<p><strong>Algorithm</strong></p>
+<ul>
+<li>Check if <code>N</code> is less than or equal to 1. If it is, return <code>N</code>.</li>
+<li>Use a recursive function, <code>matrixPower</code>, to calculate the power of a given matrix <code>A</code>. The power will be <code>N-1</code>, where <code>N</code> is the <code>Nth</code> Fibonacci number.</li>
+<li>The <code>matrixPower</code> function will be performed for <code>N/2</code> of the Fibonacci numbers.</li>
+<li>Within <code>matrixPower</code>, call the <code>multiply</code> function to multiply 2 matrices.</li>
+<li>Once we finish doing the calculations, return <code>A[0][0]</code> to get the <code>Nth</code> Fibonacci number.</li>
+</ul>
+<p><strong>Implementation</strong></p>
+<iframe src="https://leetcode.com/playground/8BkHviGN/shared" frameBorder="0" width="100%" height="500" name="8BkHviGN"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>
+<p>Time complexity: $$O(\log N)$$. By halving the <code>N</code> value in every <code>matrixPower</code>'s call to itself, we are halving the work needed to be done.</p>
+</li>
+<li>
+<p>Space complexity: $$O(\log N)$$. The size of the stack in memory is proportional to the function calls to <code>matrixPower</code> plus the memory used to account for the matrices which use constant space.</p>
+</li>
+</ul>
+<p><br /></p>
+<hr />
+<h3>Approach 6: Math</h3>
+<p><strong>Intuition</strong></p>
+<p>Let's use the <code>golden ratio</code>, a.k.a <code>Binet's forumula</code>: $$ \varphi = \frac{1 + \sqrt{5}}{2} \approx 1.6180339887.... $$</p>
+<p>Here's a <a href="http://demonstrations.wolfram.com/GeneralizedFibonacciSequenceAndTheGoldenRatio/">link</a> to find out more about how the Fibonacci sequence and the golden ratio work.</p>
+<p>We can derive the most efficient solution to this problem using only constant space!</p>
+<p><strong>Algorithm</strong></p>
+<ul>
+<li>Use the <code>golden ratio</code> formula to calculate the <code>Nth</code> Fibonacci number.</li>
+</ul>
+<p><strong>Implementation</strong></p>
+<iframe src="https://leetcode.com/playground/8mCRrVE6/shared" frameBorder="0" width="100%" height="157" name="8mCRrVE6"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>
+<p>Time complexity: $$O(\log N)$$. We do not use loops or recursion, so the time required equals the time spent performing the calculation using <code>Binet's formula</code>. However, raising the <code>golden_ratio</code> to the power of $$N$$ requires $$O(\log N)$$ time.</p>
+</li>
+<li>
+<p>Space complexity: $$O(1)$$. The space used is the space needed to create the variable to store the <code>golden ratio</code>.</p>
+</li>
+</ul>
+</div></div>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>看不懂递归的看过来，希望能帮到你！ – 训练计划 III</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_fan-zhuan-lian-biao-lcof.html">训练计划 III / 训练计划 III</a> <span class="sep">›</span> <span class="cur">看不懂递归的看过来，希望能帮到你！</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">看不懂递归的看过来，希望能帮到你！</div>
+  <div class="meta">
+    <span>👤 Chuancey</span>
+    <span>👍 149</span>
+    <span>2021-02-18</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/fan-zhuan-lian-biao-lcof/solution/kan-bu-dong-di-gui-de-kan-guo-lai-xi-wan-1akq/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h3>0.前序</h3>
+<p>这个的题解已经有1.1k了，之前我也一直在总结递归的写法，可以说直到这个题，我才敢以肯定我自己总结的思路，不管这个我解决递归的思路是错是对，都挺愿意能让大家看到。<strong>这个思路对写递归代码来说，还是比较简单适用的，比我看到的这些把递归掰开来揉碎了来讲的要更容易出代码</strong>。希望对写递归还比较迷茫的同学们有所帮助，如果我写的对你有帮助，还望大家能多点赞转发。</p>
+<h3>1.先放结论</h3>
+<p><strong>Rules Number One</strong>，基本上，<strong>所有的递归问题都可以用递推公式来表示。有了这个递推公式，我们就可以很轻松地将它改为递归代码。</strong>。所以，遇到递归不要怕，先想<strong>递推公式</strong>。</p>
+<h5>例1: (比较明显的能递推公式的问题)</h5>
+<ul>
+<li>问题：斐波那契数列的第n项</li>
+<li>递推公式：</li>
+</ul>
+<pre><code>f(n)=f(n-1)+f(n-2) 其中，f(0)=0,f(1)=1
+</code></pre>
+<ul>
+<li>终止条件：</li>
+</ul>
+<pre><code>if (n &lt;= 2) return 1;
+</code></pre>
+<ul>
+<li>递归代码：</li>
+</ul>
+<pre><code>int f(int n) {
+  if (n &lt;= 2) return 1;
+  return f(n-1) + f(n-2);
+}
+</code></pre>
+<h5>例2:(不那么明显的有递推公式的问题)</h5>
+<ul>
+<li>问题：逆序打印一个数组</li>
+<li>递推公式：</li>
+</ul>
+<pre><code>假设令F(n)=逆序遍历长度为n的数组
+那么F(n)= 打印数组中下标为n的元素 + F(n-1)
+</code></pre>
+<ul>
+<li>终止条件：</li>
+</ul>
+<pre><code>if (n &lt;0) return ;
+</code></pre>
+<ul>
+<li>递归代码：</li>
+</ul>
+<pre><code>public void Print(int[] nums,int n){
+    if(n&lt;0) return;
+    System.out.println(nums[n]);
+    Print(nums,n-1);
+}
+</code></pre>
+<p>到这里，不知道大家对写递归有没有一些理解了。其实写递归不能总想着去把递归平铺展开，这样脑子里就会循环，一层一层往下调，然后再一层一层返回，试图想搞清楚计算机每一步都是怎么执行的，这样就很容易被绕进去。对于递归代码，这种试图想清楚整个递和归过程的做法，实际上是进入了一个思维误区。只要找到<strong>递推公式</strong>，我们就能很轻松地写出递归代码。</p>
+<p>到这里，我想进一步跟大家说明我这个思路是比较能够容易出代码的，那么就树的遍历问题来和大家讲。递归总是和树分不开，其中，最典型的便是树的遍历问题。刚开始学的时候，不知道大家是怎么理解先／中／后序遍历的递归写法的，这里我提供我的思路供参考，以前序遍历为例：<br />
+- 问题：二叉树的先序遍历<br />
+- 递推公式：</p>
+<pre><code>令F(Root)为问题:遍历以Root为根节点的二叉树，
+令F(Root.left)为问题:遍历以F(Root.left)为根节点的二叉树
+令F(Root.right)为问题:遍历以F(Root.right)为根节点的二叉树
+那么其递推公式为：
+F(Root)=遍历Root节点+F(Root.left)+F(Root.right)
+</code></pre>
+<ul>
+<li>递归代码：</li>
+</ul>
+<pre><code>public void preOrder(TreeNode node){
+    if(node==null) return;
+    System.out.println(node.val);
+    preOrder(node.left);
+    preOrder(node.righr);
+}
+</code></pre>
+<p><strong>Rules Number Two</strong>, <strong>递归是一种关于某个重复动作(完成重复性的功能)的形式化描述</strong>。具体点讲，如果一个问题 A 可以分解为若干子问题 B、C、D，<strong>你可以假设子问题 B、C、D 已经解决，在此基础上思考如何解决问题 A</strong>。而且，你只需要思考问题 A 与子问题 B、C、D 两层之间的关系即可，不需要一层一层往下思考子问题与子子问题，子子问题与子子子问题之间的关系(也就是说，递归只能考虑当前层和下一层的关系，不能继续往下深入)。我们需要屏蔽掉递归细节，理解为完成了某种功能的形式化描述即可。</p>
+<h3>2.好了，那我们来分析这个题。</h3>
+<ul>
+<li>问题：单向链表的反转</li>
+<li>递推公式：</li>
+</ul>
+<pre><code>令F(node)为问题:反转以node为头节点的单向链表；
+一般，我们需要考虑F(n)和F(n-1)的关系，那么这里，如果n代表以node为头节点的单向链表，那么n-1就代表以node.next为头节点的单向链表.
+所以，我们令F(node.next)为问题：反转以node.next为头节点的单向链表；
+那么，F(node)和F(node.next)之间的关系是？这里我们来简单画个图，假设我们反转3个节点的链表：
+1 -&gt; 2 -&gt; 3
+那么，F(node=1)=F(node=2)+?
+这里假设子问题F(node=2)已经解决，那么我们如何解决F(node=1)：
+很明显，我们需要反转node=2和node=1， 即 node.next.next=node; 同时 node.next=null;
+所以，这个问题就可以是：F(node=1)=F(node=2)+ 反转node=2和node=1
+</code></pre>
+<ul>
+<li>递归代码：</li>
+</ul>
+<pre><code>public ListNode reverseList(ListNode head) {
+        if(head == null || head.next == null) {  //终止条件并不难想
+            return head;
+        }
+        ListNode node = reverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return node;  //按上面的例子，F(node=1)和F(node=2)它俩反转后的头节点是同一个
+    }
+</code></pre>
+<h3>3.写递归的小tips</h3>
+<p>（发现写递归的过程中有些小体会，虽然时隔很久但还是过来更新啦！)<br />
+- 将问题抽象化，可以将问题抽象为<code>f(n)</code>（或者其他的数学符号）, 然后用<code>f(n)</code>代表欲求的问题，然后去发现和子问题（比如<code>f(n-1)</code>）的递推关系！（这一点在写动态规划的时候特别有用，其实<strong>动态规划就是记忆化的递归</strong>！）<br />
+- 递归函数是带语义的，但是记住一个递归函数只有一个语义，如果在写递归函数实现的时候，发现出现了多个语义，需要对新出现的语义重新定义一个函数！<br />
+这里推荐问题<a href="/problems/subtree-of-another-tree/">572. 另一棵树的子树</a>和问题<a href="/problems/same-tree/">100. 相同的树</a><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1644999608-GzzVMd-image.png" /><br />
+- 在写递归函数的时候，可以先写子问题<code>f(n-1)</code>，再写所求问题<code>f(n)</code>，这样的话就很好知道<code>f(n)</code>和<code>f(n-1)</code>的关系，更容易保证一个递归函数只包含一个语义。</p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>超详细图解递归执行过程 21.合并两个有序链表 – Merge Two Sorted Lists</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_merge-two-sorted-lists.html">Merge Two Sorted Lists / 合并两个有序链表</a> <span class="sep">›</span> <span class="cur">超详细图解递归执行过程 21.合并两个有序链表</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">超详细图解递归执行过程 21.合并两个有序链表</div>
+  <div class="meta">
+    <span>👤 wang_ni_ma</span>
+    <span>👍 91</span>
+    <span>2020-11-21</span>
+    <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞 Slide</span>
+    <a href="https://leetcode.cn/problems/merge-two-sorted-lists/solution/chao-xiang-xi-tu-jie-di-gui-zhi-xing-guo-cheng-21h/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h2>合并两个有序链表递归版</h2>
+<p>递归的两个条件：<br />
+1. 终止条件：当l1或者l2中有一个为空时，就返回<br />
+2. 函数内要做什么：如果l1.val小于等于l2.val，那么将l1.next指向 l1的后续节点和l2中较小的一个</p>
+<p>终止条件比较好理解，函数内做的事情就不那么好懂了 <strong>l1的后续节点和l2中较小的一个</strong>   </p>
+<ul>
+<li>l1.val&lt;=l2.val后，我们就能确定一个较小的节点了，比如是l1。因为链表还没结束，我们要继续比较，这时候比较的是l1.next和l2。    </li>
+<li>l1.next和l2是在下一层递归函数中处理的，再下一层函数中，也会确定一个较小的节点，我们将这个较小的节点记做x，然后上一层的l1.next就指向这个x节点。   </li>
+</ul>
+<p>后面就是不断的递归，最终把整个链表给串起来。 <br />
+<img alt="640.gif" src="https://pic.leetcode.cn/1605953062-RMAqlu-640.gif" /></p>
+<p>代码实现如下：<br />
+```python []<br />
+class Solution(object):<br />
+    def mergeTwoLists(self, l1, l2):<br />
+        """<br />
+        :type l1: ListNode<br />
+        :type l2: ListNode<br />
+        :rtype: ListNode<br />
+        """<br />
+        #递归的结束点就是L1或者L2为空就返回<br />
+        #如果L1为空就返回L2，L2为空返回L1<br />
+        if not (l1 and l2):<br />
+            return l1 if l1 else l2<br />
+        #L1的val&lt;=L2的val，那么继续递归<br />
+        #当前L1的next指向一个递归函数<br />
+        #意思是L1的下一个和L2哪个大，就作为当前L1的next<br />
+        if l1.val&lt;=l2.val:<br />
+            l1.next = self.mergeTwoLists(l1.next,l2)<br />
+            return l1<br />
+        else:<br />
+            l2.next = self.mergeTwoLists(l1,l2.next)<br />
+            return l2</p>
+<pre><code>```java []
+class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        //递归的结束条件，如果l1和l2中有一个为空就返回
+        if(l1==null || l2==null) {
+            return (l1==null)? l2:l1;
+        }
+        //如果l1的值&lt;=l2的值，就继续递归，比较l1.next的值和l2的值
+        //l1.next和l2比较完后，会产生一个更小的节点x，将x加到当前l1的后面
+        if (l1.val&lt;=l2.val) {
+            l1.next = mergeTwoLists(l1.next,l2);
+            return l1;
+        //如果l1的值&gt;l2的值，就继续递归，比较l1的值和l2.next的值
+        } else {
+            l2.next = mergeTwoLists(l1,l2.next);
+            return l2;
+        }
+    }
+}
+</code></pre>
+<h2>详解递归的执行过程演示</h2>
+<p>我们定义两个链表：<code>1-&gt;2-&gt;4</code>，<code>1-&gt;3-&gt;4</code> <br />
+L1即为第一个链表，L2为第二个链表 <br />
+连个链表下放是代码部分，具体如下图所示： <br />
+<img alt="1.jpg" src="https://pic.leetcode.cn/1605953083-ZkXWpk-1.jpg" /></p>
+<p>再解释一下上图中代码部分：<br />
+- 第一个if：递归的终止条件，如果链表1为空 或者 链表2为空就返回<br />
+- 第二个if：如果链表1的节点值 &lt;= 链表2的节点值，则继续下一层的递归比较<br />
+- else部分：如果链表1的节点值 &gt; 链表2的节点值，则继续下一层递归比较</p>
+<hr />
+<p>后面我们就开始不断比较，不断调用下一次递归函数 <br />
+每一步中，具体执行到哪段代码，我用红色标记出来了：   </p>
+<p>&lt;<img alt="2.jpg" src="https://pic.leetcode.cn/1605953131-EEWFLE-2.jpg" />,<img alt="3.jpg" src="https://pic.leetcode.cn/1605953137-glsFjU-3.jpg" />,<img alt="4.jpg" src="https://pic.leetcode.cn/1605953142-vNGfXC-4.jpg" />,<img alt="5.jpg" src="https://pic.leetcode.cn/1605953147-lfoXLo-5.jpg" />,<img alt="6.jpg" src="https://pic.leetcode.cn/1605953153-zWjLbj-6.jpg" />,<img alt="7.jpg" src="https://pic.leetcode.cn/1605953159-elLWYs-7.jpg" />,<img alt="8.jpg" src="https://pic.leetcode.cn/1605953164-IXClBR-8.jpg" />,<img alt="9.jpg" src="https://pic.leetcode.cn/1605953171-hyWheC-9.jpg" />,<img alt="10.jpg" src="https://pic.leetcode.cn/1605953181-SSbOro-10.jpg" />,<img alt="11.jpg" src="https://pic.leetcode.cn/1605953188-cwnNjs-11.jpg" />&gt;</p>
+<ul>
+<li>上图中第一步、第二步：当链表1的节点1 &lt;= 链表2的节点1时候，让链表1的节点1.next指向下一层递归函数，但此时程序并没有执行完，链表1的节点1.next指向的还是一个未知的节点，到底会指向谁，需要等后面的递归函数执行完返回后才知道</li>
+<li>第三步、第四步：链表1的节点2&gt;链表2的节点1，让链表2的节点1.next指向下一层递归函数，具体指向谁需要等后面的递归函数执行完返回后才知道</li>
+<li>第五步、第六步：链表1的节点2&lt;=链表2的节点3，让链表1的节点2.next 指向下一层递归函数</li>
+<li>第七步、第八步：链表2的节点3.next 指向下一层的递归函数</li>
+<li>第九步、第十步：链表1的节点4.next 指向下一层递归函数</li>
+</ul>
+<p>经过上面 10 步之后，递归调用就到头了，因为上图中最后一张图，最右边的黑色方框里只剩下一个<code>4</code>了。此时就会触发递归终止条件，然后不断返回   </p>
+<hr />
+<p>&lt;<img alt="12.jpg" src="https://pic.leetcode.cn/1605953273-BPXBQU-12.jpg" />,<img alt="13.jpg" src="https://pic.leetcode.cn/1605953283-bRPUJl-13.jpg" />,<img alt="14.jpg" src="https://pic.leetcode.cn/1605953290-QKiipt-14.jpg" />,<img alt="15.jpg" src="https://pic.leetcode.cn/1605953296-FgZhnQ-15.jpg" />,<img alt="16.jpg" src="https://pic.leetcode.cn/1605953303-MzSKgr-16.jpg" />,<img alt="17.jpg" src="https://pic.leetcode.cn/1605953312-clwXGW-17.jpg" />,<img alt="18.jpg" src="https://pic.leetcode.cn/1605953317-ZenBdK-18.jpg" />,<img alt="19.jpg" src="https://pic.leetcode.cn/1605953324-RShRTP-19.jpg" />,<img alt="20.jpg" src="https://pic.leetcode.cn/1605953331-CiyUqI-20.jpg" />,<img alt="21.jpg" src="https://pic.leetcode.cn/1605953341-NUjtMG-21.jpg" />&gt;</p>
+<p>再来分析一下上图中递归函数是怎么返回的：<br />
+- 第11步：此时链表1为空，于是触发递归终止条件，返回链表2的节点4<br />
+- 第12步：链表2的节点4返回到上一层递归函数，上一层函数是链表1的节点4，于是链表1的节点4.next 就指向 链表2的节点4<br />
+- 第13步：链表1的节点4返回<br />
+- 第14步：链表2的节点4返回到上一层递归函数，上一层函数是链表2的节点3，于是链表2的节点3.next 就指向 链表1的节点4<br />
+- 第15步：链表2的节点3返回<br />
+- 第16步：链表2的节点3返回到上一层递归函数，上一层的函数是链表1的节点2，于是链表1的节点2.next 就指向 链表2的节点3<br />
+- 第17步：链表1的节点2返回<br />
+- 第18步：链表1的节点2返回到上一层递归函数，上一层函数是链表2的节点1，于是链表2的节点1.next 就指向 链表1的节点2<br />
+- 第19步：链表2的节点1返回<br />
+- 第20步：链表2的节点1返回到上一层递归函数，上一层函数是链表的节点1，于是链表1的节点1.next 就指向 链表2的节点1</p>
+<p>如下图所示，最后返回链表1的节点1，此时两个链表就被合并成一个链表了<br />
+<img alt="22.jpg" src="https://pic.leetcode.cn/1605953375-dxQErL-22.jpg" /></p>
+<p><strong>欢迎关注 👉👉👉  <a href="https://oscimg.oschina.net/oscnet/95a30f75-0d64-4b3c-8747-db31496b46dd.jpg">【公众号】</a> 👈👈👈</strong>   </p>
+<p><strong>如果能再点个赞👍👍 就更感激啦💓💓</strong></p>
+</div>
+</div>
+</body>
+</html>

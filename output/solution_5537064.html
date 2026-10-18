@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O(n) | Beats 100 % | Java | C++ | Python | Go | JavaScript – Add Two Numbers</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_add-two-numbers.html">Add Two Numbers</a> <span class="sep">›</span> <span class="cur">O(n) | Beats 100 % | Java | C++ | Python | Go | JavaScript</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">O(n) | Beats 100 % | Java | C++ | Python | Go | JavaScript</div>
+  <div class="meta">
+    <span>👤 kartikdevsharma_</span>
+    <span>👍 6</span>
+    <span>2024-07-26</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/add-two-numbers/solutions/5537064/on-beats-100-java-c-python-go-javascript/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h3>Intuition</h3>
+<p>We're being asked to add two numbers. But these numbers are represented as linked lists and not just any linked lists but ones where:</p>
+<blockquote>
+<p>a) The digits are in reverse order<br />
+ b) Each node contains a single digit</p>
+</blockquote>
+<p>This representation immediately raises some interesting questions. Why reverse order? How does this change our typical approach to addition? Let's consider a simple example:</p>
+<p><img alt="q21.png" src="https://assets.leetcode.com/users/images/26bff16c-d9de-446a-bd6b-5ceeb9c55404_1726913595.7584646.png" /></p>
+<p>342 + 465 = 807<br />
+In our linked list representation, this becomes: [2,4,3] + [5,6,4] = [7,0,8]</p>
+<p>Do you see what's happening here? The least significant digits (2 and 5) are at the head of the list. This is actually quite convenient for addition, isn't it In normal addition we start from the right-most digits and work our way left. Here we can start from the head of the list and work our way through.</p>
+<p>Try to convert these linked lists back into regular integers add them, and then convert the result back into a linked list. But let's think about that for a moment. What if the numbers are really large? We might run into integer overflow issues.</p>
+<p>So, we need to work with the linked list representation directly. But how?</p>
+<p>Remember how we do addition by hand? We start from the right-most digit, add the corresponding digits from both numbers, carry over any excess to the next column, and repeat. Can we mimic this process with our linked lists?<br />
+This process is known as the "elementary school addition algorithm" or "column addition". It's a fundamental concept in arithmetic that we're adapting to work with our linked list representation. The key insight here is that by representing our numbers in reverse order, we've aligned our linked list nodes with the place values in our number system, making it easier to perform this digit-by-digit addition.</p>
+<p>Let's think about the mathematical properties at play here. When we add two single-digit numbers, what's the maximum possible result? 9 + 9 = 18. So our sum can be at most two digits.</p>
+<p>This gives us an important insight: at each step of our addition, we'll have:<br />
+- A sum of two digits (0-18)<br />
+- A single-digit result (0-9)<br />
+- A potential carry (0 or 1)</p>
+<p>Mathematically, we can express this as:</p>
+<p>$result = (digit1 + digit2 + carry) % 10$<br />
+$newcarry = (digit1 + digit2 + carry) / 10$  (integer division)</p>
+<p><img alt="q22.png" src="https://assets.leetcode.com/users/images/f64cbc27-a20a-4573-aa2d-09d8820afe8e_1726913721.854242.png" /></p>
+<p>This forms the core of our addition algorithm. Now that we understand the mathematical foundation, how do we apply this to our linked lists? <br />
+ Each node in our list represents a place value, and we're processing these place values one at a time, just as we would when adding on paper. This method is not only intuitive but also efficient, as it allows us to perform the addition in a single pass through both lists. We could traverse both lists simultaneously, adding corresponding digits (and the carry from the previous step). But what if the lists are of different lengths? we need to continue our addition process as long as there are digits left in either list, or if there's a carry left over.</p>
+<p>So, our process might look something like this:</p>
+<pre><code>1. Start at the head of both lists
+2. While there are still digits in either list or a carry:
+a. Get the digit from list1 (if available, else use 0)
+b. Get the digit from list2 (if available, else use 0)
+c. Add these digits and the carry
+d. Create a new node with the result % 10
+e. Update the carry for the next iteration
+f. Move to the next nodes in both lists (if available)
+</code></pre>
+<p>We also need to consider some edge cases:</p>
+<ul>
+<li>
+<p>What if one list is longer than the other? <br />
+  Our approach of using 0 when a list runs out handles this.</p>
+</li>
+<li>
+<p>What if we have a carry after processing all digits?<br />
+  We need to ensure our loop continues even if both lists are exhausted, as long as there's a carry.</p>
+</li>
+<li>
+<p>What about leading zeros? <br />
+  The problem states we don't have to worry about this, except for the number 0 itself.</p>
+</li>
+<li>
+<p>Empty lists?<br />
+  The problem specifies non-empty lists, but it's good to keep in mind.</p>
+</li>
+</ul>
+<p>If you think through this process, you might think how do we build our result list? We could start from the head, but that would require us to reverse our result at the end (remember, least significant digit comes first).A common technique in linked list problems is to use a dummy head node. This simplifies our list building process:</p>
+<blockquote>
+<p>1 Create a dummy node<br />
+    2. Maintain a "current" pointer, starting at the dummy node<br />
+    3. As we calculate each digit of the result, add it as a new node after the current node<br />
+    4. Move the current pointer to this new node<br />
+    5. At the end, our result is dummy.next (skipping the dummy node itself)<br />
+<img alt="q23.png" src="https://assets.leetcode.com/users/images/50ed4a7a-0651-4e89-aabf-c5d39f5a9213_1726914264.7821214.png" /></p>
+</blockquote>
+<p>This will allows us to build our result list in the correct order as we go, without needing to reverse it at the end.</p>
+<p>Our approach works directly with the linked list representation, avoiding potential integer overflow issues. It mimics the grade-school addition process, which is intuitive and easy to understand. It handles lists of different lengths naturally, without needing separate logic. The use of a dummy head simplifies our list-building process.</p>
+<p>The reverse order of digits actually works in our favor aligning perfectly with how we perform addition from right to left.</p>
+<h1>Approach</h1>
+<p>As we have already talked that we're asked to add two numbers the numbers are represented as linked lists where each node contains a single digit, and the digits are in reverse order. For example:</p>
+<p>342 + 465 = 807<br />
+Is represented as:<br />
+[2,4,3] + [5,6,4] = [7,0,8]</p>
+<p>This reverse order is key to our solution, as it aligns perfectly with how we typically perform addition: from right to left (least significant digit to most significant digit).</p>
+<p>Let's break it down into a high-level algorithm:</p>
+<pre><code class="language-pseudocode">function addTwoNumbers(l1, l2):
+    initialize dummy node
+    initialize current pointer to dummy node
+    initialize carry to 0
+
+    while l1 is not null OR l2 is not null OR carry is not 0:
+        calculate sum of current digits and carry
+        create new node with ones digit of sum
+        update carry for next iteration
+        move to next digits in both lists (if available)
+
+    return dummy.next as head of result list
+</code></pre>
+<p><strong>a) Dummy Node and Current Pointer:</strong></p>
+<pre><code class="language-pseudocode">dummy = new ListNode(0)
+current = dummy
+</code></pre>
+<p>The dummy node is a crucial technique in linked list problems. It serves as a placeholder at the beginning of our result list, simplifying the process of building the list. Here's why it's valuable:</p>
+<ul>
+<li>It eliminates the need for special case handling of the first node.</li>
+<li>It provides a consistent starting point for our result list.</li>
+<li>At the end, dummy.next will be the head of our actual result list.</li>
+</ul>
+<p>The current pointer keeps track of where we are in building our result list. We start it at the dummy node and move it as we add new nodes.</p>
+<p><strong>b) Carry Variable:</strong></p>
+<pre><code class="language-pseudocode">carry = 0
+</code></pre>
+<p>The carry variable is fundamental to the addition process. In decimal addition, when the sum of two digits exceeds 9, we "carry" 1 to the next column. Our carry variable simulates this process.</p>
+<ul>
+<li>It's initialized to 0 at the start.</li>
+<li>After each digit addition, it will hold any value that needs to be carried to the next column (0 or 1).</li>
+</ul>
+<p><strong>c) Main Loop:</strong></p>
+<pre><code class="language-pseudocode">while l1 is not null OR l2 is not null OR carry is not 0:
+</code></pre>
+<p>This loop condition is crucial for handling various scenarios:</p>
+<ul>
+<li>It continues as long as there are digits left in either list (l1 or l2 is not null).</li>
+<li>It also continues if there's a remaining carry, even if both lists are exhausted.</li>
+</ul>
+<p>This condition ensures we process all digits and handle cases where the result has more digits than either input number (e.g., 999 + 1 = 1000).</p>
+<p><strong>d) Sum Calculation:</strong></p>
+<pre><code class="language-pseudocode">sum = carry
+if l1 is not null:
+    sum += l1.value
+    l1 = l1.next
+if l2 is not null:
+    sum += l2.value
+    l2 = l2.next
+</code></pre>
+<p>This step calculates the sum for the current digit position:</p>
+<ul>
+<li>We start with the carry from the previous iteration.</li>
+<li>We add the current digit from l1 if available (if not, it's effectively 0).</li>
+<li>We add the current digit from l2 if available (if not, it's effectively 0).</li>
+<li>We move to the next node in each list if available.</li>
+</ul>
+<p>This approach elegantly handles lists of different lengths without needing separate logic.</p>
+<p><strong>e) New Node Creation:</strong></p>
+<pre><code class="language-pseudocode">current.next = new ListNode(sum % 10)
+current = current.next
+</code></pre>
+<p>Here's where we build our result list:</p>
+<ul>
+<li>sum % 10 gives us the ones digit of our sum (0-9), which is what we want for our current result digit.</li>
+<li>We create a new node with this value and attach it to our result list.</li>
+<li>We move our current pointer to this new node, preparing for the next iteration.</li>
+</ul>
+<p><strong>f) Carry Update:</strong></p>
+<pre><code class="language-pseudocode">carry = sum / 10  (integer division)
+</code></pre>
+<p>This step prepares the carry for the next iteration:</p>
+<ul>
+<li>Integer division by 10 gives us the tens digit of our sum (0 or 1).</li>
+<li>This becomes the carry for the next column, just like in manual addition.</li>
+</ul>
+<p><strong>When we add two decimal numbers:</strong>  We add digits in each place value (ones, tens, hundreds, etc.) separately and If the sum in any place value is 10 or greater, we keep the ones digit in that place and carry the tens digit to the next place value.</p>
+<p>Our algorithm mimics this process:</p>
+<blockquote>
+<ul>
+<li>sum % 10 gives us the ones digit (0-9) for our current place value.</li>
+<li>sum / 10 (integer division) gives us the carry (0 or 1) for the next place value.</li>
+</ul>
+</blockquote>
+<p>This approach works because:<br />
+$(a + b)$ % 10 = (($a$ % 10) + ($b$ % 10)) % 10</p>
+<p>This property allows us to process each digit independently, carrying over any excess to the next digit.</p>
+<p>Our algorithm naturally handles several edge cases:</p>
+<blockquote>
+<p><strong>a) Lists of Different Lengths:</strong><br />
+By checking if each list is null before adding its digit, we effectively treat exhausted lists as having 0 in each subsequent place value. This eliminates the need for separate logic to handle different list lengths.</p>
+<p><strong>b) Carry Propagation:</strong><br />
+Including carry != 0 in our loop condition ensures we continue adding nodes even if both lists are exhausted but we still have a carry. This handles cases like:<br />
+  999 + 1 = 1000</p>
+<p><strong>c) Single-Digit Numbers:</strong><br />
+Our algorithm works seamlessly for single-digit numbers, including zero, without any special cases.</p>
+<p><strong>d) Large Numbers:</strong><br />
+By processing digits one at a time and using a linked list for the result, we avoid integer overflow issues that could occur if we tried to convert the entire number to an integer before adding.</p>
+</blockquote>
+<h1>Complexity</h1>
+<p><strong>Time Complexity: O(max(N, M))</strong></p>
+<p>Where N and M are the lengths of the input lists.</p>
+<p>Why? We traverse both lists once. The number of operations is determined by the length of the longer list. If one list is longer, we'll keep going until we reach its end.</p>
+<p><strong>Space Complexity: O(max(N, M))</strong></p>
+<p>We create a new list for our result. In the worst case (like 999 + 1), our result list will be one node longer than the longer input list.</p>
+<p>These complexities are optimal for this problem. We need to look at every digit at least once (hence the time complexity), and we need to store the result (hence the space complexity).</p>
+<p>In practical terms: <em>Doubling the input size will roughly double the execution time and memory usage. The algorithm scales linearly, which is efficient for this type of problem.</em></p>
+<hr />
+<h1>Code</h1>
+<p>```java []<br />
+class Solution {<br />
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {<br />
+        ListNode dummy = new ListNode(0);<br />
+        ListNode current = dummy;<br />
+        int carry = 0;</p>
+<pre><code>    while (l1 != null || l2 != null || carry != 0) {
+        int sum = carry;
+
+        if (l1 != null) {
+            sum += l1.val;
+            l1 = l1.next;
+        }
+        if (l2 != null) {
+            sum += l2.val;
+            l2 = l2.next;
+        }
+
+        current.next = new ListNode(sum % 10);
+        current = current.next;
+        carry = sum / 10;
+    }
+
+    return dummy.next;
+}
+</code></pre>
+<p>}</p>
+<pre><code>
+```C++ []
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* dummy = new ListNode(0);
+        ListNode* current = dummy;
+        int carry = 0;
+
+        while (l1 != nullptr || l2 != nullptr || carry != 0) {
+            int sum = carry;
+
+            if (l1 != nullptr) {
+                sum += l1-&gt;val;
+                l1 = l1-&gt;next;
+            }
+            if (l2 != nullptr) {
+                sum += l2-&gt;val;
+                l2 = l2-&gt;next;
+            }
+
+            carry = sum / 10;
+            current-&gt;next = new ListNode(sum % 10);
+            current = current-&gt;next;
+        }
+
+        ListNode* result = dummy-&gt;next;
+        delete dummy;  // Free the dummy node
+        return result;
+    }
+};
+</code></pre>
+<p>```Python []<br />
+class Solution:<br />
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -&gt; Optional[ListNode]:<br />
+        dummy = ListNode(0)<br />
+        current = dummy<br />
+        carry = 0</p>
+<pre><code>    while l1 or l2 or carry:
+        sum = carry
+
+        if l1:
+            sum += l1.val
+            l1 = l1.next
+        if l2:
+            sum += l2.val
+            l2 = l2.next
+
+        carry = sum // 10
+        current.next = ListNode(sum % 10)
+        current = current.next
+
+    return dummy.next
+</code></pre>
+<pre><code>```JavaScript []
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+var addTwoNumbers = function(l1, l2) {
+    let dummy = new ListNode(0);
+    let current = dummy;
+    let carry = 0;
+
+    while (l1 || l2 || carry) {
+        let sum = carry;
+
+        if (l1) {
+            sum += l1.val;
+            l1 = l1.next;
+        }
+        if (l2) {
+            sum += l2.val;
+            l2 = l2.next;
+        }
+
+        carry = Math.floor(sum / 10);
+        current.next = new ListNode(sum % 10);
+        current = current.next;
+    }
+
+    return dummy.next;
+};
+</code></pre>
+<p>```Go []<br />
+func addTwoNumbers(l1 <em>ListNode, l2 </em>ListNode) *ListNode {<br />
+    dummy := &amp;ListNode{Val: 0}<br />
+    current := dummy<br />
+    carry := 0</p>
+<pre><code>for l1 != nil || l2 != nil || carry != 0 {
+    sum := carry
+
+    if l1 != nil {
+        sum += l1.Val
+        l1 = l1.Next
+    }
+    if l2 != nil {
+        sum += l2.Val
+        l2 = l2.Next
+    }
+
+    carry = sum / 10
+    current.Next = &amp;ListNode{Val: sum % 10}
+    current = current.Next
+}
+
+return dummy.Next
+</code></pre>
+<p>}</p>
+<pre><code>```Rust []
+
+impl Solution {
+    pub fn add_two_numbers(l1: Option&lt;Box&lt;ListNode&gt;&gt;, l2: Option&lt;Box&lt;ListNode&gt;&gt;) -&gt; Option&lt;Box&lt;ListNode&gt;&gt; {
+        let mut dummy = Box::new(ListNode::new(0));
+        let mut current = &amp;mut dummy;
+        let mut carry = 0;
+        let mut p = l1;
+        let mut q = l2;
+
+        while p.is_some() || q.is_some() || carry != 0 {
+            let mut sum = carry;
+
+            if let Some(node) = p {
+                sum += node.val;
+                p = node.next;
+            }
+            if let Some(node) = q {
+                sum += node.val;
+                q = node.next;
+            }
+
+            carry = sum / 10;
+            current.next = Some(Box::new(ListNode::new(sum % 10)));
+            current = current.next.as_mut().unwrap();
+        }
+
+        dummy.next
+    }
+}
+
+</code></pre>
+<hr />
+<h1>Follow-up: Non-Reversed Order Linked Lists</h1>
+<p>In this variation, the digits are stored in forward order. So now:<br />
+(3→4→2) represents 342<br />
+(4→6→5) represents 465</p>
+<p>Our goal is to add these and produce (8→0→7) representing 807.</p>
+<h1>New Challenges</h1>
+<p>This change introduces some new challenges:<br />
+1. We can't start adding from the head of the lists anymore, as these are now the most significant digits.<br />
+2. We don't know if we need to carry a digit until we've processed all less significant digits.<br />
+3. The lengths of the lists might be different, and we need to align the numbers properly.</p>
+<h1>Approach</h1>
+<p>We can solve this problem with the following approach:</p>
+<ol>
+<li>Reverse both input lists.</li>
+<li>Apply our original solution to the reversed lists.</li>
+<li>Reverse the result.</li>
+</ol>
+<p>Alternatively, we could use a recursive approach or a stack-based approach to process the digits from least significant to most significant without actually reversing the lists.</p>
+<p>Let's outline the recursive approach:</p>
+<ol>
+<li>Find the lengths of both lists.</li>
+<li>Pad the shorter list with leading zeros to make both lists equal length.</li>
+<li>Use recursion to traverse to the end of both lists.</li>
+<li>As we return from recursion, perform the addition.</li>
+<li>Handle any final carry.</li>
+</ol>
+<h1>Implementation</h1>
+<p>Here's how we could implement this recursive approach:</p>
+<p>```java []<br />
+class Solution {<br />
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {<br />
+        int len1 = getLength(l1);<br />
+        int len2 = getLength(l2);</p>
+<pre><code>    // Pad the shorter list with leading zeros
+    if (len1 &lt; len2) {
+        l1 = padList(l1, len2 - len1);
+    } else if (len2 &lt; len1) {
+        l2 = padList(l2, len1 - len2);
+    }
+
+    CarryNode result = addListsRecursive(l1, l2);
+
+    if (result.carry != 0) {
+        ListNode newHead = new ListNode(result.carry);
+        newHead.next = result.node;
+        return newHead;
+    }
+
+    return result.node;
+}
+
+private CarryNode addListsRecursive(ListNode l1, ListNode l2) {
+    if (l1 == null &amp;&amp; l2 == null) {
+        return new CarryNode(null, 0);
+    }
+
+    CarryNode result = addListsRecursive(l1.next, l2.next);
+
+    int sum = l1.val + l2.val + result.carry;
+    ListNode newNode = new ListNode(sum % 10);
+    newNode.next = result.node;
+
+    return new CarryNode(newNode, sum / 10);
+}
+
+private int getLength(ListNode head) {
+    int length = 0;
+    while (head != null) {
+        length++;
+        head = head.next;
+    }
+    return length;
+}
+
+private ListNode padList(ListNode head, int padding) {
+    while (padding &gt; 0) {
+        ListNode newNode = new ListNode(0);
+        newNode.next = head;
+        head = newNode;
+        padding--;
+    }
+    return head;
+}
+
+private class CarryNode {
+    ListNode node;
+    int carry;
+
+    CarryNode(ListNode node, int carry) {
+        this.node = node;
+        this.carry = carry;
+    }
+}
+</code></pre>
+<p>}</p>
+<pre><code>
+```Python []
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -&gt; Optional[ListNode]:
+        len1 = self.getLength(l1)
+        len2 = self.getLength(l2)
+
+        if len1 &lt; len2:
+            l1 = self.padList(l1, len2 - len1)
+        elif len2 &lt; len1:
+            l2 = self.padList(l2, len1 - len2)
+
+        result = self.addListsRecursive(l1, l2)
+        if result[1] != 0:
+            new_head = ListNode(result[1])
+            new_head.next = result[0]
+            return new_head
+        return result[0]
+
+    def addListsRecursive(self, l1, l2):
+        if not l1 and not l2:
+            return None, 0
+        next_node, carry = self.addListsRecursive(l1.next, l2.next)
+        sum_val = l1.val + l2.val + carry
+        new_node = ListNode(sum_val % 10)
+        new_node.next = next_node
+        return new_node, sum_val // 10
+
+    def getLength(self, head):
+        length = 0
+        while head:
+            length += 1
+            head = head.next
+        return length
+
+    def padList(self, head, padding):
+        while padding &gt; 0:
+            new_node = ListNode(0)
+            new_node.next = head
+            head = new_node
+            padding -= 1
+        return head
+</code></pre>
+<p>```C++ []<br />
+class Solution {<br />
+public:<br />
+    ListNode<em> addTwoNumbers(ListNode</em> l1, ListNode* l2) {<br />
+        int len1 = getLength(l1);<br />
+        int len2 = getLength(l2);</p>
+<pre><code>    if (len1 &lt; len2) {
+        l1 = padList(l1, len2 - len1);
+    } else if (len2 &lt; len1) {
+        l2 = padList(l2, len1 - len2);
+    }
+
+    auto result = addListsRecursive(l1, l2);
+    if (result.carry != 0) {
+        auto newHead = new ListNode(result.carry);
+        newHead-&gt;next = result.node;
+        return newHead;
+    }
+    return result.node;
+}
+</code></pre>
+<p>private:<br />
+    struct CarryNode {<br />
+        ListNode<em> node;<br />
+        int carry;<br />
+        CarryNode(ListNode</em> n, int c) : node(n), carry(c) {}<br />
+    };</p>
+<pre><code>CarryNode addListsRecursive(ListNode* l1, ListNode* l2) {
+    if (l1 == nullptr &amp;&amp; l2 == nullptr) {
+        return CarryNode(nullptr, 0);
+    }
+    auto result = addListsRecursive(l1-&gt;next, l2-&gt;next);
+    int sum = l1-&gt;val + l2-&gt;val + result.carry;
+    auto newNode = new ListNode(sum % 10);
+    newNode-&gt;next = result.node;
+    return CarryNode(newNode, sum / 10);
+}
+
+int getLength(ListNode* head) {
+    int length = 0;
+    while (head != nullptr) {
+        length++;
+        head = head-&gt;next;
+    }
+    return length;
+}
+
+ListNode* padList(ListNode* head, int padding) {
+    while (padding &gt; 0) {
+        auto newNode = new ListNode(0);
+        newNode-&gt;next = head;
+        head = newNode;
+        padding--;
+    }
+    return head;
+}
+</code></pre>
+<p>};</p>
+<pre><code>```JavaScript []
+var addTwoNumbers = function(l1, l2) {
+    const getLength = (head) =&gt; {
+        let length = 0;
+        while (head) {
+            length++;
+            head = head.next;
+        }
+        return length;
+    };
+
+    const padList = (head, padding) =&gt; {
+        while (padding &gt; 0) {
+            const newNode = new ListNode(0);
+            newNode.next = head;
+            head = newNode;
+            padding--;
+        }
+        return head;
+    };
+
+    const addListsRecursive = (l1, l2) =&gt; {
+        if (!l1 &amp;&amp; !l2) {
+            return { node: null, carry: 0 };
+        }
+        const result = addListsRecursive(l1.next, l2.next);
+        const sum = l1.val + l2.val + result.carry;
+        const newNode = new ListNode(sum % 10);
+        newNode.next = result.node;
+        return { node: newNode, carry: Math.floor(sum / 10) };
+    };
+
+    const len1 = getLength(l1);
+    const len2 = getLength(l2);
+
+    if (len1 &lt; len2) {
+        l1 = padList(l1, len2 - len1);
+    } else if (len2 &lt; len1) {
+        l2 = padList(l2, len1 - len2);
+    }
+
+    const result = addListsRecursive(l1, l2);
+    if (result.carry !== 0) {
+        const newHead = new ListNode(result.carry);
+        newHead.next = result.node;
+        return newHead;
+    }
+    return result.node;
+};
+</code></pre>
+<p>```Go []<br />
+func addTwoNumbers(l1 <em>ListNode, l2 </em>ListNode) *ListNode {<br />
+    len1 := getLength(l1)<br />
+    len2 := getLength(l2)</p>
+<pre><code>if len1 &lt; len2 {
+    l1 = padList(l1, len2 - len1)
+} else if len2 &lt; len1 {
+    l2 = padList(l2, len1 - len2)
+}
+
+result := addListsRecursive(l1, l2)
+if result.carry != 0 {
+    newHead := &amp;ListNode{Val: result.carry, Next: result.node}
+    return newHead
+}
+return result.node
+</code></pre>
+<p>}</p>
+<p>type CarryNode struct {<br />
+    node *ListNode<br />
+    carry int<br />
+}</p>
+<p>func addListsRecursive(l1 <em>ListNode, l2 </em>ListNode) CarryNode {<br />
+    if l1 == nil &amp;&amp; l2 == nil {<br />
+        return CarryNode{nil, 0}<br />
+    }<br />
+    result := addListsRecursive(l1.Next, l2.Next)<br />
+    sum := l1.Val + l2.Val + result.carry<br />
+    newNode := &amp;ListNode{Val: sum % 10, Next: result.node}<br />
+    return CarryNode{newNode, sum / 10}<br />
+}</p>
+<p>func getLength(head *ListNode) int {<br />
+    length := 0<br />
+    for head != nil {<br />
+        length++<br />
+        head = head.Next<br />
+    }<br />
+    return length<br />
+}</p>
+<p>func padList(head <em>ListNode, padding int) </em>ListNode {<br />
+    for padding &gt; 0 {<br />
+        newNode := &amp;ListNode{Val: 0, Next: head}<br />
+        head = newNode<br />
+        padding--<br />
+    }<br />
+    return head<br />
+}<br />
+```</p>
+<h1>Complexity Analysis</h1>
+<p><strong>Time Complexity: O(max(N, M))</strong>, where N and M are the lengths of the input lists.<br />
+- We traverse each list once to find its length.<br />
+- We traverse again during the recursive calls.<br />
+- Each node is processed once during addition.</p>
+<p><strong>Space Complexity: O(max(N, M))</strong><br />
+- The recursion stack will go as deep as the length of the longer list.<br />
+- The result list will be at most one node longer than the longer input list.</p>
+</div>
+</div>
+</body>
+</html>

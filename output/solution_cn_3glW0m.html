@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>最容易理解的思路：本质上是选或不选+完全背包 – Regular Expression Matching</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_regular-expression-matching.html">Regular Expression Matching / 正则表达式匹配</a> <span class="sep">›</span> <span class="cur">最容易理解的思路：本质上是选或不选+完全背包</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">最容易理解的思路：本质上是选或不选+完全背包</div>
+  <div class="meta">
+    <span>👤 Memory2002</span>
+    <span>👍 7</span>
+    <span>2025-07-24</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/regular-expression-matching/solution/zui-rong-yi-li-jie-de-si-lu-ben-zhi-shan-smhy/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <blockquote>
+<p>Problem: <a href="https://leetcode.cn/problems/regular-expression-matching/description/">10. 正则表达式匹配</a></p>
+</blockquote>
+<p>[TOC]</p>
+<h1>思路</h1>
+<p>定义 $dfs(i, j)$ 为以$s_i$和$p_j$结尾的字符串能否匹配成功</p>
+<p>首先对 $p_j$ 分类讨论：</p>
+<ul>
+<li>$p_j$ 为小写字母，$dfs(i, j) = (s_i == p_j) \land dfs(i - 1, j - 1)$</li>
+<li>$p_j$ 为'.'，$dfs(i, j) = dfs(i - 1, j - 1)$</li>
+<li>$p_j$  为'*'：</li>
+</ul>
+<p>现在我们重点分析分析pj为'*'的情况，本质上可以采用<code>选或不选</code>的思路。</p>
+<ul>
+<li>如果$s_i<br />
+eq p_{j-1}$且$p_{j-1}<br />
+eq  ext{'.'}$，则选不了，即$p_{j-1}*$匹配s中的0个字符，</li>
+</ul>
+<p>dfs(i,j)=dfs(i, j - 2)</p>
+<ul>
+<li>如果$s_i=p_{j-1}$或$p_{j-1}= ext{'.'}$，则可以选也可以不选，不选就是上式，考虑选的情况：</li>
+</ul>
+<p>选的情况本质上就是一个<code>完全背包</code>，虽然选的情况可以匹配s中的一个字符$s_i$,两个字符$s_{i-1}s_i$，三个字符...，但是<strong>我们只需要考虑匹配1个字符且$j$不变的这种情况即可，因为匹配多个字符就相当于完全背包中物品可以重复选，所以$j$是不移动的。匹配2个及2个以上字符的情况（状态）会在后面的递归中被遍历到。</strong></p>
+<p>选和不选只需要有一个为true，$dfs(i, j)$就为true。</p>
+<p>因此，选的情况的状态转移方程为</p>
+<p>dfs(i, j) = dfs(i - 1, j) \lor dfs(i, j - 2).</p>
+<p>边条：</p>
+<ul>
+<li>$dfs(-1, -1) = true$，全部匹配完返回true。</li>
+<li>$dfs(-1, j\geq1) = dfs(-1, j - 2)$，和<a href="https://leetcode.cn/problems/wildcard-matching/">44. 通配符匹配</a>一样，需要考虑字母或者 '.' 后跟 '*' 可以匹配空字符串的情况。</li>
+<li>$dfs(i\geq0, -1) = false$。</li>
+</ul>
+<h1>将 DFS 改为递推</h1>
+<p>令 $f[i + 1][j + 1]$ 表示 $dfs(i, j)$,将状态转移方程中的 $i$ 换为 $i + 1$, $j$ 换为 $j + 1$。<br />
+边条：<br />
+- $f[0][0] = true$<br />
+- $f[i][0] = false, i &gt;= 1$<br />
+- $f[0][j + 1] = f[0][j - 1], j &gt;= 1$.</p>
+<h1>Code</h1>
+<h2>递推</h2>
+<p>```Java []<br />
+class Solution {<br />
+    /<em><br />
+    2025.7.23  多年以后我看到这个题终于有了全新和最好的思路与解法<br />
+    本质上是选或不选和完全背包<br />
+</em>/<br />
+    public boolean isMatch(String S, String P) {<br />
+        char[] s = S.toCharArray(), p = P.toCharArray();<br />
+        int n = s.length, m = p.length;<br />
+        boolean[][] f = new boolean[n + 1][m + 1];<br />
+        f[0][0] = true;<br />
+        // 处理空字符串匹配 *<br />
+        for (int j = 1; j &lt; m; j++) {<br />
+            if (p[j] == '<em>') {<br />
+                f[0][j + 1] = f[0][j - 1];  // * 可以匹配空字符串<br />
+            }<br />
+        }<br />
+        for (int i = 0; i &lt; n; i++) {<br />
+            for (int j = 0; j &lt; m; j++) {<br />
+                char c = p[j];<br />
+                if (Character.isLowerCase(c)) {<br />
+                    f[i + 1][j + 1] = s[i] == c &amp;&amp; f[i][j];<br />
+                } else if (c == '.') {<br />
+                    f[i + 1][j + 1] = f[i][j];<br />
+                } else {  // pj为</em>，对p[j-1]分类讨论<br />
+                    // 不选<br />
+                    if (p[j - 1] != '.' &amp;&amp; p[j - 1] != s[i]) {<br />
+                        f[i + 1][j + 1] = f[i + 1][j - 1];<br />
+                    } else {<br />
+                        // 可以选<br />
+                        f[i + 1][j + 1] = f[i + 1][j - 1] || f[i][j + 1];<br />
+                    }<br />
+                }<br />
+            }<br />
+        }<br />
+        return f[n][m];<br />
+    }<br />
+}</p>
+<pre><code>
+ 复杂度
+
+- 时间复杂度: $O(mn)$
+- 空间复杂度: $O(mn)$ 
+
+## 空间优化
+
+```Java []
+class Solution {
+    /*
+    2025.7.23  多年以后我看到这个题终于有了全新和最好的思路与解法
+    本质上是选或不选和完全背包
+    */
+    public boolean isMatch(String S, String P) {
+        char[] s = S.toCharArray(), p = P.toCharArray();
+        int n = s.length, m = p.length;
+        boolean[] f = new boolean[m + 1];
+        f[0] = true;
+        // 处理空字符串匹配 *
+        for (int j = 1; j &lt; m; j++) {
+            if (p[j] == '*') {
+                f[j + 1] = f[j - 1];  // * 可以匹配空字符串
+            }
+        }
+        for (int i = 0; i &lt; n; i++) {
+            boolean pre = f[0];
+            f[0] = false;
+            for (int j = 0; j &lt; m; j++) {
+                char c = p[j];
+                boolean temp = f[j + 1];
+                if (Character.isLowerCase(c)) {
+                    f[j + 1] = s[i] == c &amp;&amp; pre;
+                } else if (c == '.') {
+                    f[j + 1] = pre;
+                } else {  // pj为*，对p[j-1]分类讨论
+                    // 不选
+                    if (p[j - 1] != '.' &amp;&amp; p[j - 1] != s[i]) {
+                        f[j + 1] = f[j - 1];
+                    } else {
+                        boolean top = f[j + 1];  // 保存 f[i][j + 1]
+                        f[j + 1] = f[j - 1];
+                        // 可以选
+                        f[j + 1] |= top;
+                    }
+                }
+                pre = temp;
+            }
+        }
+        return f[m];
+    }
+}
+</code></pre>
+<p>复杂度</p>
+<ul>
+<li>时间复杂度: $O(mn)$</li>
+<li>空间复杂度: $O(m)$ </li>
+</ul>
+<p>成功击败 100%：</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1753338732-XsYReV-image.png" /></p>
+</div>
+</div>
+</body>
+</html>

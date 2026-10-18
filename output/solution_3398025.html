@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3 Approach 🔥🔥 || Easy C++ ✅✅ Solution || Brute Force, Better and Optimized Approach ⚡⚡ – Palindrome Linked List</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_palindrome-linked-list.html">Palindrome Linked List</a> <span class="sep">›</span> <span class="cur">3 Approach 🔥🔥 || Easy C++ ✅✅ Solution || Brute Force, Better and Optimized Approach ⚡⚡</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">3 Approach 🔥🔥 || Easy C++ ✅✅ Solution || Brute Force, Better and Optimized Approach ⚡⚡</div>
+  <div class="meta">
+    <span>👤 Vishal_Singh7</span>
+    <span>👍 0</span>
+    <span>2023-04-09</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/palindrome-linked-list/solutions/3398025/3-approach-easy-c-solution-brute-force-better-and-optimized-approach/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>Approach 1: Brute Force Approach</h1>
+<h1>Complexity</h1>
+<ul>
+<li>
+<p>Time complexity: O(n)</p>
+</li>
+<li>
+<p>Space complexity: O(n)</p>
+</li>
+</ul>
+<h1>Code</h1>
+<pre><code>/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+// Brute Force Approach
+// Time complexity -&gt; O(n) and Space -&gt; O(n)
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        if(head==NULL ||head-&gt;next==NULL)
+        {
+            return true;
+        }
+        vector&lt;int&gt; store;
+        while(head!=NULL)
+        {
+            store.push_back(head-&gt;val);
+            head=head-&gt;next;
+        }
+        for(int i=0;i&lt;store.size()/2;i++)
+        {
+            if(store[i]!=store[store.size()-i-1])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+};
+</code></pre>
+<h4>OR</h4>
+<h5>Instead Array we are using stack</h5>
+<p><strong>Algorithm:</strong></p>
+<p><strong>Step 1:</strong> Create an empty <strong>stack</strong>. This stack will be used to temporarily store the nodes from the original linked list as we traverse it.</p>
+<p><strong>Step 2:</strong> Traverse the linked list using a temporary variable <code>temp</code> till it reaches null. At each node, push the value at the current node onto the stack. </p>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/35a4e90c-0534-4fa4-9885-54665d9efdd1_1707935600.2656062.png" /></p>
+<p><strong>Step 3:</strong> Set variable <code>temp</code> back to the head of the linked list. While the stack is not empty, <strong>compare</strong> the value at the temp node to the <strong>value</strong> at the <strong>top</strong> of the stack. <strong>Pop</strong> the stack and move the <strong>temp</strong> to the <strong>next node</strong> till it reaches the end.</p>
+<p>During the <strong>comparison</strong>, if at any point the values do not match, the linked list is <strong>not</strong> a palindrome and hence returns <strong>false</strong>.</p>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/73fff82f-517b-428a-9caa-b6f6fe020ec7_1707935623.1185694.png" /></p>
+<p><strong>Step 4:</strong> If all <strong>values match</strong> till emp reaches the end, it means that the linked list is a <strong>palindrome</strong>, as the values read the same way both forward and backward hence we return <strong>true</strong>.</p>
+<pre><code>class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        stack&lt;int&gt; st;
+        ListNode *temp=head;
+        while(temp!=nullptr)
+        {
+            st.push(temp-&gt;val);
+            temp=temp-&gt;next;
+        }
+        while(head!=nullptr)
+        {
+            if(st.top()!=head-&gt;val)
+            {
+                return false;
+            }
+            st.pop();
+            head=head-&gt;next;
+        }
+        return true;
+    }
+};
+</code></pre>
+<h1>Approach 2: Better Approach</h1>
+<h1>Complexity</h1>
+<ul>
+<li>
+<p>Time complexity: O(n)</p>
+</li>
+<li>
+<p>Space complexity: O(n)</p>
+</li>
+</ul>
+<h1>Code</h1>
+<pre><code>/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+// Better Approach
+// Time complexity -&gt; O(n) and Space -&gt; O(n)
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        /*
+        Reverse the list and store it in r_head
+        and then compare head-&gt;val and r_head-&gt;val if equal move both the pointers otherwise if not equal
+        and return false
+        */
+        // When the loop will be executed fully retrun true
+         if(head == NULL || head-&gt;next == NULL){
+            return true;
+        }
+        ListNode *r_head = NULL;
+        ListNode *ptr = head;
+        while(ptr!=NULL){
+            ListNode *temp = new ListNode(ptr-&gt;val);
+            temp -&gt;next = r_head;
+            r_head = temp;
+            ptr = ptr-&gt;next;
+        }
+        while(head &amp;&amp; r_head){
+            if(head-&gt;val != r_head-&gt;val){
+                return false;
+            }
+            head = head-&gt;next;
+            r_head = r_head-&gt;next;
+        }
+        return true;
+    }
+};
+
+</code></pre>
+<h1>Approach 3: Optimized Approach[ Tortoise and Hare ]</h1>
+<h1>Complexity</h1>
+<ul>
+<li>
+<p>Time complexity: O(n)</p>
+</li>
+<li>
+<p>Space complexity: O(1)</p>
+</li>
+</ul>
+<h5>Algorithm</h5>
+<p><strong>Step 1:</strong>\xA0Check if the linked list is empty or has only one node. If that’s the case, it is a palindrome by definition, so return\xA0<strong>true</strong>.</p>
+<p><strong>Step 2:</strong>\xA0Initialise two pointers,\xA0<strong>‘slow’</strong>\xA0and\xA0<strong>‘fast’</strong>, to find the middle of the linked list using the Tortoise and Hare Algorithm. The\xA0<strong>‘slow’</strong>\xA0pointer advances by one step at a time, while the\xA0<strong>‘fast’</strong>\xA0pointer advances by two steps at a time. Continue this until the\xA0<strong>‘fast’</strong>\xA0pointer reaches the end of the list or is the second last on the list. The ‘slow’ pointer will now be in the middle of the linked list.</p>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/80af61c3-a0cb-4b97-98ce-8a69143ab829_1707935815.4170434.png" /></p>
+<p><strong>Step 3:</strong>\xA0<strong>Reverse</strong>\xA0the\xA0<strong>second</strong>\xA0<strong>half</strong>\xA0of the linked list starting from the middle (the\xA0<strong>‘slow-&gt;next’</strong>\xA0node). This is done by calling the reverse linked list function and returning the head of the new reversed linked list. Learn more about\xA0<strong>reversing the linked list</strong>.</p>
+<p><strong>Step 4:</strong>\xA0Create two pointers,\xA0<strong>‘first’</strong>\xA0and\xA0<strong>‘second’</strong>, where\xA0<strong>‘first’</strong>\xA0points to the head of the linked list, and\xA0<strong>‘second’</strong>\xA0points to the new head of the reversed second half.</p>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/c2c9a0a6-b1f6-4f89-aab4-258c06c1a11d_1707935836.3697236.png" /></p>
+<p><strong>Step 5:</strong>\xA0Compare data values of nodes from both halves. If the values do not match, it means the list is not a palindrome. In this case, return\xA0<strong>‘false’</strong>. Continue moving both\xA0<strong>‘first’</strong>\xA0and\xA0<strong>‘second’</strong>\xA0pointers through their\xA0<strong>respective</strong>\xA0<strong>halves</strong>, comparing the data values until one of them reaches the end of the list.</p>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/cd90b184-fb2c-4af1-a94f-d31a74fb9402_1707935844.5436387.png" /></p>
+<p><strong>Step 6:</strong>\xA0After the comparison,\xA0<strong>reverse</strong>\xA0the\xA0<strong>second</strong>\xA0<strong>half</strong>\xA0back to its original state using the reverse linked list function and\xA0<strong>join</strong>\xA0<strong>back</strong>\xA0the linked list to its original state. Since all the values matched in the first half and reversed in the second half, return\xA0<strong>true</strong>. In case it does not match, return\xA0<strong>false.</strong></p>
+<h1>Code</h1>
+<pre><code>/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+// Optimized Approach
+// Time complexity -&gt; O(n) and Space -&gt; O(1)
+class Solution {
+private:
+    ListNode *reverseList(ListNode *head)
+    {
+        ListNode *p=head,*q=nullptr,*r=nullptr;
+        while(p!=nullptr)
+        {
+            r=q;
+            q=p;
+            p=p-&gt;next;
+            q-&gt;next=r;
+        }
+        return q;
+    }
+public:
+    bool isPalindrome(ListNode* head) {
+        if(head==NULL || head-&gt;next==NULL)
+        {
+            return true;
+        }
+        ListNode *slow=head,*fast=head;
+        while(fast-&gt;next!=nullptr &amp;&amp; fast-&gt;next-&gt;next!=nullptr)
+        {
+            slow=slow-&gt;next;
+            fast=fast-&gt;next-&gt;next;
+        }
+        ListNode *newHead=reverseList(slow-&gt;next);
+        ListNode *first=head, *second=newHead;
+
+        while(second!=nullptr)
+        {
+            if(first-&gt;val!=second-&gt;val)
+            {
+                reverseList(newHead);
+                return false;
+            }
+            first=first-&gt;next;
+            second=second-&gt;next;
+        }
+        reverseList(newHead);
+        return true;
+    }
+};
+</code></pre>
+<p><strong><a href="https://takeuforward.org/data-structure/check-if-given-linked-list-is-plaindrome/">For Detailed Solution </a></strong></p>
+<p>**Special Thanks to Striver **</p>
+</div>
+</div>
+</body>
+</html>

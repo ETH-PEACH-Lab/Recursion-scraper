@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>剑指 Offer 24. 反转链表 – 训练计划 III</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_fan-zhuan-lian-biao-lcof.html">训练计划 III / 训练计划 III</a> <span class="sep">›</span> <span class="cur">剑指 Offer 24. 反转链表</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">剑指 Offer 24. 反转链表</div>
+  <div class="meta">
+    <span>👤 Dine</span>
+    <span>👍 33</span>
+    <span>2020-10-11</span>
+    <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞 Slide</span>
+    <a href="https://leetcode.cn/problems/fan-zhuan-lian-biao-lcof/solution/jian-zhi-offer-24-fan-zhuan-lian-biao-by-dint/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>题解</h1>
+<p>题目要反转链表，可以通过<strong>迭代（双指针）和递归</strong>来做，这里的双指针不是用于判断链表是否有环的<strong>快慢指针</strong>，而是<strong>普通的双指针</strong>。</p>
+<h1>方法一：迭代（双指针）</h1>
+<h1>具体操作</h1>
+<ol>
+<li>
+<p>分别定义两个均指向空的指针 (pre/next);</p>
+</li>
+<li>
+<p>next 用于记录<strong>当前节点的下一个节点</strong>（<strong>当前节点与当前节点的下一个节点之间连接断开前，先保存当前节点的下一个节点，防止断开后找不到当前节点的下一节点</strong>）；</p>
+</li>
+<li>
+<p>pre 用于在<strong>改变当前节点的指向之前，记录当前节点</strong>；</p>
+</li>
+<li>
+<p>在头节点不为空的情况下，遍历链表（遍历过程中，改变 head/pre/next 节点的指向）。</p>
+</li>
+</ol>
+<h1>注意点</h1>
+<ol>
+<li>
+<p><strong>链表是空链表</strong>；</p>
+</li>
+<li>
+<p><strong>链表只有一个节点，即头节点</strong>。</p>
+</li>
+</ol>
+<h1>举个栗子</h1>
+<p>以链表 <strong>1-&gt;2-&gt;3-&gt;NULL</strong> 为栗子，反转过程如下：</p>
+<p><strong>开始</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1660633640-eublrZ-image.png" /></p>
+<p><strong>next：调整头节点的下一节点之前，先记录其先前的下一节点（next = head-&gt;next），以防止链表断开后找不到其之前的下一节点</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1660633797-DvAaON-image.png" /></p>
+<p><strong>断开头节点与其下一节点的连接（head-&gt;next = pre），并反转（指向 NULL）</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1660633906-QFJQrv-image.png" /></p>
+<p><strong>不断遍历，直到头节点指向链表的尾节点的下一节点（空节点）</strong><br />
+<strong>pre = head</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1660634008-XjCFQL-image.png" /></p>
+<p><strong>head 右移，head = next</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1660634112-JSCtUv-image.png" /></p>
+<p><strong>next 指向当前head的下一节点</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1660634159-FwoeIL-image.png" /></p>
+<p><strong>head 指向 pre 指向的节点，实现 1-&gt;2 之间反转</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1660634230-iyJRkZ-image.png" /></p>
+<p><strong>pre 右移</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1660634279-ihBkVA-image.png" /></p>
+<p><strong>head 右移</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1660634333-ScUbLt-image.png" /></p>
+<p><strong>next 指向当前 head 的下一节点</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1660634481-oMfkMa-image.png" /></p>
+<p><strong>head 指向 pre 指向的节点，实现 2-&gt;3 之间的反转</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1660634554-zPhaMD-image.png" /></p>
+<p><strong>pre 右移</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1660634624-eSdUQZ-image.png" /></p>
+<p><strong>head 节点右移到空节点，遍历结束</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1660634666-cUIiML-image.png" /></p>
+<h1>Show me the Code</h1>
+<p>```c []<br />
+struct ListNode<em> reverseList(struct ListNode</em> head){<br />
+    /<em> 特殊判断 </em>/<br />
+    if (head == NULL || head-&gt;next == NULL) {<br />
+        return head;<br />
+    }</p>
+<pre><code>struct ListNode* pre = NULL;
+struct ListNode* next = NULL;   
+while (head != NULL) {
+    next = head-&gt;next;  
+    head-&gt;next = pre;   
+    pre = head;
+    head = next;
+}
+return pre;
+</code></pre>
+<p>}</p>
+<p>//  想要代码行数少一点的话，就这样，同样适合空链表或者只有一个节点的链表<br />
+struct ListNode<em> reverseList(struct ListNode</em> head){<br />
+    struct ListNode<em> pre = NULL; <br />
+    while (head != NULL) {<br />
+        struct ListNode</em> next = head-&gt;next;<br />
+        head-&gt;next = pre;<br />
+        pre = head;<br />
+        head = next;<br />
+    }<br />
+    return pre;<br />
+}</p>
+<pre><code>```c++ []
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(!head || !head-&gt;next) {
+            return head;
+        }
+
+        ListNode* pre = nullptr;
+        ListNode* next = nullptr;   
+        while (head) {
+            next = head-&gt;next;
+            head-&gt;next = pre;
+            pre = head;
+            head = next;
+        }
+        return pre;
+    }
+};
+</code></pre>
+<p>```java []<br />
+class Solution {<br />
+    public ListNode reverseList(ListNode head) {<br />
+        /<em> 特殊判断 </em>/<br />
+        if (head == null || head.next == null) {<br />
+            return head;<br />
+        }</p>
+<pre><code>    ListNode pre = null;
+    ListNode next = null;   
+    while (head != null) {
+        next = head.next;
+        head.next = pre;
+        pre = head;
+        head = next;
+    }   
+    return pre;
+}
+</code></pre>
+<p>}</p>
+<pre><code>```Python []
+class Solution:
+    def reverseList(self, head: ListNode) -&gt; ListNode:
+        if head is None or head.next is None: 
+            return head
+
+        pre = next = None
+        while head:
+            next = head.next
+            head.next = pre
+            pre = head
+            head = next 
+        return pre
+</code></pre>
+<p>```go []<br />
+func reverseList(head <em>ListNode) </em>ListNode {<br />
+    var pre *ListNode<br />
+    for head != nil {<br />
+        next := head.Next<br />
+        head.Next = pre;<br />
+        pre = head<br />
+        head = next<br />
+    }<br />
+    return pre<br />
+}</p>
+<pre><code>
+
+# Show me the Code 
+借助中间节点 temp 保存当前节点（cur）的下一节点
+
+```c []
+struct ListNode* reverseList(struct ListNode* head){
+    /* 特殊判断 */
+    if (head == NULL || head-&gt;next == NULL) {
+        return head;
+    }
+
+    /* 记录当前节点的前一个节点 */
+    struct ListNode* pre = NULL;
+    /* 记录当前节点 */
+    struct ListNode* cur = head;
+    /* 一直遍历链表直到遍历到链表尾节点的下一节点 */
+    while (cur != NULL) {
+        /* 记录当前节点的后一节点 */
+        struct ListNode* temp = cur-&gt;next;
+        /* 通过改变当前节点的指向翻转链表 */
+        cur-&gt;next = pre;
+        /* 改变 pre/cur 指向，移动节点用于遍历链表 */
+        pre = cur;
+        cur = temp;
+    }
+    return pre;
+}
+</code></pre>
+<p>```c++ []<br />
+class Solution {<br />
+public:<br />
+    ListNode<em> reverseList(ListNode</em> head) {<br />
+        if(!head || !head-&gt;next) {<br />
+            return head;<br />
+        }</p>
+<pre><code>    ListNode *pre = nullptr;
+    ListNode *cur = head;
+    while(cur) {
+        ListNode *temp = cur-&gt;next;
+        cur-&gt;next = pre;
+        pre = cur;
+        cur = temp;
+    }
+    return pre;
+}
+</code></pre>
+<p>};</p>
+<pre><code>```java []
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        /* 特殊判断 */
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode pre = null;
+        ListNode cur = head;   
+        while (cur != null) {
+            ListNode temp = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = temp;
+        }
+        return pre;
+    }
+}
+</code></pre>
+<p>```python []<br />
+class Solution:<br />
+    def reverseList(self, head: ListNode) -&gt; ListNode:<br />
+        pre, cur = None, head<br />
+        while cur:<br />
+            # "=" 右边的值先全部保存再一次性赋值给 "=" 左边的变量<br />
+            cur.next, pre, cur = pre, cur, cur.next<br />
+        return pre</p>
+<pre><code>```go []
+func reverseList(head *ListNode) *ListNode {
+    if head == nil || head.Next == nil {
+        return head
+    }
+
+    var pre *ListNode
+    cur := head
+    for cur != nil {
+        temp  := cur.Next
+        cur.Next = pre
+        pre = cur
+        cur = temp
+    }
+    return pre
+}
+</code></pre>
+<h1>方法二：递归</h1>
+<p>链表具有<strong>天然的递归性</strong>。<br />
+一个链表例如 <strong>1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL</strong>，可以看成头节点(节点值为 1 的节点)后面挂接一个更短的链表(缺少节点值为 1 的节点，以节点值为 2 的节点为头节点) <strong>1-&gt;更短的链表</strong>，依次类推。如下如示：<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1605077406-maVscR-image.png" /></p>
+<p>这样的话，就可以先翻转头节点后面挂接的链表，然后把翻转后的链表的后面再挂接头节点，这样就实现了链表的翻转，如下图示：</p>
+<p><strong>先翻转以节点值为 2 的节点作为头节点的链表</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1605077640-CXFSvu-image.png" /></p>
+<p><strong>将原头节点(节点值为 1 的节点)挂接在翻转之后的链表的后面</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1605077881-DKZqey-image.png" /></p>
+<p><strong>例子</strong></p>
+<p>以链表 <strong>1-&gt;2-&gt;3-&gt;null</strong> 为例子，其递归反转过程如下动图示：</p>
+<p><img alt="链表反转.gif" src="https://pic.leetcode.cn/1622947584-kGyNaK-%E9%93%BE%E8%A1%A8%E5%8F%8D%E8%BD%AC.gif" /></p>
+<h1>递归结束条件</h1>
+<ol>
+<li>
+<p>节点是空节点；</p>
+</li>
+<li>
+<p>当前只有这一个节点，无需再翻转。</p>
+</li>
+</ol>
+<h1>Show me the Code</h1>
+<p>```c []<br />
+struct ListNode<em> reverseList(struct ListNode</em> head){<br />
+    /<em> 特判 </em>/<br />
+    if (head == NULL || head-&gt;next == NULL) {<br />
+        return head;<br />
+    }</p>
+<pre><code>/* 翻转头节点(节点值为 1 的节点) 后面挂接的链表(以节点值为 2 的节点作为头节点) */
+/* 翻转之后变成 5-&gt;4-&gt;3-&gt;2 */
+struct ListNode *node = reverseList(head-&gt;next); 
+/* 将头节点(节点值为 1 的节点)挂接在翻转之后的链表的后面(也就是节点值为 2 的节点的后面) */     
+head-&gt;next-&gt;next = head; 
+/* 将尾节点的下一节点置空 */                            
+head-&gt;next = NULL;
+
+return node;
+</code></pre>
+<p>}</p>
+<pre><code>```c++ []
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if (!head || !head-&gt;next) {
+            return head;
+        }
+
+        ListNode *node = reverseList(head-&gt;next);
+        head-&gt;next-&gt;next = head;
+        head-&gt;next = nullptr;
+
+        return node;
+    }
+};
+</code></pre>
+<p>```java []<br />
+class Solution {<br />
+    public ListNode reverseList(ListNode head) {<br />
+        if (head == null || head.next == null) {<br />
+            return head;<br />
+        }</p>
+<pre><code>    ListNode node = reverseList(head.next);
+    head.next.next = head;
+    head.next = null;
+
+    return node;
+}
+</code></pre>
+<p>}</p>
+<pre><code>```python []
+class Solution:
+    def reverseList(self, head: ListNode) -&gt; ListNode:
+        if head is None or head.next is None: 
+            return head
+
+        node = self.reverseList(head.next)
+        head.next.next = head;
+        head.next = None;
+
+        return node;
+</code></pre>
+<p><code>go []
+func reverseList(head *ListNode) *ListNode {
+    if head == nil || head.Next == nil {
+        return head
+    }
+    node := reverseList(head.Next)
+    head.Next.Next = head
+    head.Next = nil
+    return node
+}</code><br />
+<a href="https://mp.weixin.qq.com/s?__biz=Mzg4MDU1NzU0NA==&amp;mid=2247490138&amp;idx=1&amp;sn=2e08e6d7a1aef5754351542d200a530f&amp;chksm=cf7236ddf805bfcb088217a1bd6782c8f56e119b64535fd5a1fbcb1b731f7ab945152dd***732&amp;token=480618174&amp;lang=zh_CN#rd">链表问题，如何优雅递龟？</a></p>
+<p><a href="https://mp.weixin.qq.com/s?__biz=Mzg4MDU1NzU0NA==&amp;mid=2247484921&amp;idx=1&amp;sn=3bde5b39bc0e735a48867ad5836c84a4&amp;chksm=cf72297ef805a068f50f63e767710386946ee120cfae1929746ffb1ad80b2cb9***00040be723&amp;token=2069112822&amp;lang=zh_CN#rd">白嫖算法经典书籍啦！</a></p>
+<p><strong>更多精彩文章可关注公众号：程序员小熊</strong></p>
+<p><strong>如果感觉题解对你有帮助，不要吝啬给一个👍哦！</strong></p>
+</div>
+</div>
+</body>
+</html>

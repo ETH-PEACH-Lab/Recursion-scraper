@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>两种方法：递归 / 迭代，本质是尾插法和头插法（Python/Java/C++/C/Go/JS/Rust） – Reverse Linked List</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_reverse-linked-list.html">Reverse Linked List / 反转链表</a> <span class="sep">›</span> <span class="cur">两种方法：递归 / 迭代，本质是尾插法和头插法（Python/Java/C++/C/Go/JS/Rust）</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">两种方法：递归 / 迭代，本质是尾插法和头插法（Python/Java/C++/C/Go/JS/Rust）</div>
+  <div class="meta">
+    <span>👤 endlesscheng</span>
+    <span>👍 2427</span>
+    <span>2022-11-26</span>
+    <span class="badge b-video">📹</span>
+    <a href="https://leetcode.cn/problems/reverse-linked-list/solution/you-xie-cuo-liao-yi-ge-shi-pin-jiang-tou-o5zy/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h2>方法一：递归（尾插法）</h2>
+<p>递归递归，有递有归。</p>
+<p>我们先「递」到链表的末尾节点，作为新链表的头节点。然后在「归」的过程中，一个一个地把节点插在新链表的末尾。</p>
+<p>新链表的末尾节点在哪？就是当前节点的 $    extit{next}$。具体实现如下。</p>
+<p>```py [sol-Python3]<br />
+class Solution:<br />
+    # 首先「递」到链表末尾，把末尾节点作为新链表的头节点 rev_head<br />
+    # 然后在「归」的过程中，把经过的节点依次插在新链表的末尾（尾插法）<br />
+    def reverseList(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:<br />
+        # 判断 head is None 是为了兼容一开始链表就是空的情况<br />
+        if head is None or head.next is None:<br />
+            return head  # 链表末尾，即下面的 rev_head<br />
+        rev_head = self.reverseList(head.next)  # 「递」到链表末尾，拿到新链表的头节点<br />
+        tail = head.next  # 在「归」的过程中，head.next 就是新链表的末尾<br />
+        tail.next = head  # 把 head 插在新链表的末尾<br />
+        head.next = None  # 如果不写这行，新链表的末尾两个节点成环，这俩节点互相指向对方<br />
+        return rev_head</p>
+<pre><code>
+```java [sol-Java]
+class Solution {
+    // 首先「递」到链表末尾，把末尾节点作为新链表的头节点 revHead
+    // 然后在「归」的过程中，把经过的节点依次插在新链表的末尾（尾插法）
+    public ListNode reverseList(ListNode head) {
+        // 判断 head == null 是为了兼容一开始链表就是空的情况
+        if (head == null || head.next == null) {
+            return head; // 链表末尾，即下面的 revHead
+        }
+        ListNode revHead = reverseList(head.next); // 「递」到链表末尾，拿到新链表的头节点
+        ListNode tail = head.next; // 在「归」的过程中，head.next 就是新链表的末尾
+        tail.next = head; // 把 head 插在新链表的末尾
+        head.next = null; // 如果不写这行，新链表的末尾两个节点成环，这俩节点互相指向对方
+        return revHead;
+    }
+}
+</code></pre>
+<p>```cpp [sol-C++]<br />
+class Solution {<br />
+public:<br />
+    // 首先「递」到链表末尾，把末尾节点作为新链表的头节点 rev_head<br />
+    // 然后在「归」的过程中，把经过的节点依次插在新链表的末尾（尾插法）<br />
+    ListNode<em> reverseList(ListNode</em> head) {<br />
+        // 判断 head == nullptr 是为了兼容一开始链表就是空的情况<br />
+        if (head == nullptr || head-&gt;next == nullptr) {<br />
+            return head; // 链表末尾，即下面的 rev_head<br />
+        }<br />
+        auto rev_head = reverseList(head-&gt;next); // 「递」到链表末尾，拿到新链表的头节点<br />
+        ListNode* tail = head-&gt;next; // 在「归」的过程中，head-&gt;next 就是新链表的末尾<br />
+        tail-&gt;next = head; // 把 head 插在新链表的末尾<br />
+        head-&gt;next = nullptr; // 如果不写这行，新链表的末尾两个节点成环，这俩节点互相指向对方<br />
+        return rev_head;<br />
+    }<br />
+};</p>
+<pre><code>
+```c [sol-C]
+// 首先「递」到链表末尾，把末尾节点作为新链表的头节点 rev_head
+// 然后在「归」的过程中，把经过的节点依次插在新链表的末尾（尾插法）
+struct ListNode* reverseList(struct ListNode* head) {
+    // 判断 head == NULL 是为了兼容一开始链表就是空的情况
+    if (head == NULL || head-&gt;next == NULL) {
+        return head; // 链表末尾，即下面的 rev_head
+    }
+    struct ListNode* rev_head = reverseList(head-&gt;next); // 「递」到链表末尾，拿到新链表的头节点
+    struct ListNode* tail = head-&gt;next; // 在「归」的过程中，head-&gt;next 就是新链表的末尾
+    tail-&gt;next = head; // 把 head 插在新链表的末尾
+    head-&gt;next = NULL; // 如果不写这行，新链表的末尾两个节点成环，这俩节点互相指向对方
+    return rev_head;
+}
+</code></pre>
+<p>```go [sol-Go]<br />
+// 首先「递」到链表末尾，把末尾节点作为新链表的头节点 revHead<br />
+// 然后在「归」的过程中，把经过的节点依次插在新链表的末尾（尾插法）<br />
+func reverseList(head <em>ListNode) </em>ListNode {<br />
+    // 判断 head == nil 是为了兼容一开始链表就是空的情况<br />
+    if head == nil || head.Next == nil { <br />
+        return head // 链表末尾，即下面的 revHead<br />
+    }<br />
+    revHead := reverseList(head.Next) // 「递」到链表末尾，拿到新链表的头节点<br />
+    tail := head.Next // 在「归」的过程中，head.Next 就是新链表的末尾<br />
+    tail.Next = head // 把 head 插在新链表的末尾<br />
+    head.Next = nil // 如果不写这行，新链表的末尾两个节点成环，这俩节点互相指向对方<br />
+    return revHead<br />
+}</p>
+<pre><code>
+```js [sol-JavaScript]
+// 首先「递」到链表末尾，把末尾节点作为新链表的头节点 revHead
+// 然后在「归」的过程中，把经过的节点依次插在新链表的末尾（尾插法）
+var reverseList = function(head) {
+    // 判断 head === null 是为了兼容一开始链表就是空的情况
+    if (head === null || head.next === null) {
+        return head; // 链表末尾，即下面的 revHead
+    }
+    const revHead = reverseList(head.next); // 「递」到链表末尾，拿到新链表的头节点
+    const tail = head.next; // 在「归」的过程中，head.next 就是新链表的末尾
+    tail.next = head; // 把 head 插在新链表的末尾
+    head.next = null; // 如果不写这行，新链表的末尾两个节点成环，这俩节点互相指向对方
+    return revHead;
+};
+</code></pre>
+<p>```rust [sol-Rust]<br />
+impl Solution {<br />
+    pub fn reverse_list(head: Option<Box\<ListNode>>) -&gt; Option<Box\<ListNode>> {<br />
+        fn reverse(node: Option<Box\<ListNode>>, pre: Option<Box\<ListNode>>) -&gt; Option<Box\<ListNode>> {<br />
+            if let Some(mut cur) = node {<br />
+                let nxt = cur.next.take();<br />
+                cur.next = pre;<br />
+                return reverse(nxt, Some(cur));<br />
+            }<br />
+            pre<br />
+        }<br />
+        reverse(head, None)<br />
+    }<br />
+}</p>
+<pre><code>
+#### 答疑
+
+**问**：为什么不写 `head.next = null` 的代码，会提示「超出内存限制」？这应该是超时呀？
+
+**答**：这和力扣的判题机制有关，评测机会先把链表转成字符串，再去比对答案。这会遍历链表，如果链表有环，生成的字符串会无限延长，在超时之前就超出内存限制了。
+
+#### 复杂度分析
+
+- 时间复杂度：$\mathcal{O}(n)$，其中 $n$ 为链表节点个数。
+- 空间复杂度：$\mathcal{O}(n)$。递归需要 $\mathcal{O}(n)$ 的栈空间。
+
+## 方法二：迭代（头插法）
+
+视频讲解：[【基础算法精讲 06】](&lt;a href=&quot;https://www.bilibili.com/video/BV1sd4y1x7KN&quot; target=&quot;_blank&quot; class=&quot;vimeo-link&quot; style=&quot;background:#00a1d6&quot;&gt;▶ 在 Bilibili 观看&lt;/a&gt;
+
+**简单理解**：比如链表为 $1   o 2 o 3$。创建一个新的空链表，然后用**头插法**依次把节点 $1,2,3$ 插到这个新链表的头部，就得到了链表 $3 o 2 o 1$，这正是反转后的链表。
+
+头插法的意思是，把一个节点 $ extit{node}$ 指向链表头节点（$  extit{node}.    extit{next}$ 更新为链表头节点），那么 $ extit{node}$ 就插在了链表的左侧，新链表的头节点为 $   extit{node}$。
+
+对于链表 $1 o 2 o 3$，结合代码来说，顺序为：
+
+- 第一轮循环结束后，得到链表 $1$。
+- 第二轮循环结束后，得到链表 $2  o 1$。
+- 第三轮循环结束后，得到链表 $3  o 2 o 1$。
+
+&gt; **注**：代码每轮循环结束后，$ extit{pre}$ 表示最新得到的链表。
+
+```py [sol-Python3]
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:
+        pre = None
+        cur = head
+        while cur:
+            nxt = cur.next
+            cur.next = pre  # 把 cur 插在 pre 链表的前面（头插法）
+            pre = cur
+            cur = nxt
+        return pre
+</code></pre>
+<p>```java [sol-Java]<br />
+class Solution {<br />
+    public ListNode reverseList(ListNode head) {<br />
+        ListNode pre = null;<br />
+        ListNode cur = head;<br />
+        while (cur != null) {<br />
+            ListNode nxt = cur.next;<br />
+            cur.next = pre; // 把 cur 插在 pre 链表的前面（头插法）<br />
+            pre = cur;<br />
+            cur = nxt;<br />
+        }<br />
+        return pre;<br />
+    }<br />
+}</p>
+<pre><code>
+```cpp [sol-C++]
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* pre = nullptr;
+        ListNode* cur = head;
+        while (cur) {
+            ListNode* nxt = cur-&gt;next;
+            cur-&gt;next = pre; // 把 cur 插在 pre 链表的前面（头插法）
+            pre = cur;
+            cur = nxt;
+        }
+        return pre;
+    }
+};
+</code></pre>
+<p>```c [sol-C]<br />
+struct ListNode<em> reverseList(struct ListNode</em> head) {<br />
+    struct ListNode<em> pre = NULL;<br />
+    struct ListNode</em> cur = head;<br />
+    while (cur) {<br />
+        struct ListNode* nxt = cur-&gt;next;<br />
+        cur-&gt;next = pre; // 把 cur 插在 pre 链表的前面（头插法）<br />
+        pre = cur;<br />
+        cur = nxt;<br />
+    }<br />
+    return pre;<br />
+}</p>
+<pre><code>
+```go [sol-Go]
+func reverseList(head *ListNode) *ListNode {
+    var pre, cur *ListNode = nil, head
+    for cur != nil {
+        nxt := cur.Next
+        cur.Next = pre // 把 cur 插在 pre 链表的前面（头插法）
+        pre = cur
+        cur = nxt
+    }
+    return pre
+}
+</code></pre>
+<p>```js [sol-JavaScript]<br />
+var reverseList = function(head) {<br />
+    let pre = null, cur = head;<br />
+    while (cur) {<br />
+        const nxt = cur.next;<br />
+        cur.next = pre; // 把 cur 插在 pre 链表的前面（头插法）<br />
+        pre = cur;<br />
+        cur = nxt;<br />
+    }<br />
+    return pre;<br />
+};</p>
+<pre><code>
+```rust [sol-Rust]
+impl Solution {
+    pub fn reverse_list(head: Option&lt;Box&lt;ListNode&gt;&gt;) -&gt; Option&lt;Box&lt;ListNode&gt;&gt; {
+        let mut pre = None;
+        let mut cur = head;
+        while let Some(mut node) = cur {
+            let nxt = node.next;
+            node.next = pre; // 把 node 插在 pre 链表的前面（头插法）
+            pre = Some(node);
+            cur = nxt;
+        }
+        pre
+    }
+}
+</code></pre>
+<h4>复杂度分析</h4>
+<ul>
+<li>时间复杂度：$\mathcal{O}(n)$，其中 $n$ 为链表节点个数。</li>
+<li>空间复杂度：$\mathcal{O}(1)$。</li>
+</ul>
+<h2>分类题单</h2>
+<p><a href="https://leetcode.cn/circle/discuss/RvFUtj/">如何科学刷题？</a></p>
+<ol>
+<li><a href="https://leetcode.cn/circle/discuss/0viNMK/">滑动窗口与双指针（定长/不定长/单序列/双序列/三指针/分组循环）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/SqopEo/">二分算法（二分答案/最小化最大值/最大化最小值/第K小）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/9oZFK9/">单调栈（基础/矩形面积/贡献法/最小字典序）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/YiXPXW/">网格图（DFS/BFS/综合应用）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/dHn9Vk/">位运算（基础/性质/拆位/试填/恒等式/思维）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/01LUak/">图论算法（DFS/BFS/拓扑排序/最短路/最小生成树/二分图/基环树/欧拉路径）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/tXLS3i/">动态规划（入门/背包/状态机/划分/区间/状压/数位/数据结构优化/树形/博弈/概率期望）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/mOr1u6/">常用数据结构（前缀和/差分/栈/队列/堆/字典树/并查集/树状数组/线段树）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/IYT3ss/">数学算法（数论/组合/概率期望/博弈/计算几何/随机算法）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/g6KTKL/">贪心与思维（基本贪心策略/反悔/区间/字典序/数学/思维/脑筋急转弯/构造）</a></li>
+<li>【本题相关】<a href="https://leetcode.cn/circle/discuss/K0n2gO/">链表、二叉树与回溯（前后指针/快慢指针/DFS/BFS/直径/LCA/一般树）</a></li>
+<li><a href="https://leetcode.cn/circle/discuss/SJFwQI/">字符串（KMP/Z函数/Manacher/字符串哈希/AC自动机/后缀数组/子序列自动机）</a></li>
+</ol>
+<p><a href="https://github.com/EndlessCheng/codeforces-go/blob/master/leetcode/SOLUTIONS.md">我的题解精选（已分类）</a></p>
+<p>欢迎关注 <a href="https://space.bilibili.com/206214">B站@灵茶山艾府</a></p>
+</div>
+</div>
+</body>
+</html>

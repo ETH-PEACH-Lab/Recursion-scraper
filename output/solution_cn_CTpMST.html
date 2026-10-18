@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>10.正则表达式匹配（使用递归方式） – Regular Expression Matching</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_regular-expression-matching.html">Regular Expression Matching / 正则表达式匹配</a> <span class="sep">›</span> <span class="cur">10.正则表达式匹配（使用递归方式）</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">10.正则表达式匹配（使用递归方式）</div>
+  <div class="meta">
+    <span>👤 duo-tai-zhong-xie</span>
+    <span>👍 0</span>
+    <span>2024-11-18</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/regular-expression-matching/solution/10zheng-ze-biao-da-shi-pi-pei-shi-yong-d-8pk3/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <blockquote>
+<p>Problem: <a href="https://leetcode.cn/problems/regular-expression-matching/description/">10. 正则表达式匹配</a></p>
+</blockquote>
+<h3>分析 1</h3>
+<p>正则表达式其实是一个非常宏大的知识体系，在日常开发中其实也蛮常用，尤其是做一些数据校验的时候，比如说手机号码、邮箱、身份证号码等等，都可以通过正则表达式来进行校验。</p>
+<p>还有一些处理复杂字符串的时候，比如说我要通过一定的规则从一个庞大的字符序列中找出想要的内容，比如说从 HTML 页面的源码中找出标题、作者、正文等，那由于 HTML 页面的结构比较复杂，我们就需要通过正则表达式来进行匹配查找。</p>
+<p>如果觉得 10 分钟的视频还是太长，想要文档，那么推荐大家看看 GitHub 上这个仓库：</p>
+<blockquote>
+<p><a href="https://github.com/cdoco/learn-regex-zh">https://github.com/cdoco/learn-regex-zh</a></p>
+</blockquote>
+<p>大致了解正则表达式是什么，有什么作用后，对这道题会有更清晰的解题思路。</p>
+<p>一句话总结下：<strong>正则表达式就是一种用来匹配字符串的规则</strong>。</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1731914272-gzxzIE-image.png" /></p>
+<p>上面是一个比较简单的正则表达式，具体解释如下：</p>
+<ul>
+<li><code>^</code>：匹配输入字符串的开始位置。</li>
+<li><code>[a-zA-Z0-9_-]</code>：字符集合。匹配所有小写字母 (<code>a-z</code>)、大写字母 (<code>A-Z</code>)、数字 (<code>0-9</code>)，以及下划线 (<code>_</code>) 和中划线 (<code>-</code>)。</li>
+<li><code>{3,15}</code>：表示匹配 3-15 个前面的字符。</li>
+<li><code>$</code>：匹配输入字符串的结束位置。</li>
+</ul>
+<p>所以这个正则表达式的意思就是：匹配一个长度为 3-15 个字符的字符串，且只能包含小写字母、大写字母、数字、下划线和中划线。</p>
+<p>回到本题，s 只包含从 a-z 的小写字母；p 只包含从 a-z 的小写字母，以及字符 . 和 *。</p>
+<p>如果只有<code>.</code>的话，事情就很简单，因为 <code>.</code> 可以匹配任意单个字符，所以我们只需要遍历 <code>s</code> 和 <code>p</code>，然后逐个字符进行匹配即可。</p>
+<p>但是这里还有一个<code>*</code>，<code>*</code>就比较麻烦了，因为它可以匹配零个或多个前面的那一个字符。</p>
+<p>所以我们需要考虑的情况就变得多了，比如说：</p>
+<ul>
+<li><code>s = "aa", p = "a*"</code>：这种情况下，<code>*</code>可以匹配零个或多个前面的那一个字符，所以<code>a*</code>可以匹配<code>""</code>、<code>"a"</code>、<code>"aa"</code>，所以这种情况下是可以匹配的。</li>
+<li><code>s = "ab", p = ".*"</code>：这种情况下，<code>.*</code>可以匹配零个或多个前面的任意字符，所以<code>.*</code>可以匹配<code>""</code>、<code>"a"</code>、<code>"ab"</code>、<code>"abb"</code>、<code>"abbb"</code>、<code>"abbbb"</code>，所以这种情况下是可以匹配的。</li>
+</ul>
+<p>所以我们需要<code>*</code>的前一个字符到底能够匹配多少个字符。我打算先采用递归的方式来处理，这样的思路会比较简单、直接、暴力。</p>
+<p>递归方法的核心在于将问题分解成更小的子问题。对于每一个字符，我们需要判断它是否与模式中的字符匹配，然后递归地处理剩余的字符串。</p>
+<p>①、<strong>基本情况</strong>：如果模式字符串 <code>pattern</code> 为空，那么输入字符串 <code>text</code> 也必须为空才能匹配成功。</p>
+<p>②、<strong>匹配第一个字符</strong>：检查<code>text</code>和<code>pattern</code>的第一个字符是否相等，或者模式字符为<code>'.'</code>，因为<code>'.'</code>可以匹配任何单个字符。</p>
+<p>③、<strong>处理</strong><code>*****</code><strong>字符</strong>：当模式的第二个字符是<code>*</code>时，我们需要考虑两种情况：</p>
+<ul>
+<li><code>pattern.substring(2)</code>：跳过这一部分的模式，因为<code>*</code>可以表示它前面的字符出现0次（<code>x*</code>）。</li>
+<li><code>text.substring(1)</code>与<code>pattern</code>：如果当前字符匹配，则检查<code>text</code>的下一个字符，因为 * 可以表示多次。</li>
+</ul>
+<p>④、<strong>其他情况</strong>：如果模式的第二个字符不是<code>*</code>，则需要当前字符匹配，并且剩余的字符串和模式也需要匹配。</p>
+<h1>Code</h1>
+<p>```Java []<br />
+class Solution {<br />
+        public boolean isMatch(String text, String pattern) {<br />
+            // 基本情况：如果模式串为空，那么输入字符串也必须为空才匹配<br />
+            if (pattern.isEmpty()) return text.isEmpty();</p>
+<pre><code>        // 检查第一个字符是否匹配（考虑'.'的情况）
+        boolean first_match = (!text.isEmpty() &amp;&amp;
+                (pattern.charAt(0) == text.charAt(0) || pattern.charAt(0) == '.'));
+
+        // 如果模式的下一个字符是'*'
+        if (pattern.length() &gt;= 2 &amp;&amp; pattern.charAt(1) == '*'){
+            // 两种情况：
+            // 1. 忽略模式中的这两个字符（'x*'），因为'*'可以表示前面的字符出现0次
+            // 2. 删除匹配的字符串中的一个字符（如果它能与模式中的'x'匹配），因为'*'可以表示多次
+            return (isMatch(text, pattern.substring(2)) ||
+                    (first_match &amp;&amp; isMatch(text.substring(1), pattern)));
+        } else {
+            // 如果下一个字符不是'*'，则直接比较当前字符，并递归处理剩余部分
+            return first_match &amp;&amp; isMatch(text.substring(1), pattern.substring(1));
+        }
+    }
+}
+</code></pre>
+<p>```</p>
+</div>
+</div>
+</body>
+</html>

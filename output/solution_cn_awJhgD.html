@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LCR 123. 图书整理 I（递归、辅助栈，清晰图解） – 图书整理 I</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_cong-wei-dao-tou-da-yin-lian-biao-lcof.html">图书整理 I / 图书整理 I</a> <span class="sep">›</span> <span class="cur">LCR 123. 图书整理 I（递归、辅助栈，清晰图解）</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">LCR 123. 图书整理 I（递归、辅助栈，清晰图解）</div>
+  <div class="meta">
+    <span>👤 jyd</span>
+    <span>👍 464</span>
+    <span>2020-02-15</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/solution/mian-shi-ti-06-cong-wei-dao-tou-da-yin-lian-biao-d/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h2>方法一：递归</h2>
+<p>利用递归，先递推至链表末端；回溯时，依次将节点值加入列表，即可实现链表值的倒序输出。</p>
+<ol>
+<li><strong>终止条件：</strong> 当 <code>head == None</code> 时，代表越过了链表尾节点，则返回空列表；</li>
+<li><strong>递推工作：</strong> 访问下一节点 <code>head.next</code> ；</li>
+<li><strong>回溯阶段：</strong><ul>
+<li><strong>Python：</strong> 返回 <code>当前 list + 当前节点值 [head.val]</code> ；</li>
+<li><strong>Java / C++：</strong> 将当前节点值 <code>head.val</code> 加入列表 <code>tmp</code> ；</li>
+</ul>
+</li>
+</ol>
+<p>&lt;<img alt="Picture1.png" src="https://pic.leetcode.cn/1599284309-ongbxB-Picture1.png" />,<img alt="Picture2.png" src="https://pic.leetcode.cn/1599284309-sNAjgz-Picture2.png" />,<img alt="Picture3.png" src="https://pic.leetcode.cn/1599284309-lsJzwg-Picture3.png" />,<img alt="Picture4.png" src="https://pic.leetcode.cn/1599284309-WEexSa-Picture4.png" />,<img alt="Picture5.png" src="https://pic.leetcode.cn/1599284309-aAAzfv-Picture5.png" />,<img alt="Picture6.png" src="https://pic.leetcode.cn/1599284309-AwHMnh-Picture6.png" />,<img alt="Picture7.png" src="https://pic.leetcode.cn/1599284309-TPcwUZ-Picture7.png" />,<img alt="Picture8.png" src="https://pic.leetcode.cn/1599284309-sBtikj-Picture8.png" />,<img alt="Picture8-1.png" src="https://pic.leetcode.cn/1599284504-Zuewmm-Picture8-1.png" />&gt;</p>
+<h3>代码：</h3>
+<p>```Python []<br />
+class Solution:<br />
+    def reverseBookList(self, head: Optional[ListNode]) -&gt; List[int]:<br />
+        return self.reverseBookList(head.next) + [head.val] if head else []</p>
+<pre><code>
+```Java []
+class Solution {
+    ArrayList&lt;Integer&gt; tmp = new ArrayList&lt;Integer&gt;();
+    public int[] reverseBookList(ListNode head) {
+        recur(head);
+        int[] res = new int[tmp.size()];
+        for(int i = 0; i &lt; res.length; i++)
+            res[i] = tmp.get(i);
+        return res;
+    }
+    void recur(ListNode head) {
+        if(head == null) return;
+        recur(head.next);
+        tmp.add(head.val);
+    }
+}
+</code></pre>
+<p>```C++ []<br />
+class Solution {<br />
+public:<br />
+    vector<int> reverseBookList(ListNode<em> head) {<br />
+        recur(head);<br />
+        return res;<br />
+    }<br />
+private:<br />
+    vector<int> res;<br />
+    void recur(ListNode</em> head) {<br />
+        if(head == nullptr) return;<br />
+        recur(head-&gt;next);<br />
+        res.push_back(head-&gt;val);<br />
+    }<br />
+};</p>
+<pre><code>
+### 复杂度分析：
+
+- **时间复杂度 $O(N)$：** 遍历链表，递归 $N$ 次。
+- **空间复杂度 $O(N)$：** 系统递归需要使用 $O(N)$ 的栈空间。
+
+## 方法二：辅助栈法
+
+链表只能 **从前至后** 访问每个节点，而题目要求 **倒序输出** 各节点值，这种 **先入后出** 的需求可以借助 **栈** 来实现。
+
+### 算法流程：
+
+1. **入栈：** 遍历链表，将各节点值 `push` 入栈。
+2. **出栈：** 将各节点值 `pop` 出栈，存储于数组并返回。
+
+&gt; 图解以 Java 代码为例，Python 无需将 `stack` 转移至 `res`，而是直接返回倒序数组。
+
+&lt;![Picture9.png](https://pic.leetcode.cn/1599284309-uVDdUn-Picture9.png),![Picture10.png](https://pic.leetcode.cn/1599284309-bkTHcM-Picture10.png),![Picture11.png](https://pic.leetcode.cn/1599284309-pjcVQL-Picture11.png),![Picture12.png](https://pic.leetcode.cn/1599284309-CdJEZQ-Picture12.png),![Picture13.png](https://pic.leetcode.cn/1599284309-hpDDSU-Picture13.png),![Picture14.png](https://pic.leetcode.cn/1599284309-BTfQdQ-Picture14.png),![Picture15.png](https://pic.leetcode.cn/1599284309-RplwUC-Picture15.png),![Picture16.png](https://pic.leetcode.cn/1599284309-JIonvw-Picture16.png)&gt;
+
+### 代码：
+
+Java 数组长度不可变，因此使用 List 先存储，再转为数组并返回。
+
+```Python []
+class Solution:
+    def reverseBookList(self, head: ListNode) -&gt; List[int]:
+        stack = []
+        while head:
+            stack.append(head.val)
+            head = head.next
+        return stack[::-1]
+</code></pre>
+<p>```Java []<br />
+class Solution {<br />
+    public int[] reverseBookList(ListNode head) {<br />
+        LinkedList<Integer> stack = new LinkedList<Integer>();<br />
+        while(head != null) {<br />
+            stack.addLast(head.val);<br />
+            head = head.next;<br />
+        }<br />
+        int[] res = new int[stack.size()];<br />
+        for(int i = 0; i &lt; res.length; i++)<br />
+            res[i] = stack.removeLast();<br />
+    return res;<br />
+    }<br />
+}</p>
+<pre><code>
+```C++ []
+class Solution {
+public:
+    vector&lt;int&gt; reverseBookList(ListNode* head) {
+        stack&lt;int&gt; stk;
+        while(head != nullptr) {
+            stk.push(head-&gt;val);
+            head = head-&gt;next;
+        }
+        vector&lt;int&gt; res;
+        while(!stk.empty()) {
+            res.push_back(stk.top());
+            stk.pop();
+        }
+        return res;
+    }
+};
+</code></pre>
+<h3>复杂度分析：</h3>
+<ul>
+<li><strong>时间复杂度 $O(N)$：</strong> 入栈和出栈共使用 $O(N)$ 时间。</li>
+<li><strong>空间复杂度 $O(N)$：</strong> 辅助栈 <code>stack</code> 和数组 <code>res</code> 共使用 $O(N)$ 的额外空间。</li>
+</ul>
+<hr />
+<p><a href="https://leetcode.cn/studyplan/selected-coding-interview/"><img alt="760_200.png" src="https://pic.leetcode.cn/1692092540-xqrzsq-760_200.png" /></a></p>
+<p>本学习计划配有代码仓，内含测试样例与数据结构封装，便于本地调试。可前往我的<a href="https://leetcode.cn/u/jyd/">个人主页</a>获取。</p>
+</div>
+</div>
+</body>
+</html>

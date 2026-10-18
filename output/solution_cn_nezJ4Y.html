@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>【C++】剑指 Offer 25. 合并两个排序的链表 题解：递归、非递归/辅助指针 – 训练计划 IV</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_he-bing-liang-ge-pai-xu-de-lian-biao-lcof.html">训练计划 IV / 训练计划 IV</a> <span class="sep">›</span> <span class="cur">【C++】剑指 Offer 25. 合并两个排序的链表 题解：递归、非递归/辅助指针</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">【C++】剑指 Offer 25. 合并两个排序的链表 题解：递归、非递归/辅助指针</div>
+  <div class="meta">
+    <span>👤 Algo-Goer</span>
+    <span>👍 0</span>
+    <span>2022-04-30</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/he-bing-liang-ge-pai-xu-de-lian-biao-lcof/solution/by-algo-goer-fyjt/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h2>题目</h2>
+<p><a href="/problems/he-bing-liang-ge-pai-xu-de-lian-biao-lcof/">剑指 Offer 25. 合并两个排序的链表</a> Easy<br />
+<a href="/problems/merge-two-sorted-lists/">21. 合并两个有序链表</a> Easy</p>
+<h2>题解</h2>
+<p>既然给定两个链表都有序，那可以判断两个链表头节点值大小，将较小值结点添加到结果中，然后将对应链表节点指针后移一位，循环往复，直至有一个链表空为止。由于链表有序，所以循环终止时，非空链表中的元素都比前面已经合并的链表中的元素大。所以只需简单将非空链表接在合并链表后面，并返回合并链表即可</p>
+<hr />
+<p>方法一：递归，隐式栈占空间<br />
+- 终止条件：当两个链表都为空时，说明链表已经合并完成<br />
+- 如何递归：判断list1和list2头节点哪个更小，然后较小节点的next指针调用递归，指向其余节点的合并结果</p>
+<hr />
+<p>方法二：非递归，不额外占空间<br />
+首先我们需要先创建一个哑节点prehead，然后将prehead指向链表l1和l2中比较小的一个。如果相等的话，指向任意一个即可。然后将较小值对应的链表的指针后移一位<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650869862-BfbuTD-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650869870-nKwiuc-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650869877-wRLZTE-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650869883-gxgJRa-image.png" /></p>
+<h2>哑结点</h2>
+<p>哑结点也叫做哨兵节点，对于链表相关的题目，为了方便处理边界条件，一般我们都会引入哑结点来方便求解。首先我们先来看一下什么是哑结点，哑结点是指数据域为空，指针域指向链表头节点的节点，它是为了简化边界条件而引入的。下面我们来看一个具体的例子，例如要删除链表中的某个节点操作。常见的删除链表的操作是找到要删元素的前一个元素，假如我们记为 pre。我们通过：pre-&gt;next=pre-&gt;next-&gt;next来执行删除操作。如果此时要删除的是链表的第一个结点呢？就不能执行这个操作了，因为链表的第一个结点的前一个节点不存在，为空。如果此时你设置了哑结点，那么第一个结点的前一个节点就是这个哑结点。这样如果你要删除链表中的任何一个节点，都可以通过pre-&gt;next=pre-&gt;next-&gt;next的方式来进行，这就简化的代码的逻辑<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650869839-oSFFRf-image.png" /></p>
+<h2>趣学数据结构之合并两个有序单链表</h2>
+<p>题目：将两个有序（非递减）单链表La和Lb合并为一个新的有序（非递减）单链表<br />
+单链表的头指针不可以移动。一旦头指针丢失，就断链，找不到该单链表，因此需要辅助指针<br />
+以下面两个单链表为例，演示合并过程<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650864574-MeaBeh-image.png" /></p>
+<ol>
+<li>初始化。设置3个辅助指针p、q和r。p和q分别指向La和Lb链表的当前比较位置，新链表头指针Lc指向La，当作合并后的头节点。r指向Lc的当前最后一个节点，利用r指针“穿针引线”，如下图<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650864673-wyARfU-image.png" /><br />
+    2，比较元素大小，将较小元素用r指针串起来<br />
+    2.1 第1次比较，p-&gt;data=4 &gt; q-&gt;data=2，用r指针将q节点串起来，如图所示<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650864755-hphqHA-image.png" /><br />
+    串联操作分为3步</li>
+</ol>
+<pre><code class="language-C++">r-&gt;next = q; // 把q节点的地址赋值给r的next指针域，即r的next指针指向q
+r = q;       // r指针指向Lc的当前尾节点
+q = q-&gt;next; // q指针向后移动，等待处理下一个节点
+</code></pre>
+<p>串联后如图<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650864882-TmiegI-image.png" /><br />
+2.2 第2次比较，p-&gt;data=4 &lt; q-&gt;data=6，用r指针将p节点串起来，即r-&gt;next=p; r=p; p=p-&gt;next。串联后如图<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650864947-FBrvyz-image.png" /><br />
+2.3 第3次比较，p-&gt;data=9 &gt; q-&gt;data=6，用r指针将q节点串起来，即r-&gt;next=q; r=q; q=q-&gt;next。串联后如图<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650864993-NmENvc-image.png" /><br />
+2.4 第4次比较，p-&gt;data=9 &lt; q-&gt;data=18，用r指针将p节点串起来，即r-&gt;next=p; r=p; p=p-&gt;next。串联后如图<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650865057-PGoqLl-image.png" /><br />
+2.5 第5次比较，p-&gt;data=15 &lt; q-&gt;data=18，用r指针将p节点串起来，即r-&gt;next=p; r=p; p=p-&gt;next。串联后如图<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650865102-CZFova-image.png" /><br />
+2.6 第6次比较，p-&gt;data=24 &gt; q-&gt;data=18，用r指针将q节点串起来，即r-&gt;next=q; r=q; q=q-&gt;next。串联后如图<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650865146-MdLGnx-image.png" /><br />
+2.7 第7次比较，p-&gt;data=24 &gt; q-&gt;data=20，用r指针将q节点串起来，即r-&gt;next=q; r=q; q=q-&gt;next。串联后如图<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650865202-kRdkUX-image.png" /><br />
+此时q指针为空，循环结束<br />
+3. 串联剩余部分。p指针不为空，用r指针将p串联起来，即r-&gt;next=p;。注意这里只是把这个指针连上即可，剩余节点不需要再处理。释放Lb节点空间，即delete Lb。两个有序链表合并结果如图所示<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650865276-QLBVcY-image.png" /></p>
+<pre><code class="language-C++">// merge two sorted linked lists
+void mergelinklist(LinkList La, LinkList Lb, LinkList &amp;Lc)
+{
+    LinkList p, q, r;
+    p = La-&gt;next; // p指向La的第一个数据元素节点
+    q = Lb-&gt;next; // q指向Lb的第一个数据元素节点
+    Lc = La;      // Lc指向La的头节点
+    r = Lc;       // r指向新链表Lc的尾部
+    while (p &amp;&amp; q) 
+    {
+        if (p-&gt;data &lt;= q-&gt;data) // 把p指向的节点串起来
+        {
+            r-&gt;next = p;
+            r = p;
+            p = p-&gt;next;
+        }
+        else // 把q指向的节点串起来
+        {
+            r-&gt;next = q;
+            r = q;
+            q = q-&gt;next;
+        }
+    }
+    // 如果p非空，则把p后面剩余节点连接起来，即r-&gt;next = p;，否则r-&gt;next=q;
+    r-&gt;next = p ? p : q; // 相当于if (p) r-&gt;next = p; else r-&gt;next = q;
+    delete Lb;  
+}
+</code></pre>
+<h2>AC代码</h2>
+<p>```C++ []<br />
+/<em><em><br />
+ * Definition for singly-linked list.<br />
+ * struct ListNode {<br />
+ *     int val;<br />
+ *     ListNode </em>next;<br />
+ *     ListNode(int x) : val(x), next(NULL) {}<br />
+ * };<br />
+</em>/<br />
+// code1 recursion<br />
+class Solution {<br />
+public:<br />
+    ListNode<em> mergeTwoLists(ListNode</em> l1, ListNode* l2) <br />
+    {<br />
+        if (!l1) return l2;<br />
+        else if (!l2) return l1;<br />
+        else if (l1-&gt;val &lt; l2-&gt;val)<br />
+        {<br />
+            l1-&gt;next = mergeTwoLists(l1-&gt;next, l2);<br />
+            return l1;<br />
+        }<br />
+        else<br />
+        {<br />
+            l2-&gt;next = mergeTwoLists(l1, l2-&gt;next);<br />
+            return l2;<br />
+        }<br />
+    }<br />
+};</p>
+<pre><code>```C++ []
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+// code2 非递归/辅助指针
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) 
+    {
+        // 合并后链表的哨兵节点
+        ListNode *head = new ListNode(-1);
+        ListNode *pre = head;
+        // 循环遍历，将两个链表中较小值插入到合并后的链表
+        while (l1 &amp;&amp; l2)
+        {
+            if (l1-&gt;val &lt; l2-&gt;val)
+            {
+                pre-&gt;next = l1;
+                l1 = l1-&gt;next;
+            }
+            else
+            {
+                pre-&gt;next = l2;
+                l2 = l2-&gt;next;
+            }
+            pre = pre-&gt;next;
+        }
+        // 将剩余非空链表插入到合并链表
+        if (l1)
+            pre-&gt;next = l1;
+        if (l2)
+            pre-&gt;next = l2;
+        return head-&gt;next;
+    }
+};
+</code></pre>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1650870457-CpEHyT-image.png" /></p>
+<h2>复杂度</h2>
+<p>1.递归<br />
+- 时间复杂度为O(m+n)：其中m和n分别是两个链表长度。因为每次调用递归都会去掉list1或list2的头节点，直到至少有一个链表为空。函数mergeTwoList至多只会递归调用每个节点一次，因此时间复杂度为合并后的链表长度<br />
+- 空间复杂度O(m+n)：递归调用merge函数时需要隐式栈，隐式栈取决于递归调用的深度，最多为m+n</p>
+<p>2.非递归/辅助指针：链表合并不需要再创建空间，只需要把两个单链表中的节点按非递减顺序串联即可。因此最坏情况下，需要串联每一个节点<br />
+- 时间复杂度O(m+n)<br />
+- 空间复杂度为O(1)</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1650870167-pWEwsg-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1650870177-hNyzjC-image.png" /></p>
+<h2>Reference</h2>
+<p>陈小玉.趣学数据结构[M].2019/09<br />
+左程云.程序员代码面试指南：IT名企算法与数据结构题目最优解(2nd Ed)[M].2019/01<br />
+程序员学长</p>
+</div>
+</div>
+</body>
+</html>

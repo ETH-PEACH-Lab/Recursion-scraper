@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2种解法,清晰逻辑,秒懂--[Offer 33] – 验证二叉搜索树的后序遍历序列</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_er-cha-sou-suo-shu-de-hou-xu-bian-li-xu-lie-lcof.html">验证二叉搜索树的后序遍历序列 / 验证二叉搜索树的后序遍历序列</a> <span class="sep">›</span> <span class="cur">2种解法,清晰逻辑,秒懂--[Offer 33]</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">2种解法,清晰逻辑,秒懂--[Offer 33]</div>
+  <div class="meta">
+    <span>👤 fengziL</span>
+    <span>👍 47</span>
+    <span>2021-10-21</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/er-cha-sou-suo-shu-de-hou-xu-bian-li-xu-lie-lcof/solution/2chong-jie-fa-qing-xi-luo-ji-miao-dong-o-23nq/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h2>突破点</h2>
+<p>二叉搜索树的特点之一：<code>中序遍历是单调递增（升序）</code></p>
+<hr />
+<h2>解题</h2>
+<p>先看一下一颗二叉树：</p>
+<pre><code>     根
+    /  \
+   左   右
+
+中序遍历：左-&gt;根-&gt;右
+后序遍历：左-&gt;右-&gt;根
+</code></pre>
+<h3>解法1 递归</h3>
+<p>只要是二叉搜索树就一定就满足：<br />
+<code>左 &lt; 根 &amp;&amp; 右 &gt; 根</code></p>
+<p>在后序遍历也是要满足该特性。那么只要在 <strong>后序遍历</strong> 中找到对应的 <strong>根 左 右</strong> 三个节点来对比是否满足就行。</p>
+<p>如：</p>
+<pre><code>          10
+        /    \
+       8     12
+      / \    / \
+     5   9  11  13
+    / \
+   3   6
+
+中序遍历： [3,6,5,9,8,11,13,12,10]
+           \______/  \____/   |
+              左        右    根    
+</code></pre>
+<p>如果 <code>左 &lt; 根 &amp;&amp; 右 &gt; 根</code> 成立。那么就有：<br />
+1. <strong>左集</strong>里面的<strong>每一个</strong>节点值都 <strong>小于</strong> 根<br />
+2. <strong>右集</strong>里面的<strong>每一个</strong>节点值都 <strong>大于</strong> 根</p>
+<p>伪代码：</p>
+<pre><code>    bool helpe(postorder, 左边界, 右边界) {
+        if (左边界 &gt;= 右边界) return true;
+        root    // 找到 根
+        leftSet // 找到 左集
+        rightSet // 找到 右集
+        for (leftSet里面的每一个节点) { // 比较 左集 的每一值是否都 小于 根
+            if (每一个节点都 &gt; 根) return false;
+        }
+        for (rightSet里面的每一个节点) { // 比较 右集 的每一值是否都 大于 根
+            if (每一个节点都 &lt; 根) return false;
+        }
+        // 递归比较 左集/右集 里面的子集是否都满足
+        return helpe(leftSet, lefSet的左边界, leftSet的右边界) &amp;&amp;
+            helpe(rightSet, rightSet的左边界, rightSet的右边界)
+    }
+</code></pre>
+<p>先看一下代码：<br />
+```C++ [group1-C++ 递归]<br />
+class Solution {<br />
+public:<br />
+    bool verifyPostorder(vector<int>&amp; postorder) {<br />
+        return helpe(postorder, 0, postorder.size() - 1);<br />
+    }</p>
+<p>private:<br />
+    bool helpe(vector<int> &amp;postorder, int l, int r) {<br />
+        if (l &gt;= r) return true;<br />
+        int p = l, m = 0;<br />
+        while (postorder[p] &lt; postorder[r]) ++p;<br />
+        m = p; // 切割点<br />
+        while (postorder[p] &gt; postorder[r]) ++p;<br />
+        return p == r &amp;&amp; helpe(postorder, l, m - 1) &amp;&amp;<br />
+            helpe(postorder, m, r - 1);<br />
+    }<br />
+};</p>
+<pre><code>
+代码处理逻辑：
+1. 找根节点
+在后续遍历中，最后一个节点一定是 **根节点**。
+2. 找左/右集
+在剩下的数组中，我们使用指针，在从头开始查找到 **第一个大于根**  的位置来做 左/右集的**切割点**。
+3. 递归判断 左/右集的子集
+
+---
+
+
+## 解法2 迭代
+
+在二叉搜索树中，通过我们的观察发现，如图：
+![image.png](https://pic.leetcode.cn/1634709136-UexLuN-image.png)
+**红色**的部分，总是 `根 &lt; 右` 成立。
+
+那么能用这个逻辑遍历完 二叉搜索树 么？
+是可以的，如图：
+![image.png](https://pic.leetcode.cn/1634709311-QeWBFM-image.png)
+
+从上到下，**红色括号**的部分都是 **单调递增**。
+
+
+&gt; 再来看一下题目给出来信息：**后序遍历数组**
+&gt; 也就是顺序：左-&gt;右-&gt;根
+&gt; 
+&gt; 而通过上面的2张图，我们观察到的 **单调递增** 的顺序是：`根-&gt;右`
+&gt; 而通过 **移动** `左` 会变成 `根`。所以我们最终的遍历顺序是：
+&gt; 根-&gt;右-&gt;左
+&gt; 
+&gt; 刚好是 中序遍历 的 **逆序**。
+
+那么，我们逆序遍历，找到里面的单调递增的部分，通过**递增来判断**是否是二叉搜索树。
+
+这里我们使用 **单调栈** 来装 逆序的节点。
+会有2个状态需要我们理解和处理的：
+1. 当前节点比栈顶节点 **大** 。说明还是在 根-&gt;右 的逻辑范围（递增），我们需要继续 **压栈**。
+2. 当前节点比栈顶节点 **小** 。说明一边的**递增逻辑**已经遍历完，我们需要**向左移动**，**切换遍历节点**，继续进行递增逻辑。不过在这之前，我们需要清除上一次**递增逻辑**留下来的节点，所以我们需要把 **大于** 当前节点的值 **出栈**。
+
+代码：
+```C++ [group2-C++ 迭代]
+class Solution {
+public:
+    bool verifyPostorder(vector&lt;int&gt;&amp; postorder) {
+        vector&lt;int&gt; sub;
+        int root = INT_MAX;
+        for (auto i = postorder.rbegin(); i &lt; postorder.rend(); ++i) { // 中序的逆序遍历
+            if (*i &gt; root) return false;
+            while (sub.size() &amp;&amp; *i &lt; sub.back()) // 切换遍历节点，清除上次遍历数据，出栈
+                root = sub.back(), sub.pop_back();
+            sub.push_back(*i); // 单调递增逻辑，压栈
+        }
+        return true;
+    }
+};
+</code></pre>
+<hr />
+<p>感谢阅读</p>
+</div>
+</div>
+</body>
+</html>

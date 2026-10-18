@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Merge Two Sorted Lists – CN Solutions</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index_cn.html">🔄 CN Recursion Solutions</a> <span class="sep">›</span> <span class="cur">Merge Two Sorted Lists / 合并两个有序链表</span></nav>
+<div class="wrap">
+<div class="page-title">21. Merge Two Sorted Lists / 合并两个有序链表</div>
+<div class="page-sub">
+  <span class="badge b-tag">EASY</span> <span class="badge b-tag">递归</span> <span class="badge b-tag">链表</span>
+  &nbsp;
+  <a href="https://leetcode.cn/problems/merge-two-sorted-lists/" target="_blank" style="font-size:.85em">↗ LeetCode CN</a>
+  &nbsp;·&nbsp;<a href="tutorial_cn_merge-two-sorted-lists.html" style="font-size:.85em">📖 Editorial</a>
+</div>
+
+<details open>
+  <summary style="color:#1a7f37;border-left:3px solid #1a7f37;padding-left:10px;margin:24px 0 12px;cursor:pointer;list-style:none;font-weight:600;font-size:1.05em">
+    ✅ Kept Solutions <span style="font-weight:400;font-size:.9em;margin-left:6px">70</span>
+  </summary>
+  <div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_uimWCD.html"><div class="card-title">一看就会，一写就废？详解递归</div></a>
+    <div class="meta">
+      <span>👤 z1m</span>
+      <span>👍 1980</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/86c8ce53d2a91f3d710fdba825333be582a15bd661e9f05a10278bf558fbf1ef-1.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_2xsqxU.html"><div class="card-title">画解算法：21. 合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 guanpengchn</span>
+      <span>👍 571</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_dqGwuJ.html"><div class="card-title">【递归】合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 demigodliu</span>
+      <span>👍 294</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1615817903-fzmpwZ-%E5%9B%BE%E8%A7%A3%E6%AF%8F%E6%97%A5%E4%B8%80%E7%BB%83.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_O3HcuT.html"><div class="card-title">两种方法：迭代（尾插法）/ 递归（头插法）Python/Java/C++/C/Go/JS/Rust</div></a>
+    <div class="meta">
+      <span>👤 endlesscheng</span>
+      <span>👍 2173</span>
+      <span class="badge b-video">📹</span>
+    </div>
+    
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_B6Lzai.html"><div class="card-title">超详细图解递归执行过程 21.合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 wang_ni_ma</span>
+      <span>👍 91</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1605953062-RMAqlu-640.gif" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_gZypC6.html"><div class="card-title">动画演示  21. 合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 wang_ni_ma</span>
+      <span>👍 22</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/cff71b0d4b6b532e662d3dcd7bbbb1ca47ce06bdde5e472d709b086e9a2403e8-%E9%9D%99%E6%80%81%E5%9B%BE_1.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_J2NEf6.html"><div class="card-title">合并两个有序链表 c++实现两种解法 递归法和迭代法 图示讲解</div></a>
+    <div class="meta">
+      <span>👤 pinku-2</span>
+      <span>👍 21</span>
+      <span class="badge b-video">📹</span><span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/f5ba401547e85aa7f6155d2e2ef3169a9f71f761b486f98121ce385254035500-%E7%BB%93%E5%B1%80.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_g6k0ah.html"><div class="card-title">【链表】 21.合并两个有序链表 一题双解 （C++）</div></a>
+    <div class="meta">
+      <span>👤 he-xian-b</span>
+      <span>👍 22</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1635496243-IOEFSj-004.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Tvwflz.html"><div class="card-title">21. 合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 Dine</span>
+      <span>👍 16</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1605168809-DkxVmX-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_XOXLGi.html"><div class="card-title">Rust 递归合并双链表</div></a>
+    <div class="meta">
+      <span>👤 RookieHuang</span>
+      <span>👍 17</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/5affea9775c0dfb1e6730599c886269c7ae7473af039f1db03f29a8197ffa56e-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Wl0w2s.html"><div class="card-title">java代码，递归和非递归图文讲解</div></a>
+    <div class="meta">
+      <span>👤 sdwwld</span>
+      <span>👍 17</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/8056ae02cbcd1b170ef27d7553d0281accfd31f2673353dd6fc472f80301c4f1-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_5X6YIs.html"><div class="card-title">递归（一行语句，超简单）</div></a>
+    <div class="meta">
+      <span>👤 mantoufan</span>
+      <span>👍 6</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_KfymLb.html"><div class="card-title">字节题库 - #21 - 简单 - （两种方法）合并两个有序链表 - 3刷</div></a>
+    <div class="meta">
+      <span>👤 superkakayong</span>
+      <span>👍 3</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/6142195ef1b0f1ce29fec1bb73ce3b15adc6bf32c463e9838d9220157e000b2a-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Hm5dcI.html"><div class="card-title">递归和迭代两种方法，真的可以秒懂</div></a>
+    <div class="meta">
+      <span>👤 xmblgt</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1600518253-OJduAj-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20200919202313.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_LD2nC8.html"><div class="card-title">保姆级理解递归实现逻辑，打开你的递归心结</div></a>
+    <div class="meta">
+      <span>👤 wu-xian-sheng-a9</span>
+      <span>👍 2</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1672064507-LbQuTM-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_3cv9cD.html"><div class="card-title">leetcode🧑‍💻 21. 合并两个有序链表   1. 迭代+哨兵节点  2. 递归</div></a>
+    <div class="meta">
+      <span>👤 1105389168</span>
+      <span>👍 2</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1706255074-MFhHqk-iShot_2024-01-26_15.44.25.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_HLMkzX.html"><div class="card-title">图解 迭代和递归21.合并两个有序链表（c++）</div></a>
+    <div class="meta">
+      <span>👤 DevinLi</span>
+      <span>👍 3</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1629207999-vWPDto-%E8%BF%9E%E6%8E%A5%E4%B8%A4%E9%93%BE%E8%A1%A81.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_EXlt1q.html"><div class="card-title">JavaScript图解leetcode：合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 user7746o</span>
+      <span>👍 3</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/a918cadaf04feddd5429bd4cdc9ef259cdcae6126e194e0284d86287a5ba3006.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_CxIllb.html"><div class="card-title">哨兵节点+迭代解决双有序链表合并</div></a>
+    <div class="meta">
+      <span>👤 li-tian-ran-d</span>
+      <span>👍 1</span>
+      <span class="badge b-video">📹</span>
+    </div>
+    
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_A7U1D1.html"><div class="card-title">【小白】链表入门汇总：题、语法</div></a>
+    <div class="meta">
+      <span>👤 tender-hypatia6lo</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1693571392-tMiFbi-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_A2dx3P.html"><div class="card-title">[python3/go]递归</div></a>
+    <div class="meta">
+      <span>👤 fdvoid0</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1691210485-qROAXq-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_oEUpvH.html"><div class="card-title">幼儿园都看得懂的递归解法</div></a>
+    <div class="meta">
+      <span>👤 已注销</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1649087921-SJarSV-%E9%80%92%E5%BD%92.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_xXVf5U.html"><div class="card-title">【Nick学习计划系列】算法入门第十天~</div></a>
+    <div class="meta">
+      <span>👤 nickBean</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1639377501-IYyqEW-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_oEUpvH.html"><div class="card-title">幼儿园都看得懂的递归解法</div></a>
+    <div class="meta">
+      <span>👤 已注销</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1649087921-SJarSV-%E9%80%92%E5%BD%92.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_xXVf5U.html"><div class="card-title">【Nick学习计划系列】算法入门第十天~</div></a>
+    <div class="meta">
+      <span>👤 nickBean</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1639377501-IYyqEW-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Vr1Mgo.html"><div class="card-title">21、链表好抽象，不过看懂了其实也就是一个类，画个图，好理解点</div></a>
+    <div class="meta">
+      <span>👤 _Breiman</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1667147488-feGPMV-%E6%97%A0%E6%A0%87%E9%A2%98%E9%A1%B5_00.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_bZSDny.html"><div class="card-title">21. 合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 stormsunshine</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1633049547-ndBuVB-6_1.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_tvQYoA.html"><div class="card-title">【数据结构入门每日刷题打卡15/33】经典环形链表问题——合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 billSu</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1638344280-OzXqXT-JS.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_dSjpO8.html"><div class="card-title">C++：21. 合并两个有序链表[【一题两解：递归、迭代】</div></a>
+    <div class="meta">
+      <span>👤 mountains-3</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1669449908-aLGTfv-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_7f82a2.html"><div class="card-title">21. 合并两个有序链表（暴力求解）</div></a>
+    <div class="meta">
+      <span>👤 wang-yuan-e</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1700132074-JfpxmQ-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_tBP3Ur.html"><div class="card-title">递归的笔记</div></a>
+    <div class="meta">
+      <span>👤 xyzl-f</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1769235294-xVfzPm-1.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_JGSezV.html"><div class="card-title">「自存」递归应用01</div></a>
+    <div class="meta">
+      <span>👤 cypressen</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1702890558-EeIVja-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202023-12-18%20165346.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_z3XS0L.html"><div class="card-title">合并有序链表 [递归] [栈]概念理解</div></a>
+    <div class="meta">
+      <span>👤 epic-robinsonadx</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_RYBbUL.html"><div class="card-title">21. 合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 const_char</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1766126436-gFWBud-Capture_20251219_142838.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_d1tPAd.html"><div class="card-title">递归+迭代画图解法</div></a>
+    <div class="meta">
+      <span>👤 gua-xi-xi-8</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1690856070-HQZUdY-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_UA8nV4.html"><div class="card-title">21. 合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 tan-suo-zhe-chen</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1644752917-wzLBaA-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_irMBBe.html"><div class="card-title">21. 合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 ablazeasteroid-h9i57J5evb</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1618477395-GUNpQt-WeChatadd43cdf6534e0c2bcd72f7ecfff96aa.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_ShENG1.html"><div class="card-title">合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 liuze</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1620735611-fBZFzS-1.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_ylZxrO.html"><div class="card-title">递归求解</div></a>
+    <div class="meta">
+      <span>👤 JClearLove</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1616424088-ZLaHKb-Screenshot_1.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_TxD40z.html"><div class="card-title">合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 ra1der</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1719216992-Askiba-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_JGSezV.html"><div class="card-title">「自存」递归应用01</div></a>
+    <div class="meta">
+      <span>👤 cypressen</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1702890558-EeIVja-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202023-12-18%20165346.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_dT8akL.html"><div class="card-title">简单的递归法</div></a>
+    <div class="meta">
+      <span>👤 lyq-e0</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1697101448-HHJSBH-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Y8qoqZ.html"><div class="card-title">lc - 21 合并有序链表 双指针and递归 （自用题解）</div></a>
+    <div class="meta">
+      <span>👤 elated-ishi2akanf4</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1709367887-WbgcWj-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_STOUcO.html"><div class="card-title">DFS</div></a>
+    <div class="meta">
+      <span>👤 wan-5o1</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1706170796-UlXTBM-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_nTDvVJ.html"><div class="card-title">21. 合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 dachau111</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1705635396-dQfvIr-e4c8c97883da50d81498fd1f1e6cdd575429bd65f9f2babb00dc2b709f7ad8b2-Picture1.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Q6HfDd.html"><div class="card-title">递归真是妙啊</div></a>
+    <div class="meta">
+      <span>👤 young-158o</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1744964976-VVexfZ-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_3iSZdJ.html"><div class="card-title">遍历链表，递归合并两个链表</div></a>
+    <div class="meta">
+      <span>👤 lin-feng-2k</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1680775165-KkYLml-20230406174539.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_fIs3Kc.html"><div class="card-title">21. 合并两个有序链表  java</div></a>
+    <div class="meta">
+      <span>👤 rocket2020</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1678768872-QyASPy-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_z3XS0L.html"><div class="card-title">合并有序链表 [递归] [栈]概念理解</div></a>
+    <div class="meta">
+      <span>👤 epic-robinsonadx</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_N3OHjq.html"><div class="card-title">平平无奇的递归</div></a>
+    <div class="meta">
+      <span>👤 hun-shui-mo-yu-s</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1656309958-EHpDXI-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_R1ze9J.html"><div class="card-title">【C++】【高频面试题】21. 合并两个有序链表 题解：递归、非递归/辅助指针</div></a>
+    <div class="meta">
+      <span>👤 Algo-Goer</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1650869862-BfbuTD-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_ylZxrO.html"><div class="card-title">递归求解</div></a>
+    <div class="meta">
+      <span>👤 JClearLove</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1616424088-ZLaHKb-Screenshot_1.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_42p3fl.html"><div class="card-title">合并链表递归法详细图解</div></a>
+    <div class="meta">
+      <span>👤 knightzz98</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1611328785-pVxXai-21.%20%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_imS9NC.html"><div class="card-title">🍥前端食堂题解，超好理解，带你轻松拿下合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 tongobama</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1611595424-FfNfCj-%E9%80%8F%E6%98%8E%E7%9A%84footer.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_JxZXa8.html"><div class="card-title">迭代和递归解决合并链表</div></a>
+    <div class="meta">
+      <span>👤 an-di-r</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1613032857-CuqdEW-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_emF9lW.html"><div class="card-title">合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 tceason</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1618909174-qjIroS-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_irMBBe.html"><div class="card-title">21. 合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 ablazeasteroid-h9i57J5evb</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1618477395-GUNpQt-WeChatadd43cdf6534e0c2bcd72f7ecfff96aa.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_wdIPzy.html"><div class="card-title">四种方法解决合并有序链表</div></a>
+    <div class="meta">
+      <span>👤 edte</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1639229301-FlOehF-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_EPVFtl.html"><div class="card-title">首刷-递归</div></a>
+    <div class="meta">
+      <span>👤 luo-jin-e0</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1631331270-DuYzPi-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_emF9lW.html"><div class="card-title">合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 tceason</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1618909174-qjIroS-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_EPVFtl.html"><div class="card-title">首刷-递归</div></a>
+    <div class="meta">
+      <span>👤 luo-jin-e0</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1631331270-DuYzPi-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_tPE6CL.html"><div class="card-title">21. 合并两个有序链表 </div></a>
+    <div class="meta">
+      <span>👤 javancheng</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1638239593-OBozon-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_gYIcmh.html"><div class="card-title">画解 LeetCode：21. 合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 deppwang-2</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/2cff0110538948ae45828328cfc6e4340cb1b9206731f7f934da517e5725513a.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_IyxrxB.html"><div class="card-title">三个解法--合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 ji-jue-hai-no</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/b069c4820b2c12bf5bcc72e66b806177f5a0ff95bef79b27d8aa96ec2aa48f22-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_oyRaRb.html"><div class="card-title">合并有序链表</div></a>
+    <div class="meta">
+      <span>👤 zyd1997113</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1599901701-fQwIbb-fe5eca7edea29a76316f7e8529f73a90ae4990fd66fea093c6ee91567788e482-%E5%B9%BB%E7%81%AF%E7%89%874.jfif" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_uNTWqj.html"><div class="card-title">普通法及递归法一步步代码手画图解</div></a>
+    <div class="meta">
+      <span>👤 nuan-mu-si-lan-wu-sa-nan-dian</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/c3991eb3c4a3dbbf91f6bed7407a4a9046846d5bfe4cb1c3961dde327936687c-606EE97D-286F-436A-A41B-47694F51064F.jpeg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_IyxrxB.html"><div class="card-title">三个解法--合并两个有序链表</div></a>
+    <div class="meta">
+      <span>👤 ji-jue-hai-no</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/b069c4820b2c12bf5bcc72e66b806177f5a0ff95bef79b27d8aa96ec2aa48f22-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_BuSIEI.html"><div class="card-title">递归程序图解</div></a>
+    <div class="meta">
+      <span>👤 RickYinPeng</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/c5fbeda1458c3d5615433eebee403b28c7cd77314c3ba04727fb1d3999e58362-3.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_oyRaRb.html"><div class="card-title">合并有序链表</div></a>
+    <div class="meta">
+      <span>👤 zyd1997113</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1599901701-fQwIbb-fe5eca7edea29a76316f7e8529f73a90ae4990fd66fea093c6ee91567788e482-%E5%B9%BB%E7%81%AF%E7%89%874.jfif" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_fYouuq.html"><div class="card-title">递归解法</div></a>
+    <div class="meta">
+      <span>👤 xiaosheng</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    
+  </div>
+</div>
+</details>
+
+</div>
+</body>
+</html>

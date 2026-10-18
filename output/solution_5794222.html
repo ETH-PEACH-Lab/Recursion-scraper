@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Learn to optimize || 3 Approaches – Different Ways to Add Parentheses</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_different-ways-to-add-parentheses.html">Different Ways to Add Parentheses</a> <span class="sep">›</span> <span class="cur">Learn to optimize || 3 Approaches</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">Learn to optimize || 3 Approaches</div>
+  <div class="meta">
+    <span>👤 hemanth00405</span>
+    <span>👍 10</span>
+    <span>2024-09-16</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/different-ways-to-add-parentheses/solutions/5794222/learn-to-optimize-3-approaches/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h6>The problem asks us to find all the possible results from computing the expression with different ways of parenthesizing it.</h6>
+<h1>Intuition #1 ( Recursion, Divide and Conquer )</h1>
+<ul>
+<li>Since the expresion only contains numbers and basic operators <code>+, -, *</code>, we can recursively approach it !</li>
+<li>Ever heard of <code>Divide and Conquer</code>? Yes, you might have studied in your college courses. that is exactly what we are going to do now.</li>
+<li>Recursively break it down based on where the operators appear, evaluate each possible sub-expression, combine the results</li>
+</ul>
+<h1>Approach #1 ( Recursion, Divide and Conquer )</h1>
+<ul>
+<li><strong>Recursively divide the expression:</strong> Treat each operator <code>+, -, *</code> as a potential point to split the expression into two smaller sub-expressions.</li>
+<li><strong>Conquer the sub-expressions:</strong> Recursively compute all possible values of left and right sub-expressions</li>
+<li><strong>Merge the results:</strong> For each valid split, combine the results of the left and right parts using current operator at the split</li>
+</ul>
+<h3>Example Walkthrough:</h3>
+<p>Let's use the expression <code>2*3-4*5</code> as an example.</p>
+<ol>
+<li><strong>First Iteration</strong>: We loop through the expression, and at index 1, we encounter the <code>*</code> operator. So, we split it into two parts:<br />
+   - Left part: <code>2</code><br />
+   - Right part: <code>3-4*5</code></li>
+</ol>
+<p>Then, we recursively compute the results for both sides.</p>
+<ol start="2">
+<li>
+<p><strong>Left Part</strong> (<code>2</code>): Since this is just a number, the result is <code>[2]</code>.</p>
+</li>
+<li>
+<p><strong>Right Part</strong> (<code>3-4*5</code>): We now recursively split this further. At index 1 in this sub-expression, we find the <code>-</code> operator, so we split it into:<br />
+   - Left part: <code>3</code><br />
+   - Right part: <code>4*5</code></p>
+</li>
+</ol>
+<p>Recursively compute both sides:<br />
+   - Left part: <code>3</code> results in <code>[3]</code><br />
+   - Right part: <code>4*5</code> results in <code>[20]</code></p>
+<p>Now combine the results for <code>3-20</code>:<br />
+   - <code>3 - 20 = -17</code><br />
+   So, the right part <code>3-4*5</code> yields <code>[-17]</code>.</p>
+<ol start="4">
+<li><strong>Combining</strong>: Now combine the left part <code>2</code> and the right part <code>[-17]</code> using the <code>*</code> operator:<br />
+   - <code>2 * -17 = -34</code></li>
+</ol>
+<p>At this point, we’ve found one possible result: <code>-34</code>.</p>
+<ol start="5">
+<li><strong>Exploring other splits</strong>: Continue exploring other operators (<code>-</code> and <code>*</code> in <code>2*3-4*5</code>) in a similar manner to find more possible results.</li>
+</ol>
+<h3>Explanation of Code:</h3>
+<ul>
+<li>
+<p><strong>Base Case</strong>: If the expression has no operator (e.g., <code>"2"</code>), it will return the integer value of the expression (<code>result.append(int(expr))</code>).</p>
+</li>
+<li>
+<p><strong>Recursive Splitting</strong>:</p>
+</li>
+<li>For every character in the expression, if it is an operator (<code>+</code>, <code>-</code>, or <code>*</code>), we split the expression into two parts:<ul>
+<li><code>left = helper(expr[:i])</code>: Recursively compute the results of the left sub-expression.</li>
+<li><code>right = helper(expr[i+1:])</code>: Recursively compute the results of the right sub-expression.</li>
+</ul>
+</li>
+<li>
+<p>We then combine the results of the left and right sub-expressions using the current operator (<code>+</code>, <code>-</code>, or <code>*</code>) and append these results to our <code>result</code> list.</p>
+</li>
+<li>
+<p><strong>Merging Results</strong>: Once all possible splits are evaluated, we return the list of results.</p>
+</li>
+</ul>
+<h1>Complexity #1:</h1>
+<ul>
+<li>
+<p><strong>Time complexity:</strong> The time complexity is exponential O(2^n), where <code>n</code> is the number of characters in the expression. This happens because for every operator, we explore multiple possible combinations of the left and right sub-expressions, and we do this recursively for every split.</p>
+</li>
+<li>
+<p><strong>Space complexity:</strong> O(2^n)<br />
+The algorithm stores the intermediate results at each step. And the total number of results can be equal to the O(2^n)</p>
+</li>
+</ul>
+<h1>Code #1: Naive Recursion</h1>
+<p>```python []<br />
+class Solution:<br />
+    def diffWaysToCompute(self, expression: str) -&gt; List[int]:</p>
+<pre><code>    def helper(expr):
+        result = []
+        for i, char in enumerate(expr):
+            if char in "+-*":
+                left = helper(expr[:i])
+                right = helper(expr[i+1:])
+
+                for l in left:
+                    for r in right:
+                        if char == '+':
+                            result.append(l + r)
+                        elif char == '-':
+                            result.append(l - r)
+                        else:
+                            result.append(l * r)
+
+        if not result:
+            result.append(int(expr))
+
+        return result
+
+    return helper(expression)
+</code></pre>
+<pre><code>```java []
+class Solution {
+    public List&lt;Integer&gt; diffWaysToCompute(String expression) {
+        return helper(expression);
+    }
+
+    private List&lt;Integer&gt; helper(String expr) {
+        List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; expr.length(); i++) {
+            char charAt = expr.charAt(i);
+            if (charAt == '+' || charAt == '-' || charAt == '*') {
+                List&lt;Integer&gt; left = helper(expr.substring(0, i));
+                List&lt;Integer&gt; right = helper(expr.substring(i + 1));
+                for (int l : left) {
+                    for (int r : right) {
+                        if (charAt == '+') {
+                            result.add(l + r);
+                        } else if (charAt == '-') {
+                            result.add(l - r);
+                        } else {
+                            result.add(l * r);
+                        }
+                    }
+                }
+            }
+        }
+        if (result.isEmpty()) {
+            result.add(Integer.parseInt(expr));
+        }
+        return result;
+    }
+}
+</code></pre>
+<p>```cpp []<br />
+class Solution {<br />
+public:<br />
+    vector<int> diffWaysToCompute(string expression) {<br />
+        return helper(expression);<br />
+    }</p>
+<p>private:<br />
+    vector<int> helper(const string&amp; expr) {<br />
+        vector<int> result;<br />
+        for (int i = 0; i &lt; expr.size(); ++i) {<br />
+            if (expr[i] == '+' || expr[i] == '-' || expr[i] == '*') {<br />
+                auto left = helper(expr.substr(0, i));<br />
+                auto right = helper(expr.substr(i + 1));<br />
+                for (int l : left) {<br />
+                    for (int r : right) {<br />
+                        if (expr[i] == '+') {<br />
+                            result.push_back(l + r);<br />
+                        } else if (expr[i] == '-') {<br />
+                            result.push_back(l - r);<br />
+                        } else {<br />
+                            result.push_back(l * r);<br />
+                        }<br />
+                    }<br />
+                }<br />
+            }<br />
+        }<br />
+        if (result.empty()) {<br />
+            result.push_back(stoi(expr));<br />
+        }<br />
+        return result;<br />
+    }<br />
+};</p>
+<pre><code>```golang []
+func diffWaysToCompute(expression string) []int {
+    return helper(expression)
+}
+
+func helper(expr string) []int {
+    var result []int
+    for i := 0; i &lt; len(expr); i++ {
+        char := expr[i]
+        if char == '+' || char == '-' || char == '*' {
+            left := helper(expr[:i])
+            right := helper(expr[i+1:])
+            for _, l := range left {
+                for _, r := range right {
+                    switch char {
+                    case '+':
+                        result = append(result, l+r)
+                    case '-':
+                        result = append(result, l-r)
+                    case '*':
+                        result = append(result, l*r)
+                    }
+                }
+            }
+        }
+    }
+    if len(result) == 0 {
+        num, _ := strconv.Atoi(expr)
+        result = append(result, num)
+    }
+    return result
+}
+</code></pre>
+<hr />
+<h1>Intuition #2: Dynamic Programming (Memoization, Top-down DP, Recursion)</h1>
+<p>When we have a recursive solution that computes results by splitting the expression into different parts, some subexpressions get computed repeatedly. Memoization is a powerful tool to optimize this process. By storing the results of each subexpression, we avoid recomputing them and significantly reduce the time complexity.</p>
+<p>The idea is to use a dictionary (or hash map) to store already computed results for each subexpression. This allows us to efficiently retrieve precomputed results, rather than re-evaluating the same subexpression multiple times.</p>
+<h1>Approach #2: Top-down DP with Memoization ( Caching )</h1>
+<ol>
+<li>
+<p><strong>Recursive Splitting</strong>: As in the naive approach, split the expression around each operator, recursively calculate the results for both sides, and combine them.</p>
+</li>
+<li>
+<p><strong>Memoization</strong>: Store the results for every subexpression that gets computed. If a subexpression has already been evaluated, retrieve its value from the memo instead of recalculating it.</p>
+</li>
+<li>
+<p><strong>Combination</strong>: For each operator, compute the left and right subexpressions, then combine the results using the corresponding operator.</p>
+</li>
+</ol>
+<p>This results in a more efficient solution with optimal time complexity, as each subexpression is computed only once.</p>
+<h3>Example</h3>
+<p>Consider the expression <code>"2*3-4*5"</code>:</p>
+<ol>
+<li>
+<p>We start by splitting the expression at each operator:<br />
+   - Split at <code>*</code>: We compute <code>2 * (rest of the expression)</code>.<br />
+   - Split at <code>-</code>: We compute <code>(result of left side) - (result of right side)</code>.<br />
+   - Continue recursively splitting each subexpression.</p>
+</li>
+<li>
+<p>Once subexpressions are computed, memoization ensures that we reuse results for identical subexpressions, speeding up the process.</p>
+</li>
+</ol>
+<h1>Complexity #2:</h1>
+<ul>
+<li><strong>Time Complexity:</strong> For the naive recursion, it's O(2^n), it reduces to O(n^3)</li>
+<li><strong>Space Complexity:</strong> We store the result for every possible sub-expression, and there can be about O(n^2) sub-expressions (since every pair of positions in the string can form a sub-expression).</li>
+</ul>
+<h1>Code #2: Memoized Dynamic Programming Solution</h1>
+<p><em>Note: In python, you can either do memoization manually or utilize an in-built decorator called <code>@lru_cache(None)</code>( Least recently used cache ). <code>@lru_cache(None)</code> speeds up function execution by storing and reusing previous results, and <code>None</code> means it won’t discard any cached results based on their number i.e., No capacity limit.</em></p>
+<p>```python []<br />
+class Solution:<br />
+    def diffWaysToCompute(self, expression: str) -&gt; List[int]:<br />
+        memo = {}</p>
+<pre><code>    def helper(expr):
+        if expr in memo:
+            return memo[expr]
+
+        result = []
+        for i, char in enumerate(expr):
+            if char in "+-*":
+                left = helper(expr[:i])
+                right = helper(expr[i+1:])
+
+                for l in left:
+                    for r in right:
+                        if char == '+':
+                            result.append(l + r)
+                        elif char == '-':
+                            result.append(l - r)
+                        else:
+                            result.append(l * r)
+
+        if not result:
+            result.append(int(expr))
+
+        memo[expr] = result
+        return result
+
+    return helper(expression)
+</code></pre>
+<pre><code>```Python []
+class Solution:
+    def diffWaysToCompute(self, expression: str) -&gt; List[int]:
+
+        @lru_cache(None)
+        def helper(expr):
+
+            result = []
+            for i, char in enumerate(expr):
+                if char in &quot;+-*&quot;:
+                    left = helper(expr[:i])
+                    right = helper(expr[i+1:])
+
+                    for l in left:
+                        for r in right:
+                            if char == '+':
+                                result.append(l + r)
+                            elif char == '-':
+                                result.append(l - r)
+                            else:
+                                result.append(l * r)
+
+            if not result:
+                result.append(int(expr))
+
+            return result
+
+        return helper(expression)
+</code></pre>
+<p>```java []<br />
+class Solution {<br />
+    public List<Integer> diffWaysToCompute(String expression) {<br />
+        Map<String, List\<Integer>> memo = new HashMap&lt;&gt;();</p>
+<pre><code>    return helper(expression, memo);
+}
+
+private List&lt;Integer&gt; helper(String expr, Map&lt;String, List&lt;Integer&gt;&gt; memo) {
+    if (memo.containsKey(expr)) {
+        return memo.get(expr);
+    }
+
+    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    for (int i = 0; i &lt; expr.length(); i++) {
+        char c = expr.charAt(i);
+        if (c == '+' || c == '-' || c == '*') {
+            List&lt;Integer&gt; left = helper(expr.substring(0, i), memo);
+            List&lt;Integer&gt; right = helper(expr.substring(i + 1), memo);
+
+            for (int l : left) {
+                for (int r : right) {
+                    if (c == '+') {
+                        result.add(l + r);
+                    } else if (c == '-') {
+                        result.add(l - r);
+                    } else {
+                        result.add(l * r);
+                    }
+                }
+            }
+        }
+    }
+
+    if (result.isEmpty()) {
+        result.add(Integer.parseInt(expr));
+    }
+
+    memo.put(expr, result);
+    return result;
+}
+</code></pre>
+<p>}</p>
+<pre><code>```cpp []
+class Solution {
+public:
+    vector&lt;int&gt; diffWaysToCompute(string expression) {
+        unordered_map&lt;string, vector&lt;int&gt;&gt; memo;
+        return helper(expression, memo);
+    }
+
+    vector&lt;int&gt; helper(string expr, unordered_map&lt;string, vector&lt;int&gt;&gt;&amp; memo) {
+        if (memo.find(expr) != memo.end()) {
+            return memo[expr];
+        }
+
+        vector&lt;int&gt; result;
+        for (int i = 0; i &lt; expr.size(); i++) {
+            char c = expr[i];
+            if (c == '+' || c == '-' || c == '*') {
+                vector&lt;int&gt; left = helper(expr.substr(0, i), memo);
+                vector&lt;int&gt; right = helper(expr.substr(i + 1), memo);
+
+                for (int l : left) {
+                    for (int r : right) {
+                        if (c == '+') {
+                            result.push_back(l + r);
+                        } else if (c == '-') {
+                            result.push_back(l - r);
+                        } else {
+                            result.push_back(l * r);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (result.empty()) {
+            result.push_back(stoi(expr));
+        }
+
+        memo[expr] = result;
+        return result;
+    }
+};
+</code></pre>
+<p>```golang []<br />
+func diffWaysToCompute(expression string) []int {<br />
+    memo := make(map[string][]int)<br />
+    return helper(expression, memo)<br />
+}</p>
+<p>func helper(expr string, memo map[string][]int) []int {<br />
+    if result, exists := memo[expr]; exists {<br />
+        return result<br />
+    }</p>
+<pre><code>var result []int
+for i, char := range expr {
+    if char == '+' || char == '-' || char == '*' {
+        left := helper(expr[:i], memo)
+        right := helper(expr[i+1:], memo)
+
+        for _, l := range left {
+            for _, r := range right {
+                switch char {
+                case '+':
+                    result = append(result, l+r)
+                case '-':
+                    result = append(result, l-r)
+                case '*':
+                    result = append(result, l*r)
+                }
+            }
+        }
+    }
+}
+
+if len(result) == 0 {
+    num, _ := strconv.Atoi(expr)
+    result = append(result, num)
+}
+
+memo[expr] = result
+return result
+</code></pre>
+<p>}</p>
+<pre><code>---
+# Intuition #3 (Tabulation, Bottom-Up)
+**Understanding Tabulation (Bottom-Up)**
+Tabulation, also known as bottom-up dynamic programming, is a technique where you solve the problem by building up solutions from smaller subproblems. Instead of solving the problem recursively and relying on memoization, you iteratively compute the solution to each subproblem and store these solutions in a table (usually an array or matrix) to avoid redundant computations.
+
+In this problem, the idea is to use a table to keep track of the results for different subexpressions, ensuring that we systematically build up solutions for increasingly larger subproblems.
+
+# Approach #3: ( DP Table, Iterative Approach )
+1. **Expression Parsing:** The expression is parsed into two lists: nums (numbers) and ops (operators).
+2. **2D DP Table Setup:** A 2D list `dp[i][j]` is used to store possible results for subexpressions from index i to j.
+3. **Initialization:** The diagonal of the dp table is initialized with single numbers because any subexpression of length 1 is just the number itself.
+4. **Filling the DP Table:** For every subexpression of length 2 or more, we calculate the results by breaking it at every operator `(+, -, *)`, and combining the results of the left and right subexpressions.
+5. **Final Answer:** The answer for the full expression is stored in dp[0][n-1].
+
+**Example:**
+For the expression `&quot;2-1-1&quot;`, the table would store intermediate results of expressions like `&quot;2-1&quot;` and `&quot;1-1&quot;`. These results are then combined to find the results of larger subexpressions until we get the final result.
+
+# Code #3: Tabulated Dp Solution
+```python []
+class Solution:
+    def diffWaysToCompute(self, expression: str) -&gt; List[int]:
+        nums, ops = [], []
+        i = 0
+        while i &lt; len(expression):
+            if expression[i].isdigit():
+                num = 0
+                while i &lt; len(expression) and expression[i].isdigit():
+                    num = num * 10 + int(expression[i])
+                    i += 1
+                nums.append(num)
+            else:
+                ops.append(expression[i])
+                i += 1
+
+        n = len(nums)
+        dp = [[[] for _ in range(n)] for _ in range(n)]
+
+        for i in range(n):
+            dp[i][i] = [nums[i]]
+
+        for length in range(2, n + 1):
+            for i in range(n - length + 1):
+                j = i + length - 1
+                dp[i][j] = []
+                for k in range(i, j):
+                    left_results = dp[i][k]
+                    right_results = dp[k + 1][j]
+                    operator = ops[k]
+
+                    for left in left_results:
+                        for right in right_results:
+                            if operator == '+':
+                                dp[i][j].append(left + right)
+                            elif operator == '-':
+                                dp[i][j].append(left - right)
+                            else:
+                                dp[i][j].append(left * right)
+
+        return dp[0][n - 1]
+</code></pre>
+<p>```java []<br />
+class Solution {<br />
+    public List<Integer> diffWaysToCompute(String expression) {<br />
+        List<Integer> nums = new ArrayList&lt;&gt;();<br />
+        List<Character> ops = new ArrayList&lt;&gt;();</p>
+<pre><code>    int i = 0;
+    while (i &lt; expression.length()) {
+        if (Character.isDigit(expression.charAt(i))) {
+            int num = 0;
+            while (i &lt; expression.length() &amp;&amp; Character.isDigit(expression.charAt(i))) {
+                num = num * 10 + (expression.charAt(i) - '0');
+                i++;
+            }
+            nums.add(num);
+        } else {
+            ops.add(expression.charAt(i));
+            i++;
+        }
+    }
+
+    int n = nums.size();
+    List&lt;Integer&gt;[][] dp = new ArrayList[n][n];
+
+    for (int j = 0; j &lt; n; j++) {
+        dp[j][j] = new ArrayList&lt;&gt;();
+        dp[j][j].add(nums.get(j));
+    }
+
+    for (int length = 2; length &lt;= n; length++) {
+        for (int l = 0; l &lt;= n - length; l++) {
+            int r = l + length - 1;
+            dp[l][r] = new ArrayList&lt;&gt;();
+            for (int k = l; k &lt; r; k++) {
+                List&lt;Integer&gt; leftResults = dp[l][k];
+                List&lt;Integer&gt; rightResults = dp[k + 1][r];
+                char operator = ops.get(k);
+
+                for (int left : leftResults) {
+                    for (int right : rightResults) {
+                        if (operator == '+') {
+                            dp[l][r].add(left + right);
+                        } else if (operator == '-') {
+                            dp[l][r].add(left - right);
+                        } else {
+                            dp[l][r].add(left * right);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return dp[0][n - 1];
+}
+</code></pre>
+<p>}</p>
+<pre><code>```cpp []
+class Solution {
+public:
+    vector&lt;int&gt; diffWaysToCompute(string expression) {
+        vector&lt;int&gt; nums;
+        vector&lt;char&gt; ops;
+
+        int i = 0;
+        while (i &lt; expression.size()) {
+            if (isdigit(expression[i])) {
+                int num = 0;
+                while (i &lt; expression.size() &amp;&amp; isdigit(expression[i])) {
+                    num = num * 10 + (expression[i] - '0');
+                    i++;
+                }
+                nums.push_back(num);
+            } else {
+                ops.push_back(expression[i]);
+                i++;
+            }
+        }
+
+        int n = nums.size();
+        vector&lt;vector&lt;vector&lt;int&gt;&gt;&gt; dp(n, vector&lt;vector&lt;int&gt;&gt;(n));
+
+        for (int j = 0; j &lt; n; j++) {
+            dp[j][j] = {nums[j]};
+        }
+
+        for (int length = 2; length &lt;= n; length++) {
+            for (int l = 0; l &lt;= n - length; l++) {
+                int r = l + length - 1;
+                for (int k = l; k &lt; r; k++) {
+                    const auto&amp; leftResults = dp[l][k];
+                    const auto&amp; rightResults = dp[k + 1][r];
+                    char op = ops[k];
+
+                    for (int left : leftResults) {
+                        for (int right : rightResults) {
+                            if (op == '+') {
+                                dp[l][r].push_back(left + right);
+                            } else if (op == '-') {
+                                dp[l][r].push_back(left - right);
+                            } else {
+                                dp[l][r].push_back(left * right);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return dp[0][n - 1];
+    }
+};
+</code></pre>
+<p>```golang []<br />
+func diffWaysToCompute(expression string) []int {<br />
+    var nums []int<br />
+    var ops []rune<br />
+    i := 0<br />
+    for i &lt; len(expression) {<br />
+        if isDigit(rune(expression[i])) {<br />
+            num := 0<br />
+            for i &lt; len(expression) &amp;&amp; isDigit(rune(expression[i])) {<br />
+                num = num*10 + int(expression[i]-'0')<br />
+                i++<br />
+            }<br />
+            nums = append(nums, num)<br />
+        } else {<br />
+            ops = append(ops, rune(expression[i]))<br />
+            i++<br />
+        }<br />
+    }</p>
+<pre><code>n := len(nums)
+dp := make([][][]int, n)
+for i := 0; i &lt; n; i++ {
+    dp[i] = make([][]int, n)
+}
+
+for j := 0; j &lt; n; j++ {
+    dp[j][j] = []int{nums[j]}
+}
+
+for length := 2; length &lt;= n; length++ {
+    for l := 0; l &lt;= n-length; l++ {
+        r := l + length - 1
+        for k := l; k &lt; r; k++ {
+            leftResults := dp[l][k]
+            rightResults := dp[k+1][r]
+            operator := ops[k]
+
+            for _, left := range leftResults {
+                for _, right := range rightResults {
+                    if operator == '+' {
+                        dp[l][r] = append(dp[l][r], left+right)
+                    } else if operator == '-' {
+                        dp[l][r] = append(dp[l][r], left-right)
+                    } else {
+                        dp[l][r] = append(dp[l][r], left*right)
+                    }
+                }
+            }
+        }
+    }
+}
+
+return dp[0][n-1]
+</code></pre>
+<p>}</p>
+<p>func isDigit(c rune) bool {<br />
+    return c &gt;= '0' &amp;&amp; c &lt;= '9'<br />
+}<br />
+```</p>
+<h3>Complexity #3:</h3>
+<ul>
+<li><strong>Time Complexity:</strong> O(n^3) - For each subexpression, we iterate over all operators, leading to a cubic time complexity due to nested loops.</li>
+<li><strong>Space Complexity:</strong> O(n^2) - The space complexity is proportional to the number of subexpressions stored in the table, which is O(n^2).</li>
+</ul>
+<p><em>Tabulation is efficient for problems with overlapping subproblems and optimal substructure, where it systematically builds solutions from the ground up. It avoids the overhead of recursion, recursion stack space and can often reduce space complexity by using iterative loops and space-saving techniques.</em></p>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/7713663b-7fbf-4ee6-b279-26e7003aaa6c_1726413185.7212803.png" /></p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>动画演示+多种解法 206. 反转链表 – Reverse Linked List</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_reverse-linked-list.html">Reverse Linked List / 反转链表</a> <span class="sep">›</span> <span class="cur">动画演示+多种解法 206. 反转链表</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">动画演示+多种解法 206. 反转链表</div>
+  <div class="meta">
+    <span>👤 wang_ni_ma</span>
+    <span>👍 2177</span>
+    <span>2019-10-22</span>
+    <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞 Slide</span>
+    <a href="https://leetcode.cn/problems/reverse-linked-list/solution/dong-hua-yan-shi-206-fan-zhuan-lian-biao-by-user74/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h3>利用外部空间</h3>
+<p>这种方式很简单，先申请一个动态扩容的数组或者容器，比如 ArrayList 这样的。<br />
+然后不断遍历链表，将链表中的元素添加到这个容器中。<br />
+再利用容器自身的 API，反转整个容器，这样就达到反转的效果了。<br />
+最后同时遍历容器和链表，将链表中的值改为容器中的值。<br />
+因为此时容器的值是：</p>
+<pre><code>5 4 3 2 1
+</code></pre>
+<p>链表按这个顺序重新被设置一边，就达到要求啦。 <br />
+当然你可以可以再新创建 N 个节点，然后再返回，这样也可以达到目的。 <br />
+这种方式很简单，但你在面试中这么做的话，面试官 100% 会追问是否有更优的方式，比如不用外部空间。所以我就不做代码和动画演示了，下面来看看如何用 $O(1)$ 空间复杂度来实现这道题。   </p>
+<h3>双指针迭代</h3>
+<p>我们可以申请两个指针，第一个指针叫 pre，最初是指向 null 的。 <br />
+第二个指针 cur 指向 head，然后不断遍历 cur。 <br />
+每次迭代到 cur，都将 cur 的 next 指向 pre，然后 pre 和 cur 前进一位。 <br />
+都迭代完了(cur 变成 null 了)，pre 就是最后一个节点了。 <br />
+动画演示如下： <br />
+<img alt="迭代.gif" src="https://pic.leetcode.cn/7d8712af4fbb870537607b1dd95d66c248eb178db4319919c32d9304ee85b602-%E8%BF%AD%E4%BB%A3.gif" /></p>
+<p>动画演示中其实省略了一个<code>tmp</code>变量，这个<code>tmp</code>变量会将<code>cur</code>的下一个节点保存起来，考虑到一张动画放太多变量会很混乱，所以我就没加了，具体详细执行过程，请点击下面的幻灯片查看。</p>
+<p>&lt;<img alt="1.JPG" src="https://pic.leetcode.cn/8f03740e93c8a0ecff54a57a25a710ab82574faf99b3efb8ddd2b6eea1d78d49-1.JPG" />,<img alt="2.JPG" src="https://pic.leetcode.cn/aebc5e3ef0a6b942473a7c61f4de22e268cbfbe549ff1a6ad5d3eef7c667f875-2.JPG" />,<img alt="3.JPG" src="https://pic.leetcode.cn/4c160db670c00f7467c1dae3b22ac117b84c0ba00690ca30708fabcdd5ff35b1-3.JPG" />,<img alt="4.JPG" src="https://pic.leetcode.cn/95da97748c8a006b5b827d13154bd2202bed5c2b9d779bea6467473d16fd7d66-4.JPG" />,<img alt="5.JPG" src="https://pic.leetcode.cn/bbc75893b050a8c482178029bd239bd75c75e6a58a4a16fb9270b13044e4ddf3-5.JPG" />,<img alt="6.JPG" src="https://pic.leetcode.cn/9eda023eab4ecc76af90211626f77b695a4874b451084f8e2545717347815006-6.JPG" />,<img alt="7.JPG" src="https://pic.leetcode.cn/1829f246e991d3e27aa3dce9b18ab88282a1bd34a5363969eb5730fe74cf8fbf-7.JPG" />,<img alt="8.JPG" src="https://pic.leetcode.cn/3380338ba4b563c37199b07058d35fde9f9600d3112ef0b074e5986c2f4510e1-8.JPG" />,<img alt="9.JPG" src="https://pic.leetcode.cn/db831df3a7db0fc405a4dc8293bfc92ba6bba6cb1719613a4e8ab7afdf2a53dd-9.JPG" />,<img alt="10.JPG" src="https://pic.leetcode.cn/db7d85400d03237909fc904d52b71cf721dee82af47686756400fdf4d1f07493-10.JPG" />,<img alt="11.JPG" src="https://pic.leetcode.cn/217edaea46af7111109f3dfb4846aad5e307935cec6e48ca42e0059d36792c25-11.JPG" />,<img alt="12.JPG" src="https://pic.leetcode.cn/549d1ed958285f378aea9a0db3a603253c83aff5439a76c0b8c35f2e237b9f4b-12.JPG" />,<img alt="13.JPG" src="https://pic.leetcode.cn/9683a6f2e465086ca1a9bcdb6b4cce9cdcc86da3269e1009867368923c76363d-13.JPG" />,<img alt="14.JPG" src="https://pic.leetcode.cn/9ef5549e7ff4b4748e0ff295ee37d3e172e7b910b397aa8718110b4779a9f689-14.JPG" />,<img alt="15.JPG" src="https://pic.leetcode.cn/074dcf7c17ba256aedbf4ba10d101ce93ed5425a6a1aa6d296a79be7bd65fc30-15.JPG" />,<img alt="16.JPG" src="https://pic.leetcode.cn/f6d200f6b154e8b4e9cf86c26e90c0e71af048fd4dac2f9a35eb8c9dc93bfa15-16.JPG" />,<img alt="17.JPG" src="https://pic.leetcode.cn/3b5504463012d23800d78e50948d1623cf405e32072cd1c630c71636a318d002-17.JPG" />,<img alt="18.JPG" src="https://pic.leetcode.cn/8c474aaee63b49b4cf981637039f65a41d70979a79fec22257576cfbcfb8c4c6-18.JPG" />,<img alt="19.JPG" src="https://pic.leetcode.cn/5eaed6c73d6dec3c3dc7728fda178711ff1a6a558ddf8f2a1946adf22525a44c-19.JPG" />&gt;</p>
+<p>代码实现：<br />
+```Java []<br />
+class Solution {<br />
+    public ListNode reverseList(ListNode head) {<br />
+        //申请节点，pre和 cur，pre指向null<br />
+        ListNode pre = null;<br />
+        ListNode cur = head;<br />
+        ListNode tmp = null;<br />
+        while(cur!=null) {<br />
+            //记录当前节点的下一个节点<br />
+            tmp = cur.next;<br />
+            //然后将当前节点指向pre<br />
+            cur.next = pre;<br />
+            //pre和cur节点都前进一位<br />
+            pre = cur;<br />
+            cur = tmp;<br />
+        }<br />
+        return pre;<br />
+    }<br />
+}</p>
+<pre><code>```Python []
+class Solution(object):
+    def reverseList(self, head):
+        &quot;&quot;&quot;
+        :type head: ListNode
+        :rtype: ListNode
+        &quot;&quot;&quot;
+        # 申请两个节点，pre和 cur，pre指向None
+        pre = None
+        cur = head
+        # 遍历链表，while循环里面的内容其实可以写成一行
+        # 这里只做演示，就不搞那么骚气的写法了
+        while cur:
+            # 记录当前节点的下一个节点
+            tmp = cur.next
+            # 然后将当前节点指向pre
+            cur.next = pre
+            # pre和cur节点都前进一位
+            pre = cur
+            cur = tmp
+        return pre  
+</code></pre>
+<p>```c++ []<br />
+class Solution {<br />
+public:<br />
+    ListNode<em> reverseList(ListNode</em> head) {<br />
+        // 申请节点，pre和 cur，pre指向null<br />
+        ListNode<em> pre = nullptr;<br />
+        ListNode</em> cur = head;<br />
+        while (cur != nullptr) {<br />
+            // 记录当前节点的下一个节点<br />
+            ListNode* tmp = cur-&gt;next;<br />
+            cur-&gt;next = pre;<br />
+            // pre和cur节点都前进一位<br />
+            pre = cur;<br />
+            cur = tmp;<br />
+        }<br />
+        return pre;<br />
+    }<br />
+};</p>
+<pre><code>
+
+### 递归解法
+这题有个很骚气的递归解法，递归解法很不好理解，这里最好配合代码和动画一起理解。
+递归的两个条件：
+1. 终止条件是当前节点或者下一个节点==null
+2. 在函数内部，改变节点的指向，也就是 head 的下一个节点指向 head 递归函数那句
+</code></pre>
+<p>head.next.next = head</p>
+<pre><code>很不好理解，其实就是 head 的下一个节点指向head。   
+递归函数中每次返回的 cur 其实只最后一个节点，在递归函数内部，改变的是当前节点的指向。   
+动画演示如下：   
+![递归.gif](https://pic.leetcode.cn/dacd1bf55dec5c8b38d0904f26e472e2024fc8bee4ea46e3aa676f340ba1eb9d-%E9%80%92%E5%BD%92.gif)
+
+
+#### 幻灯片演示 
+
+感谢[@zhuuuu-2](/u/zhuuuu-2/)的建议，递归的解法光看动画比较容易理解，但真到了代码层面理解起来可能会有些困难，我补充了下递归调用的详细执行过程。
+
+以```1-&gt;2-&gt;3-&gt;4-&gt;5```这个链表为例，整个递归调用的执行过程，对应到代码层面(用java做示范)是怎么执行的，以及递归的调用栈都列出来了，请点击下面的幻灯片查看吧。
+
+&lt;![幻灯片1.jpg](https://pic.leetcode.cn/c573939fa872edd4da5ac39e703bccdc65c32849a95ba7637dea5cfdfb6eced6-%E5%B9%BB%E7%81%AF%E7%89%871.jpg),![幻灯片2.jpg](https://pic.leetcode.cn/bfa449ed16ecfc905f8ef8e9b049ed397b608f30dad84d37b2005e19797b1d49-%E5%B9%BB%E7%81%AF%E7%89%872.jpg),![幻灯片3.jpg](https://pic.leetcode.cn/c790acd5bd2ebf285ef2f687d76c9a48f2e32418acdb32909cc76cc069501ac7-%E5%B9%BB%E7%81%AF%E7%89%873.jpg),![幻灯片4.jpg](https://pic.leetcode.cn/d078fc5c224964b468210b205838ecac26efde1a0bd6fade6f3a758a87b82068-%E5%B9%BB%E7%81%AF%E7%89%874.jpg),![幻灯片5.jpg](https://pic.leetcode.cn/cd9c77c8c7873c4aa39bbb7a185b729151516021cee7009575c258fb82f77383-%E5%B9%BB%E7%81%AF%E7%89%875.jpg),![幻灯片6.jpg](https://pic.leetcode.cn/f89c9e095d414b8366dd7d490508ba9c99d6c93953b4429168af262169f18e83-%E5%B9%BB%E7%81%AF%E7%89%876.jpg),![幻灯片7.jpg](https://pic.leetcode.cn/485dbe9ad44ab7b05e01c46a1bc1718187a01f8a9fe8331f497e7011f9508b57-%E5%B9%BB%E7%81%AF%E7%89%877.jpg),![幻灯片8.jpg](https://pic.leetcode.cn/04550182527e6570d9d04f2eeae330848b83d3ff13b23ea4153410210586dc85-%E5%B9%BB%E7%81%AF%E7%89%878.jpg),![幻灯片9.jpg](https://pic.leetcode.cn/b167f5ee08eafab82d680cf782898b649dd2a4453cd122ad690e83e35c387a11-%E5%B9%BB%E7%81%AF%E7%89%879.jpg),![幻灯片10.jpg](https://pic.leetcode.cn/950f6edfb553cbeec65ce3c9679dd8d3401fd1837ad9eb16989217bf83f30e58-%E5%B9%BB%E7%81%AF%E7%89%8710.jpg),![幻灯片11.jpg](https://pic.leetcode.cn/dcd5bef9b8ff3de98e9533da7da3a8411643bbef9bc5e1a576085b4403197649-%E5%B9%BB%E7%81%AF%E7%89%8711.jpg),![幻灯片12.jpg](https://pic.leetcode.cn/1d6aaab3d9a42c20420fb6087e520ea05bd6d0789213f228481e55891b847b1e-%E5%B9%BB%E7%81%AF%E7%89%8712.jpg),![幻灯片13.jpg](https://pic.leetcode.cn/74bb9de62d3bb36a9c174d7702c7116974838b46eb96933e2921c054a34fa5d9-%E5%B9%BB%E7%81%AF%E7%89%8713.jpg),![幻灯片14.jpg](https://pic.leetcode.cn/e2bea51573eb5a763b5b9c0873887ced8932db95bc6bf4ff5befb363c8960984-%E5%B9%BB%E7%81%AF%E7%89%8714.jpg),![幻灯片15.jpg](https://pic.leetcode.cn/95db06ce86448f3265b0f3178baf7372915601e4b367fcde54ff5cf509532bc8-%E5%B9%BB%E7%81%AF%E7%89%8715.jpg),![幻灯片16.jpg](https://pic.leetcode.cn/fc96f0786c05a3a2ae0987757b4f569b3b18e59da0b5cb3afb063b9fc0ace069-%E5%B9%BB%E7%81%AF%E7%89%8716.jpg),![幻灯片17.jpg](https://pic.leetcode.cn/6a1a4b01a7dd20e3a5a560c482b514c7bd3d9462d8f297d373232229995e6681-%E5%B9%BB%E7%81%AF%E7%89%8717.jpg),![幻灯片18.jpg](https://pic.leetcode.cn/1318eda47ab9b0d505b98b5c11503012053a1bbcf754ce0c0145af14de5d41cd-%E5%B9%BB%E7%81%AF%E7%89%8718.jpg),![幻灯片19.jpg](https://pic.leetcode.cn/a0669e29700f80938c95faf9a5cc839d316a31b6f6613da88bcdd31636897d96-%E5%B9%BB%E7%81%AF%E7%89%8719.jpg),![幻灯片20.jpg](https://pic.leetcode.cn/30db7c04d56193840e53c4dc6c6f095ebe80b2b7a71107ca5ed19da499467914-%E5%B9%BB%E7%81%AF%E7%89%8720.jpg),![幻灯片21.jpg](https://pic.leetcode.cn/052984cbdec432f46e771e0c7f214b7303941e4a11a7f59ee53a519e6b400adc-%E5%B9%BB%E7%81%AF%E7%89%8721.jpg),![幻灯片22.jpg](https://pic.leetcode.cn/e096fac734909bc4b1ff55d8446332b5d7e67ec238266b0427ad0d69bc50174b-%E5%B9%BB%E7%81%AF%E7%89%8722.jpg),![幻灯片23.jpg](https://pic.leetcode.cn/4e0975fd8d898364d24177684967fdf72d9476e64341c375ac2b5df7130b2f0a-%E5%B9%BB%E7%81%AF%E7%89%8723.jpg),![幻灯片24.jpg](https://pic.leetcode.cn/5625ed08dbaa84719f0b4b631fa6c4c7f08c1c5cf18646dbab2f65d410e99e8f-%E5%B9%BB%E7%81%AF%E7%89%8724.jpg)&gt;
+
+
+
+代码实现：
+```Java []
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        //递归终止条件是当前为空，或者下一个节点为空
+        if(head==null || head.next==null) {
+            return head;
+        }
+        //这里的cur就是最后一个节点
+        ListNode cur = reverseList(head.next);
+        //这里请配合动画演示理解
+        //如果链表是 1-&gt;2-&gt;3-&gt;4-&gt;5，那么此时的cur就是5
+        //而head是4，head的下一个是5，下下一个是空
+        //所以head.next.next 就是5-&gt;4
+        head.next.next = head;
+        //防止链表循环，需要将head.next设置为空
+        head.next = null;
+        //每层递归函数都返回cur，也就是最后一个节点
+        return cur;
+    }
+}
+</code></pre>
+<p>```Python []<br />
+class Solution(object):<br />
+    def reverseList(self, head):<br />
+        """<br />
+        :type head: ListNode<br />
+        :rtype: ListNode<br />
+        """<br />
+        # 递归终止条件是当前为空，或者下一个节点为空<br />
+        if(head==None or head.next==None):<br />
+            return head<br />
+        # 这里的cur就是最后一个节点<br />
+        cur = self.reverseList(head.next)<br />
+        # 这里请配合动画演示理解<br />
+        # 如果链表是 1-&gt;2-&gt;3-&gt;4-&gt;5，那么此时的cur就是5<br />
+        # 而head是4，head的下一个是5，下下一个是空<br />
+        # 所以head.next.next 就是5-&gt;4<br />
+        head.next.next = head<br />
+        # 防止链表循环，需要将head.next设置为空<br />
+        head.next = None<br />
+        # 每层递归函数都返回cur，也就是最后一个节点<br />
+        return cur</p>
+<pre><code>```c++ []
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if (head == nullptr || head-&gt;next == nullptr) {
+            return head;
+        }
+        // 这里的cur就是最后一个节点
+        ListNode* cur = reverseList(head-&gt;next);
+        // 这里请配合动画演示理解
+        // 如果链表是 1-&gt;2-&gt;3-&gt;4-&gt;5，那么此时的cur就是5
+        // 而head是4，head的下一个是5，下下一个是空
+        // 所以head.next.next 就是5-&gt;4
+        head-&gt;next-&gt;next = head;
+        // 防止链表循环，需要将head.next设置为空
+        head-&gt;next = nullptr;
+        // 每层递归函数都返回cur，也就是最后一个节点
+        return cur;
+    }
+};
+</code></pre>
+<p><strong>更多图解文章请关注 👉👉👉  <a href="https://leetcode.cn/u/wang_ni_ma/">【我】</a> 👈👈👈</strong>   </p>
+<p><strong>如果能再点个赞👍👍 就更感激啦💓💓</strong></p>
+<p>链表相关文章汇总   </p>
+<table>
+<thead>
+<tr>
+<th>题号</th>
+<th>题目</th>
+<th>题解</th>
+<th>难度等级</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>19</td>
+<td><a href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/">删除链表的倒数第N个节点</a></td>
+<td><a href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/solution/dong-hua-yan-shi-19-shan-chu-lian-biao-de-dao-shu-/">两种实现+图解</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td>21</td>
+<td><a href="https://leetcode.cn/problems/merge-two-sorted-lists/">合并两个有序链表</a></td>
+<td><a href="https://leetcode.cn/problems/merge-two-sorted-lists/solution/die-dai-he-di-gui-ban-ben-dong-tai-tu-xiang-jie-by/">两种实现+图解</a></td>
+<td>简单</td>
+</tr>
+<tr>
+<td>23</td>
+<td><a href="https://leetcode.cn/problems/merge-k-sorted-lists/">合并K个升序链表</a></td>
+<td><a href="https://leetcode.cn/problems/merge-k-sorted-lists/solution/duo-tu-yan-shi-23-he-bing-kge-pai-xu-lian-biao-by-/">四种实现+图解</a></td>
+<td>困难</td>
+</tr>
+<tr>
+<td>24</td>
+<td><a href="https://leetcode.cn/problems/swap-nodes-in-pairs/">两两交换链表中的节点</a></td>
+<td><a href="https://leetcode.cn/problems/swap-nodes-in-pairs/solution/dong-hua-yan-shi-24-liang-liang-jiao-huan-lian-bia/">三种实现+图解</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td>25</td>
+<td><a href="https://leetcode.cn/problems/reverse-nodes-in-k-group/">K 个一组翻转链表</a></td>
+<td><a href="https://leetcode.cn/problems/reverse-nodes-in-k-group/solution/dong-hua-yan-shi-25-k-ge-yi-zu-fan-zhuan-lian-biao/">两种实现+图解</a></td>
+<td>困难</td>
+</tr>
+<tr>
+<td>61</td>
+<td><a href="https://leetcode.cn/problems/rotate-list/">旋转链表</a></td>
+<td><a href="https://leetcode.cn/problems/rotate-list/solution/dong-hua-yan-shi-61-xuan-zhuan-lian-biao-by-user74/">两种实现+图解</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td>82</td>
+<td><a href="https://leetcode.cn/problems/remove-duplicates-from-sorted-list-ii/">删除排序链表中的重复元素 II</a></td>
+<td><a href="https://leetcode.cn/problems/remove-duplicates-from-sorted-list-ii/solution/san-chong-jie-fa-duo-tu-zhan-shi-82-shan-chu-pai-x/">三种实现+图解</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td>83</td>
+<td><a href="https://leetcode.cn/problems/remove-duplicates-from-sorted-list/">删除排序链表中的重复元素</a></td>
+<td><a href="https://leetcode.cn/problems/remove-duplicates-from-sorted-list/solution/dong-hua-yan-shi-83-shan-chu-pai-xu-lian-biao-zhon/">两种实现+图解</a></td>
+<td>简单</td>
+</tr>
+<tr>
+<td>141</td>
+<td><a href="https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/">二叉树展开为链表</a></td>
+<td><a href="https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/solution/dong-hua-yan-shi-si-chong-jie-fa-114-er-cha-shu-zh/">四种实现+图解</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td>138</td>
+<td><a href="https://leetcode.cn/problems/copy-list-with-random-pointer/">复制带随机指针的链表</a></td>
+<td><a href="https://leetcode.cn/problems/copy-list-with-random-pointer/solution/liang-chong-shi-xian-tu-jie-138-fu-zhi-dai-sui-ji-/">两种实现+图解</a></td>
+<td>中等</td>
+</tr>
+<tr>
+<td>141</td>
+<td><a href="https://leetcode.cn/problems/linked-list-cycle/">环形链表</a></td>
+<td><a href="https://leetcode.cn/problems/linked-list-cycle/solution/dong-hua-yan-shi-141-huan-xing-lian-biao-by-user74/">两种实现+图解</a></td>
+<td>简单</td>
+</tr>
+<tr>
+<td>160</td>
+<td><a href="https://leetcode.cn/problems/intersection-of-two-linked-lists/">相交链表</a></td>
+<td><a href="https://leetcode.cn/problems/intersection-of-two-linked-lists/solution/dong-hua-yan-shi-160-xiang-jiao-lian-biao-by-user7/">两种实现+图解</a></td>
+<td>简单</td>
+</tr>
+<tr>
+<td>203</td>
+<td><a href="https://leetcode.cn/problems/remove-linked-list-elements/">移除链表元素</a></td>
+<td><a href="https://leetcode.cn/problems/remove-linked-list-elements/solution/dong-hua-yan-shi-203-yi-chu-lian-biao-yuan-su-by-u/">两种实现+图解</a></td>
+<td>简单</td>
+</tr>
+<tr>
+<td>206</td>
+<td><a href="https://leetcode.cn/problems/reverse-linked-list/">反转链表</a></td>
+<td><a href="https://leetcode.cn/problems/reverse-linked-list/solution/dong-hua-yan-shi-206-fan-zhuan-lian-biao-by-user74/">两种实现+图解</a></td>
+<td>简单</td>
+</tr>
+<tr>
+<td>234</td>
+<td><a href="https://leetcode.cn/problems/palindrome-linked-list/">回文链表</a></td>
+<td><a href="https://leetcode.cn/problems/palindrome-linked-list/solution/dong-hua-yan-shi-234-hui-wen-lian-biao-by-user7439/">图解</a></td>
+<td>简单</td>
+</tr>
+<tr>
+<td>237</td>
+<td><a href="https://leetcode.cn/problems/delete-node-in-a-linked-list/">删除链表中的节点</a></td>
+<td><a href="https://leetcode.cn/problems/delete-node-in-a-linked-list/solution/dong-hua-yan-shi-237-shan-chu-lian-biao-zhong-de-j/">图解</a></td>
+<td>简单</td>
+</tr>
+<tr>
+<td>876</td>
+<td><a href="https://leetcode.cn/problems/middle-of-the-linked-list/">链表的中间结点</a></td>
+<td><a href="https://leetcode.cn/problems/middle-of-the-linked-list/solution/dong-hua-yan-shi-876-lian-biao-de-zhong-jian-jie-d/">图解</a></td>
+<td>简单</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</body>
+</html>

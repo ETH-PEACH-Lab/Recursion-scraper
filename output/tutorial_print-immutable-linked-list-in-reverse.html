@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Print Immutable Linked List in Reverse – Editorial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+<style>.vimeo-link{display:inline-flex;align-items:center;gap:8px;
+            background:#1ab7ea;color:#fff;font-weight:600;
+            padding:10px 20px;border-radius:6px;margin:12px 0;font-size:.95em}
+.vimeo-link:hover{background:#0d9bd4;color:#fff;text-decoration:none}</style>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_print-immutable-linked-list-in-reverse.html">Print Immutable Linked List in Reverse</a> <span class="sep">›</span> <span class="cur">Editorial</span></nav>
+<div class="wrap"><div class="page-title">1404. Print Immutable Linked List in Reverse — Official Editorial</div>
+<div class="page-sub" style="margin-bottom:20px">
+  <span class="badge b-medium">Medium</span> <span class="badge b-tag">Linked List</span> <span class="badge b-tag">Two Pointers</span> <span class="badge b-tag">Stack</span> <span class="badge b-tag">Recursion</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/print-immutable-linked-list-in-reverse/" target="_blank" style="font-size:.85em">↗ Problem</a>
+  &nbsp;·&nbsp;
+  <a href="problem_print-immutable-linked-list-in-reverse.html" style="font-size:.85em">💬 Community Solutions</a>
+</div>
+<div class="sol-body">
+  <p>[TOC]</p>
+<h2>Solution</h2>
+<hr />
+<h3>Overview</h3>
+<p>We are given an immutable linked list and our task is to print out all values of nodes in reverse order without modifying the given linked list.</p>
+<p>We are given the head of the linked list as an instance of <code>ImmutableListNode</code>. Further, we are allowed to only operate over the linked list using two APIs:</p>
+<ol>
+<li><code>ImmutableListNode.printValue()</code>: Print value of the current node.</li>
+<li><code>ImmutableListNode.getNext()</code>: Return the next node.</li>
+</ol>
+<hr />
+<h3>Approach 1: Recursion</h3>
+<h4>Intuition</h4>
+<p>As the linked list must be printed in reverse order, our task is to figure out to handle the nodes in reverse order.</p>
+<p>We can consider moving from the head to the tail in a recursive manner. When we return from a recursive call, we move back to the node we came from.</p>
+<p>The recursive strategy will be as follows:</p>
+<pre><code>printLinkedListInReverse(head.getNext());
+head.printValue();
+</code></pre>
+<p>By making these calls, a recursive stack will be created, with the head at the bottom and the last node at the top.</p>
+<p>Here's a visual representation that shows how the working of this approach:</p>
+<p>!?!../Documents/1265/1265-slides.json:601,301!?!</p>
+<p>As you can observe, the process of backtracking begins when we reach the end of the list. The recursive call for the top element is popped out of the stack and its node value is printed. The values are therefore printed in reverse order as we have the last node at the top and the head at the bottom.</p>
+<h4>Algorithm</h4>
+<ol>
+<li>We use the given method <code>printLinkedListInReverse(head)</code> recursively until we reach the end of the list.</li>
+<li>If <code>head</code> is not <code>null</code>, recursively move to the next node by calling <code>printLinkedListInReverse(head.getNext())</code>. After the recursive call, print the value of the current node, i.e., <code>head.printValue()</code>.</li>
+</ol>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/aufu2yxq/shared" frameBorder="0" width="100%" height="208" name="aufu2yxq"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Here $n$ is the size of the linked list.</p>
+<ul>
+<li>
+<p>Time complexity: $O(n)$.</p>
+<ul>
+<li>We make one function call per node and each call runs in $O(1)$.</li>
+</ul>
+</li>
+<li>
+<p>Space complexity: $O(n)$.</p>
+<ul>
+<li>The recursion stack will grow up to a size of $n$ when recursive calls corresponding to all the nodes are in the stack (right before the first print).</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>Approach 2: Using Stack</h3>
+<h4>Intuition</h4>
+<p>In the previous method, we used recursion to go from the beginning to the end and then backtracked to print the values in reverse order.</p>
+<p>Under the hood, computers implement recursion using a call stack. We can perform the same algorithm iteratively using our own stack.</p>
+<p>Pushing the nodes in the stack, we move from the head to the tail. When we get to the end of the list, we pop the nodes from the top and start printing their values.</p>
+<h4>Algorithm</h4>
+<ol>
+<li>Create a <code>stack</code> that stores elements of <code>ImmutableListNode</code>.</li>
+<li>Push all nodes into <code>stack</code>.</li>
+<li>While <code>stack</code> is not empty:<ul>
+<li>Get the top element <code>node</code> of <code>stack</code>.</li>
+<li>Pop the top element.</li>
+<li>Print the value of <code>node</code>.</li>
+</ul>
+</li>
+</ol>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/YBDJ6U5D/shared" frameBorder="0" width="100%" height="327" name="YBDJ6U5D"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Here $n$ is the size of the linked list.</p>
+<ul>
+<li>
+<p>Time complexity: $O(n)$.</p>
+<ul>
+<li>We push all the nodes in the stack which takes $O(n)$ time. We also pop all of them out of the stack which again takes $O(n)$ time.</li>
+</ul>
+</li>
+<li>
+<p>Space complexity: $O(n)$.</p>
+<ul>
+<li>Before we start printing values, the stack will have a size of $n$.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>Approach 3: Square Root Decomposition</h3>
+<h4>Intuition</h4>
+<p>The previous two approaches are standard approaches to use in an interview. The rest of the approaches in this article will focus on interesting ways we can reduce the space complexity. Note that these following approaches are not necessarily "better" or "worse", but just interesting alternative ways to approach the problem.</p>
+<p>Since we need to reverse the full list, we can break it up into different blocks and print the node values in the opposite order in each block. The first recursion strategy we outlined above will be used to simply reverse the node values in one block at a time.</p>
+<p>The advantage of using the blocks is that the recursion stack will only expand up to the size of a single block, unlike the earlier way where it grew to size <code>n</code> (where <code>n</code> is the size of the linked list). We will print the values starting with the last block and continuing through the second-last block and ending at the first block.</p>
+<p>As we cannot move in the reverse manner using the linked list, we would also need to store the starting nodes for every block to reverse the list from the start of the block. From each starting node of a block, we will use the recursion technique to print the node values in reverse order in each block.</p>
+<p>Let's assume that each block is <code>x</code> in size. As a result, we would have <code>n / x</code> blocks and would need to store <code>n / x</code> starting nodes for each block. The recursion stack would expand to size <code>x</code> because we will only reverse one block at a time. Therefore, the space complexity would be $O(n / x + x)$. When <code>x</code> = $\sqrt{n}$, it would be minimal.</p>
+<p>This technique of reducing the complexity of an algorithm by a factor of $\sqrt{n}$ by dividing the input into $\sqrt{n}$ chunks and performing operations on whole chunks when possible is called <strong>square root decomposition</strong>.</p>
+<p>The linked list is divided into equal blocks of size $\sqrt{n}$, where the size of the final block may not be exactly $\sqrt{n}$. We stack the starting nodes for each block so that the starting node for the most recent block is at the top. Here is a diagram showing how the linked list with <code>8</code> nodes breaks down:</p>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/1265/1265-decomposition.png" /></p>
+<p>The starting nodes of each block that we will keep in a stack are the nodes that are colored green.</p>
+<p>To print the values of each block, we would use a recursive method identical to the first technique. To print the node values from the initial node up to the size of the block in reverse order, we pass the starting node of each block along with a size for each block. We pop out the current node from the stack to move to the next block.</p>
+<h4>Algorithm</h4>
+<ol>
+<li>Create a method <code>getLinkedListSize</code> which takes an <code>ImmutableListNode head</code> as the parameter. It returns the size of the linked list.</li>
+<li>We create another method <code>printLinkedListInReverseRecursively</code> similar to the recursive method we used in the first approach. It takes <code>ImmutableListNode head</code> and <code>size</code> as the parameters. It prints the values of nodes starting from <code>head</code> up to size <code>size</code> in the reverse order. We do the following in this method:<ul>
+<li>If <code>size</code> is <code>0</code> or <code>head</code> is <code>null</code>, it means either we have completed this block or reached the end of the list. We don't do anything in such a case.</li>
+<li>Else if <code>size != 0</code> and <code>head</code> is not <code>null</code>, we recursively call <code>printLinkedListInReverseRecursively</code> passing <code>head</code> as <code>head.getNextNode()</code> to move to the next node and <code>size</code> as <code>size - 1</code> as we have covered the current node.</li>
+<li>After the recursive call we print the current node.</li>
+</ul>
+</li>
+<li>Now in the main function <code>printLinkedListInReverse</code>, we create an integer variable <code>linkedListSize</code> and set it equal to <code>getLinkedListSize(head)</code>.</li>
+<li>Create another integer variable <code>blockSize</code> equal to <code>sqrt(linkedListSize)</code>. We take the <code>ceil</code> of it (round up) to convert it to a whole number.</li>
+<li>Create a stack <code>blocks</code> of type <code>ImmutableListNode</code> to store starting nodes for all the blocks. We also create a copy <code>curr</code> of <code>head</code>.</li>
+<li>Iterate from <code>i = 0</code> to <code>linkedListSize - 1</code> and perform the following:<ul>
+<li>For every position <code>i</code> that is divisible by <code>blockSize</code>, i.e., <code>i % blockSize == 0</code>, we push <code>curr</code> to <code>blocks</code>. These nodes are the starting nodes of the blocks.</li>
+<li>Update <code>curr = curr.getNextNode()</code>.</li>
+</ul>
+</li>
+<li>While <code>block</code> is not empty:<ul>
+<li>Call <code>printLinkedListInReverseRecursively</code> passing the top element of <code>blockSize</code> as the first parameter and <code>blockSize</code> as the second parameter.</li>
+<li>Pop the top element from <code>blocks</code>.</li>
+</ul>
+</li>
+</ol>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/CPxGxr2e/shared" frameBorder="0" width="100%" height="500" name="CPxGxr2e"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Here $n$ is the size of the linked list.</p>
+<ul>
+<li>
+<p>Time complexity: $O(n)$.</p>
+<ul>
+<li>Finding the size of the linked list takes $O(n)$ time.</li>
+<li>Figuring out all the starting nodes of the blocks also takes $O(n)$ time.</li>
+<li>We use recursive function for all the $\sqrt{n}$ number of blocks. It takes $O(\sqrt{n})$ time to print the node values in each block of size $\sqrt{n}$. As a result, it takes $O(n)$ to print node values in all the blocks.</li>
+</ul>
+</li>
+<li>
+<p>Space complexity: $O(\sqrt{n})$.</p>
+<ul>
+<li>We have $\sqrt{n}$ blocks and store the same number of nodes that act as starting nodes for the blocks.</li>
+<li>The recursion stack grows maximum up to size of $O(\sqrt{n})$ as we are using one block of size $\sqrt{n}$ at a time.</li>
+</ul>
+</li>
+</ul>
+<h3>Approach 4: Divide and Conquer</h3>
+<h4>Intuition</h4>
+<p>In the previous approach, we divided the list into equal blocks of $\sqrt{n}$ size. It reduced the linear space complexity to $O(\sqrt{n})$.</p>
+<p>By splitting the linked list into two halves, we could further reduce the space complexity. We first solve (print the node values backward) the right part before solving the left part so that the right part's node values are printed before the left part's node values. The division of a portion into two equal pieces can be further repeated.</p>
+<p>This technique of breaking a given problem into two (or more) similar subproblems, solving them in turn, and finally composing their solutions to solve the given problem is called <strong>divide and conquer</strong>.</p>
+<p>We would require a recursive function, say <code>helper</code>, that accepts two parameters to hold the range of the problem, the initial node <code>start</code> and the node <code>end</code> at which the range terminates. We would include <code>start</code> but exclude <code>end</code> in the range.</p>
+<p>In this method, we check if <code>start</code> is equal to <code>null</code> or <code>start == end</code>. If any of these conditions hold, we simply return as there is no valid node in this range.</p>
+<p>If <code>start.getNextNode() == end</code>, it means <code>start</code> is the only node in this range. We print its value and return.</p>
+<p>Otherwise, the range has many nodes. We have to divide this range into two equal parts. If we find the <code>middle</code> of this range, we can recursively call <code>helper</code> with <code>middle</code> and <code>end</code> parameters to print the node values on right side of the range first and then call the same method with <code>start</code> and <code>middle</code> as parameters.</p>
+<blockquote>
+<p>You may recognize this strategy from the merge sort algorithm.</p>
+</blockquote>
+<p>Let's find the middle of the range with <code>start</code> and <code>end</code> as starting and ending nodes respectively. </p>
+<p>To get to the middle of the list, we can use two pointers: <code>slow</code> and <code>fast</code>. We set their initial value to <code>start</code>.</p>
+<p>We move <code>slow</code> to the next node after moving <code>fast</code> two nodes ahead. We perform this until <code>fast</code> or <code>fast.next</code> becomes <code>null</code>. Because <code>fast</code> moves at twice the speed of <code>slow</code>, we will have the required middle node at <code>slow</code>.</p>
+<h4>Algorithm</h4>
+<ol>
+<li>Create a recursive method <code>helper</code> that takes the starting node <code>start</code> and the ending node <code>end</code> as parameters. We perform the following in this method:<ul>
+<li>If <code>start == null</code> or <code>start == end</code>, return.</li>
+<li>If <code>start.getNextNode() == end</code>, print the node value of <code>start</code> and return.</li>
+<li>Create two <code>ListNode</code> pointers <code>slow</code> and <code>fast</code>. Initialize both of them to <code>start</code>.</li>
+<li>To get to the middle of the list, we move <code>fast</code> two steps ahead and <code>slow</code> one step ahead. We iterate until we can move two steps ahead, i.e., while <code>fast</code> and <code>fast.next</code> are not <code>null</code>. We keep updating <code>fast</code> to two nodes ahead, i.e., <code>fast = fast.next.next</code> and <code>slow</code> to <code>slow.next</code> in the while loop.</li>
+<li>The middle node of the range is <code>slow</code>. Recursively call <code>helper(slow, end)</code> and then <code>helper(start, slow)</code>.</li>
+</ul>
+</li>
+<li>Call the recursive method <code>helper</code> from the main method passing <code>head</code> and <code>null</code> as the parameters.</li>
+</ol>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/DcXsAvnz/shared" frameBorder="0" width="100%" height="500" name="DcXsAvnz"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Here $n$ is the size of the linked list.</p>
+<ul>
+<li>
+<p>Time complexity: $O(n \cdot log{n})$.</p>
+<ul>
+<li>We are recursively splitting the problem space (range) into two subproblems with ranges that are each half as large. Because we are dividing the problem in half at each level, a recursive tree with a height of $O(\log{n})$ is formed.</li>
+<li>The recursive technique requires $O(r)$ time to find the middle of any range $r$. The only action in the <code>helper</code> method that requires more than constant time is locating the middle of the range. </li>
+<li>We have a $O(n)$ range at each level, which is the sum of all the nodes at that level. The first level contains a node with a range of $n$, the second level has two nodes with ranges of $n / 2$ each, and the third level has four nodes with ranges of $n / 4$ each, etc. As a result, the time complexity to operate over all the nodes at any level is $O(n)$. It would take $O(n \cdot log{n})$ time overall because there are $O(\log{n})$ levels.</li>
+</ul>
+</li>
+<li>
+<p>Space complexity: $O(\log{n})$.</p>
+<ul>
+<li>The recursion tree would be $O(\log{n})$ in height, as we previously discussed. Because there can only ever be one active recursive call at a time at each level, the maximum number of recursive calls in the recursion stack can also be $O(\log{n})$.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>Approach 5: Constant Space</h3>
+<h4>Intuition</h4>
+<p>Using the divide and conquer strategy, we further decreased the space complexity to $O(\log{n})$. Let's try to maintain a constant level of space complexity.</p>
+<p>We cannot employ any stacks, as we did in any of the above methods, to achieve constant space complexity. To print the node values without saving anything, we must find a mechanism to loop through the list.</p>
+<p>We can iterate starting with <code>curr = head</code> and continue until <code>curr.getNextNode()</code> returns <code>null</code> to print the value of the last node. The <code>curr</code> node is the last node to be printed once the loop ends, therefore we print its value.</p>
+<p>How then can we print the value of the second-to-last node? We save the node we just printed and then restart back at the <code>head</code>, and proceed again until  <code>curr.getNextNode()</code> equals the saved node.</p>
+<p>Other values can be printed similarly. Every time a loop is executed, we update the linked list's end to the last node of the iteration. </p>
+<p>We create a variable called <code>end</code> to hold the node where our traversal should conclude when we start at the beginning. We set its initial value to <code>null</code>. </p>
+<p>After setting up a new variable, <code>curr = head</code>, we proceed until <code>curr.getNextNode()</code> equals <code>end</code>. The value of <code>curr</code> is printed. Since this acts as the new endpoint for the following iteration, we update <code>end</code> equal to <code>curr</code>.</p>
+<p>We keep on repeating this process until <code>end</code> becomes equal to <code>head</code> which would mean we've printed all the node values.</p>
+<h4>Algorithm</h4>
+<ol>
+<li>Create two <code>ImmutableListNode</code> variables <code>curr</code> and <code>end</code>. Initialize <code>end</code> to <code>null</code>.</li>
+<li>While <code>head</code> is not equal to <code>end</code>:<ul>
+<li>Set <code>curr</code> equal to <code>head</code>.</li>
+<li>While <code>curr.getNextNode()</code> is not equal to <code>end</code>, keep updating <code>curr = curr.getNextNode()</code>.</li>
+<li>Print the value of <code>curr</code>.</li>
+<li>Update <code>end = curr</code>. </li>
+</ul>
+</li>
+</ol>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/ZNnFStob/shared" frameBorder="0" width="100%" height="327" name="ZNnFStob"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Here $n$ is the size of the linked list.</p>
+<ul>
+<li>
+<p>Time complexity: $O(n^2)$.</p>
+<ul>
+<li>After each repetition, we update the end to a previous node as we traverse from the starting node to the final node. In the first iteration, getting to the end requires $n - 1$ steps, in the second, $n - 2$ steps, in the third, $n - 3$ steps, and so on. A total of $n + (n - 1) + (n - 2) +... 1 = O(n^2)$ steps would be required.</li>
+</ul>
+</li>
+<li>
+<p>Space complexity: $O(1)$.</p>
+<ul>
+<li>We are not using any space except declaring a few instances of <code>ImmutableListNode</code> which take up constant space.</li>
+</ul>
+</li>
+</ul>
+</div></div>
+</body>
+</html>

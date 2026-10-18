@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3 Approaches ( Fully Explained ) -> Iterative -> Recursive in O(n) Space -> Recursive in O(1) Space – Find the Winner of the Circular Game</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_find-the-winner-of-the-circular-game.html">Find the Winner of the Circular Game</a> <span class="sep">›</span> <span class="cur">3 Approaches ( Fully Explained ) -> Iterative -> Recursive in O(n) Space -> Recursive in O(1) Space</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">3 Approaches ( Fully Explained ) -> Iterative -> Recursive in O(n) Space -> Recursive in O(1) Space</div>
+  <div class="meta">
+    <span>👤 Sarim_Malik01</span>
+    <span>👍 1</span>
+    <span>2024-07-08</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/find-the-winner-of-the-circular-game/solutions/5439340/3-approaches-fully-explained-iterative-recursive-in-on-space-recursive-in-o1-space/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h2><strong><em>In the  problem, everyone’s taking turns to play ‘You’re Out!’—until only one person is left, confused and wondering if it’s all just a cruel game of musical chairs with one very unlucky seat.</em></strong></h2>
+<hr />
+<h1>Intuition 1</h1>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>These Kinda questions are the Simulation Question where the Algorithm one comes up with has to simulate or mimic the process step by step .</p>
+<p><strong>So , Think about it in step by step process then convert that into form of code</strong>.</p>
+<p>Basically , at first glance this question will give an idea of using some kind of Data Structure for maintaining how people are being removed from table .</p>
+<p>1)<strong>Array</strong> : Might go well but will be a lot more hefty to implement because the people which are being eliminated will never leave the table but will become non participant as those who are being eliminated will be marked 0 consequentally hence counting next people will be confusing .<br />
+2) <strong>Queue</strong> : Helps in such case where people are removed as dynamically they will be removed too , but for my preference I used <strong>ArrayList</strong> as the first approach to  identify the people who will be removed not just from ends but from between the extremus.</p>
+<h1>Approach 1</h1>
+<ol>
+<li>Maintain an ArrayList where you will fill n elements reperesenting people who will play the game.</li>
+<li>Simulate the Process for a count of n-1 times where count is referring to people getting removed in each iteration.</li>
+<li>Find which person will be removed as it will be i+k-1 , k indiviuals ahead of current person i and -1 because the person at i also being counted.</li>
+<li>Once removed then update i as now it will be one ahead of removed person but as the list size has changed and has become list.size()-1 hence i=z and not i=z+1.</li>
+<li>When only one element is left , count == n-1 ( n= total no. of people who played the game).</li>
+</ol>
+<p><img alt="Screenshot 2024-07-08 123749.png" src="https://assets.leetcode.com/users/images/75bd666d-be44-4d61-a5c7-7779478306e2_1720422492.089384.png" /></p>
+<h1>Complexity</h1>
+<ul>
+<li>Time complexity: <strong>O(n*k)</strong>  :<br />
+because we are iterating through the list of size n and removing elements in each iteration until only one element remains.</li>
+</ul>
+<!-- Add your time complexity here, e.g. O(n) -->
+
+<ul>
+<li>Space complexity: <strong>O(n)</strong> : <br />
+because we are storing the list of size n in memory.</li>
+</ul>
+<!-- Add your space complexity here, e.g. O(n) -->
+
+<hr />
+<h1><strong>Code</strong></h1>
+<pre><code>class Solution {
+    public int findTheWinner(int n, int k) {
+        ArrayList&lt;Integer&gt; list=new ArrayList();
+        for(int x=1;x&lt;=n;x++) {
+            list.add(x);
+        }
+        int l=list.size();
+
+
+        int i = 0;
+
+        while (list.size()!=1) {
+
+            l=list.size();
+            int z = (i + k - 1 ) % l;
+            System.out.println(list +&quot;     &quot;+i+&quot;      &quot;+z);
+            list.remove(z);
+            i=z%l;
+
+        }
+        return list.get(0);
+    }
+}
+</code></pre>
+<h1>Intution 2</h1>
+<p>The iterative solution in Approach 1 can be converted into recursive for optmising Time Complexity .<br />
+Each time we are updating parameters i and z for removing elements hence which can be done recursively too by passing the List.</p>
+<h1>Approach 2</h1>
+<ol>
+<li>Maintain an ArrayList where you will fill n elements reperesenting people who will play the game.</li>
+<li>Pass the List in helper function with n , k and current person 0.</li>
+<li>In each recursive call the person at (i+k-1)%n is removed from list.</li>
+<li>Next Recursive calls subsequently have parameters list , list.size(),k,(i+k-1)%n.</li>
+<li>Base Case : when n==1 then return list.get(0).</li>
+</ol>
+<p><img alt="Screenshot 2024-07-08 123840.png" src="https://assets.leetcode.com/users/images/0c555d07-618b-45b7-b82a-e7d95e1bd480_1720422534.5131774.png" /></p>
+<h1>Complexity</h1>
+<ul>
+<li>Time complexity: <strong>O(n)</strong>  :<br />
+because we are recursively each element only once.</li>
+</ul>
+<!-- Add your time complexity here, e.g. O(n) -->
+
+<ul>
+<li>Space complexity: <strong>O(n)</strong> : <br />
+because we are storing the list of size n in memory.</li>
+</ul>
+<!-- Add your space complexity here, e.g. O(n) -->
+
+<hr />
+<h1><strong>Code</strong></h1>
+<pre><code>class Solution {
+    public int findTheWinner(int n, int k) {
+        ArrayList&lt;Integer&gt; list=new ArrayList();
+        for(int x=1;x&lt;=n;x++) {
+            list.add(x);
+        }
+        int l=list.size();
+        return helper(list,n,k,0);
+    }
+
+    public static int helper(ArrayList&lt;Integer&gt; list,int n,int k,int i)
+    {
+        if(list.size()==1)
+        {
+            return list.get(0);
+        }
+
+        list.remove((i+k-1)%n);
+
+        return helper(list,list.size(),k,(i+k-1)%n);
+    }
+
+}
+</code></pre>
+<hr />
+<h1>Intution 3</h1>
+<p>Once successfully implemented the above Approach 1 and 2, the Intution for optimising it will be far more comprehensible .<br />
+The List is iterated for n*k times as till the count is not satisified hence Recursion for this problem can be possible as we have to run the process after reaching the end of circular list.</p>
+<p><strong>Hence , Recursion can be be given a shot .</strong><br />
+How to know which Recursion ?<br />
+Soln: The Recursion can be segregated in 2 types <br />
+1. Choices and Decisions <br />
+2. Inductive Based Hypothesis (IBH)</p>
+<p>As we don't have choices here and have to just simulate the process so IBH will be used :</p>
+<p><strong>IBH Analysis</strong><br />
+1. <strong>Base Case (B):</strong></p>
+<p>Condition: If there is only 1 person (n == 1).<br />
+Explanation: When there's only one person left, they are at position 0.<br />
+Implementation: return 0;</p>
+<pre><code>if (n == 1) {
+    return 0; // The only person is the winner, position 0 in zero-indexing.
+}
+</code></pre>
+<ol start="2">
+<li><strong>Induction Hypothesis (H):</strong></li>
+</ol>
+<p>Assumption: Assume that the function correctly computes the winner for<br />
+n−1 people.<br />
+Purpose: This hypothesis is used to build the solution for n people based on the solution for n−1 people.<br />
+Logic: If we know the winner's position for n−1 people, we can compute the position for n people.</p>
+<pre><code>int winnerPositionForNMinus1 = helper(n - 1, k); // Hypothesis
+
+</code></pre>
+<ol start="3">
+<li><strong>Induction (I):</strong></li>
+</ol>
+<p>Step: Use the hypothesis to find the solution for n people<br />
+Explanation: If the winner's position for n-1 people is known, the position for n people can be calculated by adjusting for the next elimination round for (winnerPositionForNMinus1+k).<br />
+Implementation: Compute the position of the winner considering the next elimination step and the circular nature of the problem.</p>
+<pre><code>return (winnerPositionForNMinus1 + k) % n; // Inductive step
+</code></pre>
+<h1><strong>Approach 3</strong></h1>
+<p>1) The list has been discarded as the bigger problem is decomposed into smaller problems where base case will add up for bigger problems further.<br />
+2) The smaller problems will eventually return their results to bigger problem call which will finally condense into our answer .</p>
+<p><img alt="Screenshot 2024-07-08 123910.png" src="https://assets.leetcode.com/users/images/3f04b384-b5c9-4ca4-a860-d8e631cb9f0b_1720422572.833556.png" /></p>
+<h1>Complexity</h1>
+<ul>
+<li>Time complexity: <strong>O(n)</strong>  :<br />
+because we are recursively each element only once.</li>
+</ul>
+<!-- Add your time complexity here, e.g. O(n) -->
+
+<ul>
+<li>Space complexity: <strong>O(1)</strong> : </li>
+</ul>
+<!-- Add your space complexity here, e.g. O(n) -->
+
+<h1>Code</h1>
+<pre><code>class Solution {
+    public int findTheWinner(int n, int k) {
+        return helper(n,k)+1;
+    }
+
+    public static int helper(int n,int k)
+    {
+        if(n==1)
+        {
+            return 0;
+        }
+
+        return (helper(n-1,k)+k)%n;
+    }
+
+}
+</code></pre>
+</div>
+</div>
+</body>
+</html>

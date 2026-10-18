@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Basic Calculator III – Editorial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+<style>.vimeo-link{display:inline-flex;align-items:center;gap:8px;
+            background:#1ab7ea;color:#fff;font-weight:600;
+            padding:10px 20px;border-radius:6px;margin:12px 0;font-size:.95em}
+.vimeo-link:hover{background:#0d9bd4;color:#fff;text-decoration:none}</style>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_basic-calculator-iii.html">Basic Calculator III</a> <span class="sep">›</span> <span class="cur">Editorial</span></nav>
+<div class="wrap"><div class="page-title">785. Basic Calculator III — Official Editorial</div>
+<div class="page-sub" style="margin-bottom:20px">
+  <span class="badge b-hard">Hard</span> <span class="badge b-tag">Math</span> <span class="badge b-tag">String</span> <span class="badge b-tag">Stack</span> <span class="badge b-tag">Recursion</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/basic-calculator-iii/" target="_blank" style="font-size:.85em">↗ Problem</a>
+  &nbsp;·&nbsp;
+  <a href="problem_basic-calculator-iii.html" style="font-size:.85em">💬 Community Solutions</a>
+</div>
+<div class="sol-body">
+  <p>[TOC]</p>
+<h2>Solution</h2>
+<hr />
+<h3>Approach 1: Stack</h3>
+<p><strong>Intuition</strong></p>
+<p>Before attempting this problem, we highly recommend you solve <a href="https://leetcode.com/problems/basic-calculator-ii/submissions/">Basic Calculator II</a> first. This problem is a follow-up, and in this editorial, we will build on the solution to Basic Calculator II.</p>
+<p>The difference between the two problems is that in this one, the expression may have parentheses <code>()</code>, which of course needs to be evaluated first. Let's start by looking at the solution to Basic Calculator II, which is equivalent to this problem with no parentheses.</p>
+<iframe src="https://leetcode.com/playground/5aSyQVUc/shared" frameBorder="0" width="100%" height="500" name="5aSyQVUc"></iframe>
+
+<p>Let's analyze this solution to understand how we can solve expressions without parentheses.</p>
+<p>The idea behind this solution is that we separate the expression into terms. A term is a number that has been fully evaluated and is independent of other terms. For example, let's say we had the expression <code>5 - 3 + 7 * 2 - 6 / 3</code>. We have four terms:</p>
+<ol>
+<li>5</li>
+<li>-3</li>
+<li>7 * 2 = 14</li>
+<li>-6 / 3 = -2</li>
+</ol>
+<p>If we can calculate every term separately, the answer to the expression is simply the sum of all terms. We make use of a <code>stack</code> that we push terms onto.</p>
+<p>As we iterate over each character <code>c</code> in the expression, we also keep track of the <code>previousOperator</code> that we have seen and the current number we are building <code>curr</code>. To construct a number, we initially have <code>curr = 0</code>. For every consecutive digit <code>c</code> we see, we perform <code>curr = curr * 10 + int(c)</code> to "add" the digit.</p>
+<p>If we encounter a character <code>c</code> that isn't a digit or blank space, it must be an operator <code>+-*/</code>. <strong>A number must become before an operator</strong>, so <code>curr</code> will be non-zero. We need to handle the number we have built <code>curr</code>. There are four possibilities - <code>previousOperator</code> is:</p>
+<ol>
+<li><code>+</code>. This means the expression had <code>+ curr</code>. We simply push <code>curr</code> to the stack as it is a term.</li>
+<li><code>-</code>. This means the expression had <code>- curr</code>. We need to multiply <code>curr</code> by <code>-1</code> and then push it to the stack as a term.</li>
+<li><code>*</code>. This means the expression had <code>* curr</code>. Unlike the case of addition or subtraction, we need to retrieve the previous number we saw. This will be in the stack. For example, let's say we had <code>5 + 3 * 2</code>. When we encounter the <code>*</code>, we have <code>curr = 3</code> and <code>previousOperator = +</code>. This is case #1 and thus we would have just pushed <code>3</code> onto the stack. We retrieve the top of the stack as <code>x</code> and then push <code>x * curr</code> onto the stack.</li>
+<li><code>/</code>. This means the expression had <code>/ curr</code>. Like in the previous case, we need to retrieve the previous number we saw. Pop this number <code>x</code> from the stack, then perform <code>x / curr</code> and push it onto the stack.</li>
+</ol>
+<p>We use a helper function <code>evaluate</code> to perform the operations. After we handle <code>curr</code>, we reset it to <code>0</code> and update <code>previousOperator = c</code>. You may also notice that we append a random character <code>@</code> to the end of <code>s</code> at the beginning. This is just for convenience as the final number would not be handled otherwise. We also initialized <code>previousOperator = +</code> because addition is the default behavior of a term. For example, the expression <code>5</code> is the addition case.</p>
+<blockquote>
+<p>Please take a few minutes to make sure you thoroughly understand the solution to Basic Calculator II presented here.</p>
+</blockquote>
+<h4>Great, we know how to solve the problem when there aren't parentheses. What if there are?</h4>
+<p>We can observe that each set of parentheses can be treated as its own isolated expression. These isolated expressions must evaluate to a constant. If we can convert each expression to its constant value, then it is equivalent to "removing" the parentheses, and we know how to proceed from there.</p>
+<p>So how do we modify our algorithm to handle the isolated expressions? Let's first consider what to do when we encounter a <code>(</code>. We are starting a new isolated expression. Remember, once we evaluate it, it will be a constant. We should treat it as such. For example, <code>5 * (2 + 2)</code> is equivalent to <code>5 * 4</code>.</p>
+<p><strong>We need to remember <code>previousOperator</code></strong>, because once we have finished evaluating the isolated expression, we need to treat it like a normal number. For example, let's say we have <code>5 * (2 + 2)</code>. When we encounter <code>(</code>, we have <code>previousOperator = *</code> and <code>5</code> in the stack. We will evaluate the isolated expression to <code>curr = 4</code>, and once we do, we need to remember the <code>*</code> so we can perform <code>5 * 4</code>.</p>
+<p>To remember <code>previousOperator</code>, let's push it to the stack. Then we'll set <code>previousOperator = +</code> in preparation for evaluating the isolated expression (since as mentioned above, addition is the "default" behavior).</p>
+<p>We will now operate as normal <strong>until we see a )</strong>. The reason we can operate as normal is that <strong>each isolated expression is a valid expression in itself</strong>. Once we see a ), we need to convert the entire isolated expression into a constant. Remember that we pushed the <code>previousOperator</code> before the isolated expression to the stack before starting. This means that <strong>every number in the stack until an operator <code>+-*/</code></strong> is a term in the isolated expression. We simply find the sum of all these numbers, and treat it as <code>curr</code>. Then, we can finally pop the operator from the stack and set it to <code>previousOperator</code>.</p>
+<p>Once we have done that, it is like there was never an isolated expression at all! For example, let's say we had the following expression:</p>
+<p><code>2 + 3 * (4 + 3 - 6 / 2)</code></p>
+<p>Once we reach the <code>(</code>, we push <code>*</code> onto the stack and have <code>[2, 3, *]</code>. Then, we carry on inside the isolated expression. Once we reach the <code>)</code>, the stack will look like this:</p>
+<p><code>[2, 3, *, 4, 3, -3]</code></p>
+<p>The sum of all the elements after the operator is <code>4</code>. Thus, we have <code>curr = 4</code>, <code>previousOperator = *</code>, and <code>stack = [2, 3]</code> after handling the isolated expression.</p>
+<p>What if the expression was <code>2 + 3 * 4</code> instead? Guess what: once we reach the <code>4</code>, we also have <code>curr = 4</code>, <code>previousOperator = *</code>, and <code>stack = [2, 3]</code>. As you can see, the logic flows seamlessly when we treat isolated expressions as their own constant terms.</p>
+<blockquote>
+<p>To see how little logic is actually needed to convert the solution for Basic Calculator II to the solution for this problem, check out the Python code below. We only added 7 lines of code: lines 20 - 22 and lines 31 - 34.</p>
+</blockquote>
+<p><strong>Algorithm</strong></p>
+<ol>
+<li>Define a helper function <code>evaluate</code> which takes an operator and numeric arguments. Note that this function is identical to the one presented in the Basic Calculator II approach.</li>
+<li>Initialize a few variables:<ul>
+<li>A <code>stack</code></li>
+<li><code>curr</code> to track the current number we are building.</li>
+<li><code>previousOperator</code> to track the previous operator we saw.</li>
+<li>Add a random character that won't appear in the input like <code>"@"</code> to <code>s</code>.</li>
+</ul>
+</li>
+<li>Iterate over the input. For each character <code>c</code>:<ul>
+<li>If <code>c</code> is a digit, then add it to <code>curr</code>.</li>
+<li>Otherwise, if <code>c == (</code>, we are evaluating a new isolated expression. Push <code>previousOperator</code> to the stack and set <code>previousOperator = "+"</code>.</li>
+<li>Otherwise, we need to evaluate <code>curr</code>. Use the <code>evaluate</code> function to apply the <code>previousOperator</code> to <code>curr</code> and push the result to the stack.<ul>
+<li>Next, reset <code>curr</code> to zero and update <code>previousOperator = c</code>.</li>
+<li>Check if <code>c == ")"</code>. If so, we are at the end of an isolated expression and must fully evaluate it. Pop from the stack until you reach an operator, summing all numbers you pop into <code>curr</code>. Once you reach an operator, update <code>previousOperator = stack.pop()</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Return the sum of all the numbers in the stack.</li>
+</ol>
+<p><strong>Implementation</strong></p>
+<blockquote>
+<p>Notes on implementation in Java:</p>
+<p>The implementation in Java is very hacky because we need to store both numbers and operators in the stack. There are many ways to implement this, such as by using two stacks: one for the numbers and one for the operators. In this editorial, we have decided to use only one stack. To accommodate both data types, this means we need to store the numbers as strings in the stack.</p>
+<p>As you can see in the code, we have made a number of modifications to make this stack work. <code>previousOperator</code> needs to operate as a string when it is in the stack, and we need to modify our helper <code>evaluate</code> function as well. <code>curr</code> is a string, and we cast it to an integer when we need to do math, then back to string when it goes into the stack.</p>
+<p>For a problem like this, we recommend using a language like Python, which is much more lenient, allowing us to write much cleaner code. As you can see, the Python implementation is <strong>much</strong> neater and only a few lines different from the solution to Basic Calculator II.</p>
+</blockquote>
+<iframe src="https://leetcode.com/playground/WSqqzboe/shared" frameBorder="0" width="100%" height="500" name="WSqqzboe"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<p>Given $$n$$ as the length of the expression,</p>
+<blockquote>
+<p>For this analysis, we will assume you are using the Python implementation since it is relevant that <code>curr</code> is of type <code>int</code>.</p>
+</blockquote>
+<ul>
+<li>
+<p>Time complexity: $$O(n)$$</p>
+<p>The analysis here is simple - each character in the input can only be pushed and popped from the stack at most one time. Every other operation in each of the $$O(n)$$ iterations costs $$O(1)$$ - updating <code>curr</code>, calling <code>evaluate</code>, etc.</p>
+</li>
+<li>
+<p>Space complexity: $$O(n)$$</p>
+<p>The stack could grow to a size of $$O(n)$$ - for example, if the expression contains only the addition of single-digit numbers.</p>
+</li>
+</ul>
+<p><br/></p>
+<hr />
+<h3>Approach 2: Solve Isolated Expressions With Recursion</h3>
+<p><strong>Intuition</strong></p>
+<p>We saw that in the previous approach if we reduced each isolated expression to its constant term, the problem was simplified to Basic Calculator II, which is much easier to solve.</p>
+<p>The key idea to notice is that each isolated expression is itself a valid expression. This idea leads us to recursion - our algorithm is designed to take an expression and evaluate it to a constant, so we will recursively apply it every time we encounter a <code>(</code>.</p>
+<p>We can re-use the code from Basic Calculator II. The difference now is when we encounter <code>(</code>, we will recursively call the function and set whatever value is returned to <code>curr</code>. This is equivalent to simplifying the entire isolated expression to an integer. If we ever encounter a <code>)</code> in our function, it means that this function call was made in an isolated expression and we should now return since we have reached the end. As you would expect, the sum of the terms in the stack for the current call's scope is the value of the isolated expression, so we can break from the loop and return that.</p>
+<p>To implement this approach, we need a "global" <code>i</code> to iterate over the input with. We will implement this global iteration variable using an array <code>i</code> of length 1 since arrays are passed by reference.</p>
+<p><strong>Algorithm</strong></p>
+<ol>
+<li>Define a helper function <code>evaluate</code> which takes an operator and numeric arguments.</li>
+<li>Define a helper function <code>solve(i)</code> that solves expressions.<ul>
+<li>This function will basically implement the solution to Basic Calculator II with a few changes:</li>
+<li>We iterate with a while loop over <code>i</code> and access characters using <code>c = s[i[0]]</code> instead of just looping over the string directly with <code>c</code>.</li>
+<li>If we encounter <code>(</code>, then set <code>curr = solve()</code>.</li>
+<li>If we encounter <code>)</code>, then break from the loop and return the sum of the stack.</li>
+</ul>
+</li>
+<li>Initialize <code>i = [0]</code> and return <code>solve(i)</code>.</li>
+</ol>
+<p><strong>Implementation</strong></p>
+<blockquote>
+<p>Thankfully, since we no longer need to store operators on the stack, the Java implementation is much cleaner this time.</p>
+</blockquote>
+<iframe src="https://leetcode.com/playground/bVw8sCaA/shared" frameBorder="0" width="100%" height="500" name="bVw8sCaA"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<p>Given $$n$$ as the length of the expression,</p>
+<ul>
+<li>
+<p>Time complexity: $$O(n)$$</p>
+<p>The time complexity is the same as the previous approach for the same reason. <code>i</code> is strictly increasing and increments on each iteration. Any given character can only be pushed to a stack once and popped from a stack once, so the total number of operations across the algorithm is linear.</p>
+</li>
+<li>
+<p>Space complexity: $$O(n)$$</p>
+<p>The stacks across all function calls could grow to a size of $$O(n)$$ - for example, if the expression contains only the addition of single-digit numbers.</p>
+</li>
+</ul>
+<p><br/></p>
+<hr />
+</div></div>
+</body>
+</html>

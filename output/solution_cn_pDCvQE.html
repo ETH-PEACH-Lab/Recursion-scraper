@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>迭代：前端汉诺塔游戏推荐 – Hanota LCCI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_hanota-lcci.html">Hanota LCCI / 汉诺塔问题</a> <span class="sep">›</span> <span class="cur">迭代：前端汉诺塔游戏推荐</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">迭代：前端汉诺塔游戏推荐</div>
+  <div class="meta">
+    <span>👤 boille</span>
+    <span>👍 6</span>
+    <span>2021-08-21</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/hanota-lcci/solution/die-dai-qian-duan-yi-nuo-ta-you-xi-tui-j-ri3q/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h3>解题思路</h3>
+<p>玄学递归也可以迭代实现吧。这里有 <a href="https://codepen.io/joelsaupe/pen/avdKLZ">Codepen上大佬实现的汉诺塔游戏</a>，大家可以真实感受下吧（tips：里面有很多与lc题目相关的小游戏，比如扫雷）</p>
+<h3>方法一、递归</h3>
+<p>都说递归玄学，我也认为是的。但是满足递归必须具备两个条件。但是定义递归函数更难，就本题而言，就是如何将<code>A</code>上所有盘子移动到<code>C</code>。<br />
+1. <strong>递归链</strong>：要将<code>n</code>个盘从A移动到C，首先需要把上面<code>n-1</code>个小盘子移走（一定放在B上），然后将第<code>n</code>个大盘从A移动到C。那么怎么把<code>A</code>上面<code>n-1</code>个盘子移动到 B 呢？这又回到该问题定义，因此使用玄学递归出现了。（因为 A 盘最底下那个是最大，可以认为“消失”了）<br />
+2. <strong>递归出口（特例）</strong>：很明显当只有一个盘从源移动到目的地时，只需要一次即可完成。</p>
+<p>例如<code>n = 4</code> 的递归图解：<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1629550303-jnXztZ-image.png" /></p>
+<p>```python3 []<br />
+class Solution:<br />
+    def hanota(self, A: List[int], B: List[int], C: List[int]) -&gt; None:<br />
+        """<br />
+        Do not return anything, modify C in-place instead.<br />
+        """<br />
+        def hanoi(n: int , A: List[int], B: List[int], C: List[int]) -&gt; None:<br />
+            if n == 1:<br />
+                C.append(A.pop())<br />
+            else:<br />
+                hanoi(n - 1, A, C, B)  # 将n-1个盘从A-&gt;B，借助C<br />
+                C.append(A.pop())<br />
+                hanoi(n - 1, B, A, C)  # 将n-1个盘从B-&gt;C，借助A<br />
+        hanoi(len(A), A, B, C)</p>
+<pre><code>### 方法二、迭代实现
+迭代就是上面递归系统栈由自己维护。熟悉二叉树的**中序遍历**的朋友们一定决定上面很眼熟吧。很明显就是维护递归函数退栈的记录问题。
+
+为描述方便，我们将上面的两个子函数进行命名，从上往下依次为子函数①，子函数②。我们就是想知道**同层子函数①什么时候调用结束返回到本层**，这个时候涉及到`C.append(A.pop())` 和本层子函数②的调用。
+
+
+
+**灵感来源**：二叉树后序遍历插入`NULL`指针标记右子树搜索完毕（由于先左后右，标记后直接打印父节点值）。
+
+
+
+因此我们也可以在子函数①执行完毕后汇报！也就是**将子函数①压入栈之前，先将父函数信息压入栈内**，由递归函数参数可知，我们至少需要维护`n, src, tmp, dest`参数，现在我们加一个参数`which`构成`(n, src, tmp, dest, which)`。
++ `which = 0`：表示父函数，也即需要再次递归。
++ `which = 1`：表示这层是子函数①执行完毕后退栈，也就是需要将最大的盘移到目的地。
+
+假设父函数的信息为`(n, src, tmp, dest, 0)`，当要执行子函数①时，我们压入`(n, src, tmp, dest, 1)`表示子函数①执行完毕了，然后再压入`(n - 1, src, dest, tmp, 0)`表示子函数①将要执行。具体细节部分看下方代码。
+
+```python3 []
+class Solution:
+    def hanota(self, A: List[int], B: List[int], C: List[int]) -&gt; None:
+        &quot;&quot;&quot;
+        Do not return anything, modify C in-place instead.
+        &quot;&quot;&quot;
+        stk = [(len(A), A, B, C, 0)]
+        while stk:
+            n, src, tmp, dest, which = stk.pop()
+            if which == 0:  # 调用者
+                if n == 1:  # 递归出口
+                    dest.append(src.pop())
+                else:  # 将两个子函数放入栈内
+                    # stk.append((n - 1, src, tmp, dest, 2))  # 子函数②执行完毕退栈后（这里没必要写）
+                    stk.append((n - 1, tmp, src, dest, 0))  # 先放子函数②
+
+                    stk.append((n - 1, src, tmp, dest, 1))  # 子函数①执行完毕退栈，保留原调用函数信息
+                    stk.append((n - 1, src, dest, tmp, 0))  # 后放子函数①
+            elif which == 1:  # 子函数①结束，打印移动信息
+                dest.append(src.pop())
+
+</code></pre>
+<p><code>c++ []
+// 我不太熟悉C++，这里代码改写超时了
+class Solution {
+public:
+    void hanota(vector&lt;int&gt;&amp; A, vector&lt;int&gt;&amp; B, vector&lt;int&gt;&amp; C) {
+        stack&lt;tuple&lt;int, vector&lt;int&gt;&amp;, vector&lt;int&gt;&amp;, vector&lt;int&gt;&amp;, int&gt;&gt; stk;
+        stk.push({A.size(), A, B, C, 0});
+        while (!stk.empty()) {
+            auto &amp;[n, src, tmp, dest, which] = stk.top(); stk.pop();
+            if (0 == which) {  // 调用函数
+                if (1 == n) {  // 递归出口
+                    dest.push_back(src.back()); src.pop_back();
+                } else {
+                    // 先放入子函数②
+                    stk.push({n - 1, tmp, src, dest, 0});  // 调用函数
+                    // 后放入子函数①
+                    stk.push({n - 1, src, tmp, dest, 1});  // 子函数①结束标志
+                    stk.push({n - 1, src, dest, tmp, 0});  // 子函数①调用
+                }
+            } else if (1 == which) {  // 子函数①调用结束标志
+                dest.push_back(src.back()); src.pop_back();
+            }
+        }
+    }
+};</code></p>
+<p><strong>复杂度分析</strong>：<br />
++ <strong>时间复杂度</strong>：一层递归函数启用两个子函数，因此为$O(2^n)$。<br />
++ <strong>空间复杂度</strong>：与递归层数相关。</p>
+</div>
+</div>
+</body>
+</html>

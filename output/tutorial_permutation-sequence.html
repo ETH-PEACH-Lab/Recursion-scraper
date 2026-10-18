@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Permutation Sequence – Editorial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+<style>.vimeo-link{display:inline-flex;align-items:center;gap:8px;
+            background:#1ab7ea;color:#fff;font-weight:600;
+            padding:10px 20px;border-radius:6px;margin:12px 0;font-size:.95em}
+.vimeo-link:hover{background:#0d9bd4;color:#fff;text-decoration:none}</style>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_permutation-sequence.html">Permutation Sequence</a> <span class="sep">›</span> <span class="cur">Editorial</span></nav>
+<div class="wrap"><div class="page-title">60. Permutation Sequence — Official Editorial</div>
+<div class="page-sub" style="margin-bottom:20px">
+  <span class="badge b-hard">Hard</span> <span class="badge b-tag">Math</span> <span class="badge b-tag">Recursion</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/permutation-sequence/" target="_blank" style="font-size:.85em">↗ Problem</a>
+  &nbsp;·&nbsp;
+  <a href="problem_permutation-sequence.html" style="font-size:.85em">💬 Community Solutions</a>
+</div>
+<div class="sol-body">
+  <p>[TOC]</p>
+<h2>Solution</h2>
+<hr />
+<h3>Solution Pattern</h3>
+<p>There are three main types of interview questions about permutations:</p>
+<ul>
+<li>
+<ol>
+<li><a href="https://leetcode.com/articles/permutations/">Generate all permutations</a>.</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><a href="https://leetcode.com/articles/next-permutation/">Generate next permutation</a>.</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>Generate the permutation number k (current problem).</li>
+</ol>
+</li>
+</ul>
+<p>If the order of generated permutations is not important, one could use <a href="https://leetcode.com/articles/permutations/">"swap" backtracking</a> to solve the first problem and to generate all $$N!$$ permutations in $$\mathcal{O}(N     imes N!)$$ time. </p>
+<p>Although, it is better to generate permutations in lexicographically sorted order using <a href="https://leetcode.com/articles/next-permutation/">D.E. Knuth algorithm</a>. This algorithm generates a new permutation from the previous one in $$\mathcal{O}(N)$$ time. The same algorithm could be used to solve the second problem above.</p>
+<p>The problem number three is where the fun starts because the above two algorithms do not apply: </p>
+<ul>
+<li>
+<p>You will be asked to fit into polynomial time complexity, <em>i.e.</em> no backtracking.</p>
+</li>
+<li>
+<p>The previous permutation is unknown, <em>i.e.</em> you cannot use the D.E. Knuth algorithm. </p>
+</li>
+</ul>
+<p>To solve the problem, one could use a pretty elegant idea that is based on the mapping. It's much easier to generate numbers than combinations or permutations.</p>
+<blockquote>
+<p>So let us generate numbers, and then map them to combinations/subsets/permutations.</p>
+</blockquote>
+<p>This sort of encoding is widely used in password-cracking algorithms. </p>
+<p>For example, <a href="https://leetcode.com/articles/subsets/">in a previous article</a> we discussed how one could map a subset with a binary bitmask of length N, where i<em>th</em> <code>0</code> means "the element number i is absent" and i<em>th</em> <code>1</code> means "the element number i is present".</p>
+<p>One could do the same for permutations, mapping permutation with the integer in <a href="https://en.wikipedia.org/wiki/Factorial_number_system">Factorial Number System Representation</a>. </p>
+<hr />
+<h3>Approach 1: Factorial Number System</h3>
+<p><strong>Why Do We Need Factorial Number System</strong></p>
+<p>Usually standard decimal or binary <a href="https://en.wikipedia.org/wiki/Numeral_system#Positional_systems_in_detail">positional system</a> could meet our needs. For example, each subset could be described by a number in binary representation</p>
+<p>$$
+k = \sum\limits_{m = 0}^{N - 1}{k_m 2^m}, \qquad 0 \le k_m \le 1 
+$$</p>
+<p>Here is how it works:</p>
+<p><img alt="diff" src="https://leetcode.com/articles/Figures/60/subsets.png" /></p>
+<p>The problem with permutations is that there is a much more permutations than subsets, $$N!$$ grows up much faster than $$2^N$$. Therefore, the solution space provided by the positional system with a constant base cannot match with the number of permutations.</p>
+<p>Here is where the factorial number system enters the scene. It's a positional system with <em>non-constant base</em> $$m!$$</p>
+<p>$$
+k = \sum\limits_{m = 0}^{N - 1}{k_m m!}, \qquad 0 \le k_m \le m 
+$$</p>
+<p>Note, that the magnitude of weights is not constant as well and depends on the base: $$0 \le k_m \le m$$ for the base $$m!$$, <em>i.e.</em> $$k_0 = 0$$, $$0 \le k_1 \le 1$$, $$0 \le k_2 \le 2$$, etc. </p>
+<p>Here is how this mapping works:</p>
+<p><img alt="diff" src="https://leetcode.com/articles/Figures/60/permutations2.png" /></p>
+<p>We could now map all permutations, from permutation number zero: $$k = 0 = \sum\limits_{m = 0}^{N - 1}{0    imes m!}$$ to permutation number $$N! - 1$$: $$k = N! - 1 = \sum\limits_{m = 0}^{N - 1}{m   imes m!}$$.</p>
+<blockquote>
+<p>Hence we have a way to encode permutation numbers into factorial representation. Now let us use this factorial representation to construct the permutation itself.</p>
+</blockquote>
+<p><strong>How to Construct the Permutation from its Factorial Representation</strong></p>
+<p>Let us pick up $$N = 3$$, which corresponds to the input array <code>nums = [1, 2, 3]</code>, and construct its permutation number $$k = 3$$. Since we number the permutations from 0 to $$N! - 1$$ (and <em>not</em> from 1 to $$N!$$ as in the problem description), for us that will be the permutation number $$k = 2$$.</p>
+<p>Let us first construct the factorial representation of $$k = 2$$:</p>
+<p>$$
+k = 2 = 1   imes 2! + 0     imes 1! + 0     imes 0! = (1, 0, 0)
+$$</p>
+<blockquote>
+<p>The coefficients in factorial representation are indexes of elements in the input array. These are not direct indexes, but the indexes after the removal of already used elements. That's a consequence of the fact that each element should be used in permutation only once.</p>
+</blockquote>
+<p><img alt="diff" src="https://leetcode.com/articles/Figures/60/index.png" /></p>
+<p>Here the first number is <code>1</code>, <em>i.e.</em> the first element in the permutation is <code>nums[1] = 2</code>. Let us use <code>nums[1] = 2</code> in the permutation and then delete it from <code>nums</code>, since each element should be used only once.</p>
+<p><img alt="diff" src="https://leetcode.com/articles/Figures/60/step1.png" /></p>
+<p>The next coefficient in factorial representation is <code>0</code>. Let's use <code>nums[0] = 1</code> in the permutation and then delete it from <code>nums</code>.</p>
+<p><img alt="diff" src="https://leetcode.com/articles/Figures/60/step2.png" /></p>
+<p>The next coefficient in factorial representation is <code>0</code>. Let's use <code>nums[0] = 3</code> in the permutation and then delete it from <code>nums</code>. The job is done.</p>
+<p><img alt="diff" src="https://leetcode.com/articles/Figures/60/step3.png" /></p>
+<p><strong>Algorithm</strong></p>
+<ul>
+<li>
+<p>Generate input array <code>nums</code> of numbers from $$1$$ to $$N$$.</p>
+</li>
+<li>
+<p>Compute all factorial bases from $$0$$ to $$(N  - 1)!$$.  </p>
+</li>
+<li>
+<p>Decrease $$k$$ by 1 to make it fit into $$(0, N! - 1)$$ interval.</p>
+</li>
+<li>
+<p>Compute factorial representation of $$k$$. Use factorial coefficients to construct the permutation. </p>
+</li>
+<li>
+<p>Return the permutation string.</p>
+</li>
+</ul>
+<p><strong>Implementation</strong></p>
+<iframe src="https://leetcode.com/playground/dKGrpoMk/shared" frameBorder="0" width="100%" height="500" name="dKGrpoMk"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>
+<p>Time complexity: $$\mathcal{O}(N^2)$$, because to delete elements from the list in a loop one has to perform $$N + (N - 1) + ... + 1 = N(N - 1)/2$$ operations. </p>
+</li>
+<li>
+<p>Space complexity: $$\mathcal{O}(N)$$.</p>
+</li>
+</ul>
+</div></div>
+</body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>[c#解法]哈希表嵌套栈+递归+括号配对计数 – Parse Lisp Expression</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_parse-lisp-expression.html">Parse Lisp Expression / Lisp 语法解析</a> <span class="sep">›</span> <span class="cur">[c#解法]哈希表嵌套栈+递归+括号配对计数</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">[c#解法]哈希表嵌套栈+递归+括号配对计数</div>
+  <div class="meta">
+    <span>👤 dranself</span>
+    <span>👍 1</span>
+    <span>2022-07-06</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/parse-lisp-expression/solution/-by-dranself-ryty/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h3>解题思路</h3>
+<p>此处撰写解题思路</p>
+<p>执行思路：<br />
+1、把最外层的括号去掉<br />
+2、提取出第一个单词，将单词作为后续要执行哪部分功能的标识<br />
+3、根据标识执行3个功能<br />
+3-1、赋值功能，由于要赋值的字符串是成对出现的，用2个变量key，val分别表示，根据key把val添加到哈希表对应的栈中，使用栈是因为每次取值都要取最新设置的val，这与栈先进后出的特性相符。赋值需要注意的是，如果val包含括号，则应该递归调用自身获取子串的计算结果，如果val不是数字则意味着val是以前赋过值的标量名，从哈希表中获取该变量的最新值，如果val是单纯的数字，就直接类型转换入栈即可。另外还要对入栈次数进行统计，退出时根据入栈次数把本层递归入栈的值全部弹出，保证后续调用的正确性，赋值功能的最后要根据字符串末尾部分返回结果，还是那3种情况，如果尾字符串包含括号就调用递归函数，返回递归结果，如果是变量名就返回字典中该变量的最新值，如果是数字，就直接返回。<br />
+3-2、相乘功能，只有乘数和被乘数2个需要记录的字符串，每个字符串同样分3种情况，和上面类似，包含括号就调递归函数，是变量就从哈希表中取最新值，是数字就直接参与乘法计算。<br />
+3-3、相加功能，整个过程和相乘完全一致，只是将最后的相乘运算变为相加即可。<br />
+4、逐位读取目标字符串，分割出每个单词，使用计数变量对左括号的数量计数，只有计数为0时才进行单词分割，其他情况就原样保存，大于0说明需要调用递归函数，当前字符串由下一层递归来处理。<br />
+5、将所有功能附加在一起返回最终处理结果</p>
+<p>个人将近3个小时分析调试，写了180多行的冗余代码，思路仅供参考和启发<br />
+<img alt="表达式.jpg" src="https://pic.leetcode.cn/1657083207-cqBkkd-%E8%A1%A8%E8%BE%BE%E5%BC%8F.jpg" /></p>
+<h3>代码</h3>
+<pre><code class="language-csharp">public class Solution {
+    List&lt;string&gt; keywords = new List&lt;string&gt;(){&quot;let&quot;,&quot;mult&quot;,&quot;add&quot;};
+    Dictionary&lt;string,Stack&lt;int&gt;&gt; val_Stc_Map = new Dictionary&lt;string,Stack&lt;int&gt;&gt;();
+    public int Evaluate(string expression) {
+        string expr = expression.Substring(1,expression.Length-2);
+        int pos = 0;
+        StringBuilder sb = new StringBuilder();
+        while(pos &lt; expr.Length &amp;&amp; expr[pos] != ' ')
+        {
+            sb.Append(expr[pos]);
+            pos++;
+        }
+        expr = expr.Substring(pos+1);
+        pos = keywords.IndexOf(sb.ToString());
+        switch(pos)
+        {
+            case 0:
+                return SetValueOper(expr);
+            case 1:
+                return MultiplyOper(expr);
+            case 2:
+                return AddOper(expr);
+        }
+        //return val_Stc_Map[&quot;x&quot;].Peek();
+        return -1;
+    }
+    private int SetValueOper(string expr)
+    {
+        string key = &quot;&quot;,val = &quot;&quot;;
+        StringBuilder sb = new StringBuilder();
+        int leftCnt = 0;
+        Dictionary&lt;string,int&gt; setCnt = new Dictionary&lt;string,int&gt;();
+        for(int i = 0; i &lt; expr.Length;i++)
+        {
+            if(expr[i] != ' ')
+            {
+                sb.Append(expr[i]);
+                if(expr[i] == '(')
+                    leftCnt++;
+                else if(expr[i] == ')')
+                    leftCnt--;
+            }
+            else
+            {
+                if(leftCnt &gt; 0)
+                {
+                    sb.Append(expr[i]);
+                    continue;
+                }
+                if(key == &quot;&quot;)
+                    key = sb.ToString();
+                else
+                    val = sb.ToString();
+                if(key != &quot;&quot; &amp;&amp; val != &quot;&quot;)
+                {
+                    int mapVal = -1;
+                    if(val.Contains('('))
+                        mapVal = Evaluate(val);
+                    else if(val_Stc_Map.ContainsKey(val))
+                        mapVal = val_Stc_Map[val].Peek();
+                    else
+                        mapVal = int.Parse(val);
+                    if(!val_Stc_Map.ContainsKey(key))
+                    {
+                        val_Stc_Map[key] = new Stack&lt;int&gt;();
+                    }
+                    if(!setCnt.ContainsKey(key))
+                        setCnt[key] = 0;
+                    val_Stc_Map[key].Push(mapVal);
+                    setCnt[key]++;
+                    key = &quot;&quot;;
+                    val = &quot;&quot;;
+                }
+                sb.Clear();
+            }
+        }
+        string endStr = sb.ToString();
+        if(endStr.Contains('('))
+        {
+            int ret = Evaluate(endStr);
+            foreach(var el in setCnt)
+            {
+                for(int i = 0; i &lt; el.Value;i++)
+                    val_Stc_Map[el.Key].Pop();
+            }
+            return ret;
+        }
+        else if(val_Stc_Map.ContainsKey(endStr))
+        {
+            int ret = val_Stc_Map[endStr].Peek();
+            foreach(var el in setCnt)
+            {
+                for(int i = 0; i &lt; el.Value;i++)
+                    val_Stc_Map[el.Key].Pop();
+            }
+            return ret;
+        }
+        else
+        {
+            int ret = int.Parse(endStr);
+            foreach(var el in setCnt)
+            {
+                for(int i = 0; i &lt; el.Value;i++)
+                    val_Stc_Map[el.Key].Pop();
+            }
+            return ret;
+        }
+    }
+    private int MultiplyOper(string expr)
+    {
+        StringBuilder sb = new StringBuilder();
+        int leftCnt = 0;
+        int first = -1;
+        for(int i = 0; i &lt; expr.Length;i++)
+        {
+            if(expr[i] != ' ')
+            {
+                sb.Append(expr[i]);
+                if(expr[i] == '(')
+                    leftCnt++;
+                else if(expr[i] == ')')
+                    leftCnt--;
+            }
+            else
+            {
+                if(leftCnt &gt; 0)
+                {
+                    sb.Append(expr[i]);
+                    continue;
+                }
+                string str = sb.ToString();
+                if(str.Contains('('))
+                    first = Evaluate(str);
+                else if(val_Stc_Map.ContainsKey(str))
+                    first = val_Stc_Map[str].Peek();
+                else
+                    first = int.Parse(str);
+                sb.Clear();
+            }
+        }
+        string endstr = sb.ToString();
+        if(endstr.Contains('('))
+            return first * Evaluate(endstr);
+        else if(val_Stc_Map.ContainsKey(endstr))
+            return first * val_Stc_Map[endstr].Peek();
+        else 
+            return first * int.Parse(endstr);
+    }
+    private int AddOper(string expr)
+    {
+        StringBuilder sb = new StringBuilder();
+        int leftCnt = 0;
+        int first = -1;
+        for(int i = 0; i &lt; expr.Length;i++)
+        {
+            if(expr[i] != ' ')
+            {
+                sb.Append(expr[i]);
+                if(expr[i] == '(')
+                    leftCnt++;
+                else if(expr[i] == ')')
+                    leftCnt--;
+            }
+            else
+            {
+                if(leftCnt &gt; 0)
+                {
+                    sb.Append(expr[i]);
+                    continue;
+                }
+                string str = sb.ToString();
+                if(str.Contains('('))
+                    first = Evaluate(str);
+                else if(val_Stc_Map.ContainsKey(str))
+                    first = val_Stc_Map[str].Peek();
+                else
+                    first = int.Parse(str);
+                sb.Clear();
+            }
+        }
+        string endstr = sb.ToString();
+        if(endstr.Contains('('))
+            return first + Evaluate(endstr);
+        else if(val_Stc_Map.ContainsKey(endstr))
+            return first + val_Stc_Map[endstr].Peek();
+        else
+            return first + int.Parse(endstr);
+    }
+}
+</code></pre>
+</div>
+</div>
+</body>
+</html>

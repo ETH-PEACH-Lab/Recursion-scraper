@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>21. 合并两个有序链表 – Merge Two Sorted Lists</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_merge-two-sorted-lists.html">Merge Two Sorted Lists / 合并两个有序链表</a> <span class="sep">›</span> <span class="cur">21. 合并两个有序链表</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">21. 合并两个有序链表</div>
+  <div class="meta">
+    <span>👤 stormsunshine</span>
+    <span>👍 1</span>
+    <span>2022-02-07</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/merge-two-sorted-lists/solution/21-he-bing-liang-ge-you-xu-lian-biao-by-fy9gg/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>解法一</h1>
+<h2>思路和算法</h2>
+<p>如果两个链表都为空，则合并后的链表也为空。如果两个链表中有一个链表为空，则合并后的链表为另一个链表。这两种情况可以概括为：分别判断两个链表是否为空，如果其中一个链表为空，则返回另一个链表作为合并后的结果。</p>
+<p>如果两个链表都不为空，则为了满足合并后的链表有序，合并后的链表的头结点应为两个链表的头结点中的值较小的结点，确定头结点之后，再对剩下的结点进行合并。</p>
+<p>对于链表 $  extit{list}$，用 $    extit{list}[0]$ 表示其头结点，$    extit{list}[1:]$ 表示除了头结点以外的部分，则合并操作可以表示成如下形式：</p>
+<pre><code>extit{mergeTwoLists}(   extit{list}_1,  extit{list}_2) =
+</code></pre>
+<p>\begin{cases}<br />
+    extit{list}_1[0] +  extit{mergeTwoLists}(   extit{list}_1[1:],  extit{list}_2), &amp;   extit{list}_1[0].   extit{val} \le  extit{list}_2[0].   extit{val} \<br />
+    extit{list}_2[0] +  extit{mergeTwoLists}(   extit{list}_1,  extit{list}_2[1:]), &amp;   extit{list}_1[0].   extit{val} &gt;    extit{list}_2[0].   extit{val}<br />
+\end{cases}</p>
+<p>根据上述表示形式，合并操作是一个递归的过程。</p>
+<p>递归的终止条件是两个链表中至少有一个链表为空，如果其中一个链表为空，则返回另一个链表作为合并后的结果。</p>
+<p>如果两个链表都不为空，则可以调用上述递归完成链表的合并。</p>
+<h2>代码</h2>
+<p>```Java [sol1-Java]<br />
+class Solution {<br />
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {<br />
+        if (list1 == null) {<br />
+            return list2;<br />
+        } else if (list2 == null) {<br />
+            return list1;<br />
+        } else {<br />
+            if (list1.val &lt;= list2.val) {<br />
+                list1.next = mergeTwoLists(list1.next, list2);<br />
+                return list1;<br />
+            } else {<br />
+                list2.next = mergeTwoLists(list1, list2.next);<br />
+                return list2;<br />
+            }<br />
+        }<br />
+    }<br />
+}</p>
+<pre><code>
+```C# [sol1-C#]
+public class Solution {
+    public ListNode MergeTwoLists(ListNode list1, ListNode list2) {
+        if (list1 == null) {
+            return list2;
+        } else if (list2 == null) {
+            return list1;
+        } else {
+            if (list1.val &lt;= list2.val) {
+                list1.next = MergeTwoLists(list1.next, list2);
+                return list1;
+            } else {
+                list2.next = MergeTwoLists(list1, list2.next);
+                return list2;
+            }
+        }
+    }
+}
+</code></pre>
+<p>```C++ [sol1-C++]<br />
+class Solution {<br />
+public:<br />
+    ListNode<em> mergeTwoLists(ListNode</em> list1, ListNode* list2) {<br />
+        if (!list1) {<br />
+            return list2;<br />
+        } else if (!list2) {<br />
+            return list1;<br />
+        } else {<br />
+            if (list1-&gt;val &lt;= list2-&gt;val) {<br />
+                list1-&gt;next = mergeTwoLists(list1-&gt;next, list2);<br />
+                return list1;<br />
+            } else {<br />
+                list2-&gt;next = mergeTwoLists(list1, list2-&gt;next);<br />
+                return list2;<br />
+            }<br />
+        }<br />
+    }<br />
+};</p>
+<pre><code>
+```Python [sol1-Python3]
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -&gt; Optional[ListNode]:
+        if not list1:
+            return list2
+        elif not list2:
+            return list1
+        else:
+            if list1.val &lt;= list2.val:
+                list1.next = self.mergeTwoLists(list1.next, list2)
+                return list1
+            else:
+                list2.next = self.mergeTwoLists(list1, list2.next)
+                return list2
+</code></pre>
+<p>```C [sol1-C]<br />
+struct ListNode<em> mergeTwoLists(struct ListNode</em> list1, struct ListNode* list2) {<br />
+    if (!list1) {<br />
+        return list2;<br />
+    } else if (!list2) {<br />
+        return list1;<br />
+    } else {<br />
+        if (list1-&gt;val &lt;= list2-&gt;val) {<br />
+            list1-&gt;next = mergeTwoLists(list1-&gt;next, list2);<br />
+            return list1;<br />
+        } else {<br />
+            list2-&gt;next = mergeTwoLists(list1, list2-&gt;next);<br />
+            return list2;<br />
+        }<br />
+    }<br />
+}</p>
+<pre><code>
+```Go [sol1-Go]
+func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
+    if list1 == nil {
+        return list2
+    } else if list2 == nil {
+        return list1
+    } else {
+        if (list1.Val &lt;= list2.Val) {
+            list1.Next = mergeTwoLists(list1.Next, list2);
+            return list1;
+        } else {
+            list2.Next = mergeTwoLists(list1, list2.Next);
+            return list2;
+        }
+    }
+}
+</code></pre>
+<p>```JavaScript [sol1-JavaScript]<br />
+var mergeTwoLists = function(list1, list2) {<br />
+    if (!list1) {<br />
+        return list2;<br />
+    } else if (!list2) {<br />
+        return list1;<br />
+    } else {<br />
+        if (list1.val &lt;= list2.val) {<br />
+            list1.next = mergeTwoLists(list1.next, list2);<br />
+            return list1;<br />
+        } else {<br />
+            list2.next = mergeTwoLists(list1, list2.next);<br />
+            return list2;<br />
+        }<br />
+    }<br />
+};</p>
+<pre><code>
+```TypeScript [sol1-TypeScript]
+function mergeTwoLists(list1: ListNode | null, list2: ListNode | null): ListNode | null {
+    if (!list1) {
+        return list2;
+    } else if (!list2) {
+        return list1;
+    } else {
+        if (list1.val &lt;= list2.val) {
+            list1.next = mergeTwoLists(list1.next, list2);
+            return list1;
+        } else {
+            list2.next = mergeTwoLists(list1, list2.next);
+            return list2;
+        }
+    }
+};
+</code></pre>
+<h2>复杂度分析</h2>
+<ul>
+<li>
+<p>时间复杂度：$O(m + n)$，其中 $m$ 和 $n$ 分别是两个链表的长度。合并过程中最多需要遍历两个链表中的每个结点一次。</p>
+</li>
+<li>
+<p>空间复杂度：$O(m + n)$，其中 $m$ 和 $n$ 分别是两个链表的长度。空间复杂度主要取决于递归调用栈的深度，递归调用栈最多不会超过 $m + n$ 层。</p>
+</li>
+</ul>
+<h1>解法二</h1>
+<h2>思路和算法</h2>
+<p>也可以使用迭代的方法合并链表。当两个链表都不为空时，比较两个链表的对应结点值，将值较小的结点合并到结果链表中，然后将对应链表的结点向后移动一步。如果一个链表为空，或者遍历完毕，则将另一个链表的剩下的部分合并到结果链表中。</p>
+<p>由于合并后的链表的头结点需要通过比较两个链表的头结点决定，因此需要创建哑结点 $    extit{dummyHead}$，将合并的结点依次添加到哑结点的后面。具体做法是，创建指针 $    extit{temp}$ 表示上一个合并的结点，初始时 $   extit{temp}$ 指向 $   extit{dummyHead}$，每次合并结点时，将合并的结点添加到 $   extit{temp}$ 的后面，然后将 $  extit{temp}$ 向后移动一步，直到合并完毕。合并结束之后，$ extit{dummyHead}.   extit{next}$ 即为合并后的新链表的头结点。</p>
+<p>下图为一个迭代合并链表的例子。灰色表示哑结点，黄色表示两个链表中遍历到的结点，绿色表示 $   extit{temp}$ 指向的结点。</p>
+<p><img alt="图 1" src="https://pic.leetcode.cn/1633049547-ndBuVB-6_1.png" /></p>
+<h2>代码</h2>
+<p>```Java [sol2-Java]<br />
+class Solution {<br />
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {<br />
+        ListNode dummyHead = new ListNode(0);<br />
+        ListNode temp = dummyHead;<br />
+        while (list1 != null &amp;&amp; list2 != null) {<br />
+            if (list1.val &lt;= list2.val) {<br />
+                temp.next = list1;<br />
+                list1 = list1.next;<br />
+            } else {<br />
+                temp.next = list2;<br />
+                list2 = list2.next;<br />
+            }<br />
+            temp = temp.next;<br />
+        }<br />
+        if (list1 != null) {<br />
+            temp.next = list1;<br />
+        } else {<br />
+            temp.next = list2;<br />
+        }<br />
+        return dummyHead.next;<br />
+    }<br />
+}</p>
+<pre><code>
+```C# [sol2-C#]
+public class Solution {
+    public ListNode MergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode dummyHead = new ListNode(0);
+        ListNode temp = dummyHead;
+        while (list1 != null &amp;&amp; list2 != null) {
+            if (list1.val &lt;= list2.val) {
+                temp.next = list1;
+                list1 = list1.next;
+            } else {
+                temp.next = list2;
+                list2 = list2.next;
+            }
+            temp = temp.next;
+        }
+        if (list1 != null) {
+            temp.next = list1;
+        } else {
+            temp.next = list2;
+        }
+        return dummyHead.next;
+    }
+}
+</code></pre>
+<p>```C++ [sol2-C++]<br />
+class Solution {<br />
+public:<br />
+    ListNode<em> mergeTwoLists(ListNode</em> list1, ListNode<em> list2) {<br />
+        ListNode</em> dummyHead = new ListNode(0);<br />
+        ListNode* temp = dummyHead;<br />
+        while (list1 &amp;&amp; list2) {<br />
+            if (list1-&gt;val &lt;= list2-&gt;val) {<br />
+                temp-&gt;next = list1;<br />
+                list1 = list1-&gt;next;<br />
+            } else {<br />
+                temp-&gt;next = list2;<br />
+                list2 = list2-&gt;next;<br />
+            }<br />
+            temp = temp-&gt;next;<br />
+        }<br />
+        if (list1) {<br />
+            temp-&gt;next = list1;<br />
+        } else {<br />
+            temp-&gt;next = list2;<br />
+        }<br />
+        return dummyHead-&gt;next;<br />
+    }<br />
+};</p>
+<pre><code>
+```Python [sol2-Python3]
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -&gt; Optional[ListNode]:
+        dummyHead = ListNode(0)
+        temp = dummyHead
+        while list1 and list2:
+            if list1.val &lt;= list2.val:
+                temp.next = list1
+                list1 = list1.next
+            else:
+                temp.next = list2
+                list2 = list2.next
+            temp = temp.next
+        if list1:
+            temp.next = list1
+        else:
+            temp.next = list2
+        return dummyHead.next
+</code></pre>
+<p>```C [sol2-C]<br />
+struct ListNode<em> mergeTwoLists(struct ListNode</em> list1, struct ListNode<em> list2) {<br />
+    struct ListNode</em> dummyHead = (struct ListNode<em>)malloc(sizeof(struct ListNode));<br />
+    struct ListNode</em> temp = dummyHead;<br />
+    while (list1 &amp;&amp; list2) {<br />
+        if (list1-&gt;val &lt;= list2-&gt;val) {<br />
+            temp-&gt;next = list1;<br />
+            list1 = list1-&gt;next;<br />
+        } else {<br />
+            temp-&gt;next = list2;<br />
+            list2 = list2-&gt;next;<br />
+        }<br />
+        temp = temp-&gt;next;<br />
+    }<br />
+    if (list1) {<br />
+        temp-&gt;next = list1;<br />
+    } else {<br />
+        temp-&gt;next = list2;<br />
+    }<br />
+    return dummyHead-&gt;next;<br />
+}</p>
+<pre><code>
+```Go [sol2-Go]
+func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
+    dummyHead := &amp;ListNode{}
+    temp := dummyHead
+    for list1 != nil &amp;&amp; list2 != nil {
+        if (list1.Val &lt;= list2.Val) {
+            temp.Next = list1;
+            list1 = list1.Next;
+        } else {
+            temp.Next = list2;
+            list2 = list2.Next;
+        }
+        temp = temp.Next;
+    }
+    if list1 != nil {
+        temp.Next = list1;
+    } else {
+        temp.Next = list2;
+    }
+    return dummyHead.Next;
+}
+</code></pre>
+<p>```JavaScript [sol2-JavaScript]<br />
+var mergeTwoLists = function(list1, list2) {<br />
+    let dummyHead = new ListNode(0);<br />
+    let temp = dummyHead;<br />
+    while (list1 &amp;&amp; list2) {<br />
+        if (list1.val &lt;= list2.val) {<br />
+            temp.next = list1;<br />
+            list1 = list1.next;<br />
+        } else {<br />
+            temp.next = list2;<br />
+            list2 = list2.next;<br />
+        }<br />
+        temp = temp.next;<br />
+    }<br />
+    if (list1) {<br />
+        temp.next = list1;<br />
+    } else {<br />
+        temp.next = list2;<br />
+    }<br />
+    return dummyHead.next;<br />
+};</p>
+<pre><code>
+```TypeScript [sol2-TypeScript]
+function mergeTwoLists(list1: ListNode | null, list2: ListNode | null): ListNode | null {
+    let dummyHead = new ListNode(0);
+    let temp = dummyHead;
+    while (list1 &amp;&amp; list2) {
+        if (list1.val &lt;= list2.val) {
+            temp.next = list1;
+            list1 = list1.next;
+        } else {
+            temp.next = list2;
+            list2 = list2.next;
+        }
+        temp = temp.next;
+    }
+    if (list1) {
+        temp.next = list1;
+    } else {
+        temp.next = list2;
+    }
+    return dummyHead.next;
+};
+</code></pre>
+<h2>复杂度分析</h2>
+<ul>
+<li>
+<p>时间复杂度：$O(m + n)$，其中 $m$ 和 $n$ 分别是两个链表的长度。合并过程中最多需要遍历两个链表中的每个结点一次。</p>
+</li>
+<li>
+<p>空间复杂度：$O(1)$。</p>
+</li>
+</ul>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode Recursion Problems - 爬取结果</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            font-size: 1.8em;
+        }
+        
+        .problem-grid {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .problem-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .problem-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .problem-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .problem-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c3e50;
+            flex: 1;
+        }
+        
+        .difficulty {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 15px;
+        }
+        
+        .difficulty.Easy {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .difficulty.Medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .difficulty.Hard {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .problem-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        
+        .problem-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .problem-link:hover {
+            text-decoration: underline;
+        }
+        
+        .badge {
+            background: #667eea;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            display: inline-block;
+        }
+        
+        .badge.video {
+            background: #e74c3c;
+        }
+        
+        .badge.image {
+            background: #3498db;
+        }
+        
+        .solutions-list {
+            margin-top: 15px;
+            padding-left: 20px;
+            border-left: 3px solid #667eea;
+        }
+        
+        .solution-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .solution-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .solution-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85em;
+            color: #7f8c8d;
+            flex-wrap: wrap;
+        }
+        
+        .filter-bar {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-bar label {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .filter-bar select, .filter-bar input {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.95em;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 50px;
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .problem-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .difficulty {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 LeetCode Recursion Problems</h1>
+            <p>包含 "recursion" 关键词且有视频/图片的 Solutions</p>
+            <p style="margin-top: 10px; font-size: 0.9em; color: #95a5a6;">
+                生成时间: 2026-05-10 20:44:33
+            </p>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">0</div>
+                <div class="stat-label">题目总数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">0</div>
+                <div class="stat-label">有Solutions的题目</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">0</div>
+                <div class="stat-label">符合条件的Solutions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">0</div>
+                <div class="stat-label">包含视频</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">0</div>
+                <div class="stat-label">包含图片</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2>📊 难度分布</h2>
+                <div class="stats" style="margin-bottom: 0;">
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>📝 题目列表</h2>
+                <div class="filter-bar">
+                    <label>难度筛选:</label>
+                    <select id="difficultyFilter" onchange="filterProblems()">
+                        <option value="all">全部</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                    
+                    <label>搜索:</label>
+                    <input type="text" id="searchBox" placeholder="搜索题目..." onkeyup="filterProblems()">
+                </div>
+                <div class="problem-grid" id="problemList">
+                    <div class="no-data">
+                        暂无数据。请先运行 <code>python scraper.py</code> 爬取数据。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function filterProblems() {
+            const difficulty = document.getElementById('difficultyFilter').value;
+            const search = document.getElementById('searchBox').value.toLowerCase();
+            const cards = document.querySelectorAll('.problem-card');
+            
+            cards.forEach(card => {
+                const cardDifficulty = card.getAttribute('data-difficulty');
+                const cardText = card.textContent.toLowerCase();
+                
+                const matchesDifficulty = difficulty === 'all' || cardDifficulty === difficulty;
+                const matchesSearch = search === '' || cardText.includes(search);
+                
+                if (matchesDifficulty && matchesSearch) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

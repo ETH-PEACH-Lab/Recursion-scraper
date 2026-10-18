@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>动画演示 2. 两数相加 – Add Two Numbers</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_add-two-numbers.html">Add Two Numbers / 两数相加</a> <span class="sep">›</span> <span class="cur">动画演示 2. 两数相加</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">动画演示 2. 两数相加</div>
+  <div class="meta">
+    <span>👤 wang_ni_ma</span>
+    <span>👍 64</span>
+    <span>2019-11-04</span>
+    <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞 Slide</span>
+    <a href="https://leetcode.cn/problems/add-two-numbers/solution/dong-hua-yan-shi-2-liang-shu-xiang-jia-by-user7439/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>题解</h1>
+<p>我们不断的遍历两个链表，每次遍历都将链表a和链表b的值相加，再赋给链表a。如果有进位我们还需要记录一个进位标志。 <br />
+循环的条件是链表a不为空或者链表b不为空，这样当整个循环结束时，链表就被串起来了。 <br />
+当循环结束时，如果进位标志&gt;0还需要处理下边界条件。 <br />
+我们不用生成一个新的节点，直接将两个节点相加的值赋给节点a就可以了，这样只用改变节点的内容，速度会更快一些。 <br />
+<img alt="迭代.gif" src="https://pic.leetcode.cn/9f326746800ef8b13ee6bac7bf5154356cb9d99f623364773be4d7fc01259ef4-%E8%BF%AD%E4%BB%A3.gif" /></p>
+<p>代码实现：<br />
+```java []<br />
+class Solution {<br />
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {<br />
+        ListNode p = null;<br />
+        ListNode a = l1;<br />
+        ListNode b = l2;<br />
+        //定义一个进位标志<br />
+        int carry = 0;<br />
+        while(a!=null || b!=null) {<br />
+            //a和b节点的值相加，如果有进位还要加上进位的值<br />
+            int val = (a==null?0:a.val) + (b==null?0:b.val) + carry;<br />
+            //根据val判断是否有进位<br />
+            carry = val&gt;=10? 1:0;<br />
+            //不管有没有进位，val都应该小于10<br />
+            val = val%10;<br />
+            p = (a==null? b : a);<br />
+            p.val = val;<br />
+            //a和b指针都前进一位<br />
+            a = (a==null? null : a.next);<br />
+            b = (b==null? null : b.next);<br />
+            //根据a和b是否为空，p指针也前进一位<br />
+            p.next = (a==null? b : a);<br />
+        }<br />
+        //不要忘记最后的边界条件，如果循环结束carry&gt;0说明有进位需要处理这个条件<br />
+        if(carry&gt;0) {<br />
+            p.next = new ListNode(1);<br />
+        }<br />
+        //每次迭代实际上都是将val赋给a指针的，所以最后返回的是l1<br />
+        return l1;<br />
+    }<br />
+}</p>
+<pre><code>```python []
+class Solution(object):
+    def addTwoNumbers(self, l1, l2):
+        # 定义一个进位标志
+        a,b,p,carry = l1,l2,None,0
+        while a or b:
+            # a和b节点的值相加，如果有进位还要加上进位的值
+            val = (a.val if a else 0)+(b.val if b else 0)+carry
+            # 根据val判断是否有进位,不管有没有进位，val都应该小于10
+            carry,val = val/10 if val&gt;=10 else 0,val%10
+            p,p.val = a if a else b,val
+            # a和b指针都前进一位
+            a,b = a.next if a else None,b.next if b else None
+            # 根据a和b是否为空，p指针也前进一位
+            p.next = a if a else b
+        # 不要忘记最后的边界条件，如果循环结束carry&gt;0说明有进位需要处理这个条件    
+        if carry:
+            p.next = ListNode(carry)
+        # 每次迭代实际上都是将val赋给a指针的，所以最后返回的是l1    
+        return l1
+</code></pre>
+<h1>递归实现</h1>
+<p>写递归的时候注意递归函数的两个条件，递归出口条件，以及函数内要做什么。 <br />
+1. 递归出口条件：链表a和链表b都为空时 <br />
+2. 将两个链表的值相加，再赋给链表a   </p>
+<p>这里需要注意第二个条件，因为进位标志需要通告下一层递归函数，所以需要有一个单独的变量作为记录。 <br />
+函数内部的进位标志判断，val计算的方式和迭代版本是类似的。 <br />
+调用下一层递归的时候，传递的参数是a.next和b.next。 <br />
+这里还需要注意一个细节，如果a，b两个链表不一样长，意味递归到一定的层次时，某个链表会出现null，这时需要做一个补0的操作，创建一个新的节点赋给节点为空的链表。这也是为什么递归函数的终止条件是a和b都==null的原因。 <br />
+<img alt="递归.gif" src="https://pic.leetcode.cn/b8167f09861055f1f2fa8c4aa11e185b4f92a8d488e7de76e9c8609adaa42e1e-%E9%80%92%E5%BD%92.gif" /></p>
+<p>代码实现：<br />
+```java []<br />
+class Solution {<br />
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {<br />
+        return add(l1,l2,0);<br />
+    }</p>
+<pre><code>ListNode add(ListNode a, ListNode b, int carry) {
+    //递归的终止条件是a和b都为空
+    //如果carry大于0需要返回一个进位标志
+    if(a==null &amp;&amp; b==null) {
+        return (carry&gt;0 ? new ListNode(1): null);
+    }
+    //如果a为空则将ListNode(0)赋给a，对于b也是
+    a = (a==null? new ListNode(0) : a);
+    b = (b==null? new ListNode(0) : b);
+    //处理val，以及进位标志
+    int val = a.val+b.val+carry;
+    carry = (val&gt;=10? 1 : 0);
+    val %= 10;
+    a.val = val;
+    //现在a的值就是两个节点相加后的和了
+    //之后再次递归计算a.next和b.next
+    a.next = add(a.next,b.next,carry);
+    return a;
+}
+</code></pre>
+<p>}</p>
+<pre><code>```python []
+class Solution(object):
+    def addTwoNumbers(self, l1, l2):
+        # 主要逻辑都在内部函数中实现
+        def add(a,b,carry):
+            # 递归的终止条件是a和b都为空
+            # 如果carry大于0需要返回一个进位标志
+            if not (a or b):
+                return ListNode(1) if carry else None
+            # 如果a为空则将ListNode(0)赋给a，对于b也是
+            a = a if a else ListNode(0)
+            b = b if b else ListNode(0)
+            #处理val，以及进位标志
+            val = a.val + b.val + carry
+            carry = 1 if val&gt;=10 else 0
+            a.val = val%10
+            # 现在a的值就是两个节点相加后的和了
+            # 之后再次递归计算a.next和b.next
+            a.next = add(a.next,b.next,carry)
+            return a
+        return add(l1,l2,0)
+</code></pre>
+<p>(全文完)</p>
+<p><strong>欢迎关注 👉👉👉  <a href="https://pic.leetcode.cn/9f7c3489bda5098a73e6e296309acf79cdbb88abf60ce8ccff05b72c36dfc8bf-2.jpg">【公众号】</a> 👈👈👈</strong>   </p>
+<p><strong>如果能再点个赞👍👍 就更感激啦💓💓</strong> </p>
+</div>
+</div>
+</body>
+</html>

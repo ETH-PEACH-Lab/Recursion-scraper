@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Remove Nodes From Linked List – Editorial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+<style>.vimeo-link{display:inline-flex;align-items:center;gap:8px;
+            background:#1ab7ea;color:#fff;font-weight:600;
+            padding:10px 20px;border-radius:6px;margin:12px 0;font-size:.95em}
+.vimeo-link:hover{background:#0d9bd4;color:#fff;text-decoration:none}</style>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_remove-nodes-from-linked-list.html">Remove Nodes From Linked List</a> <span class="sep">›</span> <span class="cur">Editorial</span></nav>
+<div class="wrap"><div class="page-title">2573. Remove Nodes From Linked List — Official Editorial</div>
+<div class="page-sub" style="margin-bottom:20px">
+  <span class="badge b-medium">Medium</span> <span class="badge b-tag">Linked List</span> <span class="badge b-tag">Stack</span> <span class="badge b-tag">Recursion</span> <span class="badge b-tag">Monotonic Stack</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/remove-nodes-from-linked-list/" target="_blank" style="font-size:.85em">↗ Problem</a>
+  &nbsp;·&nbsp;
+  <a href="problem_remove-nodes-from-linked-list.html" style="font-size:.85em">💬 Community Solutions</a>
+</div>
+<div class="sol-body">
+  <p>[TOC]</p>
+<h2>Solution</h2>
+<hr />
+<h3>Overview</h3>
+<p>Given the head of a linked list, the task is to remove every node that has a node with a greater value anywhere on its right side. This means that after processing the linked list, every node will only have nodes with smaller values to their right, or the linked list should be in decreasing order.</p>
+<p><strong>Key Observations</strong>
+1. The nodes in the linked list have positive values.
+2. There may be duplicate values.
+3. We manipulate the list by deleting values, not by sorting it.</p>
+<hr />
+<h3>Approach 1: Stack</h3>
+<h4>Intuition</h4>
+<p>A challenge associated with this problem is that, for a given node, we need to not only delete the node directly to the right if it has a larger value but also delete all other nodes to the right that have larger values. The brute force approach involves iterating through the linked list using nested loops, comparing the value of each node with the nodes that follow it, and deleting any nodes whose values are smaller than the following nodes. However, this approach is inefficient, with a quadratic time complexity.</p>
+<p>The resultant linked list should be in decreasing order. We can leverage this fact to develop a more efficient solution.</p>
+<p>A list in decreasing order, if reversed, is in increasing order.</p>
+<p>If we reverse the list, the node values should be in increasing order after deleting nodes. We can delete any nodes whose values are smaller than the nodes before them. This strategy ensures efficient deletion of all nodes that have nodes with a greater value to their right (in the original order) without using nested loops.</p>
+<p>The list we are given is a singly linked list, so we can't easily traverse it in reverse from tail to head.</p>
+<p>Whenever a problem requires reversing a sequence, it is worth considering using a stack. </p>
+<p>Stacks are a First-In-Last-Out (FILO) data structure, meaning that the first items added to the stack are the last ones removed. Consequently, if you push a sequence of items into a stack and then remove them, the sequence will be reversed. Learn more about stacks by reading our <a href="https://leetcode.com/explore/learn/card/queue-stack/230/usage-stack/">Stack Explore Card</a>.</p>
+<p>We start by adding all of the nodes to a stack.</p>
+<p>Next, we create a new linked list to store the result. We keep track of the maximum node value encountered so far using the variable <code>maximum</code>.</p>
+<p>Then, we pop each node from the stack. If the node's value is not smaller than the <code>maximum</code>, we create a new node with that value and add it to the <code>resultList</code>. Since the linked list is reversed, we build the <code>resultList</code> from back to front, continuously adding new nodes to the beginning.</p>
+<h4>Algorithm</h4>
+<ol>
+<li>Initialize an empty <code>stack</code> to be used for reversing the nodes.</li>
+<li>Set a pointer <code>current</code> to <code>head</code>.</li>
+<li>While <code>current</code> is not <code>Null</code>:<ul>
+<li>Add <code>current</code> to the <code>stack</code>.</li>
+<li>Set <code>current</code> to <code>current.next</code>.</li>
+</ul>
+</li>
+<li>Pop the node from the top of the <code>stack</code> and set <code>current</code> to that node.</li>
+<li>Initialize a variable <code>maximum</code> to <code>current.val</code>.</li>
+<li>Create a new ListNode <code>resultList</code> with <code>maximum</code> as its value.</li>
+<li>While the <code>stack</code> is not empty:<ul>
+<li>Pop the node from the top of the <code>stack</code> and set <code>current</code> to that node.</li>
+<li>If <code>current.val</code> &lt; <code>maximum</code>:<ul>
+<li>Continue; this node does not need to be added to the <code>resultList</code>.</li>
+</ul>
+</li>
+<li>Otherwise, add a new node to the front of the <code>resultList</code>:<ul>
+<li>Create a new ListNode <code>newNode</code> with <code>current.val</code> as its value.</li>
+<li>Set <code>newNode.next</code> to <code>resultList</code>.</li>
+<li>Set <code>resultList</code> to <code>newNode</code>.</li>
+<li>Update <code>maximum</code> to <code>current.val</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Return <code>resultList</code>.</li>
+</ol>
+<p>The algorithm is visualized below:</p>
+<p>!?!../Documents/2487/2487_slideshow2.json:960,540!?!</p>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/2CTMtkxy/shared" frameBorder="0" width="100%" height="500" name="2CTMtkxy"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Let $n$ be the length of the original linked list.</p>
+<ul>
+<li>
+<p>Time complexity: $O(n)$</p>
+<p>Adding the nodes from the original linked list to the stack takes $O(n)$.</p>
+<p>Removing nodes from the stack and adding them to the result takes $O(n)$, as each node is popped from the stack exactly once.</p>
+<p>Therefore, the time complexity is $O(2n)$, which simplifies to $O(n)$.</p>
+</li>
+<li>
+<p>Space complexity: $O(n)$</p>
+<p>We add each of the nodes from the original linked list to the <code>stack</code>, making its size $n$.</p>
+<p>We only use <code>resultList</code> to store the result, so it does not contribute to the space complexity.</p>
+<p>Therefore, the space complexity is $O(n)$.</p>
+</li>
+</ul>
+<hr />
+<h3>Approach 2: Recursion</h3>
+<h4>Intuition</h4>
+<p>The nodes we retain in the linked list must meet the following criteria: Each node's value is not smaller than the values of the following nodes.</p>
+<p>Linked lists are often manipulated using recursion. This problem is an excellent candidate for recursion because it can be broken down into subproblems that collectively solve the main problem.</p>
+<p>Consider a node $B$ situated in the middle of the linked list, where all subsequent nodes have values less than or equal to $B$'s value. If node $B$ satisfies this criterion, its value is not smaller than the values of the following nodes. For the node $A$ directly preceding $B$, if $A$ is not smaller than $B$, then $A$ is also not smaller than any nodes following $B$. This holds due to the transitive property: if $a \geq b$ and $b \geq c$, then $a \geq c$.</p>
+<p>This means that if we've solved the subproblem for nodes to the right of a given node in the linked list, we can efficiently solve the problem for that node.</p>
+<p>Let`s begin by discussing the base cases:</p>
+<ol>
+<li>
+<p>The linked list is empty:</p>
+<ul>
+<li>An empty list meets the criteria, so we return the <code>head</code>.</li>
+</ul>
+</li>
+<li>
+<p>The linked list has only one node:</p>
+<ul>
+<li>A list with one node also meets the criteria, because there are no following nodes. Again, we return the <code>head</code>.</li>
+</ul>
+</li>
+</ol>
+<p>We can develop a strategy for handling longer lists by thinking about handling a linked list with two nodes.</p>
+<p>For a linked list with two nodes, there are two cases for the <code>head</code> node:</p>
+<ol>
+<li>
+<p>The <code>head</code> node's value is the same size or larger than the next node's value.</p>
+<ul>
+<li>This linked list meets the criteria. Return the list.</li>
+</ul>
+</li>
+<li>
+<p>The <code>head</code> node's value is smaller than the next node's value.</p>
+<ul>
+<li>We need to delete <code>head</code>. Return the next node.</li>
+</ul>
+</li>
+</ol>
+<p>For linked lists with more than two nodes, the main adjustment we need to make is to check the rest of the linked list. </p>
+<p>The challenge we face is ensuring that <code>head.next</code> is set to the correct next node. Does the next node also need to be deleted? Are there other nodes later in the linked list that have values that are greater than <code>head</code>?</p>
+<p>Instead of simply setting <code>head</code> to <code>head.next</code> to progress to the next node, we recursively call <code>removeNodes(head.next)</code>. This recursive function removes nodes with greater values anywhere to the right. This ensures that <code>head</code> is set to the correct node and that the rest of the linked list also meets the criteria.</p>
+<h4>Algorithm</h4>
+<ol>
+<li>Base Case: If <code>head</code> or <code>head.next</code> is <code>Null</code>, return <code>head</code>.</li>
+<li>Recursive Call: Set <code>nextNode</code> to <code>removeNodes(head.next)</code>.</li>
+<li>Comparison: If <code>head.val</code> is less than <code>nextNode.val</code>, we need to remove <code>head</code>. Return <code>nextNode</code>.</li>
+<li>Otherwise, set <code>head</code> to <code>head.next</code> and then return <code>head</code>.</li>
+</ol>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/L2EFsxaF/shared" frameBorder="0" width="100%" height="446" name="L2EFsxaF"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Let $n$ be the length of the original linked list.</p>
+<ul>
+<li>
+<p>Time complexity: $O(n)$</p>
+<p>We call <code>removeNodes()</code> once for each node in the original linked list. The other operations inside the function all take constant time, so the time complexity is dominated by the recursive calls. Thus, the time complexity is $O(n)$.</p>
+</li>
+<li>
+<p>Space complexity: $O(n)$</p>
+<p>Since we make $n$ recursive calls to <code>removeNodes()</code>, the call stack can grow up to size $n$. Therefore, the space complexity is $O(n)$.</p>
+</li>
+</ul>
+<hr />
+<h3>Approach 3: Reverse Twice</h3>
+<h4>Intuition</h4>
+<p>The first approach used a stack to reverse the linked list, resulting in linear auxiliary space. However, instead of using a stack, we can write a function to reverse the nodes in place, avoiding the need for auxiliary space. This task is explored in the problem <a href="https://leetcode.com/problems/reverse-linked-list/description/">Reverse Linked List</a>. The basic idea is to set each node's next field to point to the previous node.</p>
+<p>After reversing the linked list, the node values will be in increasing order, allowing us to delete any nodes whose values are smaller than the nodes preceding them.</p>
+<p>To facilitate this process, we maintain the maximum node value found so far using the variable <code>maximum</code>.</p>
+<p>We traverse each node, <code>current</code>, in the reversed linked list and update the <code>maximum</code> value accordingly. If the value of the <code>current</code> node is smaller than the <code>maximum</code>, we delete <code>current</code>. Deleting nodes in place requires us to track the previous node so that we can correctly link it to the next node if we delete the <code>current</code> node.</p>
+<p>Once we have traversed the linked list to delete the nodes, we have a linked list that is in increasing order.</p>
+<p>However, since the desired result should be in decreasing order, we reverse the modified linked list and then return it.</p>
+<blockquote>
+<p><strong>Interview Tip: In-place Algorithms</strong></p>
+<p>This approach modifies the input. In-place algorithms overwrite the input to save space, but sometimes this can cause problems.</p>
+<p>Here are a couple of situations where an in-place algorithm might not be suitable.</p>
+<ol>
+<li>
+<p>The algorithm needs to run in a multi-threaded environment, without exclusive access to the array. Other threads might need to read the array too, and might not expect it to be modified.</p>
+</li>
+<li>
+<p>Even if there is only a single thread, or the algorithm has exclusive access to the array while running, the array might need to be reused later or by another thread once the lock has been released.</p>
+</li>
+</ol>
+<p>In an interview, you should always check whether the interviewer minds you overwriting the input. Be ready to explain the pros and cons of doing so if asked!</p>
+</blockquote>
+<h4>Algorithm</h4>
+<ol>
+<li>Define a function <code>reverseList</code> that takes the head of a linked list as input and reverses it, returning the new head.<ul>
+<li>Initialize three pointers, <code>prev</code> to <code>null</code>, <code>current</code> to <code>head</code>, and <code>nextTemp</code> to <code>null</code>.</li>
+<li>While <code>current</code> is not <code>null</code>:<ul>
+<li>Set <code>nextTemp</code> to <code>current.next</code>.</li>
+<li>Reverse the order of the nodes by setting <code>current.next</code> to <code>prev</code>.</li>
+<li>Progress both pointers by setting <code>prev</code> to <code>current</code> and <code>current</code> to <code>nextTemp</code>.</li>
+</ul>
+</li>
+<li>Return <code>prev</code>.</li>
+</ul>
+</li>
+<li>Reverse the original linked list using <code>reverseList(head)</code>. Set <code>head</code> to the reversed linked list.</li>
+<li>Initialize a variable <code>maximum</code> to <code>0</code>.</li>
+<li>Initialize two pointers, <code>prev</code> to <code>null</code> and <code>current</code> to <code>head</code>.</li>
+<li>Delete the nodes that are smaller than the node before them. While <code>current</code> is not <code>null</code>:<ul>
+<li>Update <code>maximum</code> to the max between <code>maximum</code> and <code>current.val</code>.</li>
+<li>If <code>current.val</code> is less than <code>maximum</code>, delete <code>current</code>.<ul>
+<li>Skip the current node by setting <code>prev.next</code> to <code>current.next</code>.</li>
+<li>Set a pointer <code>deleted</code> to <code>current</code>.</li>
+<li>Move <code>current</code> to <code>current.next</code> to progress to the next node.</li>
+<li>Set <code>deleted.next</code> to <code>null</code> to remove any additional pointers to the new <code>current</code> node.</li>
+</ul>
+</li>
+<li>Otherwise, if <code>current.val</code> is not less than <code>maximum</code>, retain <code>current</code> and progress both pointers by setting <code>prev</code> to <code>current</code> and <code>current</code> to <code>current.next</code>.</li>
+</ul>
+</li>
+<li>Reverse and return the modified linked list using <code>reverseList(head)</code>.</li>
+</ol>
+<p>The algorithm is visualized below:</p>
+<p>!?!../Documents/2487/2487_slideshow3.json:960,540!?!</p>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/aq46D8sp/shared" frameBorder="0" width="100%" height="500" name="aq46D8sp"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Let $n$ be the length of the original linked list.</p>
+<ul>
+<li>
+<p>Time complexity: $O(n)$</p>
+<p>Reversing the original linked list takes $O(n)$.</p>
+<p>Traversing the reversed original linked list and removing nodes takes $O(n)$.</p>
+<p>Reversing the modified linked list takes an additional $O(n)$ time.</p>
+<p>Therefore, the total time complexity is $O(3n)$, which simplifies to $O(n)$.</p>
+</li>
+<li>
+<p>Space complexity: $O(1)$</p>
+<p>We use a few variables and pointers that use constant extra space. Since we don't use any data structures that grow with input size, the space complexity remains $O(1)$.</p>
+</li>
+</ul>
+<hr />
+</div></div>
+</body>
+</html>

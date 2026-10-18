@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>✅ 6 Different Methods || Beats 99.76% 🔥 || – Power of Four</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_power-of-four.html">Power of Four</a> <span class="sep">›</span> <span class="cur">✅ 6 Different Methods || Beats 99.76% 🔥 ||</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">✅ 6 Different Methods || Beats 99.76% 🔥 ||</div>
+  <div class="meta">
+    <span>👤 Gourav-2002</span>
+    <span>👍 46</span>
+    <span>2023-10-23</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/power-of-four/solutions/4197716/6-different-methods-beats-9976/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h2>This Solution took me a lot of time, so please UpVote✅ if you found this helpful :)</h2>
+<h1>Approach 1: Iteration</h1>
+<p><img alt="Screenshot 2023-10-23 at 7.42.28 AM.png" src="https://assets.leetcode.com/users/images/bb640e5b-3e74-4e8b-ae72-3b9fead8da6e_1698027883.213411.png" /></p>
+<h1>Intuition :</h1>
+<p><strong>The idea is to keep dividing the number by 4, i.e, do n = n/4 iteratively. In any iteration, if n%4 becomes non-zero and n is not 1 then n is not a power of 4, otherwise n is a power of 4.</strong></p>
+<h1>Algorithm :</h1>
+<ol>
+<li>If n is less than or equal to 0, return false.</li>
+<li>Otherwise, loop until n becomes 1 or n%4 becomes non-zero. In the loop, do n = n/4.</li>
+<li>After the loop, return true if n is 1, otherwise return false.</li>
+</ol>
+<h1>Complexity Analysis</h1>
+<ul>
+<li>Time complexity : <strong><em>O(log4n)</em></strong>. In each iteration, we reduce the number by 4 times until it either becomes 1 or a number not divisible by 4.</li>
+<li>Space complexity : <strong><em>O(1)</em></strong>. We are not using any extra memory.</li>
+</ul>
+<h1>Code:</h1>
+<p>``` Python []<br />
+class Solution:<br />
+    def isPowerOfFour(self, n: int) -&gt; bool:<br />
+        if n &lt;= 0:<br />
+            return False<br />
+        while n &gt; 1:<br />
+            if n % 4 != 0:<br />
+                return False<br />
+            n //= 4<br />
+        return True</p>
+<pre><code>``` C++ []
+class Solution {
+public:
+    bool isPowerOfFour(int n) {
+        if (n &lt;= 0) {
+            return false;
+        }
+        while (n &gt; 1) {
+            if (n % 4 != 0) {
+                return false;
+            }
+            n /= 4;
+        }
+        return true;
+    }
+};
+
+</code></pre>
+<p>``` Java []<br />
+class Solution {<br />
+    public boolean isPowerOfFour(int n) {<br />
+        if (n &lt;= 0) {<br />
+            return false;<br />
+        }<br />
+        while (n &gt; 1) {<br />
+            if (n % 4 != 0) {<br />
+                return false;<br />
+            }<br />
+            n /= 4;<br />
+        }<br />
+        return true;<br />
+    }<br />
+}</p>
+<pre><code># Approach 2: Bit Manipulation
+
+![Screenshot 2023-10-23 at 7.44.05 AM.png](https://assets.leetcode.com/users/images/56f73434-7648-4f3d-bdff-3f3eb633626b_1698028910.6839995.png)
+
+
+# Intuition :
+Return true if n is a power of four. That is, return true if n is a power of 2 and its exponent is even. The second part of the condition can be checked by ensuring that n is not divisible by 3. If n is a power of 4, it is definitely a power of 2 since 4 is a power of 2. If n is a power of 2 but not a power of 4, its exponent must be odd. That is, if n is a power of 2, n%3 should be 1. Return true if n&gt;0 and n is a power of 2 and n%3 is 1.
+
+# Algorithm :
+1. If n is less than or equal to 0, return false.
+2. Otherwise, check if n is a power of 2 by checking if n&amp;(n-1) is 0. If not, return false.
+3. Finally, return true if n%3 is 1, otherwise return false.
+
+# Complexity Analysis
+- Time complexity : ***O(1)***. We are only doing one operation.
+- Space complexity : ***O(1)***. We are not using any extra memory.
+
+
+
+# Code:
+
+``` Python []
+
+class Solution:
+    def isPowerOfFour(self, n: int) -&gt; bool:
+        return n &gt; 0 and n &amp; (n - 1) == 0 and n % 3 == 1
+
+</code></pre>
+<p>``` C++ []<br />
+class Solution {<br />
+public:<br />
+    bool isPowerOfFour(int n) {<br />
+        return n &gt; 0 &amp;&amp; (n &amp; (n - 1)) == 0 &amp;&amp; n % 3 == 1;<br />
+    }<br />
+};</p>
+<pre><code>``` Java []
+class Solution {
+    public boolean isPowerOfFour(int n) {
+        return n &gt; 0 &amp;&amp; (n &amp; (n - 1)) == 0 &amp;&amp; n % 3 == 1;
+    }
+}
+
+</code></pre>
+<h1>Approach 3: division</h1>
+<p><img alt="Screenshot 2023-10-23 at 7.46.50 AM.png" src="https://assets.leetcode.com/users/images/e18afa10-b493-4d65-961f-3596f8c116c8_1698028944.7713094.png" /></p>
+<h1>Intuition :</h1>
+<p>The idea is to keep dividing the number by 4, i.e, do n = n/4 iteratively. In any iteration, if n%4 becomes non-zero and n is not 1 then n is not a power of 4, otherwise n is a power of 4. </p>
+<h1>Algorithm :</h1>
+<ol>
+<li>If n is less than or equal to 0, return false.</li>
+<li>Otherwise, loop until n becomes 1 or n%4 becomes non-zero. In the loop, do n = n/4.</li>
+<li>After the loop, return true if n is 1, otherwise return false.</li>
+</ol>
+<h1>Complexity Analysis</h1>
+<ul>
+<li>Time complexity : <strong><em>O(log4n)</em></strong>. In each iteration, we reduce the number by 4 times until it either becomes 1 or a number not divisible by 4.</li>
+<li>Space complexity : <strong><em>O(1)</em></strong>. We are not using any extra memory.</li>
+</ul>
+<h1>Code:</h1>
+<p>``` Python []</p>
+<p>class Solution:<br />
+    def isPowerOfFour(self, n: int) -&gt; bool:<br />
+        if n &lt;= 0:<br />
+            return False<br />
+        while n % 4 == 0:<br />
+            n //= 4<br />
+        return n == 1</p>
+<pre><code>``` C++ []
+class Solution {
+public:
+    bool isPowerOfFour(int n) {
+        if (n &lt;= 0) {
+            return false;
+        }
+        while (n % 4 == 0) {
+            n /= 4;
+        }
+        return n == 1;
+    }
+};
+
+</code></pre>
+<p>``` Java []<br />
+class Solution {<br />
+    public boolean isPowerOfFour(int n) {<br />
+        if (n &lt;= 0) {<br />
+            return false;<br />
+        }<br />
+        while (n % 4 == 0) {<br />
+            n /= 4;<br />
+        }<br />
+        return n == 1;<br />
+    }<br />
+}</p>
+<pre><code>
+# Approach 4: Math
+![Screenshot 2023-10-23 at 7.47.44 AM.png](https://assets.leetcode.com/users/images/d4a79f40-d13f-4252-b173-610a319ac132_1698028966.923919.png)
+
+
+# Intuition :
+If n is a power of 4, it can be expressed as 4^a where a is an integer. If a is even, 4^a will be a power of 2. Otherwise, 4^a will not be a power of 2. We can use this fact to determine if n is a power of 4. First, we check that n is a power of 2. Then we check that the exponent a is even. Since a is an integer, a will be even only if a%2 is 0. In the case when n is a power of 2, a is n/2. Therefore, we check if n/2 is even or not. If n/2 is even, we return true. Otherwise, we return false.
+
+# Algorithm :
+1. If n is less than or equal to 0, return false.
+2. Otherwise, check if n is a power of 2 by checking if n&amp;(n-1) is 0. If not, return false.
+3. Finally, return true if n/2 is even, otherwise return false.
+
+# Complexity Analysis
+- Time complexity : ***O(1)***. We are only doing one operation.
+- Space complexity : ***O(1)***. We are not using any extra memory.
+
+
+
+# Code:
+
+``` Python []
+import math
+class Solution:
+    def isPowerOfFour(self, n: int) -&gt; bool:
+        return n &gt; 0 and math.log2(n) % 2 == 0
+
+</code></pre>
+<p>``` C++ []</p>
+<h1>include <cmath></h1>
+<p>class Solution {<br />
+public:<br />
+    bool isPowerOfFour(int n) {<br />
+        return n &gt; 0 &amp;&amp; fmod(log2(n), 2) == 0;<br />
+    }<br />
+};</p>
+<pre><code>``` Java []
+import java.lang.Math;
+
+class Solution {
+    public boolean isPowerOfFour(int n) {
+        return n &gt; 0 &amp;&amp; Math.log(n) / Math.log(4) % 1 == 0;
+    }
+}
+
+</code></pre>
+<h1>Approach 5: Recursive</h1>
+<p><img alt="Screenshot 2023-10-23 at 7.50.13 AM.png" src="https://assets.leetcode.com/users/images/48d51e48-c192-4055-8381-14dde873bfcc_1698029006.1446123.png" /></p>
+<h1>Intuition :</h1>
+<p>The idea is to keep dividing the number by 4, i.e, do n = n/4 iteratively. In any iteration, if n%4 becomes non-zero and n is not 1 then n is not a power of 4, otherwise n is a power of 4. </p>
+<h1>Algorithm :</h1>
+<ol>
+<li>If n is less than or equal to 0, return false.</li>
+<li>Otherwise, loop until n becomes 1 or n%4 becomes non-zero. In the loop, do n = n/4.</li>
+<li>After the loop, return true if n is 1, otherwise return false.</li>
+</ol>
+<h1>Complexity Analysis</h1>
+<ul>
+<li>Time complexity : <strong><em>O(log4n)</em></strong>. In each iteration, we reduce the number by 4 times until it either becomes 1 or a number not divisible by 4.</li>
+<li>Space complexity : <strong><em>O(1)</em></strong>. We are not using any extra memory.</li>
+</ul>
+<h1>Code:</h1>
+<p>``` Python []<br />
+class Solution:<br />
+    def isPowerOfFour(self, n: int) -&gt; bool:<br />
+        if n &lt;= 0:<br />
+            return False<br />
+        if n == 1:<br />
+            return True<br />
+        return n % 4 == 0 and self.isPowerOfFour(n // 4)</p>
+<pre><code>``` C++ []
+class Solution {
+public:
+    bool isPowerOfFour(int n) {
+        if (n &lt;= 0) {
+            return false;
+        }
+        if (n == 1) {
+            return true;
+        }
+        return n % 4 == 0 &amp;&amp; isPowerOfFour(n / 4);
+    }
+};
+</code></pre>
+<p>``` Java []<br />
+class Solution {<br />
+    public boolean isPowerOfFour(int n) {<br />
+        if (n &lt;= 0) {<br />
+            return false;<br />
+        }<br />
+        if (n == 1) {<br />
+            return true;<br />
+        }<br />
+        return n % 4 == 0 &amp;&amp; isPowerOfFour(n / 4);<br />
+    }<br />
+}</p>
+<pre><code># Approach 6: Using Lookup Table
+
+![Screenshot 2023-10-23 at 7.51.47 AM.png](https://assets.leetcode.com/users/images/4150d468-99d5-439b-bee2-9c24eb8470f3_1698029071.8372757.png)
+
+
+# Intuition :
+We can use a lookup table to check if n is a power of 4. The lookup table will contain all the powers of 4 that can be represented by a 32-bit signed integer. We can create the lookup table by calculating the powers of 4 until the maximum value of a 32-bit signed integer is reached. We can then check if n is present in the lookup table.
+
+# Algorithm :
+1. Create a lookup table that contains all the powers of 4 that can be represented by a 32-bit signed integer.
+2. Check if n is present in the lookup table.
+
+# Complexity Analysis
+- Time complexity : ***O(1)***. We are only doing one operation.
+- Space complexity : ***O(1)***. We are not using any extra memory.
+
+
+# Code:
+
+``` Python []
+class Solution:
+    def isPowerOfFour(self, n: int) -&gt; bool:
+        return n in [1, 4, 16, 64, 256, 1024, 4096, 16384, 65536, 262144, 1048576, 4194304, 16777216, 67108864, 268435456, 1073741824]
+
+</code></pre>
+<p>``` C++ []<br />
+class Solution {<br />
+public:<br />
+    bool isPowerOfFour(int n) {<br />
+        static const std::unordered_set<int> powersOfFour = {<br />
+            1, 4, 16, 64, 256, 1024, 4096, 16384, 65536, 262144,<br />
+            1048576, 4194304, 16777216, 67108864, 268435456, 1073741824<br />
+        };</p>
+<pre><code>    return powersOfFour.count(n) &gt; 0;
+}
+</code></pre>
+<p>};</p>
+<pre><code>``` Java []
+import java.util.HashSet;
+
+class Solution {
+    private static final HashSet&lt;Integer&gt; powersOfFour = new HashSet&lt;&gt;() {
+        {
+            add(1);
+            add(4);
+            add(16);
+            add(64);
+            add(256);
+            add(1024);
+            add(4096);
+            add(16384);
+            add(65536);
+            add(262144);
+            add(1048576);
+            add(4194304);
+            add(16777216);
+            add(67108864);
+            add(268435456);
+            add(1073741824);
+        }
+    };
+
+    public boolean isPowerOfFour(int n) {
+        return powersOfFour.contains(n);
+    }
+}
+
+</code></pre>
+</div>
+</div>
+</body>
+</html>

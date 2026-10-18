@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pow(x, n) – Pow(x, n)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_shu-zhi-de-zheng-shu-ci-fang-lcof.html">Pow(x, n) / Pow(x, n)</a> <span class="sep">›</span> <span class="cur">Pow(x, n)</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">Pow(x, n)</div>
+  <div class="meta">
+    <span>👤 LeetCode-Solution</span>
+    <span>👍 67</span>
+    <span>2022-04-06</span>
+    <span class="badge" style="background:#fff3c4;color:#9a6700">🏆 Official</span>
+    <a href="https://leetcode.cn/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/solution/shu-zhi-de-zheng-shu-ci-fang-by-leetcode-yoqr/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h4>前言</h4>
+<p>本题的方法被称为「快速幂算法」，有递归和迭代两个版本。这篇题解会从递归版本的开始讲起，再逐步引出迭代的版本。</p>
+<p>当指数 $n$ 为负数时，我们可以计算 $x^{-n}$ 再取倒数得到结果，因此我们只需要考虑 $n$ 为自然数的情况。</p>
+<h4>方法一：快速幂 + 递归</h4>
+<p>「快速幂算法」的本质是分治算法。举个例子，如果我们要计算 $x^{64}$，我们可以按照：</p>
+<p>x   o x^2   o x^4   o x^8   o x^{16}    o x^{32}    o x^{64}</p>
+<p>的顺序，从 $x$ 开始，每次直接把上一次的结果进行平方，计算 $6$ 次就可以得到 $x^{64}$ 的值，而不需要对 $x$ 乘 $63$ 次 $x$。</p>
+<p>再举一个例子，如果我们要计算 $x^{77}$，我们可以按照：</p>
+<p>x   o x^2   o x^4   o x^9   o x^{19}    o x^{38}    o x^{77}</p>
+<p>的顺序，在 $x    o x^2$，$x^2     o x^4$，$x^{19}  o x^{38}$ 这些步骤中，我们直接把上一次的结果进行平方，而在 $x^4     o x^9$，$x^9     o x^{19}$，$x^{38}   o x^{77}$ 这些步骤中，我们把上一次的结果进行平方后，还要额外乘一个 $x$。</p>
+<p>直接从左到右进行推导看上去很困难，因为在每一步中，我们不知道在将上一次的结果平方之后，还需不需要额外乘 $x$。但如果我们从右往左看，分治的思想就十分明显了：</p>
+<ul>
+<li>
+<p>当我们要计算 $x^n$ 时，我们可以先递归地计算出 $y = x^{\lfloor n/2 \rfloor}$，其中 $\lfloor a \rfloor$ 表示对 $a$ 进行下取整；</p>
+</li>
+<li>
+<p>根据递归计算的结果，如果 $n$ 为偶数，那么 $x^n = y^2$；如果 $n$ 为奇数，那么 $x^n = y^2  imes x$；</p>
+</li>
+<li>
+<p>递归的边界为 $n = 0$，任意数的 $0$ 次方均为 $1$。</p>
+</li>
+</ul>
+<p>由于每次递归都会使得指数减少一半，因此递归的层数为 $O(\log n)$，算法可以在很快的时间内得到结果。</p>
+<p>```C++ [sol1-C++]<br />
+class Solution {<br />
+public:<br />
+    double quickMul(double x, long long N) {<br />
+        if (N == 0) {<br />
+            return 1.0;<br />
+        }<br />
+        double y = quickMul(x, N / 2);<br />
+        return N % 2 == 0 ? y * y : y * y * x;<br />
+    }</p>
+<pre><code>double myPow(double x, int n) {
+    long long N = n;
+    return N &gt;= 0 ? quickMul(x, N) : 1.0 / quickMul(x, -N);
+}
+</code></pre>
+<p>};</p>
+<pre><code>
+```Java [sol1-Java]
+class Solution {
+    public double myPow(double x, int n) {
+        long N = n;
+        return N &gt;= 0 ? quickMul(x, N) : 1.0 / quickMul(x, -N);
+    }
+
+    public double quickMul(double x, long N) {
+        if (N == 0) {
+            return 1.0;
+        }
+        double y = quickMul(x, N / 2);
+        return N % 2 == 0 ? y * y : y * y * x;
+    }
+}
+</code></pre>
+<p>```Python [sol1-Python3]<br />
+class Solution:<br />
+    def myPow(self, x: float, n: int) -&gt; float:<br />
+        def quickMul(N):<br />
+            if N == 0:<br />
+                return 1.0<br />
+            y = quickMul(N // 2)<br />
+            return y * y if N % 2 == 0 else y * y * x</p>
+<pre><code>    return quickMul(n) if n &gt;= 0 else 1.0 / quickMul(-n)
+</code></pre>
+<pre><code>
+```golang [sol1-Golang]
+func myPow(x float64, n int) float64 {
+    if n &gt;= 0 {
+        return quickMul(x, n)
+    }
+    return 1.0 / quickMul(x, -n)
+}
+
+func quickMul(x float64, n int) float64 {
+    if n == 0 {
+        return 1
+    }
+    y := quickMul(x, n/2)
+    if n%2 == 0 {
+        return y * y
+    }
+    return y * y * x
+}
+</code></pre>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>
+<p>时间复杂度：$O(\log n)$，即为递归的层数。</p>
+</li>
+<li>
+<p>空间复杂度：$O(\log n)$，即为递归的层数。这是由于递归的函数调用会使用栈空间。</p>
+</li>
+</ul>
+<h4>方法二：快速幂 + 迭代</h4>
+<p>由于递归需要使用额外的栈空间，我们试着将递归转写为迭代。在方法一中，我们也提到过，从左到右进行推导是不容易的，因为我们不知道是否需要额外乘 $x$。但我们不妨找一找规律，看看哪些地方额外乘了 $x$，并且它们对答案产生了什么影响。</p>
+<p>我们还是以 $x^{77}$ 作为例子：</p>
+<p>x   o x^2   o x^4   o^+ x^9     o^+ x^{19}  o x^{38}    o^+ x^{77}</p>
+<p>并且把需要额外乘 $x$ 的步骤打上了 $+$ 标记。可以发现：</p>
+<ul>
+<li>
+<p>$x^{38}   o^+ x^{77}$ 中额外乘的 $x$ 在 $x^{77}$ 中贡献了 $x$；</p>
+</li>
+<li>
+<p>$x^9  o^+ x^{19}$ 中额外乘的 $x$ 在之后被平方了 $2$ 次，因此在 $x^{77}$ 中贡献了 $x^{2^2} = x^4$；</p>
+</li>
+<li>
+<p>$x^4  o^+ x^9$ 中额外乘的 $x$ 在之后被平方了 $3$ 次，因此在 $x^{77}$ 中贡献了 $x^{2^3} = x^8$；</p>
+</li>
+<li>
+<p>最初的 $x$ 在之后被平方了 $6$ 次，因此在 $x^{77}$ 中贡献了 $x^{2^6} = x^{64}$。</p>
+</li>
+</ul>
+<p>我们把这些贡献相乘，$x    imes x^4    imes x^8    imes x^{64}$ 恰好等于 $x^{77}$。而这些贡献的指数部分又是什么呢？它们都是 $2$ 的幂次，这是因为每个额外乘的 $x$ 在之后都会被平方若干次。而这些指数 $1$，$4$，$8$ 和 $64$，<strong>恰好就对应了 $77$ 的二进制表示 $(1001101)_2$ 中的每个 $1$</strong>！</p>
+<p>因此我们借助整数的二进制拆分，就可以得到迭代计算的方法，一般地，如果整数 $n$ 的二进制拆分为</p>
+<p>n = 2^{i_0} + 2^{i_1} + \cdots + 2^{i_k}</p>
+<p>那么</p>
+<p>x^n = x^{2^{i_0}}   imes x^{2^{i_1}}    imes \cdots     imes x^{2^{i_k}}</p>
+<p>这样以来，我们从 $x$ 开始不断地进行平方，得到 $x^2, x^4, x^8, x^{16}, \cdots$，如果 $n$ 的第 $k$ 个（从右往左，从 $0$ 开始计数）二进制位为 $1$，那么我们就将对应的贡献 $x^{2^k}$计入答案。</p>
+<p>下面的代码给出了详细的注释。</p>
+<p>```C++ [sol2-C++]<br />
+class Solution {<br />
+public:<br />
+    double quickMul(double x, long long N) {<br />
+        double ans = 1.0;<br />
+        // 贡献的初始值为 x<br />
+        double x_contribute = x;<br />
+        // 在对 N 进行二进制拆分的同时计算答案<br />
+        while (N &gt; 0) {<br />
+            if (N % 2 == 1) {<br />
+                // 如果 N 二进制表示的最低位为 1，那么需要计入贡献<br />
+                ans <em>= x_contribute;<br />
+            }<br />
+            // 将贡献不断地平方<br />
+            x_contribute </em>= x_contribute;<br />
+            // 舍弃 N 二进制表示的最低位，这样我们每次只要判断最低位即可<br />
+            N /= 2;<br />
+        }<br />
+        return ans;<br />
+    }</p>
+<pre><code>double myPow(double x, int n) {
+    long long N = n;
+    return N &gt;= 0 ? quickMul(x, N) : 1.0 / quickMul(x, -N);
+}
+</code></pre>
+<p>};</p>
+<pre><code>
+```Java [sol2-Java]
+class Solution {
+    public double myPow(double x, int n) {
+        long N = n;
+        return N &gt;= 0 ? quickMul(x, N) : 1.0 / quickMul(x, -N);
+    }
+
+    public double quickMul(double x, long N) {
+        double ans = 1.0;
+        // 贡献的初始值为 x
+        double x_contribute = x;
+        // 在对 N 进行二进制拆分的同时计算答案
+        while (N &gt; 0) {
+            if (N % 2 == 1) {
+                // 如果 N 二进制表示的最低位为 1，那么需要计入贡献
+                ans *= x_contribute;
+            }
+            // 将贡献不断地平方
+            x_contribute *= x_contribute;
+            // 舍弃 N 二进制表示的最低位，这样我们每次只要判断最低位即可
+            N /= 2;
+        }
+        return ans;
+    }
+}
+</code></pre>
+<p>```Python [sol2-Python3]<br />
+class Solution:<br />
+    def myPow(self, x: float, n: int) -&gt; float:<br />
+        def quickMul(N):<br />
+            ans = 1.0<br />
+            # 贡献的初始值为 x<br />
+            x_contribute = x<br />
+            # 在对 N 进行二进制拆分的同时计算答案<br />
+            while N &gt; 0:<br />
+                if N % 2 == 1:<br />
+                    # 如果 N 二进制表示的最低位为 1，那么需要计入贡献<br />
+                    ans <em>= x_contribute<br />
+                # 将贡献不断地平方<br />
+                x_contribute </em>= x_contribute<br />
+                # 舍弃 N 二进制表示的最低位，这样我们每次只要判断最低位即可<br />
+                N //= 2<br />
+            return ans</p>
+<pre><code>    return quickMul(n) if n &gt;= 0 else 1.0 / quickMul(-n)
+</code></pre>
+<pre><code>
+```golang [sol2-Golang]
+func myPow(x float64, n int) float64 {
+    if n &gt;= 0 {
+        return quickMul(x, n)
+    }
+    return 1.0 / quickMul(x, -n)
+}
+
+func quickMul(x float64, N int) float64 {
+    ans := 1.0
+    // 贡献的初始值为 x
+    x_contribute := x
+    // 在对 N 进行二进制拆分的同时计算答案
+    for N &gt; 0 {
+        if N % 2 == 1 {
+            // 如果 N 二进制表示的最低位为 1，那么需要计入贡献
+            ans *= x_contribute
+        }
+        // 将贡献不断地平方
+        x_contribute *= x_contribute
+        // 舍弃 N 二进制表示的最低位，这样我们每次只要判断最低位即可
+        N /= 2
+    }
+    return ans
+}
+</code></pre>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>
+<p>时间复杂度：$O(\log n)$，即为对 $n$ 进行二进制拆分的时间复杂度。</p>
+</li>
+<li>
+<p>空间复杂度：$O(1)$。</p>
+</li>
+</ul>
+</div>
+</div>
+</body>
+</html>

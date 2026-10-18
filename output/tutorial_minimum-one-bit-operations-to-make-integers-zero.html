@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Minimum One Bit Operations to Make Integers Zero – Editorial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+<style>.vimeo-link{display:inline-flex;align-items:center;gap:8px;
+            background:#1ab7ea;color:#fff;font-weight:600;
+            padding:10px 20px;border-radius:6px;margin:12px 0;font-size:.95em}
+.vimeo-link:hover{background:#0d9bd4;color:#fff;text-decoration:none}</style>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_minimum-one-bit-operations-to-make-integers-zero.html">Minimum One Bit Operations to Make Integers Zero</a> <span class="sep">›</span> <span class="cur">Editorial</span></nav>
+<div class="wrap"><div class="page-title">1732. Minimum One Bit Operations to Make Integers Zero — Official Editorial</div>
+<div class="page-sub" style="margin-bottom:20px">
+  <span class="badge b-hard">Hard</span> <span class="badge b-tag">Math</span> <span class="badge b-tag">Dynamic Programming</span> <span class="badge b-tag">Bit Manipulation</span> <span class="badge b-tag">Recursion</span> <span class="badge b-tag">Memoization</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/minimum-one-bit-operations-to-make-integers-zero/" target="_blank" style="font-size:.85em">↗ Problem</a>
+  &nbsp;·&nbsp;
+  <a href="problem_minimum-one-bit-operations-to-make-integers-zero.html" style="font-size:.85em">💬 Community Solutions</a>
+</div>
+<div class="sol-body">
+  <p>[TOC]</p>
+<h2>Solution</h2>
+<hr />
+<h3>Approach 1: Math and Recursion</h3>
+<p><strong>Intuition</strong></p>
+<blockquote>
+<p>This is a very difficult problem! In this article, we will assume that you are familiar with the basics of bit manipulation, recursion, and mathematical analysis.</p>
+</blockquote>
+<p>We need to develop a strategy that allows us to set bits to 0. The first observation we can make is that other than the rightmost bit, a bit can only be changed with the second operation. Thus, if we want to change a given bit (other than the rightmost one) to 0, we <strong>must</strong> first convert the number into the appropriate form. For example, let's say we have <code>n = 19</code>, which is <code>10011</code> in binary. If we want to unset the leftmost (most significant) bit, we must convert the number into <code>11000</code> first, and then perform the second operation.</p>
+<p>Let's start by considering the simplest case. How many operations do we need to reduce <code>n</code> to <code>0</code> when <code>n</code> is a power of 2? We have $$n = 2^k$$, where $$k$$ is some non-negative integer. In binary, the number has one bit set to <code>1</code>, and the rest are <code>0</code>. Let's use $$n = 16 = 2^4$$ as an example. In binary, $$n$$ is $$10000$$, and we have $$k = 4$$.</p>
+<p>There are 3 steps to reducing <code>n</code> to <code>0</code> when it is a power of 2:</p>
+<ol>
+<li>First, we need to set the bit at position <code>k - 1</code>. In our example with <code>n = 16</code>, we need to set the bit at position <code>3</code>, thus <code>n</code> becomes $$11000$$</li>
+<li>Next, we use the second operation to unset the most significant bit (at position <code>k</code>). Now, <code>n</code> becomes $$01000$$</li>
+<li>Finally, we need to reduce the remaining number to <code>0</code> by unsetting the bit at position <code>k - 1</code></li>
+</ol>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/1611/1.png" />
+<br></p>
+<p>Notice that after step 2, <code>n</code> is a new power of <code>2</code> and thus step 3 is the same problem (<strong>how many operations do we need to reduce a power of 2 to <code>0</code>?</strong>) with a smaller input. We have identified a recursive relationship.</p>
+<blockquote>
+<p>Before we continue, we must talk about another <strong>critical observation</strong>.</p>
+<p>Both operations are <strong>reversible</strong>. Because each of the two operations flips only one bit, if we can transform <code>a</code> into <code>b</code> with a single operation <code>O1</code>, it means we can reverse the process by applying the same type of operation to <code>b</code> flipping the same bit, to get back to <code>a</code>.</p>
+</blockquote>
+<details><summary><b>Click here to see a brief proof of the critical observation</b></summary>
+
+Without loss of generality, let's assume that:
+
+- `a --- O1 ---> b`
+- `b --- O2 ---> c`
+- `c --- O3 ---> d`
+- ...
+- `y --- On ---> z`
+
+So, if a sequence of operations `[O1, O2, ..., On]` is the minimum number of steps to transform `a` into `z`, then we can also use the reversed sequence `[On, ..., O2, O1]` to transform `z` into `a` and this sequence is also the minimum number of steps to accomplish this.
+
+To prove the above statement, let's employ a proof by contradiction:
+
+- Given that `[O1, O2, ..., On]` is the minimum number of steps to transform `a` into `z`, let's assume that the sequence `[On, ..., O2, O1]` **is not** the minimum steps required to transform `z` into `a`.
+- Now, if this is the case, there must exist some other sequence, say `[Xm, ..., X2, X1]`, that requires fewer steps to transform `z` into `a`.
+- We can use the reversed sequence `[X1, X2, ..., Xm]` to transform `a` to `z`, and since it requires fewer steps than `[O1, O2, ..., On]`, this contradicts our initial assumption.
+- Therefore, our assumption that `[On, ..., O2, O1]` is not the minimum number of steps to transform `z` into `a` must be false.
+
+</details>
+
+<p><br></p>
+<blockquote>
+<p>To sum up, the minimum number of operations for converting <code>x</code> to <code>y</code> for arbitrary <code>x, y</code> is always the same as the minimum number of operations for converting <code>y</code> to <code>x</code>.</p>
+<p>We will make use of this observation heavily throughout the rest of the article.</p>
+</blockquote>
+<p>Let $$f(k)$$ equal the number of operations required to reduce $$2^k$$ to <code>0</code>. We will use this definition of $$f$$ throughout the article. What is the value of $$f(k)$$? It would be the sum of the 3 steps above. Let's analyze each step separately.</p>
+<ol>
+<li>When we start step 1, the $$k$$ bits to the right of the most significant bit are all <code>0</code>. After step 1, the $$k$$ bits to the right represent $$2^{k - 1}$$, because we set the bit at position $$k - 1$$. As you can see, step 1 is actually just converting <code>0</code> to $$2^{k - 1}$$. From the critical observation, we know that this will cost the same number of operations as converting $$2^{k - 1}$$ to <code>0</code>. Thus, step 1 costs $$f(k - 1)$$ operations</li>
+</ol>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/1611/2.png" />
+<br></p>
+<ol start="2">
+<li>Step 2 costs one operation</li>
+</ol>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/1611/3.png" />
+<br></p>
+<ol start="3">
+<li>The remaining number is $$2^{k - 1}$$. Reducing this to <code>0</code> will cost $$f(k - 1)$$ operations</li>
+</ol>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/1611/4.png" />
+<br></p>
+<p>Summing these values, we have</p>
+<p>$$f(k) = f(k - 1) + 1 + f(k - 1)$$</p>
+<p>$$f(k) = 2 \cdot f(k - 1) + 1$$</p>
+<p>The base case of this recurrence is when $$k = 0$$. We have $$n = 2^0 = 1$$, which requires using the first operation once. Thus, $$f(0) = 1$$.</p>
+<iframe src="https://leetcode.com/playground/VfpNR8DS/shared" frameBorder="0" width="100%" height="174" name="VfpNR8DS"></iframe>
+
+<p>Calculating $$f(k)$$ will cost $$O(k)$$, although we could improve it to $$O(1)$$ with memoization (but then we would need more space and general overhead). Is there a way we can calculate $$f(k)$$ more efficiently?</p>
+<p>With some analysis, we can show that $$f(k) = 2^{k + 1} - 1$$. </p>
+<p>The value of our base case is $$f(0) = 1$$, which can conveniently be written in the form $$2^k - 1$$ where $$k$$ is a non-negative integer, i.e. its value is a power of 2 minus one. When we plug this back into $$f$$, we get $$2 \cdot (2^k - 1) + 1 = 2^{k + 1} - 1$$. Without loss of generality, we have another power of two minus one.</p>
+<p>As you can see, plugging a power of two minus one into our recurrence simply gives us the next power of two minus one. Because our base case is a power of two minus one, all values of $$f$$ will be a power of two minus one, specifically $$f(k) = 2^{k + 1} - 1$$. This method is commonly known as mathematical induction.</p>
+<p>We can easily verify this formula by looking at values of $$f$$.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">k</th>
+<th style="text-align: center;">breakdown</th>
+<th style="text-align: center;">value of f(k)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">base case</td>
+<td style="text-align: center;">$$1 = 2^1 - 1$$</td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2 * f(0) + 1</td>
+<td style="text-align: center;">$$3 = 2^2 - 1$$</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">2 * f(1) + 1 = 2 * 3 + 1</td>
+<td style="text-align: center;">$$7 = 2^3 - 1$$</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">2 * f(2) + 1 = 2 * 7 + 1</td>
+<td style="text-align: center;">$$15 = 2^4 - 1$$</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">2 * f(3) + 1 = 2 * 15 + 1</td>
+<td style="text-align: center;">$$31 = 2^5 - 1$$</td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">2 * f(4) + 1 = 2 * 31 + 1</td>
+<td style="text-align: center;">$$63 = 2^6 - 1$$</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p>Finally, we have concluded that the number of operations to reduce a power of two $$2^k$$ is $$2^{k + 1} - 1$$. But this does not solve the problem, because <code>n</code> is not necessarily a power of two!</p>
+<p>However, we can split the problem into two parts. The first part will be to identify the most significant bit. Let's say this bit is at position <code>k</code>. Then we can consider this bit on its own, and we have a value of $$2^k$$. We know reducing this value will cost us $$2^{k + 1} - 1$$ operations.</p>
+<p>The remaining part will be all the bits to the right. Let's call the value of this remaining part $$n'$$. We can get this value as $$n' = n \oplus 2^k$$, where $$\oplus$$ is the XOR operation.</p>
+<p>How many operations do we need to reduce $$n'$$ to <code>0</code>? It's the original problem with a smaller input! We can simply recursively call the function with $$n'$$. The base case of this recursion is when $$n' = 0$$, we require $$0$$ operations.</p>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/1611/5.png" />
+<br></p>
+<p>For the sake of brevity, let's denote $$A(x)$$ as the number of operations to reduce an arbitrary $$x$$ to <code>0</code>. Thus, it would cost $$A(n')$$ to solve the subproblem.</p>
+<p>You may be thinking: the answer is $$f(k) + A(n')$$. However, it's actually $$f(k) - A(n')$$. Why?</p>
+<hr />
+<p><strong>Proof</strong></p>
+<blockquote>
+<p>As a reminder:</p>
+<p>$$k$$ is the position of the most significant bit in $$n$$</p>
+<p>$$f(k)$$ is the number of operations required to reduce $$2^k$$ to $$0$$</p>
+<p>$$n'$$ is the value of $$n$$ with the most significant bit removed</p>
+<p>$$A(x)$$ is the number of operations required to reduce an arbitrary $$x$$ to $$0$$</p>
+</blockquote>
+<ol>
+<li>Let's say that we start with <code>0</code> and convert it to $$2^k$$. This requires $$f(k)$$ operations (remember the critical observation!)</li>
+<li>Next, we convert $$2^k$$ to $$n$$. By the critical observation, this is equivalent to converting $$n$$ to $$2^k$$, which is in turn equivalent to reducing $$n'$$ to <code>0</code>. This is because all the bits in $$2^k$$ are <code>0</code> except for the bit at position <code>k</code>, which by definition is not considered in $$n'$$. We know that this conversion costs $$A(n')$$ operations</li>
+<li>Finally, we reduce $$n$$ to <code>0</code>. Let's say this costs $$ ext{ans}$$ operations</li>
+</ol>
+<p>At the beginning of step 1 we have <code>0</code> and at the end of step 1 we have $$2^k$$. At the beginning of step 2 we have $$2^k$$ and at the end of step 3 we have <code>0</code>. Thus, step 2 and step 3 reverses the operations done by step 1, and by the critical observation, step 1 requires the same number of operations as step 2 and 3.</p>
+<p>We have $$f(k) = A(n') +    ext{ans}$$. We defined $$   ext{ans}$$ as the answer to the problem, and we can rearrange: $$   ext{ans} = f(k) - A(n')$$.</p>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/1611/6.png" />
+<br></p>
+<p>You may be thinking: we can also consider that it requires $$f(k) + A(n')$$ steps to convert <code>0</code> to <code>n</code>, then $$    ext{ans}$$ steps to convert <code>n</code> back to <code>0</code>. Why can't we write  $$ ext{ans} = f(k) + A(n')$$ instead?</p>
+<p>We certainly could, and this "pathing" would be a perfectly valid way to use the operations to convert <code>0</code> to <code>n</code> or vice versa. However, the problem is asking for the minimum operations possible. As $$A(n') \geq 0$$, $$f(k) - A(n') \leq f(k) + A(n')$$ (see below for further explanation).</p>
+<hr />
+<p><strong>Explanation</strong></p>
+<p>While the argument we have presented here is convincing, it is not very intuitive! It is tough to understand, but the key idea is that during the $$f(k)$$ steps where we reduce $$2^k$$, the original number $$n$$ is actually in the middle of the process! That is, if you were to actually perform the operations to reduce $$2^k$$ to $$0$$, you would actually have the value $$n$$ after some operations.</p>
+<p>Recall our function $$f$$ that determined the number of operations required to reduce a power of two. The first step in reducing a power of two was to set the bit at position $$k - 1$$, and it cost $$f(k - 1)$$ operations to do so.</p>
+<p>However, these $$f(k - 1)$$ operations were performed under the assumption that we start with all the bits being <code>0</code> (since $$f$$ was defined in the context of powers of two).</p>
+<p>With $$n$$, we may start with some bits set. These bits being set represent progress toward these $$f(k - 1)$$ operations!</p>
+<p>For example, let's say we want to reduce $$2^3$$ which is $$1000$$ in binary. Step 1 would be to convert the number to $$1100$$. This is equivalent to converting $$0000$$ to $$0100$$, which we know requires $$f(2)$$ operations.</p>
+<p>What if we have $$n = 10$$, which is $$1010$$ in binary? Converting this number to $$1100$$ is equivalent to converting $$0010$$ to $$0100$$. This will require less than $$f(2)$$ operations because we already have a bit set, which is progress! Basically, $$0010$$ is "closer" to $$0100$$ than $$0000$$ is to $$0100$$.</p>
+<p>Because of the critical observation, the progress is equal to $$A(n')$$, since that is exactly the difference between the initial state of $$n$$ and the context in which $$f$$ was defined.</p>
+<blockquote>
+<p>To summarize the logic, it is more expensive to reduce $$2^k$$ than it is to reduce $$n$$.</p>
+<p>The reason we use $$2^k$$ in our algorithm is that we needed to break <code>n</code> into a subproblem so that we could solve it with recursion, $$2^k$$ has only one set bit, and this simple structure facilitates our recursive relationships. As we found a formula for reducing $$2^k$$, it was convenient for us to break $$n$$ into two subproblems: reducing $$2^k$$ and reducing $$n'$$.</p>
+<p>If we were to actually carry out the operations to go from <code>0</code> to <code>n</code> optimally, we would not first convert <code>0</code> to $$2^k$$ then $$2^k$$ to $$n$$. Although this would be valid, it would require $$f(k) + A(n')$$ operations and be a suboptimal strategy. Instead, we would go straight from <code>0</code> to <code>n</code>, since <code>n</code> is "on the way" to $$2^k$$. If we were to keep going until $$2^k$$, it would cost us $$A(n')$$ operations (equivalent to reducing $$n'$$).</p>
+<p>That's why we subtract $$A(n')$$ from $$f(k)$$. Because it would take us $$f(k)$$ operations to get to $$2^k$$, but we don't go to $$2^k$$. We go to $$n$$, which is $$A(n')$$ operations closer.</p>
+</blockquote>
+<hr />
+<p>This <strong>finally</strong> leads us to our solution. First, we check for our base case. If <code>n == 0</code>, simply <code>return 0</code>. Otherwise, we identify <code>k</code>, the position of the most significant bit. This can be done using a while loop. Once we have <code>k</code>, we know the answer is $$f(k) - A(n')$$, where:</p>
+<ul>
+<li>$$f(k) = 2^{k + 1} - 1$$</li>
+<li>$$A(n') =     ext{minimumOneBitOperations}(n \oplus   ext{curr})$$, where $$\oplus$$ is the XOR operator and <code>curr</code> $$=2^k$$</li>
+</ul>
+<p><strong>Algorithm</strong></p>
+<ol>
+<li>If <code>n == 0</code>, return <code>0</code>.</li>
+<li>Initialize <code>k = 0</code>, <code>curr = 1</code>. Here, <code>curr</code> represents $$2^k$$.</li>
+<li>While <code>curr * 2 &lt;= n</code>:<ul>
+<li>Multiply <code>curr</code> by <code>2</code>.</li>
+<li>Increment <code>k</code>.</li>
+</ul>
+</li>
+<li>Return $$2^{k + 1} - 1 -     ext{minimumOneBitOperations}(n \oplus   ext{curr})$$.</li>
+</ol>
+<p><strong>Implementation</strong></p>
+<iframe src="https://leetcode.com/playground/fwZHRQP6/shared" frameBorder="0" width="100%" height="344" name="fwZHRQP6"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>
+<p>Time complexity: $$O(\log^2{}n)$$</p>
+<p>The worst case scenario is when $$n$$ can be written in the form $$2^k - 1$$. The while loop to find the most significant bit will iterate $$\log{}n$$ times. Then, we call the function again with the most significant bit removed. The while loop will then iterate $$(\log{}n) - 1$$ times. In the next function call, it will iterate $$(\log{}n) - 2$$ times, and so on.</p>
+<p>In total, there would be $$1 + 2 + 3 + ... + \log{}n$$ iterations. This is the partial sum of <a href="https://en.wikipedia.org/wiki/1_%2B_2_%2B_3_%2B_4_%2B_%E2%8B%AF#Partial_sums">this series</a> for $$\log{}n$$, which is equal to $$\frac{\log{}n \cdot ((\log{}n) + 1)}{2} = O(\log^2{}n)$$.</p>
+<p>In addition, exponentiation has a logarithmic time complexity, which cannot be ignored in an analysis such as this.</p>
+</li>
+<li>
+<p>Space complexity: $$O(\log{}n)$$</p>
+<p>The recursion call stack can have a max depth of $$O(\log{}n)$$. </p>
+</li>
+</ul>
+<p><br/></p>
+<hr />
+<h3>Approach 2: Iteration</h3>
+<p><strong>Intuition</strong></p>
+<p>The same idea from the first approach can be implemented iteratively, in the opposite direction. Instead of reducing $$n$$ to <code>0</code>, we will try to convert <code>0</code> to $$n$$, which, as we know, is equivalent and requires the same minimum number of steps.</p>
+<p>We start by considering the least significant bit of <code>n</code> and iterate toward the most significant bit. Let's say the current bit we are focusing on is at position $$k$$.</p>
+<p>Let's say the least significant set bit is at position $$k_0$$. We know it represents $$2^{k_0}$$ by definition (as it is the least significant set bit, every other bit to the right must be 0). We also know that we require $$2^{k_0 + 1} - 1$$ operations to convert <code>0</code> to this power of two.</p>
+<p>Consider the next bit on the left is at position $$k_1$$. To convert <code>0</code> to $$2^{k_1}$$ would require $$2^{k_1 + 1} - 1$$ operations. However, this bit does not exactly represent $$2^{k_1}$$ in the full context of <code>n</code>, since we have the bit at position $$k_0$$.</p>
+<p>Thankfully, we learned in the previous approach that the bit being set at position $$k_0$$ actually represents progress toward the conversion to $$2^{k_1}$$. In fact, everything to the right of the current $$k$$ is analogous to $$n'$$ from the previous approach. Thus, we can subtract $$A(n')$$ from $$2^{k_1 + 1} - 1$$ to get the number of operations required to convert <code>0</code> to <code>n</code> up to $$k_1$$.</p>
+<p>Let's continue: the next bit on the left is at position $$k_2$$. To convert <code>0</code> to $$2^{k_2}$$ would require $$2^{k_2 + 1} - 1$$ operations. Everything to the right (the bits at $$k_0$$ and $$k_1$$) represents $$n'$$ and gives us $$A(n')$$ progress toward creating <code>n</code> up to $$k_2$$.</p>
+<p>The question is: what is the value of $$A(n')$$ at each step and how do we continuously update our answer as we iterate over the bits of <code>n</code>? We will use the following variables in our code:</p>
+<ol>
+<li><code>k</code>, this represents the current bit's position</li>
+<li><code>mask</code>, this represents $$2^k$$</li>
+<li><code>ans</code>, this represents the answer to the problem when considering <code>n</code> only up to the $$k^{th}$$ bit</li>
+</ol>
+<p>When we are finished with the bit at $$k_i$$ and move to the bit at $$k_{i + 1}$$, <code>ans</code> now represents $$A(n')$$! Remember that $$A(n')$$ is the number of operations needed to solve the problem for $$n'$$, and $$n'$$ ignores the $$k^{th}$$ bit. When we move forward, <code>ans</code> is "outdated" and represents the answer for $$n'$$, which is exactly $$A(n')$$!</p>
+<p>For any given $$k$$, if the $$k^{th}$$ bit is set, we can update <code>ans</code> as:</p>
+<p>$$2^{k + 1} - 1 -   ext{ans}$$</p>
+<p>We can check if the $$k^{th}$$ bit is set by ANDing <code>n</code> with <code>mask</code>. After each iteration, we increment <code>k</code> and left shift <code>mask</code>.</p>
+<p><strong>Algorithm</strong></p>
+<ol>
+<li>Initialize <code>ans = 0</code>, <code>k = 0</code>, <code>mask = 1</code>.</li>
+<li>While <code>mask &lt;= n</code>:<ul>
+<li>If the bit from <code>mask</code> is set in <code>n</code>, that is, <code>n &amp; mask != 0</code>, update <code>ans</code> as $$2^{k + 1} - 1 -     ext{ans}$$.</li>
+<li>Left shift <code>mask</code> once.</li>
+<li>Increment <code>k</code>.</li>
+</ul>
+</li>
+<li>Return <code>ans</code>.</li>
+</ol>
+<p><strong>Implementation</strong></p>
+<iframe src="https://leetcode.com/playground/NThZvRkk/shared" frameBorder="0" width="100%" height="378" name="NThZvRkk"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>
+<p>Time complexity: $$O(\log n)$$</p>
+<p>The loop runs once per bit of $n$, so it iterates $\log n$ times.</p>
+<p>Every operation inside the loop is constant time when implemented with shifts, bitwise operations, and integer arithmetic in C++ and Java.</p>
+<p>In Python, using $1 &lt;&lt; (k + 1)$ instead of $2 ** (k + 1)$ also keeps the complexity at $O(\log n)$.</p>
+</li>
+<li>
+<p>Space complexity: $$O(1)$$</p>
+<p>This may be controversial. We aren't using any extra space other than a few integers. However, <code>mask</code> grows to a value linear with $$n$$. One could argue that such a value uses $$O(\log{}n)$$ space, although <code>mask</code> never has more than one bit set.</p>
+<p>We have written the space complexity as constant here as it is a standard convention to consider integers as using $$O(1)$$ space. However, there is nuance to consider when the nature of the problem focuses on bits.</p>
+</li>
+</ul>
+<p><br/></p>
+<hr />
+<h3>Approach 3: Gray Code</h3>
+<p><strong>Intuition</strong></p>
+<blockquote>
+<p>Note: this approach is very advanced. You would not be expected to derive this approach in an interview. We have included it for the sake of completeness.</p>
+</blockquote>
+<p>A <a href="https://en.wikipedia.org/wiki/Gray_code">Gray code</a>, named after Frank Gray, is an ordering of binary numbers such that every successive number in the ordering differs by only one bit.</p>
+<p>You may notice that the two operations given in the problem are capable only of changing exactly one bit at a time. Thus, any sequence of numbers generated by these operations <strong>must</strong> also be a Gray code!</p>
+<p>Although there can be many Gray codes, the standard encoding actually follows the exact same ordering as one that would be produced by the operations given in this problem.</p>
+<p>Thus, this problem is actually equivalent to finding the index of $$n$$ in the standard Gray code sequence that starts from <code>0</code>, since reducing <code>n</code> to <code>0</code> is equivalent to converting <code>0</code> to <code>n</code>.</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Gray_code#Converting_to_and_from_Gray_code">Wikipedia article</a> provides a very efficient algorithm to do this. As this approach (and certainly the derivation) is outside the scope of an interview, we will not discuss it in detail here. Interested users are encouraged to read through the Wikipedia article to learn more.</p>
+<p><strong>Algorithm</strong></p>
+<ol>
+<li>Initialize <code>ans = n</code>.</li>
+<li>XOR <code>ans</code> with <code>ans &gt;&gt; 16</code>.</li>
+<li>XOR <code>ans</code> with <code>ans &gt;&gt; 8</code>.</li>
+<li>XOR <code>ans</code> with <code>ans &gt;&gt; 4</code>.</li>
+<li>XOR <code>ans</code> with <code>ans &gt;&gt; 2</code>.</li>
+<li>XOR <code>ans</code> with <code>ans &gt;&gt; 1</code>.</li>
+<li>Return <code>ans</code>.</li>
+</ol>
+<p><strong>Implementation</strong></p>
+<iframe src="https://leetcode.com/playground/iB7gtbsV/shared" frameBorder="0" width="100%" height="259" name="iB7gtbsV"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>
+<p>Time complexity: $$O(1)$$</p>
+<p>$O(1)$ for fixed-width integers</p>
+<p>The algorithm performs a constant number of bitwise shifts and XOR operations, so for 32-bit or 64-bit integers the running time is always constant.</p>
+<p>For arbitrarily large integers, let the input have $B = \log n$ bits.
+Each shift or XOR costs $O(B)$ time, and the number of such operations required is $O(\log B)$.</p>
+<p>Therefore, the total running time is: $O(B \cdot \log B) = O(\log n \cdot \log(\log n))$</p>
+<p>The $\log(\log n)$ component grows extremely slowly, so for any real-world integer size this behaves like constant time.</p>
+</li>
+<li>
+<p>Space complexity: $$O(1)$$</p>
+<p>We aren't using any extra space. The previous approach's analysis does not apply here since we don't count the answer as part of the space complexity.</p>
+</li>
+</ul>
+<p><br/></p>
+<hr />
+</div></div>
+</body>
+</html>

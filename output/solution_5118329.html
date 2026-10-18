@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Beats 100%🔥|| 3 approaches: Iterative, Stack & Reversal◀|| Detailed Explanation✨ – Remove Nodes From Linked List</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_remove-nodes-from-linked-list.html">Remove Nodes From Linked List</a> <span class="sep">›</span> <span class="cur">Beats 100%🔥|| 3 approaches: Iterative, Stack & Reversal◀|| Detailed Explanation✨</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">Beats 100%🔥|| 3 approaches: Iterative, Stack & Reversal◀|| Detailed Explanation✨</div>
+  <div class="meta">
+    <span>👤 rohit_gupta1819</span>
+    <span>👍 15</span>
+    <span>2024-05-06</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/remove-nodes-from-linked-list/solutions/5118329/beats-100-3-approaches-iterative-stack-reversal-detailed-explanation/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>Approach 1</h1>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/02f14ee7-1c33-47a5-934e-67488874fe66_1714965179.3895664.png" /></p>
+<h1>Complexity</h1>
+<ul>
+<li>Time complexity: O(N)</li>
+</ul>
+<!-- Add your time complexity here, e.g. O(n) -->
+
+<ul>
+<li>Space complexity: O(N)</li>
+</ul>
+<!-- Add your space complexity here, e.g. O(n) -->
+<p>```Java []<br />
+/*<em><br />
+ * Definition for singly-linked list.<br />
+ * public class ListNode {<br />
+ *     int val;<br />
+ *     ListNode next;<br />
+ *     ListNode() {}<br />
+ *     ListNode(int val) { this.val = val; }<br />
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }<br />
+ * }<br />
+</em>/<br />
+class Solution {<br />
+    public ListNode removeNodes(ListNode head) {<br />
+        if(head.next == null){<br />
+            return head;<br />
+        }<br />
+        ListNode prevNode = head;<br />
+        ListNode currentNode = head.next;</p>
+<pre><code>    while(currentNode != null){
+        ListNode nextNode = currentNode.next;
+        currentNode.next = prevNode;
+        prevNode = currentNode;
+        currentNode = nextNode;
+    }
+    head.next = null;
+    head = prevNode;
+
+    prevNode = head;
+    currentNode = head.next;
+    while(currentNode != null){
+        if(currentNode.val &lt; prevNode.val){
+            currentNode = currentNode.next;
+        }
+        else{
+            ListNode nextNode = currentNode.next;
+            currentNode.next = prevNode;
+            prevNode = currentNode;
+            currentNode = nextNode;
+        }
+
+    }
+    head.next = null;
+    head = prevNode;
+    return head;
+}
+</code></pre>
+<p>}</p>
+<pre><code>```python []
+class Solution:
+    def removeNodes(self, head: ListNode) -&gt; ListNode:
+        if not head.next:
+            return head
+
+        prev_node = head
+        current_node = head.next
+
+        while current_node:
+            next_node = current_node.next
+            current_node.next = prev_node
+            prev_node = current_node
+            current_node = next_node
+
+        head.next = None
+        head = prev_node
+
+        prev_node = head
+        current_node = head.next
+        while current_node:
+            if current_node.val &lt; prev_node.val:
+                current_node = current_node.next
+            else:
+                next_node = current_node.next
+                current_node.next = prev_node
+                prev_node = current_node
+                current_node = next_node
+
+        head.next = None
+        head = prev_node
+        return head
+</code></pre>
+<p>```C++ []<br />
+/<em><em><br />
+ * Definition for singly-linked list.<br />
+ * struct ListNode {<br />
+ *     int val;<br />
+ *     ListNode </em>next;<br />
+ *     ListNode() : val(0), next(nullptr) {}<br />
+ *     ListNode(int x) : val(x), next(nullptr) {}<br />
+ *     ListNode(int x, ListNode </em>next) : val(x), next(next) {}<br />
+ * };<br />
+<em>/<br />
+class Solution {<br />
+public:<br />
+    ListNode</em> removeNodes(ListNode<em> head) {<br />
+        if(head-&gt;next == nullptr) {<br />
+            return head;<br />
+        }<br />
+        ListNode</em> prevNode = head;<br />
+        ListNode* currentNode = head-&gt;next;</p>
+<pre><code>    while(currentNode != nullptr) {
+        ListNode* nextNode = currentNode-&gt;next;
+        currentNode-&gt;next = prevNode;
+        prevNode = currentNode;
+        currentNode = nextNode;
+    }
+    head-&gt;next = nullptr;
+    head = prevNode;
+
+    prevNode = head;
+    currentNode = head-&gt;next;
+    while(currentNode != nullptr) {
+        if(currentNode-&gt;val &lt; prevNode-&gt;val) {
+            currentNode = currentNode-&gt;next;
+        } else {
+            ListNode* nextNode = currentNode-&gt;next;
+            currentNode-&gt;next = prevNode;
+            prevNode = currentNode;
+            currentNode = nextNode;
+        }   
+    }
+    head-&gt;next = nullptr;
+    head = prevNode;
+    return head;
+}
+</code></pre>
+<p>};</p>
+<pre><code>
+# Intuition (Approach 2: Stack)
+
+Let's break it down step by step in simpler terms.
+
+1. Problem: We have a linked list, and for each node, we need to remove all nodes to its right that have larger values. This is inefficient to do with nested loops.
+2. Idea for Efficiency: We want our resulting linked list to be in decreasing order. But if we reverse a list in decreasing order, it becomes increasing order.
+3. Using a Stack: Since reversing a linked list directly is tricky, we can use a stack. Think of a stack like a stack of books - you add books on top of each other, and the last book you add is the first one you remove.
+4. The Plan:
+- We put all the nodes of our linked list onto a stack.
+- Then, we create a new linked list to store our result.
+- While doing this, we keep track of the maximum node value encountered.
+- We start popping nodes from the stack.
+- If a popped node's value is not smaller than the maximum, we add it to our result linked list.
+- Since our linked list will be reversed because of using the stack, we add new nodes to the beginning.
+5. In Simple Terms:
+- We're using a clever trick with a stack to make things easier.
+- We stack up all the nodes.
+- Then, we pick them off one by one, checking if they should be in our final list.
+- If they should, we add them to our list, building it backward.
+
+So, instead of tediously checking each node with nested loops, we're using a stack to simplify the process and build our result efficiently.
+
+# Complexity
+- Time complexity: O(N)
+&lt;!-- Add your time complexity here, e.g. O(n) --&gt;
+
+- Space complexity: O(N)
+&lt;!-- Add your space complexity here, e.g. O(n) --&gt;
+```Java []
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeNodes(ListNode head) {
+        Stack&lt;ListNode&gt; stack = new Stack&lt;&gt;();
+        ListNode current = head;
+
+        // Add nodes to the stack
+        while (current != null) {
+            stack.push(current);
+            current = current.next;
+        }
+
+        current = stack.pop();
+        int maximum = current.val;
+        ListNode resultList = new ListNode(maximum);
+
+        // Remove nodes from the stack and add to result
+        while (!stack.isEmpty()) {
+            current = stack.pop();
+            // Current should not be added to the result
+            if (current.val &lt; maximum) {
+                continue;
+            }
+            // Add new node with current's value to front of the result
+            else {
+                ListNode newNode = new ListNode(current.val);
+                newNode.next = resultList;
+                resultList = newNode;
+                maximum = current.val;
+            }
+        }
+
+        return resultList;
+    }
+}
+</code></pre>
+<p>```python3 []<br />
+class Solution:<br />
+    def removeNodes(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:<br />
+        stack = []<br />
+        current = head</p>
+<pre><code>    # Add nodes to the stack
+    while current:
+        stack.append(current)
+        current = current.next
+
+    current = stack.pop()
+    maximum = current.val
+    result_list = ListNode(maximum)
+
+    # Remove nodes from the stack and add to result
+    while stack:
+        current = stack.pop()
+        # Current should not be added to the result
+        if current.val &lt; maximum:
+            continue
+        # Add new node with current's value to front of the result
+        else:
+            new_node = ListNode(current.val)
+            new_node.next = result_list
+            result_list = new_node
+            maximum = current.val
+
+    return result_list
+</code></pre>
+<pre><code>```C++ []
+class Solution {
+public:
+    ListNode* removeNodes(ListNode* head) {
+        stack&lt;ListNode*&gt; stack;
+        ListNode* current = head;
+
+        // Add nodes to the stack
+        while (current != nullptr) {
+            stack.push(current);
+            current = current-&gt;next;
+        }
+
+        current = stack.top();
+        stack.pop();
+        int maximum = current-&gt;val;
+        ListNode* resultList = new ListNode(maximum);
+
+        // Remove nodes from the stack and add to result
+        while (!stack.empty()) {
+            current = stack.top();
+            stack.pop();
+            // Current should not be added to the result
+            if (current-&gt;val &lt; maximum) {
+                continue;
+            }
+            // Add new node with current's value to front of the result
+            else {
+                ListNode* newNode = new ListNode(current-&gt;val);
+                newNode-&gt;next = resultList;
+                resultList = newNode;
+                maximum = current-&gt;val;
+            }
+        }
+
+        return resultList;
+    }
+};
+
+</code></pre>
+<h1>Intuition (Approach 3: Reverse Linked List)</h1>
+<p>So, the problem we're dealing with is about deleting nodes in a linked list. We want to delete nodes that have a larger value to their right, and we need to do this efficiently.</p>
+<p>One way to solve this is by reversing the linked list and then traversing it to delete the nodes with smaller values. But reversing a linked list directly can be tricky. That's where stacks come in.</p>
+<p>Think of a stack like a stack of plates. You add plates on top of each other, and when you take a plate, you take the one from the top. Similarly, with a stack in programming, you add elements on top and remove them from the top.</p>
+<p>So, we can use a stack to reverse our linked list. We push all the nodes onto the stack. Then, we pop them off one by one. Since stacks are Last-In-First-Out (LIFO), popping them off reverses the order.</p>
+<p>While popping off the nodes, we keep track of the maximum value encountered so far. If a node's value is not smaller than the maximum, we keep it, otherwise, we discard it.</p>
+<p>Then, we use these selected nodes to create our new linked list. But remember, since we used a stack, our linked list is in reverse order. So, we need to build our new linked list from back to front.</p>
+<p>In simple terms, we're flipping the linked list, finding the nodes we want to keep, and then flipping it back. This method is more efficient than directly iterating through the list multiple times.</p>
+<h1>Complexity</h1>
+<ul>
+<li>Time complexity: O(N)</li>
+</ul>
+<!-- Add your time complexity here, e.g. O(n) -->
+
+<ul>
+<li>Space complexity: O(1)</li>
+</ul>
+<!-- Add your space complexity here, e.g. O(n) -->
+<p>```Java []<br />
+/*<em><br />
+ * Definition for singly-linked list.<br />
+ * public class ListNode {<br />
+ *     int val;<br />
+ *     ListNode next;<br />
+ *     ListNode() {}<br />
+ *     ListNode(int val) { this.val = val; }<br />
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }<br />
+ * }<br />
+</em>/<br />
+class Solution {<br />
+    ListNode reverse(ListNode head) {<br />
+        ListNode prev = null, next = null;<br />
+        while (head != null) {<br />
+            next = head.next;<br />
+            head.next = prev;<br />
+            prev = head;<br />
+            head = next;<br />
+        }<br />
+        return prev;<br />
+    }<br />
+    public ListNode removeNodes(ListNode head) {<br />
+        head = reverse(head);<br />
+        int x = head.val;<br />
+        ListNode tmp = new ListNode(0), prev = tmp;<br />
+        while (head != null) {<br />
+            while (head != null &amp;&amp; head.val &lt; x) {<br />
+                head = head.next;<br />
+            }<br />
+            if (head == null) {<br />
+                tmp.next = null;<br />
+                break;<br />
+            }<br />
+            x = head.val;<br />
+            tmp.next = head;<br />
+            tmp = tmp.next;<br />
+            head = head.next;<br />
+        }<br />
+        return reverse(prev.next);<br />
+    }<br />
+}</p>
+<pre><code>```python3 []
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reverse(self, head: ListNode) -&gt; ListNode:
+        prev = None
+        while head:
+            nxt = head.next
+            head.next = prev
+            prev = head
+            head = nxt
+        return prev
+
+    def removeNodes(self, head: ListNode) -&gt; ListNode:
+        head = self.reverse(head)
+        x = head.val
+        tmp = ListNode(0)
+        prev = tmp
+        while head:
+            while head and head.val &lt; x:
+                head = head.next
+            if not head:
+                tmp.next = None
+                break
+            x = head.val
+            tmp.next = head
+            tmp = tmp.next
+            head = head.next
+        return self.reverse(prev.next)
+
+</code></pre>
+<p>```C++ []<br />
+/<em><em><br />
+ * Definition for singly-linked list.<br />
+ * struct ListNode {<br />
+ *     int val;<br />
+ *     ListNode </em>next;<br />
+ *     ListNode() : val(0), next(nullptr) {}<br />
+ *     ListNode(int x) : val(x), next(nullptr) {}<br />
+ *     ListNode(int x, ListNode </em>next) : val(x), next(next) {}<br />
+ * };<br />
+ */<br />
+class Solution {<br />
+public:</p>
+<pre><code>ListNode* reverse(ListNode* head){
+    ListNode* prev=NULL,*nxt=NULL;
+    while(head){
+        nxt=head-&gt;next;
+        head-&gt;next=prev;
+        prev=head;
+        head=nxt;
+    }return prev;
+}
+
+ListNode* removeNodes(ListNode* head) {
+    head = reverse(head);int x=head-&gt;val;
+    ListNode* tmp=new ListNode(0),*prev=tmp;
+    while(head!=NULL){
+        while(head!=NULL &amp;&amp; head-&gt;val&lt;x){head=head-&gt;next;}
+        if(head==NULL){tmp-&gt;next=NULL;break;}
+        x=head-&gt;val;
+        tmp-&gt;next=head;tmp=tmp-&gt;next;head=head-&gt;next;
+    }
+    return reverse(prev-&gt;next);}
+</code></pre>
+<p>};</p>
+<h2>```</h2>
+<p><img alt="Upvote.png" src="https://assets.leetcode.com/users/images/73df8c39-25fc-4479-b535-16a79534398c_1714954804.9208527.png" /></p>
+</div>
+</div>
+</body>
+</html>

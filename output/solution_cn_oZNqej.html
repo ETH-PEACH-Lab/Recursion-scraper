@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title># 正则化匹配 – Regular Expression Matching</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_regular-expression-matching.html">Regular Expression Matching / 正则表达式匹配</a> <span class="sep">›</span> <span class="cur"># 正则化匹配</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle"># 正则化匹配</div>
+  <div class="meta">
+    <span>👤 xdeng7</span>
+    <span>👍 0</span>
+    <span>2020-08-21</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/regular-expression-matching/solution/zheng-ze-hua-pi-pei-by-deng-xiang-yao/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>动态规划</h1>
+<p>与通配符匹配问题类似，该问题也可用动态规划解决，但是在‘ * ’匹配上有所区别。‘ * ’可以copy前一个字符任意次包括0次，但不能匹配空字符。则在处理‘ * ’匹配上我们要选择copy前一个字符或者不copy前一个字符。选择条件为，‘ * ’前的字母字符是否在匹配过程中是多余的。例如，位于在‘ * ’前的字母字符前的字符段已经完全匹配，那么当前‘ * ’选择不匹配前一个字符并将前一个字符置零。如果选择匹配，即‘ * ’前一个字符在p与s中相同，我们可以选择复制前一个字符，但是同时，我们也要查看‘ * ’与位于当前s的字符之前的字符段是否都匹配成功，若不成功，则当前问题的子问题不成立，则当前问题不成立。我们同样建立二维动态规划表来记录匹配过程。<br />
+<img alt="批注 2020-08-21 124713.png" src="https://pic.leetcode.cn/1598028452-vuujzl-%E6%89%B9%E6%B3%A8%202020-08-21%20124713.png" /></p>
+<p>Base Cases<br />
+    • 空字符与空字符匹配成功，<code>dp[0][0]=true</code>.<br />
+    • 空字符与任何字符匹配都不成功。<br />
+    • 当‘ * ’与空字符匹配，若‘ * ’前有一个字符，‘ * ’可以使前一个字符置空，则匹配成功。<br />
+'*'匹配情况：<br />
+    • 当选择忽略‘ * ’前字母字符时，两个字符段匹配成功，即<code>p[:j-2]==s[:i-1]=&gt;dp[i][j]=dp[i][j-2]=true</code>.<br />
+    • 当p中‘ * ’前的字母字符与s当前字母字符相同或为‘ . ‘，可以选择copy前一个字母字符，但前提条件为' * '前的子问题为true，即<code>dp[i-1][j]=true</code>.<br />
+Noth that:<br />
+详细解释一下第二种情况。第二种情况的前提条件为<code>dp[i-1][j]=true&amp;&amp;p[j-1]==‘ * ’;dp[i-1][j]=&gt;s[:i-1]==p[:j-1]；</code>首先，如果上述式子成立，则说明p中‘ * ’前的字符段已经与s匹配上了，即子问题为true。如若没匹配上，不管当前选择copy还是不copy，当前问题都不可能为真。</p>
+<pre><code>class Solution
+{
+public:
+    bool isMatch(string s, string p)
+    {
+        int s_size=s.length();
+        int p_size=p.length();
+        vector&lt;vector&lt;bool&gt;&gt; dp(s_size+1,vector&lt;bool&gt;(p_size+1));
+        dp[0][0]=true;
+        for(int j=1;j&lt;=p_size;++j)
+            if(p[j-1]=='*')
+                dp[0][j]=dp[0][j-2];
+        for(int i=1;i&lt;=s_size;++i)
+            for(int j=1;j&lt;=p_size;++j)
+                if(p[j-1]==s[i-1]||p[j-1]=='.')
+                    dp[i][j]=dp[i-1][j-1];
+                else if(p[j-1]=='*')
+                    dp[i][j]=dp[i][j-2]||((s[i-1]==p[j-2]||p[j-2]=='.')&amp;&amp;dp[i-1][j]);
+        return dp[s_size][p_size];
+    }
+};
+</code></pre>
+<h1>递归</h1>
+<p>该问题也可用递归来解，递归可以被更好的理解，但是效率却不高，我们不详细的讨论，只是简单的分析一下。递归中我们只关注当前问题，后续问题交给递归处理，递归会把后续问题的解返回给当前问题。那么首先我们匹配s与p中当前字符,s[i]和p[j],是否成功，成功我们将后续字符段交给递归处理。下面分析一下当出现‘*’的情况。</p>
+<p>若两个字符为字母字符，匹配不成功，则继续通过匹配的可能只有当p中当前字符p[j]后续字符为‘ * ’,p[j+1]=='<em>',可以使p中当前字符置空，否则没有匹配成功的可能。<br />
+若p中当前字符成功置空，那么s当前字符,s[i],就得继续与p的‘</em>’后一个字符相比较,s[i]==p[j+2]。<br />
+最后，若当前两个字符比较成功且p[j+1]=='*',则要检查s[i]的后续字符与当前p[j]的字符是否匹配,s[i+1]==p[j]，‘ * ’可以copy当前p中的字符,否则false。<br />
+根据上述内容代码为：</p>
+<pre><code>if((j&lt;=p.length()-2)&amp;&amp;p[j+1]=='*')
+{
+    ans=first&amp;&amp;dp(i+1,j,s,p)||dp(i,j+2,s,p);
+}
+else
+{
+    ans=first&amp;&amp;dp(i+1,j+1,s,p);
+}
+</code></pre>
+<p>而停止递归的base case为p的指针j已经到达尾部，若s的指针同样到达尾部，则返回true；不然，返回false。<code>if(j==p.length()) return i==s.length();</code></p>
+<pre><code>class Solution
+{
+public:
+    unordered_map&lt;int, bool&gt; dict;
+    bool dp(int i,int j,string &amp;p,string &amp;s)
+    {
+        int key = i * 100 + j;
+        bool ans = false;
+        if (dict.find(key) != dict.end())
+        {
+            return dict[key];
+        }
+        if (j == p.length()) return i == s.length();
+        bool first =(i &lt;= s.length()) &amp;&amp; (p[j] == s[i] || p[j] == '.');
+        if (j &lt;= p.length() - 2 &amp;&amp; p[j+1] == '*')
+            ans = (first &amp;&amp; dp(i + 1, j,p,s) )||dp(i,j+2,p,s);
+        else
+            ans = first &amp;&amp; dp(i + 1, j + 1,p,s);
+        dict[i*100+j] = ans;
+        return ans;
+    }
+    bool isMatch(string s, string p)
+    {
+        if(p.empty())
+            return s.empty();
+        return dp(0, 0, p, s);
+    }
+};
+</code></pre>
+</div>
+</div>
+</body>
+</html>

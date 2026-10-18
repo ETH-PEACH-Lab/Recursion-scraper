@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>REGEX MATCHING - 🔥🔥🔥🔥Beats 100% | C | C++ | C# | JAVA | JS | TS | Python | Python3 🔥🔥🔥🔥 – Regular Expression Matching</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_regular-expression-matching.html">Regular Expression Matching</a> <span class="sep">›</span> <span class="cur">REGEX MATCHING - 🔥🔥🔥🔥Beats 100% | C | C++ | C# | JAVA | JS | TS | Python | Python3 🔥🔥🔥🔥</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">REGEX MATCHING - 🔥🔥🔥🔥Beats 100% | C | C++ | C# | JAVA | JS | TS | Python | Python3 🔥🔥🔥🔥</div>
+  <div class="meta">
+    <span>👤 20Sunny</span>
+    <span>👍 1</span>
+    <span>2024-10-17</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/regular-expression-matching/solutions/5926099/regex-matching-beats-100-c-c-c-java-js-ts-python-python3/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p><img alt="68747470733a2f2f7265732e636c6f7564696e6172792e636f6d2f7375706572666f6c696f2f696d6167652f75706c6f61642f76313632303638393937392f36383734373437303733336132663266363932653730363936653639366436373265363336663664.gif" src="https://assets.leetcode.com/users/images/57af59cc-f626-443f-a48f-7866ed0f969e_1729176512.9833336.gif" /></p>
+<h1>Intuition</h1>
+<p>The problem is about matching a string <code>s</code> with a pattern <code>p</code> where:<br />
+- <code>.</code> matches any single character.<br />
+- <code>*</code> matches zero or more occurrences of the preceding character.</p>
+<p>We need to determine if the entire string matches the pattern, making this a dynamic programming (DP) problem where we evaluate subproblems (smaller parts of the string and pattern) to solve the larger problem.</p>
+<blockquote>
+<p>The goal is to determine whether the entire string s can be fully matched by the pattern p. For example:</p>
+</blockquote>
+<ul>
+<li>Input: s = "aa", p = "a<em>" returns True because a</em> means zero or more as, which can match "aa".</li>
+<li>Input: s = "ab", p = ".<em>" returns True because .</em> means zero or more of any character, matching "ab".</li>
+</ul>
+<h1>Approach</h1>
+<p>We can solve this using dynamic programming. We'll define a 2D table <code>dp</code> where <code>dp[i][j]</code> is <code>True</code> if the substring <code>s[0..i-1]</code> matches the pattern <code>p[0..j-1]</code>. Otherwise, it's <code>False</code>.</p>
+<h3>Key Observations:</h3>
+<ol>
+<li>
+<p><strong>Direct Match</strong>: If the current characters in <code>s</code> and <code>p</code> match, or if <code>p[j-1]</code> is a <code>.</code> (which matches any character), then <code>dp[i][j] = dp[i-1][j-1]</code>.</p>
+</li>
+<li>
+<p><strong>Handling <code>*</code></strong>:<br />
+   - <code>*</code> matches zero occurrences of the preceding character (ignore the preceding character and <code>*</code>), so <code>dp[i][j] = dp[i][j-2]</code>.<br />
+   - If <code>s[i-1]</code> matches the character before <code>*</code> (or it's a <code>.</code>), then <code>dp[i][j]</code> can also be <code>True</code> by matching one or more occurrences of that character. So, <code>dp[i][j] = dp[i-1][j]</code>.</p>
+</li>
+</ol>
+<h3>Base Cases:</h3>
+<ul>
+<li><code>dp[0][0] = True</code> because an empty string matches an empty pattern.</li>
+<li>When <code>p[j-1] == '*'</code>, it can match zero occurrences of the preceding element, so we initialize <code>dp[0][j]</code> by checking if the pattern can match an empty string (<code>dp[0][j] = dp[0][j-2]</code>).</li>
+</ul>
+<h1>Complexity</h1>
+<ul>
+<li>
+<p><strong>Time complexity</strong>: The solution involves filling up a DP table of size <code>(m+1) x (n+1)</code>, where <code>m</code> is the length of the string <code>s</code> and <code>n</code> is the length of the pattern <code>p</code>. This results in a time complexity of <strong>O(m * n)</strong>.</p>
+</li>
+<li>
+<p><strong>Space complexity</strong>: We use a 2D table <code>dp</code> of size <code>(m+1) x (n+1)</code>, resulting in a space complexity of <strong>O(m * n)</strong>.</p>
+</li>
+</ul>
+<hr />
+<p>```cpp []<br />
+class Solution {<br />
+public:<br />
+    bool isMatch(string s, string p) {<br />
+        int m = s.length(), n = p.length();</p>
+<pre><code>    // dp[i][j] will be true if s[0..i-1] matches p[0..j-1]
+    vector&lt;vector&lt;bool&gt;&gt; dp(m + 1, vector&lt;bool&gt;(n + 1, false));
+
+    // Base case: empty string matches empty pattern
+    dp[0][0] = true;
+
+    // Handle cases where pattern contains '*' which can match an empty string
+    for (int j = 1; j &lt;= n; ++j) {
+        if (p[j - 1] == '*') {
+            dp[0][j] = dp[0][j - 2];  // '*' can match zero occurrence of the preceding element
+        }
+    }
+
+    for (int i = 1; i &lt;= m; ++i) {
+        for (int j = 1; j &lt;= n; ++j) {
+            if (p[j - 1] == s[i - 1] || p[j - 1] == '.') {
+                dp[i][j] = dp[i - 1][j - 1];  // Characters match or '.' matches any single character
+            } else if (p[j - 1] == '*') {
+                // '*' can match zero occurrence of the previous character
+                dp[i][j] = dp[i][j - 2];
+                // Or '*' can match one or more occurrences of the previous character
+                if (p[j - 2] == s[i - 1] || p[j - 2] == '.') {
+                    dp[i][j] = dp[i][j] || dp[i - 1][j];
+                }
+            }
+        }
+    }
+
+    return dp[m][n];
+}
+</code></pre>
+<p>};</p>
+<pre><code>
+```C []
+#include &lt;stdbool.h&gt;
+#include &lt;string.h&gt;
+
+bool isMatch(char* s, char* p) {
+    int m = strlen(s);
+    int n = strlen(p);
+
+    // Create a 2D DP table with (m+1) x (n+1) dimensions
+    bool dp[m+1][n+1];
+
+    // Initialize the DP table
+    memset(dp, false, sizeof(dp));
+
+    // Base case: empty string matches empty pattern
+    dp[0][0] = true;
+
+    // Handle patterns like a*, a*b*, a*b*c*, etc. that can match an empty string
+    for (int j = 1; j &lt;= n; ++j) {
+        if (p[j-1] == '*') {
+            dp[0][j] = dp[0][j-2];  // '*' can match zero occurrence of the preceding element
+        }
+    }
+
+    // Fill the DP table
+    for (int i = 1; i &lt;= m; ++i) {
+        for (int j = 1; j &lt;= n; ++j) {
+            // Case 1: The characters are the same, or pattern character is '.'
+            if (p[j-1] == s[i-1] || p[j-1] == '.') {
+                dp[i][j] = dp[i-1][j-1];
+            }
+            // Case 2: Pattern contains a '*' wildcard
+            else if (p[j-1] == '*') {
+                // '*' acts as zero of the preceding character
+                dp[i][j] = dp[i][j-2];
+
+                // If preceding character in the pattern matches the current character in the string
+                // or if the preceding character in the pattern is '.', '*' can match more
+                if (p[j-2] == s[i-1] || p[j-2] == '.') {
+                    dp[i][j] = dp[i][j] || dp[i-1][j];
+                }
+            }
+        }
+    }
+
+    return dp[m][n];
+}
+
+</code></pre>
+<p>```C# []<br />
+public class Solution {<br />
+    public bool IsMatch(string s, string p) {<br />
+        // Call the recursive matching function starting from index 0 for both string and pattern<br />
+        return IsMatchHelper(s, p, 0, 0);<br />
+    }</p>
+<pre><code>private bool IsMatchHelper(string s, string p, int i, int j) {
+    // If we've reached the end of the pattern, check if we're also at the end of the string
+    if (j == p.Length) {
+        return i == s.Length;
+    }
+
+    // Check if the current characters in s and p match, considering '.'
+    bool currentMatch = (i &lt; s.Length) &amp;&amp; (p[j] == s[i] || p[j] == '.');
+
+    // Check for the '*' wildcard, which refers to the preceding element
+    if (j + 1 &lt; p.Length &amp;&amp; p[j + 1] == '*') {
+        // There are two cases:
+        // 1. '*' can match 0 occurrences of the preceding element, so skip it (j+2)
+        // 2. If the current characters match, '*' can match at least one occurrence, so move i (i+1)
+        return IsMatchHelper(s, p, i, j + 2) || (currentMatch &amp;&amp; IsMatchHelper(s, p, i + 1, j));
+    } else {
+        // If there is no '*' wildcard, proceed with a simple match and move both i and j
+        return currentMatch &amp;&amp; IsMatchHelper(s, p, i + 1, j + 1);
+    }
+}
+</code></pre>
+<p>}</p>
+<pre><code>
+```Java []
+class Solution {
+    public boolean isMatch(String s, String p) {
+        int m = s.length();
+        int n = p.length();
+
+        // dp[i][j] will be true if s[0..i-1] matches p[0..j-1]
+        boolean[][] dp = new boolean[m + 1][n + 1];
+
+        // Base case: empty string matches empty pattern
+        dp[0][0] = true;
+
+        // Handle patterns like a*, a*b*, etc. for matching empty string
+        for (int j = 1; j &lt;= n; j++) {
+            if (p.charAt(j - 1) == '*') {
+                dp[0][j] = dp[0][j - 2];
+            }
+        }
+
+        // Fill the dp array
+        for (int i = 1; i &lt;= m; i++) {
+            for (int j = 1; j &lt;= n; j++) {
+                if (p.charAt(j - 1) == '.' || p.charAt(j - 1) == s.charAt(i - 1)) {
+                    // If characters match or pattern has '.', update the dp table
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else if (p.charAt(j - 1) == '*') {
+                    // '*' can match zero of the preceding element
+                    dp[i][j] = dp[i][j - 2];
+
+                    // '*' can match one or more of the preceding element
+                    if (p.charAt(j - 2) == '.' || p.charAt(j - 2) == s.charAt(i - 1)) {
+                        dp[i][j] = dp[i][j] || dp[i - 1][j];
+                    }
+                }
+            }
+        }
+
+        return dp[m][n];
+    }
+}
+
+</code></pre>
+<p>```Javascript []<br />
+/*<em><br />
+ * @param {string} s<br />
+ * @param {string} p<br />
+ * @return {boolean}<br />
+</em>/<br />
+var isMatch = function(s, p) {<br />
+    const dp = Array(s.length + 1).fill(null).map(() =&gt; Array(p.length + 1).fill(false));</p>
+<pre><code>// Base case: empty string and empty pattern are a match
+dp[0][0] = true;
+
+// Deals with patterns like a*, a*b*, a*b*c* that can match an empty string
+for (let j = 1; j &lt;= p.length; j++) {
+    if (p[j - 1] === '*') {
+        dp[0][j] = dp[0][j - 2];
+    }
+}
+
+for (let i = 1; i &lt;= s.length; i++) {
+    for (let j = 1; j &lt;= p.length; j++) {
+        if (p[j - 1] === '.' || p[j - 1] === s[i - 1]) {
+            // If characters match or pattern has '.', copy the diagonal result
+            dp[i][j] = dp[i - 1][j - 1];
+        } else if (p[j - 1] === '*') {
+            // If pattern has '*', we consider two scenarios:
+            // 1. Treat '*' as repeating zero times: dp[i][j-2]
+            // 2. Treat '*' as repeating the character one or more times: dp[i-1][j]
+            if (p[j - 2] === s[i - 1] || p[j - 2] === '.') {
+                dp[i][j] = dp[i][j - 2] || dp[i - 1][j];
+            } else {
+                dp[i][j] = dp[i][j - 2];
+            }
+        }
+    }
+}
+
+return dp[s.length][p.length];
+</code></pre>
+<p>};</p>
+<pre><code>
+```Typescript []
+function isMatch(s: string, p: string): boolean {
+    // dp[i][j] will be true if s[0...i-1] matches p[0...j-1]
+    const dp: boolean[][] = Array(s.length + 1).fill(null).map(() =&gt; Array(p.length + 1).fill(false));
+
+    // Empty string matches empty pattern
+    dp[0][0] = true;
+
+    // Handle patterns like a*, a*b*, etc., where '*' can match zero occurrences of the preceding element
+    for (let j = 2; j &lt;= p.length; j++) {
+        if (p[j - 1] === '*') {
+            dp[0][j] = dp[0][j - 2];
+        }
+    }
+
+    // Iterate over the string and the pattern
+    for (let i = 1; i &lt;= s.length; i++) {
+        for (let j = 1; j &lt;= p.length; j++) {
+            if (p[j - 1] === '.' || p[j - 1] === s[i - 1]) {
+                // Characters match or pattern has '.', so the current state depends on the previous state
+                dp[i][j] = dp[i - 1][j - 1];
+            } else if (p[j - 1] === '*') {
+                // '*' means zero or more of the preceding element
+                dp[i][j] = dp[i][j - 2]; // Zero occurrences of the preceding element
+                if (p[j - 2] === '.' || p[j - 2] === s[i - 1]) {
+                    // One or more occurrences of the preceding element
+                    dp[i][j] = dp[i][j] || dp[i - 1][j];
+                }
+            }
+        }
+    }
+
+    return dp[s.length][p.length];
+}
+
+</code></pre>
+<p>```Python []<br />
+class Solution(object):<br />
+    def isMatch(self, s, p):<br />
+        """<br />
+        :type s: str<br />
+        :type p: str<br />
+        :rtype: bool<br />
+        """<br />
+        # dp[i][j] will be True if s[0:i] matches p[0:j]<br />
+        dp = [[False] * (len(p) + 1) for _ in range(len(s) + 1)]</p>
+<pre><code>    # Empty string matches with empty pattern
+    dp[0][0] = True
+
+    # Deals with patterns like a*, a*b*, a*b*c* which can match an empty string
+    for j in range(1, len(p) + 1):
+        if p[j - 1] == '*':
+            dp[0][j] = dp[0][j - 2]
+
+    # Fill the DP table
+    for i in range(1, len(s) + 1):
+        for j in range(1, len(p) + 1):
+            if p[j - 1] == '.' or p[j - 1] == s[i - 1]:
+                # If characters match or pattern has '.', carry forward the previous result
+                dp[i][j] = dp[i - 1][j - 1]
+            elif p[j - 1] == '*':
+                # Check zero occurrence case or match multiple times
+                dp[i][j] = dp[i][j - 2] or (dp[i - 1][j] and (p[j - 2] == s[i - 1] or p[j - 2] == '.'))
+
+    # The answer is whether the entire string s matches the entire pattern p
+    return dp[-1][-1]
+</code></pre>
+<pre><code>
+```Python3 []
+class Solution:
+    def isMatch(self, s: str, p: str) -&gt; bool:
+        # Initialize a DP table with False values
+        dp = [[False] * (len(p) + 1) for _ in range(len(s) + 1)]
+
+        # Base case: empty string matches with empty pattern
+        dp[0][0] = True
+
+        # Handle patterns with '*' where it can match zero preceding element
+        for j in range(2, len(p) + 1):
+            if p[j - 1] == '*':
+                dp[0][j] = dp[0][j - 2]
+
+        # Fill the DP table
+        for i in range(1, len(s) + 1):
+            for j in range(1, len(p) + 1):
+                if p[j - 1] == '.' or p[j - 1] == s[i - 1]:
+                    # Match single character or '.'
+                    dp[i][j] = dp[i - 1][j - 1]
+                elif p[j - 1] == '*':
+                    # Check two cases:
+                    # 1. '*' means zero occurrences of the preceding element
+                    # 2. '*' means one or more occurrences of the preceding element
+                    dp[i][j] = dp[i][j - 2] or ((p[j - 2] == s[i - 1] or p[j - 2] == '.') and dp[i - 1][j])
+
+        return dp[len(s)][len(p)]
+
+</code></pre>
+<p><img alt="download.jpg" src="https://assets.leetcode.com/users/images/61c5b972-b660-433b-8f1d-fed43e9fe842_1729176573.5618312.jpeg" /></p>
+</div>
+</div>
+</body>
+</html>

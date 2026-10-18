@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Parsing A Boolean Expression – Editorial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+<style>.vimeo-link{display:inline-flex;align-items:center;gap:8px;
+            background:#1ab7ea;color:#fff;font-weight:600;
+            padding:10px 20px;border-radius:6px;margin:12px 0;font-size:.95em}
+.vimeo-link:hover{background:#0d9bd4;color:#fff;text-decoration:none}</style>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_parsing-a-boolean-expression.html">Parsing A Boolean Expression</a> <span class="sep">›</span> <span class="cur">Editorial</span></nav>
+<div class="wrap"><div class="page-title">1197. Parsing A Boolean Expression — Official Editorial</div>
+<div class="page-sub" style="margin-bottom:20px">
+  <span class="badge b-hard">Hard</span> <span class="badge b-tag">String</span> <span class="badge b-tag">Stack</span> <span class="badge b-tag">Recursion</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/parsing-a-boolean-expression/" target="_blank" style="font-size:.85em">↗ Problem</a>
+  &nbsp;·&nbsp;
+  <a href="problem_parsing-a-boolean-expression.html" style="font-size:.85em">💬 Community Solutions</a>
+</div>
+<div class="sol-body">
+  <p>[TOC]</p>
+<h2>Solution</h2>
+<hr />
+<h3>Overview</h3>
+<p>We need to evaluate a boolean expression that follows specific rules. These rules allow for expressions that include literals for <code>true</code> ('t') and <code>false</code> ('f'), as well as logical operations like NOT ('!'), AND ('&amp;'), and OR ('|'). The goal is to reduce the expression by applying these operations step by step until we arrive at either <code>true</code> or <code>false</code>.</p>
+<p>For example, consider the expression <code>&amp;(|(f))</code>. We first evaluate the OR expression inside the parentheses. Since it's <code>|(f)</code>, it results in <code>false</code>. Now, the expression becomes <code>&amp;(f)</code>, which is an AND operation. Since there's only one <code>f</code>, the result is <code>false</code>.</p>
+<details> 
+
+<summary> HINT </summary>
+
+Start by identifying the innermost expression enclosed in parentheses and work your way outward, applying the relevant logical operation each time.
+
+</details>
+
+<hr />
+<h3>Approach 1: String Manipulation</h3>
+<h4>Intuition</h4>
+<p>We need to find the deepest part of the expression, which is usually within the innermost parentheses. We search for the last operator in the string because it likely corresponds to the most nested part. Once we locate it, we grab everything between that operator and its closing parenthesis. This forms a subexpression that we can evaluate independently.</p>
+<p>For example, in <code>&amp;(t, |(f, t))</code>, we first look inside the <code>|</code> operator since it is nested within the <code>&amp;</code>. Evaluating <code>|(f, t)</code> tells us that, because one of the values is <code>t</code>, the result of this subexpression is <code>t</code>. We then replace <code>|(f, t)</code> with <code>t</code>, reducing the problem to <code>&amp;(t, t)</code>. Finally, we evaluate the <code>&amp;</code>, which returns <code>t</code> since both values are true.</p>
+<p>This makes sense in smaller steps, but since we are creating new strings each time we reduce an expression, it becomes slow as the expression grows. Each time we replace a subexpression, we are dealing with the entire string again, which is inefficient.</p>
+<h4>Algorithm</h4>
+<ul>
+<li>Start a loop that continues until the length of <code>expression</code> is greater than 1:</li>
+<li>Find the position of the last logical operator (<code>!</code>, <code>&amp;</code>, or <code>|</code>) in the <code>expression</code> and store it in <code>start</code>.</li>
+<li>Find the position of the corresponding closing parenthesis <code>)</code> that matches the last operator, and store it in <code>end</code>.</li>
+<li>
+<p>Extract the substring <code>subExpr</code> from <code>expression</code> that includes the operator and the values enclosed in parentheses.</p>
+</li>
+<li>
+<p>Call <code>evaluateSubExpr(subExpr)</code> to evaluate the subexpression:</p>
+</li>
+<li>In <code>evaluateSubExpr</code>, extract the operator from <code>subExpr</code>.</li>
+<li>Get the values by taking the substring from index 2 to the second-to-last character.</li>
+<li>
+<p>Depending on the operator:</p>
+<ul>
+<li>If it’s <code>!</code>, return <code>'f'</code> if the first value is <code>'t'</code>, otherwise return <code>'t'</code>.</li>
+<li>If it’s <code>&amp;</code>, return <code>'f'</code> if any value is <code>'f'</code>, otherwise return <code>'t'</code>.</li>
+<li>If it’s <code>|</code>, return <code>'t'</code> if any value is <code>'t'</code>, otherwise return <code>'f'</code>.</li>
+</ul>
+</li>
+<li>
+<p>Replace the evaluated <code>subExpr</code> in <code>expression</code> with the result (either <code>'t'</code> or <code>'f'</code>).</p>
+</li>
+<li>
+<p>After simplifying the expression completely, return <code>true</code> if the remaining character in <code>expression</code> is <code>'t'</code>; otherwise, return <code>false</code>.</p>
+</li>
+</ul>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/cgASQu5Z/shared" frameBorder="0" width="100%" height="500" name="cgASQu5Z"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Let $n$ be the size of the <code>expression</code> string.</p>
+<ul>
+<li>
+<p>Time complexity: $O(n^2)$</p>
+<p>The while loop continues while the length of the <code>expression</code> is greater than 1. In the worst case, we might evaluate every subexpression multiple times, leading to a total of $O(n)$ iterations. Within each iteration, the operations <code>find_last_of</code>, <code>find</code>, and <code>substr</code> each can take up to $O(n)$ time in the worst case. Hence, the overall time complexity becomes $O(n^2)$.</p>
+</li>
+<li>
+<p>Space complexity: $O(n)$</p>
+<p>The space complexity primarily comes from the storage of substrings created during the evaluation of subexpressions. The <code>subExpr</code> variable holds a substring of the <code>expression</code>, and the maximum length of <code>subExpr</code> can be up to $O(n)$. Additionally, the recursive calls to <code>evaluateSubExpr</code> can lead to stack space usage, but since we don't have deep recursion (the depth is limited by the number of operations in the expression), it does not significantly affect the space complexity. Thus, the overall space complexity is $O(n)$.</p>
+</li>
+</ul>
+<hr />
+<h3>Approach 2: Recursive</h3>
+<h4>Intuition</h4>
+<p>Similar to the previous approach, we check character by character. When we come across a boolean value (<code>t</code> or <code>f</code>), we can immediately return it as the result. However, when we see an operator like <code>!</code>, <code>&amp;</code>, or <code>|</code>, we know it controls what comes inside the parentheses following it. We skip the opening parenthesis and move into the subexpression. </p>
+<p>For the <code>!</code> operator, we expect one boolean value. We simply negate this value and return the opposite. For <code>&amp;</code>, we know all values inside must be true for the result to be true, so we evaluate each one, stopping if we find an <code>f</code>. The <code>|</code> operator works similarly, but we stop as soon as we find a <code>t</code>.</p>
+<p>Take the expression <code>&amp;(t, |(f, t))</code> as an example. We first encounter <code>&amp;</code>, which tells us we need to evaluate everything inside the parentheses. We then encounter <code>|</code>, which tells us to evaluate its inner subexpression. When we find that one of the values is <code>t</code>, we return <code>t</code> for the <code>|</code> part. Now the expression simplifies to <code>&amp;(t, t)</code>, which evaluates to <code>t</code>.</p>
+<p>Here we don’t repeat work or manipulate the string like in the previous approach, making it a little more efficient.</p>
+<h4>Algorithm</h4>
+<ul>
+<li>
+<p>Initialize <code>index</code> to <code>0</code> and call the <code>evaluate</code> function with the current expression and index.</p>
+</li>
+<li>
+<p>In the <code>evaluate</code> function:</p>
+<ul>
+<li>Read the current character from <code>expression</code> at <code>index</code>, and increment <code>index</code> by 1.</li>
+</ul>
+</li>
+<li>
+<p>Base cases:</p>
+<ul>
+<li>If the character is 't' (true), return <code>true</code>.</li>
+<li>If the character is 'f' (false), return <code>false</code>.</li>
+</ul>
+</li>
+<li>
+<p>Handle the NOT operation ('!(...)'):</p>
+<ul>
+<li>If the character is '!', increment <code>index</code> to skip the '('.</li>
+<li>Recursively evaluate the inner expression and negate the result (using <code>!</code>), then increment <code>index</code> to skip the ')'.</li>
+<li>Return the negated result.</li>
+</ul>
+</li>
+<li>
+<p>Handle the AND ('&amp;(...)') and OR ('|(...)') operations:</p>
+<ul>
+<li>Initialize an array <code>values</code> to store the results of subexpressions.</li>
+<li>Increment <code>index</code> to skip the '('.</li>
+<li>While the current character is not ')':</li>
+<li>If the character is not a comma, recursively evaluate the subexpression and add the result to <code>values</code>.</li>
+<li>If the character is a comma, increment <code>index</code> to skip it.</li>
+<li>After exiting the loop, increment <code>index</code> to skip the ')'.</li>
+</ul>
+</li>
+<li>
+<p>Manual AND operation:</p>
+<ul>
+<li>If the character is '&amp;', iterate through <code>values</code>.</li>
+<li>If any value is <code>false</code>, return <code>false</code>.</li>
+<li>If all values are <code>true</code>, return <code>true</code>.</li>
+</ul>
+</li>
+<li>
+<p>Manual OR operation:</p>
+<ul>
+<li>If the character is '|', iterate through <code>values</code>.</li>
+<li>If any value is <code>true</code>, return <code>true</code>.</li>
+<li>If all values are <code>false</code>, return <code>false</code>.</li>
+</ul>
+</li>
+<li>
+<p>Return <code>false</code> at the end of the function (this point should never be reached).</p>
+</li>
+</ul>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/Wd8HfyHL/shared" frameBorder="0" width="100%" height="500" name="Wd8HfyHL"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Let $n$ be the size of the <code>expression</code> string.</p>
+<ul>
+<li>
+<p>Time complexity: $O(n)$</p>
+<p>We traverse the entire expression string at most once, as each character is processed sequentially. Each recursive call to <code>evaluate</code> processes one character and the calls return only when the entire expression is evaluated. Therefore, in the worst case, where all characters are involved in the expression, the time complexity is linear in terms of the size of the expression.</p>
+</li>
+<li>
+<p>Space complexity: $O(n)$</p>
+<p>The space complexity arises from the recursion stack due to the depth of the recursive calls. In the worst case, if the expression is deeply nested, the recursion depth can reach up to $n$, leading to a stack space usage of $O(n)$. </p>
+<p>Additionally, the space used by the <code>values</code> can also contribute to the space complexity, but its size depends on the number of boolean values being evaluated at each level, which is bounded by the size of the expression. Thus, the overall space complexity remains $O(n)$.</p>
+</li>
+</ul>
+<hr />
+<h3>Approach 3: Using Stack</h3>
+<h4>Intuition</h4>
+<p>Instead of recursion, we can use a stack to simulate the nested structure of the expression. The stack will keep track of what we are currently evaluating, allowing us to process each part of the expression step by step without making recursive function calls.</p>
+<p>Iterate from left to right and as we encounter operators, boolean values, and parentheses, we push them onto the stack. When we find a closing parenthesis <code>)</code>, we know we’ve reached the end of a subexpression. At this point, we pop values off the stack until we reach the matching opening parenthesis <code>(</code>. These popped values form the subexpression, and we can now evaluate it.</p>
+<p>For example, with the expression <code>&amp;(t, |(f, t))</code>, we first push <code>&amp;</code> onto the stack, followed by <code>t</code>. When we encounter <code>|</code>, we push it and continue with <code>f</code> and <code>t</code>. Once we find the closing parenthesis for the <code>|</code> subexpression, we pop <code>t</code> and <code>f</code> off the stack and evaluate <code>|</code>. Since one value is <code>t</code>, the result of this subexpression is <code>t</code>, which we push back onto the stack. Finally, we continue by evaluating the <code>&amp;</code> operator with the remaining values on the stack.</p>
+<p>The internal working is extremely similar to <a href="https://leetcode.com/problems/valid-parentheses/">20. Valid Parentheses</a> problem, if you haven't solved it, then it's recommended to solve it.</p>
+<h4>Algorithm</h4>
+<ul>
+<li>
+<p>Initialize a stack <code>st</code> to hold characters as we parse the expression.</p>
+</li>
+<li>
+<p>Traverse the entire <code>expression</code>:</p>
+</li>
+<li>
+<p>If the current character is <code>')'</code>, it indicates the end of a subexpression:</p>
+<ul>
+<li>Initialize a array <code>values</code> to collect all values inside the parentheses.</li>
+<li>While the top of the stack is not <code>'('</code>, pop characters from the stack into <code>values</code>.</li>
+<li>Pop the <code>'('</code> from the stack.</li>
+<li>
+<p>Pop the operator from the top of the stack.</p>
+</li>
+<li>
+<p>Call <code>evaluateSubExpr(op, values)</code> to evaluate the subexpression:</p>
+</li>
+<li>Push the result back onto the stack.</li>
+</ul>
+</li>
+<li>
+<p>If the current character is not a comma, push it onto the stack.</p>
+</li>
+<li>
+<p>After traversing the expression, the final result will be on the top of the stack.</p>
+</li>
+<li>
+<p>Return <code>true</code> if the top of the stack is <code>'t'</code>, indicating that the expression evaluates to <code>true</code>, otherwise return <code>false</code>.</p>
+</li>
+<li>
+<p>The <code>evaluateSubExpr</code> function evaluates a subexpression based on the operator and the list of values:</p>
+</li>
+<li>If the operator is <code>'!'</code>, return <code>'f'</code> if the first value is <code>'t'</code>, otherwise return <code>'t'</code>.</li>
+<li>If the operator is <code>'&amp;'</code>, iterate through the values:<ul>
+<li>Return <code>'f'</code> if any value is <code>'f'</code>, otherwise return <code>'t'</code>.</li>
+</ul>
+</li>
+<li>If the operator is <code>'|'</code>, iterate through the values:<ul>
+<li>Return <code>'t'</code> if any value is <code>'t'</code>, otherwise return <code>'f'</code>.</li>
+</ul>
+</li>
+</ul>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/KJueFSYj/shared" frameBorder="0" width="100%" height="500" name="KJueFSYj"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Let $n$ be the size of the <code>expression</code> string.</p>
+<ul>
+<li>
+<p>Time complexity: $O(n)$</p>
+<p>We traverse the <code>expression</code> string once, processing each character in $O(1)$ time. The only significant work happens when we encounter a closing parenthesis <code>)</code>, where we collect values from the stack until we reach the corresponding opening parenthesis <code>(</code>. In the worst case, all characters in the expression may contribute to these operations, but each character is processed only once. Thus, the overall time complexity is linear.</p>
+</li>
+<li>
+<p>Space complexity: $O(n)$</p>
+<p>The space complexity primarily depends on the stack used to store the characters of the expression and the temporary storage for values inside parentheses. In the worst case, the stack can hold all characters of the expression, resulting in $O(n)$ space. Additionally, when processing nested operations, temporary storage might also hold up to $n$ characters, leading to the same $O(n)$ space complexity.</p>
+</li>
+</ul>
+<hr />
+<h3>Approach 4: Optimized Stack</h3>
+<h4>Intuition</h4>
+<p>Instead of pushing every character onto the stack, we focus only on the meaningful elements—operators, boolean values, and parentheses—while ignoring commas, which don’t affect the result.</p>
+<p>We still push operators and boolean values onto the stack as we read the expression. But when we encounter a closing parenthesis, we start evaluating the subexpression immediately by popping values off the stack. The key improvement here is that we can stop early if the result becomes obvious. For instance, with the <code>&amp;</code> operator, if we find a <code>f</code> while popping values, we know the result of the subexpression is <code>f</code> and can stop without checking the rest. Similarly, for the <code>|</code> operator, finding a <code>t</code> allows us to stop early.</p>
+<p>Consider the expression <code>&amp;(t, |(f, t))</code>. As before, we push <code>&amp;</code> and <code>t</code>, then <code>|</code>, followed by <code>f</code> and <code>t</code>. When we pop values for the <code>|</code> subexpression, we immediately know the result is <code>t</code> because one of the values is <code>t</code>. We push <code>t</code> back onto the stack and continue with the <code>&amp;</code> operator, which evaluates to <code>t</code> because both values are true.</p>
+<p>!?!../Documents/1106/op_stack.json:1025,755!?!</p>
+<h4>Algorithm</h4>
+<ul>
+<li>
+<p>Initialize an empty stack <code>st</code> to keep track of operators and boolean values.</p>
+</li>
+<li>
+<p>Traverse through each character in the <code>expression</code>:</p>
+</li>
+<li>
+<p>If the current character is a comma <code>,</code> or an open parenthesis <code>(</code>, skip it (continue to the next character).</p>
+</li>
+<li>
+<p>If the current character is a boolean value (<code>t</code> for true, <code>f</code> for false) or an operator (<code>!</code>, <code>&amp;</code>, <code>|</code>), push it onto the stack.</p>
+</li>
+<li>
+<p>If the current character is a closing parenthesis <code>)</code>:</p>
+<ul>
+<li>
+<p>Initialize two boolean flags: <code>hasTrue</code> and <code>hasFalse</code> to track the presence of true and false values within the parentheses.</p>
+</li>
+<li>
+<p>Process the values inside the parentheses:</p>
+</li>
+<li>
+<p>While the top of the stack is not an operator (<code>!</code>, <code>&amp;</code>, <code>|</code>):</p>
+<ul>
+<li>Pop the top value from the stack and check:</li>
+<li>If it is <code>t</code>, set <code>hasTrue</code> to <code>true</code>.</li>
+<li>If it is <code>f</code>, set <code>hasFalse</code> to <code>true</code>.</li>
+</ul>
+</li>
+<li>
+<p>After processing values, pop the operator from the top of the stack.</p>
+</li>
+<li>Evaluate the subexpression based on the operator:</li>
+<li>If the operator is <code>!</code>, push <code>f</code> if <code>hasTrue</code> is <code>true</code>; otherwise, push <code>t</code>.</li>
+<li>If the operator is <code>&amp;</code>, push <code>f</code> if <code>hasFalse</code> is <code>true</code>; otherwise, push <code>t</code>.</li>
+<li>If the operator is <code>|</code>, push <code>t</code> if <code>hasTrue</code> is <code>true</code>; otherwise, push <code>f</code>.</li>
+</ul>
+</li>
+<li>
+<p>After processing the entire expression, the final result will be at the top of the stack:</p>
+</li>
+<li>Return <code>true</code> if the top of the stack is <code>t</code>, otherwise return <code>false</code>.</li>
+</ul>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/SarqEB82/shared" frameBorder="0" width="100%" height="500" name="SarqEB82"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Let $n$ be the size of the <code>expression</code> string.</p>
+<ul>
+<li>
+<p>Time complexity: $O(n)$</p>
+<p>We traverse each character in the <code>expression</code> string once. For each character, operations like pushing to and popping from the stack are $O(1)$ operations. Therefore, the overall time complexity is linear in terms of the length of the input string.</p>
+</li>
+<li>
+<p>Space complexity: $O(n)$</p>
+<p>The maximum space used by the stack occurs when every character in the <code>expression</code> is a boolean value or an operator without any closing parentheses. In the worst case, all characters might be pushed onto the stack, resulting in a space complexity of $O(n)$. This includes the storage for the stack itself, which could potentially hold all the characters of the expression.</p>
+</li>
+</ul>
+<hr />
+</div></div>
+</body>
+</html>

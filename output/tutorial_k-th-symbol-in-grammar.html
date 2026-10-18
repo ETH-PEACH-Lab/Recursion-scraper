@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>K-th Symbol in Grammar – Editorial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+<style>.vimeo-link{display:inline-flex;align-items:center;gap:8px;
+            background:#1ab7ea;color:#fff;font-weight:600;
+            padding:10px 20px;border-radius:6px;margin:12px 0;font-size:.95em}
+.vimeo-link:hover{background:#0d9bd4;color:#fff;text-decoration:none}</style>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_k-th-symbol-in-grammar.html">K-th Symbol in Grammar</a> <span class="sep">›</span> <span class="cur">Editorial</span></nav>
+<div class="wrap"><div class="page-title">795. K-th Symbol in Grammar — Official Editorial</div>
+<div class="page-sub" style="margin-bottom:20px">
+  <span class="badge b-medium">Medium</span> <span class="badge b-tag">Math</span> <span class="badge b-tag">Bit Manipulation</span> <span class="badge b-tag">Recursion</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/k-th-symbol-in-grammar/" target="_blank" style="font-size:.85em">↗ Problem</a>
+  &nbsp;·&nbsp;
+  <a href="problem_k-th-symbol-in-grammar.html" style="font-size:.85em">💬 Community Solutions</a>
+</div>
+<div class="sol-body">
+  <p>[TOC]</p>
+<h2>Solution</h2>
+<hr />
+<h3>Approach 1: Binary Tree Traversal</h3>
+<h4>Intuition</h4>
+<p>Let's approach this problem as a binary tree challenge. We'll start with a single node, create two new child nodes for each node in the current row, move to the next row, and repeat the process of creating new child nodes until we have $n$ rows in our tree. Finally, we return the $k^{th}$ nodes in the $n^{th}$ row.</p>
+<p>The tree we will generate is a Perfect Binary Tree with all levels completely filled.</p>
+<blockquote>
+<p><strong>Note:</strong> The number of nodes in the $i^{th}$ row of a perfect binary tree is given by: $2^{(i - 1)}$, where $i = 1, 2, 3,...$   </p>
+</blockquote>
+<p>If the current node is $0$, its left child will be $0$ and the right child will be $1$. <br />
+Otherwise, if the current node is $1$, its left child will be $1$ and the right child will be $0$.</p>
+<p><img alt="exampple" src="https://leetcode.com/articles/Figures/779/Slide1.PNG" /></p>
+<p>After generating the binary tree a naive way to reach the $k^{th}$ node of $n^{th}$ row will be to traverse all rows (levels) of the tree one by one by keeping track of the current (row, nodeIndex) position. However, this approach will be sub-optimal as it would require iterating over all nodes in our tree and the number of nodes will grow exponentially with each row.</p>
+<p>Instead, we can try to perform a binary search-like algorithm where we discard the left or right half of the sub-tree based on the condition where the final target node must be present. Provided this hint, we recommend you stop here and try thinking a bit about how this method will work here.</p>
+<blockquote>
+<p>The pre-requisite here will be that you must have a good understanding of how searching in a binary search tree works.</p>
+</blockquote>
+<p><br />     </p>
+<p><strong>This approach might not be intuitive to everyone, so let's proceed gradually using an example.</strong>  </p>
+<p>Consider the case where we need to find the $21^{st}$ node in $6^{th}$ row.</p>
+<p><img alt="6_rows" src="https://leetcode.com/articles/Figures/779/Slide2.PNG" /></p>
+<p>The number of nodes in the $6^{th}$ row will be $2^{6 - 1} = 2^5 = 32$. <br />
+Therefore, the $21^{st}$ node will be present in the right half of the last row in our current binary tree.</p>
+<p><img alt="last_row" src="https://leetcode.com/articles/Figures/779/Slide3.PNG" /></p>
+<p>Hence, we can be certain that our target node is not present in the left sub-tree of the current root node. As a result, we can discard the whole left sub-tree.   <br />
+This simplifies our problem to finding the $21 - 16$ (current position - half skipped nodes) $= 5^{th}$ node in the last row of the sub-tree of $5$ rows.</p>
+<p><br /></p>
+<p><img alt="5_rows" src="https://leetcode.com/articles/Figures/779/Slide4.PNG" /></p>
+<p>Within this subtree of $5$ rows, we have to find the $5^{th}$ node in the $5^{th}$ row. 
+The number of nodes in the $5^{th}$ row is given by $2^{5 - 1} = 2^4 = 16$. Therefore, the $5^{th}$ node will be present in the left sub-tree and we can discard the right sub-tree, and this time the position of the target node will remain unchanged.</p>
+<p><br /></p>
+<p><img alt="4_rows" src="https://leetcode.com/articles/Figures/779/Slide5.PNG" /></p>
+<p>Within the subtree of $4$ rows, we have to find the $5^{th}$ node in the $4^{th}$ row.<br />
+The number of nodes in the $4^{th}$ row will be $2^{4 - 1} = 2^3 = 8$. Thus, the $5^{th}$ node will be present in the right sub-tree and we can discard the left sub-tree.</p>
+<p><br /></p>
+<p><img alt="3_rows" src="https://leetcode.com/articles/Figures/779/Slide6.PNG" /></p>
+<p>Within this subtree of $3$ rows, we have to find the $1^{st}$ node in the $3^{rd}$ row.<br />
+The number of nodes in the $3^{rd}$ row will be $2^{3 - 1} = 2^2 = 4$. Therefore, the $1^{st}$ node will be present in the left sub-tree and we can discard the right sub-tree.</p>
+<p><br /></p>
+<p><img alt="2_rows" src="https://leetcode.com/articles/Figures/779/Slide7.PNG" /></p>
+<p>Within this subtree of $2$ rows, we have to find the $1^{st}$ node in the $2^{nd}$ row.<br />
+The number of nodes in the $2^{nd}$ row will be $2^{2 - 1} = 2^1 = 2$. Hence, the $1^{st}$ node will be present in the left sub-tree and we can discard the right sub-tree.</p>
+<p><br /></p>
+<p><img alt="1_rows" src="https://leetcode.com/articles/Figures/779/Slide8.PNG" /></p>
+<p>Now, in this subtree of $1$ row, we have to find the $1^{st}$ node in the $1^{st}$ row. Since this row consists of only one node, the root node will be our target node.     </p>
+<p><br /></p>
+<blockquote>
+<p>As shown in the picture above, we can simplify this problem to a recursive binary tree challenge, where we traverse down to the root node of the appropriate sub-tree until we reach the target node. </p>
+</blockquote>
+<h4>Algorithm</h4>
+<ol>
+<li>
+<p>Create a method <code>depthFirstSearch</code> which takes <code>n</code> number of rows in the current tree, <code>k</code> target node position in the last row, and <code>rootVal</code> current tree's root's value as parameters:</p>
+<ul>
+<li>
+<p>If <code>n</code> is <code>1</code>, then we will have a single node in our tree and this node is our target node. So, we return its value <code>rootVal</code>.</p>
+</li>
+<li>
+<p>Find the number of nodes in the last row of the current tree, <code>totalNodes</code>, $2^{(n - 1)}$.  </p>
+</li>
+<li>
+<p>If the current target node <code>k</code> lies in the left half of the last row of the current subtree (i.e. <code>k &lt;= totalNodes / 2</code>), we will move to the left sub-tree. <br />
+If the current node's value <code>rootVal</code> is <code>0</code> then the next node's value will be <code>0</code>, otherwise, the next node's value will be <code>1</code>.<br />
+Return <code>depthFirstSearch(n - 1, k, nextRootVal)</code>.</p>
+</li>
+<li>
+<p>Otherwise, if the current target node <code>k</code> lies in the right half of the last row of the current subtree (i.e. <code>k &gt; totalNodes / 2</code>), we will move to the right sub-tree.  <br />
+If the current node's value <code>rootVal</code> is <code>0</code> then the next node's value will be <code>1</code>, otherwise, the next node's value will be <code>0</code>.  <br />
+Additionally, the target's position will change to <code>(k - (totalNodes / 2))</code>.<br />
+Return <code>depthFirstSearch(n - 1, newPosition, nextRootVal)</code>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>We return the result returned by calling <code>depthFirstSearch(n, k, 0)</code> with the number of rows as <code>n</code>, target node position <code>k</code>, and root node's value <code>0</code>.</p>
+</li>
+</ol>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/KsPmffgR/shared" frameBorder="0" width="100%" height="480" name="KsPmffgR"></iframe>
+
+<h4>Complexity Analysis</h4>
+<ul>
+<li>
+<p>Time complexity: $$O(n)$$  </p>
+<ul>
+<li>With each recursive call, we reduce <code>n</code> by one until <code>n</code> becomes equal to <code>1</code>. As a result, the overall time complexity is $O(n)$.</li>
+</ul>
+</li>
+<li>
+<p>Space complexity: $$O(n)$$</p>
+<ul>
+<li>Each recursive call will add a new frame to the stack until we reach the base case (when <code>n</code> becomes equal to <code>1</code>). Hence, the space complexity is also $O(n)$.</li>
+</ul>
+</li>
+</ul>
+<p><br /></p>
+<hr />
+<h3>Approach 2: Normal Recursion</h3>
+<h4>Intuition</h4>
+<blockquote>
+<p><strong>Note:</strong> The previous approach will be sufficient during a real interview setting as these next approaches are not intuitive enough to think of them during the limited time availability. So don't get disheartened if these approaches seem hard to you. But it's recommended to read these approaches too, to have a new perspective to look at the same problem.</p>
+</blockquote>
+<p>First of all, after generating a few rows using the steps given in the problem description, we can observe two patterns:</p>
+<ol>
+<li>The previous row is used as the prefix of the next row.</li>
+</ol>
+<p><img alt="exampple" src="https://leetcode.com/articles/Figures/779/Slide10a.PNG" /></p>
+<ol start="2">
+<li>If we divide any row into two equal halves then the symbol at each position will be opposite of each other in both halves (i.e. if we have a <code>0</code> in the left half at index <code>i</code>, then the right half will have a <code>1</code> at index <code>i</code>, and vice versa).</li>
+</ol>
+<p><img alt="exampple" src="https://leetcode.com/articles/Figures/779/Slide10b.PNG" /></p>
+<p>Now, these two points might seem very unintuitive to read at first, but we highly recommend you write down some examples and try to reach these observations on your own.</p>
+<details>
+  <summary><strong>Otherwise, click here to expand the explanation</strong> </summary>
+
+<br />
+
+Let's write down 6 rows.
+
+![exampple](https://leetcode.com/articles/Figures/779/Slide11.PNG)
+
+1. **The previous row will always be present as the prefix of the next row.**
+
+    We start with a `0` which generates `01`. We can see that the first symbol of the second row is the same as the first row. It means, whatever the first row has generated will also be generated by the first symbol of the second row.   
+Thus, the second row and the prefix of the third row will be the same as they both are generated from the same symbols. 
+
+    Again, let's consider one more row. The second row is `01` which generated `0110` as the third row. Again the `0110` will be used as a prefix in the fourth row because the second row was `01` which generated `0110` and this third row also has `01` as the first two symbols (as we previously saw the second row will be used as a prefix in the third row) which will again generate `0110`. Thus, the third row and the prefix of the fourth row will be the same. 
+
+    **Conclusion:** Prefix in $(i - 1)^{th}$ and  $(i - 2)^{th}$ rows are the same, these same symbols will generate the same symbols for the next respective rows, so, the prefix of $i^{th}$ row will always be the same as $(i - 1)^{th}$ row.
+
+![exampple](https://leetcode.com/articles/Figures/779/Slide11a.PNG)
+
+<br />
+
+<br />
+
+2. **If we divide any row into two equal halves then the symbol at each position will be opposite of each other in both halves.**
+
+    It's given that `0` generates `01` and `1` generates `10`, meaning, both symbols are opposite and generate the next row which contains opposite symbols at the same positions. So we start with a `0`, it generates `01` which when broken into two halves have opposite symbols.   
+
+    The next row generated by the left half of $2^{nd}$ row `0` will be `01` and by the right half of $2^{nd}$ row `1` will be `10`, Thus, the $3^{rd}$ row `01 10` when broken into two halves will also contain opposite symbols at same positions.
+    Additionally, each symbol of these two halves of $3^{rd}$ row will generate the next row with opposite symbols at the same positions, and this pattern will continue.
+
+    **Conclusion:** The first half symbols in $i^{th}$ will be opposite of the respective next half symbols at the same positions.  
+
+![exampple](https://leetcode.com/articles/Figures/779/Slide11b.PNG)
+
+</details>
+
+<p><br /></p>
+<blockquote>
+<p><strong>Note:</strong> To flip (find the opposite of) a symbol $X$, where, $X \in (0, 1)$, we can perform $X' = 1 - X$. <br />
+If $X = 0$, $X' = 1$, and if $X = 1$, $X' = 0$, </p>
+</blockquote>
+<p>Now, suppose we want to find the $21^{st}$ symbol of the $6^{th}$ row. </p>
+<p><img alt="exampple" src="https://leetcode.com/articles/Figures/779/Slide12.PNG" /></p>
+<p><br /></p>
+<p>The number of nodes in the $6^{th}$ row will be $2^{6 - 1} = 2^5 = 32$. 
+As we discussed the symbols of the first half of any row are opposite of the second half.  <br />
+$\implies$ $21^{st}$ symbol of the $6^{th}$ row will be equal to $(1 - 5^{th}$ symbol of the $6^{th}$ row $)$.</p>
+<p><img alt="exampple" src="https://leetcode.com/articles/Figures/779/Slide13.PNG" /></p>
+<p><br /></p>
+<p>As the prefix of $6^{th}$ row will be the same as the $5^{th}$ row. 
+Hence, $5^{th}$ symbol of the $6^{th}$ row will be equal to $5^{th}$ symbol of the $5^{th}$ row.<br />
+$\implies$ $21^{st}$ symbol of the $6^{th}$ row will be equal to $(1 - 5^{th}$ symbol of the $5^{th}$ row $)$.</p>
+<p><img alt="exampple" src="https://leetcode.com/articles/Figures/779/Slide14.PNG" /></p>
+<p><br /></p>
+<p>Similarly, the prefix of $5^{th}$ row will be the same as the $4^{th}$ row.<br />
+Therefore, $5^{th}$ symbol of the $5^{th}$ row will be equal to $5^{th}$ symbol of the $4^{th}$ row.  <br />
+$\implies$ $21^{st}$ symbol of the $6^{th}$ row will be equal to $(1 - 5^{th}$ symbol of the $4^{th}$ row $)$. </p>
+<p><img alt="exampple" src="https://leetcode.com/articles/Figures/779/Slide15.PNG" /></p>
+<p><br /></p>
+<p>The number of nodes in the $4^{th}$ row will be $2^{4 - 1} = 2^3 = 8$. As the symbols of the first half of any row are opposite of the second half.  <br />
+So, $5^{th}$ symbol of the $4^{th}$ row will be equal to $(1 - 1^{st}$ symbol of the $4^{th}$ row $)$.<br />
+$\implies$ $21^{st}$ symbol of the $6^{th}$ row will be equal to $(1 - (1 - 1^{st}$ symbol of the $4^{th}$ row $))$.</p>
+<p><img alt="exampple" src="https://leetcode.com/articles/Figures/779/Slide16.PNG" /></p>
+<p><br /></p>
+<p>As the prefix of the $4^{th}$ row will be the same as the $3^{rd}$ row. 
+So, $1^{st}$ symbol of the $4^{th}$ row will be equal to $1^{st}$ symbol of the $3^{rd}$ row.<br />
+$\implies$ $21^{st}$ symbol of the $6^{th}$ row will be equal to $(1 - (1 - 1^{st}$ symbol of the $3^{rd}$ row $))$.</p>
+<p>Similarly, the prefix of the $3^{rd}$ row will be the same as the $2^{nd}$ row. 
+So, $1^{st}$ symbol of the $3^{rd}$ row will be equal to $1^{st}$ symbol of the $2^{nd}$ row.<br />
+$\implies$ $21^{st}$ symbol of the $6^{th}$ row will be equal to $(1 - (1 - 1^{st}$ symbol of the $2^{nd}$ row $))$.</p>
+<p>Similarly, the prefix of the $2^{nd}$ row will be the same as the $1^{st}$ row. 
+So, $1^{st}$ symbol of the $2^{nd}$ row will be equal to $1^{st}$ symbol of the $1^{st}$ row.<br />
+$\implies$ $21^{st}$ symbol of the $6^{th}$ row will be equal to $(1 - (1 - 1^{st}$ symbol of the $1^{st}$ row $))$.</p>
+<p><img alt="exampple" src="https://leetcode.com/articles/Figures/779/Slide17.PNG" /></p>
+<p><br /></p>
+<blockquote>
+<p>And, as we know $1^{st}$ symbol of the $1^{st}$ row is <code>0</code>. <br />
+Thus, the $21^{st}$ symbol of the $6^{th}$ row will be equal to $1 - (1 - (0)) = 0$.</p>
+</blockquote>
+<p>With each step, we are converting our bigger problem into a similar smaller sub-problem. </p>
+<p>So, here we can write a recursive approach, where our current problem is to find the symbol at a given position $(k)$ in a given row $(n)$.  </p>
+<p>If the current position lies in the right half of the current row then we know this symbol will be opposite of the symbol present in the left half at the same position, and <strong>recursively we will find what is the symbol at this new position in the same row</strong>.<br />
+And, if the current symbol lies in the left half then this symbol will be the same as the symbol in the previous row at the same position, and <strong>recursively we will find what is the symbol at this position in the previous row</strong>.</p>
+<p>We will write a method <code>recursion(n, k)</code> which takes current row <code>n</code>, and the position of the symbol in current row <code>k</code> as parameters:</p>
+<ul>
+<li>
+<p>The recursive step will be:</p>
+<ul>
+<li>If <code>k</code> lies in the right half of the current row. Then we return <code>1 - recursion(n, k - halfElements)</code>.</li>
+<li>Otherwise, we return <code>recursion(n - 1, k)</code>.
+<code>if k &gt; halfElements:
+    return 1 - recursion(n, k - halfElements)
+else:
+    return recursion(n - 1, k)</code></li>
+</ul>
+</li>
+<li>
+<p>The base case to stop recursive calls will be a condition we can evaluate the result without any computation, i.e. we know if <code>n == 1</code> it will only have one symbol <code>0</code> which will be our result. Thus, this condition will be our base case.
+    <code>if n == 1:
+        return 0</code></p>
+</li>
+</ul>
+<h4>Algorithm</h4>
+<ol>
+<li>
+<p>Create a method <code>recursion()</code> which takes <code>n</code>, current row number, <code>k</code>, and target position as parameters:</p>
+<ul>
+<li>
+<p>If <code>n</code> is <code>1</code>, then we can return <code>0</code> as the first row will have only one symbol.</p>
+</li>
+<li>
+<p>Find the number of symbols in the current row, <code>totalElements</code>, $2^{(n - 1)}$, and <code>halfElements = totalElements / 2</code>.  </p>
+</li>
+<li>
+<p>If the current target position <code>k</code> lies in the right half of the current row (i.e. <code>k &gt; halfElements</code>), then, we switch to the current row's respective left half position symbol, (i.e. at position <code>k - halfElements</code>). <br />
+Thus, we return, <code>1 - recursion(n, k - halfElements)</code>.</p>
+</li>
+<li>
+<p>If the current target position <code>k</code> lies in the left half of the current row (i.e. <code>k &lt;= halfElements</code>), then, we switch to the previous row's respective same position symbol, (i.e. present in the row <code>n - 1</code> at position <code>k</code>). <br />
+Thus, we return, <code>recursion(n - 1, k)</code>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>We return the result returned by calling <code>recursion(n, k)</code> with the current row as <code>n</code>, and target symbol position <code>k</code>.</p>
+</li>
+</ol>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/PxeUcHHw/shared" frameBorder="0" width="100%" height="463" name="PxeUcHHw"></iframe>
+
+<h4>Complexity Analysis</h4>
+<ul>
+<li>
+<p>Time complexity: $$O(n)$$  </p>
+<ul>
+<li>With each recursive call, we reduce <code>n</code> by one until <code>n</code> becomes equal to <code>1</code>. Thus, it will take $O(n)$ time.</li>
+</ul>
+</li>
+<li>
+<p>Space complexity: $$O(n)$$</p>
+<ul>
+<li>The recursive stack will also use $O(n)$ space in the worst case.</li>
+</ul>
+</li>
+</ul>
+<p><br /></p>
+<hr />
+<h3>Approach 3: Recursion to Iteration</h3>
+<h4>Intuition</h4>
+<p>The previous recursive can be optimized to an iterative approach to eliminate the use of the recursion stack. </p>
+<p>Let's explore finding the $21^{st}$ symbol of the $6^{th}$ row.<br />
+We can follow the same process of the previous approach but in an iterative manner.</p>
+<p>In the previous approach, we started with the first row's symbol <code>0</code> and flipped it as we switched it from left to right half positions, until we reached the target position.</p>
+<p><img alt="exampple" src="https://leetcode.com/articles/Figures/779/Slide19.PNG" /></p>
+<p><br /></p>
+<p>If we try to go from top to down then it will be difficult to conclude at which step the current symbol needs to be flipped. <br />
+However, if we go from the bottom up, we can identify the flips that will be done when the current position exceeds half the count of the symbols of the current row.</p>
+<p>Let's assume the $21^{st}$ symbol of the $6^{th}$ row is, <code>symbol = X</code>.<br />
+We follow the same process, and if at the end <code>symbol</code> changes to <code>0</code>, it means that we started with the correct $21^{st}$ symbol of the $6^{th}$ row, <code>X</code>, otherwise, the correct symbol will be <code>1 - X</code>.</p>
+<p><img alt="exampple" src="https://leetcode.com/articles/Figures/779/Slide20.PNG" /></p>
+<h4>Algorithm</h4>
+<ol>
+<li>
+<p>If <code>n</code> is <code>1</code> we can directly return <code>0</code>.</p>
+</li>
+<li>
+<p>Otherwise, we assume that the target <code>symbol</code> is <code>1</code>, and iterate on all rows <code>currRow</code> from <code>n</code> to <code>2</code>.</p>
+</li>
+<li>
+<p>For each row <code>currRow</code>, find the number of symbols in the current row, <code>totalElements</code>, $2^{(currRow - 1)}$, and <code>halfElements = totalElements / 2</code>. If <code>k</code> lies in the right half of the current row (i.e. <code>k &gt; halfElements</code>),  switch to the current row's respective left half position symbol. <br />
+    Thus, flipping <code>symbol = 1 - symbol</code> and changing position <code>k = k - halfElements</code>.</p>
+</li>
+<li>
+<p>We will stop when the current row will become <code>1</code>. We check if the <code>symbol</code> is <code>0</code>, which means that our assumption that the target symbol is <code>1</code> is correct, otherwise, the target symbol is <code>0</code>.</p>
+</li>
+</ol>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/jKE4o5tM/shared" frameBorder="0" width="100%" height="500" name="jKE4o5tM"></iframe>
+
+<h4>Complexity Analysis</h4>
+<ul>
+<li>
+<p>Time complexity: $$O(n)$$  </p>
+<ul>
+<li>In each iteration, we reduce <code>n</code> by one until <code>n</code> becomes equal to <code>1</code>. Therefore, the overall time complexity is $O(n)$.</li>
+</ul>
+</li>
+<li>
+<p>Space complexity: $$O(1)$$</p>
+<ul>
+<li>We have not used any additional space.</li>
+</ul>
+</li>
+</ul>
+<p><br /></p>
+<hr />
+<h3>Approach 4: Math</h3>
+<h4>Intuition</h4>
+<blockquote>
+<p><strong>Note:</strong> This approach is highly unintuitive, and it is completely fine to skip it. We list it here for completeness and to offer you an alternative perspective on how to approach the same problem.</p>
+</blockquote>
+<p>After reviewing the previous approaches, we can see that we start with <code>0</code> and flip it <code>x</code> number of times.    </p>
+<p><img alt="exampple" src="https://leetcode.com/articles/Figures/779/Slide21.PNG" /></p>
+<p>The most challenging aspect is determining the number of flips required.</p>
+<p>From the previous approach, we know that whenever the current $k$ is more than half of the total number of symbols of the current row then <strong>we flip it, and subtract the first half symbols count from</strong> $k$. <br />
+A flip happens at each subtraction, thus the number of flips is equal to the number of subtractions performed.</p>
+<p>Each row will have some $2^a$ elements, it means half of it will be $2^b$. <br />
+Thus, at each step, we subtract $2^b$ from <code>k</code> until <code>k</code> becomes <code>1</code>.   </p>
+<p>We can say that, <br />
+$k - 2^b - 2^c - 2^d - 2^e - .... = 1$ <br />
+$(k - 1) = 2^b + 2^c + 2^d + 2^e + .... \space \space$   (remember this expression)</p>
+<blockquote>
+<p>Therefore, we can conclude that the number of flips is equal to the number of terms RHS of the previous expression has.</p>
+</blockquote>
+<p>Now, we all know that every decimal number $d$ can be expressed as,  </p>
+<p>$d = (A \cdot 2^0) +  (B \cdot 2^1) + (C \cdot 2^2) + (D \cdot 2^3) + (E \cdot 2^4) + (F \cdot 2^5) + ....$ <br />
+where, $A, B, C, D, E, F, .... \in (0, 1)$ <br />
+and, the binary representation of $d$ is, $(d)_2 = \space ...FEDCBA$</p>
+<p>For example: $(25)_2 = 11001$, and <br />
+$25 = 2^0 + 2^3 + 2^4$        <br />
+$25 = 1.2^0 + 0.2^1 + 0.2^2 + 1.2^3 + 1.2^4$</p>
+<p><br /></p>
+<p>$(k - 1)$ can also be expressed as $(A \cdot 2^0) +  (B \cdot 2^1) + (C \cdot 2^2) + (D \cdot 2^3) + (E \cdot 2^4) + (F \cdot 2^5) + ....$  <br />
+We just need to find which all coefficients $A, B, C, D, E, F, ....$ will be $1$ to convert it to $2^b + 2^c + 2^d + 2^e + ....$.</p>
+<p>Thus, the number of flips required will be the number of $1s$ present in the binary representation of the number $(k - 1)$.</p>
+<blockquote>
+<p>Finally, we just need to determine the number of <code>1</code> bits <code>count</code> in the binary representation of $(k - 1)$. The symbol at the position $k^{th}$ in $n^{th}$ row will be $0$ flipped <code>count</code> times.<br />
+If <code>count</code> is even then <code>0</code> will remain <code>0</code>, otherwise <code>0</code> will change to <code>1</code>.</p>
+</blockquote>
+<h4>Algorithm</h4>
+<ol>
+<li>Find the <code>count</code> of the number of <code>1</code> bits in <code>k - 1</code>.</li>
+<li>Return <code>0</code> if <code>count</code> is even, <code>1</code> otherwise.</li>
+</ol>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/2679cxJy/shared" frameBorder="0" width="100%" height="174" name="2679cxJy"></iframe>
+
+<h4>Complexity Analysis</h4>
+<ul>
+<li>
+<p>Time complexity: $$O(\log k)$$  </p>
+<ul>
+<li>The number of bits in number $k$ is $\log k$. In Python, Javascript, and Swift, we first convert the number to a binary string, which takes $O(\log k)$ time. </li>
+<li>Counting all $1$ bits takes $O(\log k)$ time. </li>
+<li>Hence, the overall time complexity is $O(\log k)$. </li>
+</ul>
+</li>
+<li>
+<p>Space complexity: $$O(1)$$ or $$O(\log k)$$  </p>
+<ul>
+<li>In Python, Javascript, and Swift, we convert the number to a binary string, which takes an additional $O(\log k)$ space.</li>
+<li>In C++ and Java, we don't use any additional space.</li>
+</ul>
+</li>
+</ul>
+</div></div>
+</body>
+</html>

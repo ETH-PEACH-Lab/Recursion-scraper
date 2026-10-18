@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>lc - 21 合并有序链表 双指针and递归 （自用题解） – Merge Two Sorted Lists</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_merge-two-sorted-lists.html">Merge Two Sorted Lists / 合并两个有序链表</a> <span class="sep">›</span> <span class="cur">lc - 21 合并有序链表 双指针and递归 （自用题解）</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">lc - 21 合并有序链表 双指针and递归 （自用题解）</div>
+  <div class="meta">
+    <span>👤 elated-ishi2akanf4</span>
+    <span>👍 0</span>
+    <span>2024-03-02</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/merge-two-sorted-lists/solution/lc-21-he-bing-you-xu-lian-biao-shuang-zh-q8s0/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <blockquote>
+<p>Problem: <a href="https://leetcode.cn/problems/merge-two-sorted-lists/description/">21. 合并两个有序链表</a></p>
+</blockquote>
+<p>[TOC]</p>
+<h1>思路</h1>
+<h2>解法1：迭代</h2>
+<p>由于两个链表的都是递增的，因此非常容易想到用两个指针分别扫描两个链表的节点，以此比较元素值，把较小的值插入到new出来的链表后</p>
+<p>需要注意的是，这里引入伪头节点dum： 由于初始状态合并链表中无节点，因此循环第一轮时无法将节点添加到合并链表中。解决方案：初始化一个辅助节点<code>dum</code>作为合并链表的<strong>伪头节点</strong>，将各节点添加至<code>dum</code>之后；合并完成后返回的<code>dum.next</code>就是真正的第一个节点</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1709367887-WbgcWj-image.png" /></p>
+<h3>相关代码</h3>
+<p>```Python3 []</p>
+<h1>Definition for singly-linked list.</h1>
+<h1>class ListNode:</h1>
+<h1>def <strong>init</strong>(self, val=0, next=None):</h1>
+<h1>self.val = val</h1>
+<h1>self.next = next</h1>
+<p>class Solution:<br />
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -&gt; Optional[ListNode]:<br />
+        # iterative 较易想到<br />
+        # 双指针扫+插入<br />
+        cur = dum = ListNode(-1) # 设置哨兵节点，方便返回合并后的链表<br />
+        # dum是一个dummy头节点，下一个才是真正的首节点<br />
+        # cur是新链表的扫描节点</p>
+<pre><code>    while list1 and list2: # 扫描公共长度
+        if list1.val &lt; list2.val:
+            cur.next = list1
+            list1 = list1.next
+        else:
+            cur.next = list2
+            list2 = list2.next
+
+        cur = cur.next # 结果链表自己也得往下走
+
+    # 剩余部分至多只有一个未被合并完，直接接到后面即可
+    cur.next = list1 if list1 is not None else list2
+
+    return dum.next # 返回真正的首节点
+</code></pre>
+<pre><code>
+### 复杂度分析
+时间复杂度：$o(M + N)$，M和N分别为list1和list2的长度；至多需要完全扫完两个链表才能完成合并
+空间复杂度：$O(1)$，双指针只用开辟常数空间占用
+
+
+## 解法2：递归
+
+### 思路
+
+递归方法在处理链表问题时尤其强大，因为它可以自然地将问题分解为更小的子问题，直到达到简单的基本情况。对于合并两个有序链表的问题，递归解法的直观性和简洁性来源于以下几点：
+
+1. **问题分解**：合并两个链表可以分解为首先合并它们的头节点，然后递归地合并剩下的部分。这种方式将大问题转化为小问题，直至问题简化为足够简单的形式（基本情况）。
+
+2. **重复操作**：无论是整个链表还是子链表，合并操作都是相同的——比较两个链表的当前节点，选择较小者作为合并链表的下一个节点，然后对剩余部分进行递归合并。这种重复性是递归方法得以应用的关键。
+
+3. **基本情况处理**：当遇到任一链表为空的情况时，直接返回另一个非空链表。这是递归的终止条件，也确保了合并操作能够正确结束。
+
+4. **简化代码复杂度**：递归方法避免了复杂的循环和指针操作，使代码更加简洁和易于理解。
+
+### 代码实现
+
+```Python3 []
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -&gt; Optional[ListNode]:
+        &quot;&quot;&quot;
+        recursive，分治思路，转化成更小的子问题，然后递归实现
+        选出更小的节点，递归合并剩下的节点
+        &quot;&quot;&quot;
+        l1, l2 = list1, list2
+        if l1 is None: # 一条链表走完了，直接把另外一条尾部并在后面
+            return l2
+        elif l2 is None:
+            return l1
+        else:
+            if l1.val &lt; l2.val: # 选择较小的头节点，递归合并剩余部分
+                l1.next = self.mergeTwoLists(l1.next, l2) # 递归调用记得用self
+                # 当前递归层的返回值：返回处理过的当前节点
+                return l1
+            else:
+                l2.next = self.mergeTwoLists(l1, l2.next)
+                return l2
+</code></pre>
+<h4>递归注意事项</h4>
+<p>这里判断哪个节点值更小后，需要保留的是这个更小的节点，并且递归处理其下一个节点<strong><br />
+所以</strong>应该写成<code>l1.next = self.mergeTwoLists(l1.next, l2) # 等于迭代法中的curr.next = l1</code>，而<strong>不是</strong><code>l1 = self.mergeTwoLists(l1.next, l2)</code></p>
+<p>对于合并两个有序链表的递归解法，我们可以分析其时间复杂度和空间复杂度如下：</p>
+<h3>复杂度分析</h3>
+<p>时间复杂度：<br />
+- <strong>最坏情况</strong>：在最坏的情况下，我们需要遍历并比较两个链表中的所有节点一次。这通常发生在两个链表长度相近且每次比较都不得不考虑两个链表中的元素时。如果两个链表的长度分别为 <code>m</code> 和 <code>n</code>，那么时间复杂度为 <code>O(m + n)</code>，因为每个节点只被访问一次。</p>
+<p>空间复杂度<br />
+- <strong>递归栈空间</strong>：递归的主要空间开销来自于递归栈。在最坏情况下（即递归深度最大时），递归的深度等于两个链表的长度之和。因此，在递归过程中，最大的栈空间为 <code>O(m + n)</code>。这是因为每进行一次递归调用，就需要在栈中保存一次函数调用的信息，直到达到基本情况。</p>
+<h3>总结</h3>
+<ul>
+<li>时间复杂度：<code>O(m + n)</code>，其中 <code>m</code> 和 <code>n</code> 分别是两个链表的长度。这是因为需要遍历两个链表的每个节点一次。</li>
+<li>空间复杂度：<code>O(m + n)</code>，这主要是由于递归调用栈的深度，可能会达到两个链表长度之和的情况。在递归解法中，空间复杂度通常由递归深度决定。</li>
+</ul>
+<p>值得注意的是，尽管递归方法在代码简洁性和可读性方面有显著优势，但在处理非常长的链表时，由于空间复杂度较高，可能会导致栈溢出。在实际应用中，根据具体情况选择适合的方法是非常重要的。</p>
+</div>
+</div>
+</body>
+</html>

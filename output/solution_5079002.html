@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>✅🔥4 Different Ways to solve | Most optimised ✅🔥 | Step by Step guide ✅🔥 – Fibonacci Number</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_fibonacci-number.html">Fibonacci Number</a> <span class="sep">›</span> <span class="cur">✅🔥4 Different Ways to solve | Most optimised ✅🔥 | Step by Step guide ✅🔥</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">✅🔥4 Different Ways to solve | Most optimised ✅🔥 | Step by Step guide ✅🔥</div>
+  <div class="meta">
+    <span>👤 dilraj123</span>
+    <span>👍 0</span>
+    <span>2024-04-27</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/fibonacci-number/solutions/5079002/4-different-ways-to-solve-most-optimised-step-by-step-guide/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>1.  USING VARIABLES ONLY(Most Optimised):</h1>
+<p><img alt="Screenshot 2024-04-27 154053.png" src="https://assets.leetcode.com/users/images/318603af-e611-413b-98ff-79401625ecb5_1714212786.2819068.png" /></p>
+<h1>Intuition</h1>
+<ol>
+<li>We want to compute the nth Fibonacci number efficiently using recursion.</li>
+<li>The Fibonacci sequence is a series of numbers where each number is the sum of the two preceding ones.</li>
+</ol>
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+<h1>Approach</h1>
+<ol>
+<li>Base Cases:<ul>
+<li>If n is 0 or 1, return n.</li>
+<li>These are the base cases for the Fibonacci sequence.</li>
+</ul>
+</li>
+<li>Iterative Approach:<ul>
+<li>Initialize n1 as 0 and n2 as 1 (the first two Fibonacci numbers).</li>
+<li>Initialize n3 as 0 (to store the result).</li>
+<li>Iterate from i = 2 to n:<ul>
+<li>Compute n3 as the sum of n1 and n2.</li>
+<li>Update n1 to be n2.</li>
+<li>Update n2 to be n3.</li>
+</ul>
+</li>
+<li>Return n3 as the nth Fibonacci number.</li>
+</ul>
+</li>
+<li>Example:<ul>
+<li>For n = 7:<ul>
+<li>Initialize n1 = 0, n2 = 1.</li>
+<li>Compute n3 = n1 + n2 = 1.</li>
+<li>Update n1 = 1, n2 = 1.</li>
+<li>Compute n3 = n1 + n2 = 2.</li>
+<li>Update n1 = 1, n2 = 2.</li>
+<li>Compute n3 = n1 + n2 = 3.</li>
+<li>Continue until n3 is the 7th Fibonacci number.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<!-- Describe your approach to solving the problem. -->
+
+<h1>Complexity</h1>
+<ul>
+<li>Time complexity: O(n) (each Fibonacci number is computed once).</li>
+</ul>
+<!-- Add your time complexity here, e.g. O(n) -->
+
+<ul>
+<li>Space complexity: O(1) (constant space for storing variables).</li>
+</ul>
+<!-- Add your space complexity here, e.g. O(n) -->
+
+<h1>**UPVOLTE IF YOU LIKE THE SOLUTION **</h1>
+<h1>Code</h1>
+<pre><code>class Solution {
+    public int fib(int n){
+        if(n==0 || n==1) return n;
+        int result = fib(n-1) + fib(n-2);
+        return result;
+    }
+}
+</code></pre>
+<h1>2.  RECURSION:</h1>
+<h1>Intuition</h1>
+<ol>
+<li>We want to compute the nth Fibonacci number efficiently using recursion.</li>
+<li>The Fibonacci sequence is a series of numbers where each number is the sum of the two preceding ones.</li>
+</ol>
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+<h1>Approach</h1>
+<ol>
+<li>Base Cases:<ul>
+<li>If n is 0 or 1, return n.</li>
+<li>These are the base cases for the recursion.</li>
+</ul>
+</li>
+<li>Recursive Case:<ul>
+<li>Otherwise:</li>
+<li>Compute fab(n-1) (the (n-1)th Fibonacci number) recursively.</li>
+<li>Compute fab(n-2) (the (n-2)th Fibonacci number) recursively.</li>
+<li>Add the results of the above two computations to get the nth Fibonacci number.</li>
+<li>Return this result.</li>
+</ul>
+</li>
+<li>Example:<ul>
+<li>For n = 7:<ul>
+<li>Compute fab(6) (the 6th Fibonacci number) recursively.</li>
+<li>Compute fab(5) (the 5th Fibonacci number) recursively.</li>
+<li>Compute fab(4) (the 4th Fibonacci number) recursively.</li>
+<li>Compute fab(3) (the 3rd Fibonacci number) recursively.</li>
+<li>Compute fab(2) (the 2nd Fibonacci number) recursively.</li>
+<li>Base case: fab(2) returns 1.</li>
+<li>Compute fab(1) (the 1st Fibonacci number) recursively.</li>
+<li>Base case: fab(1) returns 1.</li>
+<li>Add the results: fab(3) = fab(2) + fab(1) = 2.</li>
+<li>Compute fab(4) recursively.</li>
+<li>Add the results: fab(4) = fab(3) + fab(2) = 3.</li>
+<li>Compute fab(5) recursively.</li>
+<li>Add the results: fab(5) = fab(4) + fab(3) = 5.</li>
+<li>Compute fab(6) recursively.</li>
+<li>Add the results: fab(6) = fab(5) + fab(4) = 8.</li>
+<li>Return fab(6) as the 7th Fibonacci number.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<!-- Describe your approach to solving the problem. -->
+
+<h1>Complexity</h1>
+<ul>
+<li>Time complexity: O(2^n) Exponential (inefficient due to repeated computations)..</li>
+</ul>
+<!-- Add your time complexity here, e.g. O(n) -->
+
+<ul>
+<li>Space complexity: O(n) (due to the recursion stack).</li>
+</ul>
+<!-- Add your space complexity here, e.g. O(n) -->
+
+<h1>**UPVOLTE IF YOU LIKE THE SOLUTION **</h1>
+<h1>Code</h1>
+<pre><code>class Solution {
+    public int fib(int n){
+        if(n==0 || n==1) return n;
+        int result = fib(n-1) + fib(n-2);
+        return result;
+    }
+}
+</code></pre>
+<h1>3.  MEMOIZATION(BOTTOM UP APPROACH):</h1>
+<h1>Intuition</h1>
+<ol>
+<li>The Fibonacci sequence is a series of numbers where each number is the sum of the two preceding ones.</li>
+<li>We want to compute the nth Fibonacci number efficiently using dynamic programming.</li>
+</ol>
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+<h1>Approach</h1>
+<ol>
+<li>Using Dynamic Programming (DP):<ul>
+<li>We’ll use an array dp to store the computed Fibonacci numbers.</li>
+<li>Initialize dp with zeros.</li>
+<li>If n is 0 or 1, return n (base cases).</li>
+<li>Otherwise:<ul>
+<li>Check if dp[n] is already computed (non-zero).</li>
+<li>If yes, return dp[n].</li>
+<li>Otherwise, compute dp[n] as the sum of fib(n-1) and fib(n-2).</li>
+<li>Store dp[n] in the array.</li>
+<li>Return dp[n].</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>1-D Array for Memoization:<ul>
+<li>Since only n is changing in the recursion, we use a 1-D array (dp) to store the computed values.</li>
+<li>The array size is n+1 because the Fibonacci sequence starts from 0.</li>
+</ul>
+</li>
+</ol>
+<!-- Describe your approach to solving the problem. -->
+
+<h1>Complexity</h1>
+<ul>
+<li>Time complexity: O(n) (each Fibonacci number is computed once).</li>
+</ul>
+<!-- Add your time complexity here, e.g. O(n) -->
+
+<ul>
+<li>Space complexity: O(n) (for the dp array).</li>
+</ul>
+<!-- Add your space complexity here, e.g. O(n) -->
+
+<h1>**UPVOLTE IF YOU LIKE THE SOLUTION **</h1>
+<h1>Code</h1>
+<pre><code>class Solution {
+    public int fib(int n){
+        int[] dp = new int[n+1]; //n+1 to avoid any out of bound case
+        if(n==0 || n==1){
+            return n;
+        }
+        if(dp[n]!=0){  //dp[n] if not 0 that means there is some value stored.
+            return dp[n];  //so return the stored value to avoid extra calculation.
+        }
+        dp[n] = fib(n-1) + fib(n-2); //store the each unique computation so we can use it later calls
+        //only n is changing --&gt; use 1-D array
+        return dp[n];
+    }
+}
+</code></pre>
+<h1>4. TABULATION(BOTTOM UP APPROACH):</h1>
+<h1>Intuition</h1>
+<ol>
+<li>The Fibonacci sequence is a series of numbers where each number is the sum of the two preceding ones.</li>
+<li>We want to compute the nth Fibonacci number efficiently using dynamic programming.</li>
+</ol>
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+<h1>Approach</h1>
+<ol>
+<li>Creating a DP Array :<ul>
+<li>We create an array dp of size n+1 to store the computed Fibonacci numbers.</li>
+<li>Initialize dp[0] and dp[1] with the base cases (0 and 1).</li>
+</ul>
+</li>
+<li>Iterating Over the DP Array :<ul>
+<li>Starting from index 2 (since we already have dp[0] and dp[1]), iterate over the dp array.</li>
+<li>For each index i :<ul>
+<li>Compute dp[i] as the sum of dp[i-1] and dp[i-2].</li>
+<li>Store this value in the dp array.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Example:<ul>
+<li>For n = 8:<ul>
+<li>dp[0] = 0, dp[1] = 1.</li>
+<li>Compute dp[2] = dp[1] + dp[0] = 1.</li>
+<li>Compute dp[3] = dp[2] + dp[1] = 2.</li>
+<li>Continue until dp[8].</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<!-- Describe your approach to solving the problem. -->
+
+<h1>Complexity</h1>
+<ul>
+<li>Time complexity: O(n) (each Fibonacci number is computed once).</li>
+</ul>
+<!-- Add your time complexity here, e.g. O(n) -->
+
+<ul>
+<li>Space complexity: O(n) (for the dp array).</li>
+</ul>
+<!-- Add your space complexity here, e.g. O(n) -->
+
+<h1>**UPVOLTE IF YOU LIKE THE SOLUTION **</h1>
+<h1>Code</h1>
+<pre><code>class Solution {
+    public int fib(int n){
+        int[] dp = new int[n+1];  //create a dp array
+
+    //store the base case in dp array
+        dp[0] = 0;
+        dp[1] = 1;
+
+    //iterate over the dp array and stores the values
+        for(int i=2;i&lt;=n;i++){  //i&lt;=n --&gt; lenght of n is n+1
+            dp[i] = dp[i-1] + dp[i-2];  //continously storing in the next place with the help of previous data
+        }
+        return dp[n];
+    }
+}
+</code></pre>
+</div>
+</div>
+</body>
+</html>

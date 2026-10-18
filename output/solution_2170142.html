@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🧠Easiest Explanataion with Notes📝 || ✅✅Fastest 0ms || 💯💯 Memory Efficient || Recursive Solution – Decode String</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_decode-string.html">Decode String</a> <span class="sep">›</span> <span class="cur">🧠Easiest Explanataion with Notes📝 || ✅✅Fastest 0ms || 💯💯 Memory Efficient || Recursive Solution</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">🧠Easiest Explanataion with Notes📝 || ✅✅Fastest 0ms || 💯💯 Memory Efficient || Recursive Solution</div>
+  <div class="meta">
+    <span>👤 TheCodeAlpha</span>
+    <span>👍 4</span>
+    <span>2022-06-19</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/decode-string/solutions/2170142/easiest-explanataion-with-notes-fastest-0ms-memory-efficient-recursive-solution/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p><strong>Thank you for checking my Solution,<br />
+Do Upvote, if it helped :)</strong></p>
+<p><strong>Lets Take an example first and see its solution<br />
+s = 2[ab]2[d3[a2[c]]]</strong><br />
+<img alt="image" src="https://assets.leetcode.com/users/images/047f146c-1938-4bec-9ca2-795e705d245c_1655635970.822745.jpeg" /><br />
+<img alt="image" src="https://assets.leetcode.com/users/images/2d37b4f9-30e5-4c8c-8548-45d066c69a6a_1655635982.9163513.jpeg" /><br />
+<img alt="image" src="https://assets.leetcode.com/users/images/0b4c4ff3-82a1-4bd3-a616-3b37139c3199_1655635999.5368323.jpeg" /><br />
+<img alt="image" src="https://assets.leetcode.com/users/images/a772021a-67a0-4fab-bf0c-b04d6fc16f7c_1655636006.9801486.jpeg" /></p>
+<p><strong>So as per the images, arrows represent returning a control, therefore we will recursion to solve this problem.<br />
+The Idea is to add all the sets of independent brackets<br />
+For every call, our current result is an empty string, we advance in the string and perform the following tasks</strong></p>
+<blockquote>
+<p><strong>If the current character is an opening bracket, we hold our current result and recursively check for any nested brackets</strong></p>
+<blockquote>
+<p><strong>To solve the current pair of brackets, we have to ensure all the brackets inside it are solved!!<br />
+After A recursive call is finished, we set the multiplier (integer that tells us how many times our string will be repeated) to 0<br />
+We take the control to the next index which has to been traversed yet,</strong></p>
+<blockquote>
+<p><strong>Take an array and initialise all values to 0<br />
+Whenever an index is encountered, set it to 1 in the array.<br />
+0 ---&gt; Untraversed, 1 ---&gt; Traversed<br />
+Therefore we take the control to the next index with value 0</strong></p>
+<p><strong>If current character is a letter, we add it to our current result and continue to advance  in the input string<br />
+If the current character is an closing bracket,</strong><br />
+<strong>We repeat our current result, multiplier times, and store it in a temporary string<br />
+We return the temporary string, this operation ends one set of brackets</strong></p>
+</blockquote>
+<p><strong>Otherwise the current character is a digit,</strong> <br />
+<strong>It will give us the multiplier, so we will store it in another variable<br />
+This will help us to pass on the multiplier to another recursive call, if needed, after converting it into integer</strong></p>
+<p><strong>Finally we will return the Current Result</strong></p>
+</blockquote>
+</blockquote>
+<hr />
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/c7a14526-460d-49a1-88cf-1ce26c0cc963_1715176087.9835787.png" /></p>
+<p><strong>Below is the code for the above mentioned approach</strong></p>
+<p>```cpp []<br />
+class Solution<br />
+{ // Runtime: 0 ms, faster than 100.00% of C++ online submissions for Decode String.<br />
+  // Memory Usage: 6.4 MB, less than 78.36% of C++ online submissions for Decode String.<br />
+public:<br />
+    int l, br = 0;<br />
+    // Since string length can at worst be 30, create an array of length 30 to track the indices that have been traversed<br />
+    int v[30]; </p>
+<pre><code>string get_it(string s, int index, int mul) //(Original String, index to start with, multiplier)
+{
+    //Res to store immidiate results, 
+    //result_so_far to get the result so far, 
+    //num to get the multiplier
+    string res = "", result_so_far = "", num = "";       
+    int b = 0, i = index;
+    while(i &lt; l)
+    {
+        //Mark the index as traversed
+        v[i] = 1;
+        //If there is an opening
+        if (s[i] == '[')                        
+        {
+            //For Every beginning, make a recursive call, as there might be nested Coded Strings like 3[a2[c]]
+            //Store the result of the recursive call in result_so_far
+            result_so_far += get_it(s, i + 1, stoi(num));
+            //Set num as "", empty!
+            num = "";
+            //Take i to the next untraversed index
+            while (v[i] != 0)
+                i++;
+        }
+        //If there is an alphabet, add it to result_so_far
+        else if (isalpha(s[i]))
+        {
+            result_so_far += s[i++];
+        }
+        //If its a closing bracket
+        else if (s[i] == ']')
+        {
+            //Time to add the strings, m times,
+            //This step is responsible for decoding(building up) the string
+            for (int i = 1; i &lt;= mul; i++)
+                res += result_so_far;       //Immediate immresult
+            return res;
+        }
+        //Otherwise the current character is a part of multiplier, i.e. number
+        else
+            num += s[i++];
+    }   
+    return result_so_far;
+}
+string decodeString(string s)
+{
+    l = s.size();
+    //Set the l(size) places in the array v, as 0, stating all are untraversed
+    for (int i = 0; i &lt; l; i++)  
+        v[i] = 0;
+
+    return get_it(s, 0, 1);
+}
+</code></pre>
+<p>};</p>
+<pre><code>```java []
+class Solution {
+    int l;
+    int[] v = new int[30];
+
+    // Recursive method to decode the string
+    String getDecodedString(String s, int index, int mul) {
+        String res = &quot;&quot;, resultSoFar = &quot;&quot;, num = &quot;&quot;;
+        int i = index;
+        while (i &lt; l) {
+            v[i] = 1;
+            if (s.charAt(i) == '[') {
+                resultSoFar += getDecodedString(s, i + 1, Integer.parseInt(num));
+                num = &quot;&quot;;
+                while (v[i] != 0) i++;
+            } else if (Character.isLetter(s.charAt(i))) {
+                resultSoFar += s.charAt(i++);
+            } else if (s.charAt(i) == ']') {
+                for (int j = 1; j &lt;= mul; j++) {
+                    res += resultSoFar;
+                }
+                return res;
+            } else {
+                num += s.charAt(i++);
+            }
+        }
+        return resultSoFar;
+    }
+
+    // Main method to decode the given string
+    public String decodeString(String s) {
+        l = s.length();
+        for (int i = 0; i &lt; l; i++) {
+            v[i] = 0;
+        }
+        return getDecodedString(s, 0, 1);
+    }
+}
+
+</code></pre>
+<p>```python3 []<br />
+class Solution:<br />
+    def <strong>init</strong>(self):<br />
+        self.l = 0<br />
+        self.v = [0] * 30</p>
+<pre><code># Recursive method to decode the string
+def get_decoded_string(self, s: str, index: int, mul: int) -&gt; str:
+    res = ""
+    result_so_far = ""
+    num = ""
+    i = index
+    while i &lt; self.l:
+        self.v[i] = 1
+        if s[i] == '[':
+            result_so_far += self.get_decoded_string(s, i + 1, int(num))
+            num = ""
+            while self.v[i] != 0:
+                i += 1
+        elif s[i].isalpha():
+            result_so_far += s[i]
+            i += 1
+        elif s[i] == ']':
+            for j in range(1, mul + 1):
+                res += result_so_far
+            return res
+        else:
+            num += s[i]
+            i += 1
+    return result_so_far
+
+# Main method to decode the given string
+def decode_string(self, s: str) -&gt; str:
+    self.l = len(s)
+    for i in range(self.l):
+        self.v[i] = 0
+    return self.get_decoded_string(s, 0, 1)
+</code></pre>
+<p>```<br />
+<strong>Time Complexity : O(N), N = Length of the String<br />
+Space Complexity : O(N), Since recursion uses a stack to process the info</strong><br />
+<img alt="upv2.jpeg" src="https://assets.leetcode.com/users/images/b5fee75b-59c5-4c2b-a04f-92e2c0ed34cd_1715176218.546262.jpeg" /></p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Find the Winner of the Circular Game – Editorial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+<style>.vimeo-link{display:inline-flex;align-items:center;gap:8px;
+            background:#1ab7ea;color:#fff;font-weight:600;
+            padding:10px 20px;border-radius:6px;margin:12px 0;font-size:.95em}
+.vimeo-link:hover{background:#0d9bd4;color:#fff;text-decoration:none}</style>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_find-the-winner-of-the-circular-game.html">Find the Winner of the Circular Game</a> <span class="sep">›</span> <span class="cur">Editorial</span></nav>
+<div class="wrap"><div class="page-title">1951. Find the Winner of the Circular Game — Official Editorial</div>
+<div class="page-sub" style="margin-bottom:20px">
+  <span class="badge b-medium">Medium</span> <span class="badge b-tag">Array</span> <span class="badge b-tag">Math</span> <span class="badge b-tag">Recursion</span> <span class="badge b-tag">Queue</span> <span class="badge b-tag">Simulation</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/find-the-winner-of-the-circular-game/" target="_blank" style="font-size:.85em">↗ Problem</a>
+  &nbsp;·&nbsp;
+  <a href="problem_find-the-winner-of-the-circular-game.html" style="font-size:.85em">💬 Community Solutions</a>
+</div>
+<div class="sol-body">
+  <p>[TOC]</p>
+<h2>Solution</h2>
+<hr />
+<h3>Overview</h3>
+<p>In this circular game, <code>n</code> friends numbered from <code>1</code> to <code>n</code> stand in a circle. In the first round, we start counting from friend 1 and eliminate the <code>k</code>-th friend. In each subsequent round, counting starts from the friend immediately clockwise to the one just eliminated, and the <code>k</code>-th friend is eliminated again. This process repeats until only one person remains.</p>
+<p>A straightforward approach for turn-based games can be to simulate the game's rules. Here, our algorithm can eliminate the <code>k</code>-th friend in each iteration. However, optimizations are often possible, as in this problem, where we can reduce space and time complexity. </p>
+<p>We will start with a simulation approach and then explore more efficient methods that avoid manually following the game's rules.</p>
+<blockquote>
+<p>Note: This is famously known as the Josephus Problem.</p>
+</blockquote>
+<hr />
+<h3>Approach 1: Simulation with List</h3>
+<h3>Intuition</h3>
+<p>To simulate this elimination game, we can start by representing the <code>n</code> friends using a list data structure. Initially, this list contains all the friends labeled from <code>1</code> to <code>n</code>. The idea is to repeatedly count to the <code>k</code>-th friend in the list and remove them from the game. By continually removing every <code>k</code>-th friend and adjusting our starting point after each removal, we can narrow down the group until only one friend remains. This final remaining friend is the winner of the game.</p>
+<h3>Algorithm</h3>
+<ol>
+<li>Initialize a list of size <code>n</code>, representing <code>n</code> friends labeled from <code>1</code> to <code>n</code></li>
+<li>Maintain a <code>startIndex</code> variable that keeps track of the position from where counting begins, initially set to 0.</li>
+<li>While more than 1 friend is remaining:<ul>
+<li>Calculate the new index of the next friend to remove as <code>(startIndex + k - 1) % numFriendsRemaining</code>. We apply the modulus operator to ensure counting wraps around the circle.</li>
+<li>Remove the friend at the calculated index</li>
+<li>Update <code>startIndex</code> to the removed index</li>
+</ul>
+</li>
+<li>Return the label of the last remaining friend </li>
+</ol>
+<h3>Implementation</h3>
+<iframe src="https://leetcode.com/playground/P2pXifyP/shared" frameBorder="0" width="100%" height="500" name="P2pXifyP"></iframe>
+
+<h3>Complexity Analysis</h3>
+<p>Let $n$ be the initial size of the friend circle.</p>
+<ul>
+<li>
+<p>Time Complexity: $O(n^2)$</p>
+<p>Considering the <code>pop</code> operation inside the loop, the time complexity for each iteration can be $O(n)$ in the worst case (when <code>pop</code> shifts all subsequent elements). Since we might potentially perform $n-1$ <code>pop</code> operations (removing <code>n-1</code> friends), the overall worst-case time complexity is $O(n^2)$.</p>
+</li>
+<li>
+<p>Space Complexity: $O(n)$</p>
+<p>The space complexity of the algorithm is primarily dominated by the <code>circle</code> list, which stores <code>n</code> integers representing the friends. Therefore, the space complexity is $O(n)$. Other variables like <code>startIndex</code> and <code>removalIndex</code> are integers and require constant additional space, $O(1)$.</p>
+</li>
+</ul>
+<h3>Approach 2: Simulation with Queue</h3>
+<h3>Intuition</h3>
+<p>Instead of using a list to manage eliminations (which can be a costly $O(n)$ operation), we can optimize the elimination process by using a queue. In a queue, removing the first element is done in $O(1)$ time. Initially, we fill the queue with friends labeled from <code>1</code> to <code>n</code>. The key insight is how eliminations can be handled at each round. In each round, we simulate the process by rotating the queue <code>k-1</code> times. This action effectively moves the <code>k</code>-th friend to the front of the queue, ready for removal. Once positioned, removing this front element simulates eliminating that friend from the game. This rotation and removal process continues until only one friend remains in the queue, who is then declared the winner of the game.</p>
+<p>With the use of a queue, the cost of the pop operation, which was $O(n)$ in the list approach, is now reduced to $O(1)$. The traversal operation remains the only operation with linear time complexity.</p>
+<h3>Algorithm</h3>
+<ol>
+<li>Initialize a queue of size <code>n</code>, where the elements are labeled 1 to <code>n</code>.</li>
+<li>While more than 1 friend is remaining<ul>
+<li>Remove the next <code>k-1</code> friends and re-add them to the queue.</li>
+<li>Remove the next friend (the <code>k</code>-th friend that should be eliminated in the game)</li>
+</ul>
+</li>
+<li>Return the value of the last friend remaining </li>
+</ol>
+<h3>Implementation</h3>
+<iframe src="https://leetcode.com/playground/nDy7g7me/shared" frameBorder="0" width="100%" height="446" name="nDy7g7me"></iframe>
+
+<h3>Complexity Analysis</h3>
+<p>Let $n$ be the number of friends and $k$ be the step count for elimination.</p>
+<ul>
+<li>
+<p>Time Complexity: $O(n \cdot k)$</p>
+<p>The time complexity is $O(n \cdot k)$ because each elimination cycle involves rotating the queue $k-1$ times, and this happens $n-1$ times.</p>
+</li>
+<li>
+<p>Space Complexity: $O(n)$</p>
+<p>The space complexity is $O(n)$ due to the queue storing all $n$ friends initially.</p>
+</li>
+</ul>
+<h3>Approach 3: Recursion</h3>
+<h3>Intuition</h3>
+<p>The game involves repetitively eliminating the <code>k</code>-th friend from a circle, shrinking the size of the circle at every turn. This suggests that we can break down the problem into smaller, similar subproblems.</p>
+<p>Let’s look at a smaller instance of the problem where n=4 and k=2. We'll track both the number and index of each friend in the circle.</p>
+<p>At the start of the game, friend 0 is at the beginning of the circle, and each friend's number corresponds to their index (we'll use zero-based indexing for now and adjust to one-based indexing later as required by the problem):</p>
+<p><img alt="Beginning of first turn" src="https://leetcode.com/articles/Figures/1823/first_turn_start.png" /></p>
+<p>In the first round, we start our count at friend 0 and eliminate the k-th friend. With k=2, we eliminate friend 1 at index 1, leaving three friends in the circle. </p>
+<p><img alt="First elimination" src="https://leetcode.com/articles/Figures/1823/first_turn_elimination.png" /></p>
+<p>For the second round, we treat the friend immediately after friend 1 (friend 2) as the new starting point. The updated indices now appear as follows:</p>
+<p><img alt="Beginning of second turn" src="https://leetcode.com/articles/Figures/1823/second_turn_start.png" /></p>
+<p>From this process, there are two key insights:</p>
+<ol>
+<li>The problem, initially dealing with a circle of <code>n</code> friends, now reduces to a subproblem with <code>n-1</code> friends</li>
+<li>In the new subproblem, friend indices shift by <code>-k</code>. For instance, friend 3 moves from index <code>3</code> to index <code>1</code> in the new circle.</li>
+</ol>
+<p>These observations suggest a recurrence relation for a recursive solution. Let's define $f(n,k)$ as function that returns the index of the winning friend with a game of <code>n</code> friends and a step size of <code>k</code>. In our example above, $f(4,2)$ would yield the final answer.</p>
+<p>We observed that after the first turn/elimination, our problem reduces to a smaller subproblem of $f(n-1, k)$. Accounting for the indexing offset discussed above, we can form the following relationship between $f(n,k)$ and $f(n-1,k)$:</p>
+<p>$$f(n, k) = (f(n-1, k) + k) \bmod n$$</p>
+<p>We add k to $f(n-1, k)$ to convert back to the original indexing of the circle of size <code>n</code> (we saw above how the new indexing on a circle of size <code>n-1</code> shifts the original indexing by <code>-k</code>). Like before, we mod this value by the size of the circle to account for cases where the offset wraps around to the start of the circle.</p>
+<p>The base case is $f(1, k) = 0$, as the last remaining friend will always be at index <code>0</code></p>
+<h3>Algorithm</h3>
+<ol>
+<li>Define a <code>winnerHelper(int n, int k)</code> function where:<ul>
+<li>If the base case is reached (<code>n == 1</code>), return <code>0</code>.</li>
+<li>Otherwise, return the recurrence relation expression: $(  ext{winnerHelper}(n-1, k) + k)  \bmod  n$.</li>
+</ul>
+</li>
+<li>Return the value of the last friend remaining.</li>
+</ol>
+<h3>Implementation</h3>
+<iframe src="https://leetcode.com/playground/E6BKmr6U/shared" frameBorder="0" width="100%" height="276" name="E6BKmr6U"></iframe>
+
+<h3>Complexity Analysis</h3>
+<p>Let $n$ be the initial size of the friend circle.</p>
+<ul>
+<li>
+<p>Time Complexity: $O(n)$</p>
+<p>The function makes $n$ recursive calls, each performing $O(1)$ operations (modulo and addition).</p>
+</li>
+<li>
+<p>Space Complexity: $O(n)$</p>
+<p>The space complexity is determined by the maximum depth of the recursion stack, which is $n$.</p>
+</li>
+</ul>
+<h3>Approach 4: Iterative</h3>
+<h3>Intuition</h3>
+<p>We can further leverage the recurrence relation we found earlier, but optimize it by eliminating the extra space overhead incurred by the recursive calls. To achieve this, we can start by solving the base case where <code>n = 1</code> and iteratively compute the position of the winner, building up to solving the solution for <code>n = N</code>. This iteration will efficiently compute the solution with no extra space needed.</p>
+<h3>Algorithm</h3>
+<ol>
+<li>Initialize <code>ans</code> to 0, representing the answer for the base case <code>n = 1</code></li>
+<li>Iterate through values of <code>n</code> from 2 to <code>N</code>:<ul>
+<li>Compute the answer for the current <code>n</code> using the recurrence relation: <code>ans = (ans + k) % n</code></li>
+</ul>
+</li>
+<li>Return <code>ans + 1</code></li>
+</ol>
+<h3>Implementation</h3>
+<iframe src="https://leetcode.com/playground/U32t5twS/shared" frameBorder="0" width="100%" height="242" name="U32t5twS"></iframe>
+
+<h3>Complexity Analysis</h3>
+<p>Let $n$ be the initial size of the friend circle.</p>
+<ul>
+<li>
+<p>Time Complexity: $O(n)$</p>
+<p>The loop runs $O(n)$ times, where each iteration involves a constant time calculation. Thus, the total time complexity is $O(n)$.</p>
+</li>
+<li>
+<p>Space Complexity: $O(1)$</p>
+<p>Unlike the recursive approach, no extra memory is needed to maintain a call stack. Furthermore, no auxiliary data structures are used. Thus, the space complexity is constant.</p>
+</li>
+</ul>
+</div></div>
+</body>
+</html>

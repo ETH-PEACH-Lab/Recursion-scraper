@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Swift -- 递归解题 – Add Two Numbers</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_add-two-numbers.html">Add Two Numbers / 两数相加</a> <span class="sep">›</span> <span class="cur">Swift -- 递归解题</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">Swift -- 递归解题</div>
+  <div class="meta">
+    <span>👤 xiaosheng</span>
+    <span>👍 0</span>
+    <span>2020-06-16</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/add-two-numbers/solution/swift-di-gui-jie-ti-by-xiaosheng/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h3>解题思路</h3>
+<p>解题过程中两种解题思路,都是递归的想法, 不过代码思维方式不一样</p>
+<h3>思维一:</h3>
+<p>链表补全, 两个链表, 一个做进位合数链表, 另一个只做合数链表. 也就是说, l1链表个数少于l2, 那么就做ListNode(0)补充, 与l2平齐, 发生进位也在这个l1上做.</p>
+<h3>思维二:</h3>
+<p>做详细判断, 分情况去判断当前需要做哪些操作,不需要做哪些操作, 不需要补充链表, 只需要针对当前的递归循环参数的listnode是不是有数据做判断</p>
+<p>上面两种思路, 大致相同, 思维一使用了swift 的特性? 给定默认值, 不去考虑数据的完整想, 在发挥语言特性上要优于思维二, 但是思维二逻辑相对而言更容易读懂.</p>
+<h1>上代码</h1>
+<h3>代码: 思维一</h3>
+<p><img alt="屏幕快照 2020-06-16 下午2.38.40.png" src="https://pic.leetcode.cn/60d8a7df3a824bbe1866a7b9ce52e208f364e8793677c4983ea7af8a2240e78e-%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202020-06-16%20%E4%B8%8B%E5%8D%882.38.40.png" /></p>
+<pre><code class="language-swift">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public var val: Int
+ *     public var next: ListNode?
+ *     public init(_ val: Int) {
+ *         self.val = val
+ *         self.next = nil
+ *     }
+ * }
+ */
+class Solution {
+    func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -&gt; ListNode? {
+        var result: ListNode?
+
+    if l1 != nil || l2 != nil {
+
+        var node_1 = l1
+        var node_2 = l2
+
+        var sum = (node_1?.val ?? 0) + (node_2?.val ?? 0)
+        if sum &gt;= 10 {
+            sum -= 10;
+            node_1 = node_1?.next ?? ListNode.init(0)
+            node_1?.val += 1
+        } else {
+            node_1 = node_1?.next
+        }
+
+        node_2 = node_2?.next
+
+        result = ListNode.init(sum, addTwoNumbers(node_1, node_2))
+    }
+
+    return result
+    }
+}
+</code></pre>
+<h3>代码: 思维二</h3>
+<p><img alt="WechatIMG82639.jpeg" src="https://pic.leetcode.cn/731732a07530e4b3976b43eee9d3d244070d10c1852d2e8260dc3b97b9c3eae3-WechatIMG82639.jpeg" /></p>
+<pre><code class="language-swift">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public var val: Int
+ *     public var next: ListNode?
+ *     public init(_ val: Int) {
+ *         self.val = val
+ *         self.next = nil
+ *     }
+ * }
+ */
+func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -&gt; ListNode? {
+    var l1_value = 0
+    var l2_value = 0
+    var l1_next: ListNode?
+    var l2_next: ListNode?
+
+    if let l_1 = l1  {
+        l1_value = l_1.val
+        l1_next = l_1.next
+    }
+
+    if let l_2 = l2 {
+        l2_value = l_2.val
+        l2_next = l_2.next
+    }
+
+    var currentCodeValue = l1_value + l2_value
+    var nextNode: ListNode?
+
+    if currentCodeValue &gt;= 10 {
+        currentCodeValue -= 10
+        if let l_1_next = l1_next {
+            l_1_next.val += 1
+            nextNode = addTwoNumbers(l_1_next, l2_next)
+        } else if let l_2_next = l2_next {
+            l_2_next.val += 1
+            nextNode = addTwoNumbers(l1_next, l_2_next)
+        } else {
+            nextNode = ListNode.init(1)
+        }
+    } else {
+        if l1_next != nil || l2_next != nil {
+            nextNode = addTwoNumbers(l1_next, l2_next)
+        }
+    }
+
+    return ListNode.init(currentCodeValue, nextNode)
+}
+
+</code></pre>
+<h1>总结</h1>
+<p>思路大家应该懂能动<br />
+很奇怪, 两种思维的内存消耗都比较高, 有大佬知道为什么嘛?求指导</p>
+<h1>福利</h1>
+<p>鉴于LeetCode的链表算法问题, 初始化链表麻烦一点, 下面放出根据数据生成链表和打印的方法:</p>
+<h3>func_0 根据数组生成链表</h3>
+<pre><code>func createListNode(array: [Int], tap: Int, preListNode: ListNode?) -&gt; ListNode? {
+    if tap &lt; 0 {
+        return preListNode;
+    }
+
+    let node = ListNode.init(array[tap], preListNode)
+
+    return createListNode(array: array, tap: tap - 1, preListNode: node)
+}
+</code></pre>
+<h3>func_1 打印链表</h3>
+<pre><code>func printListNode(listNode: ListNode?) {
+    guard let node = listNode else {
+        print(&quot;node 为nil&quot;)
+        return
+    }
+
+    var currentNode: ListNode? = node
+    while (currentNode != nil) {
+        print(currentNode!.val)
+        currentNode = currentNode?.next
+    }
+}
+
+</code></pre>
+</div>
+</div>
+</body>
+</html>

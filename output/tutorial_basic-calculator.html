@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Basic Calculator – Editorial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+<style>.vimeo-link{display:inline-flex;align-items:center;gap:8px;
+            background:#1ab7ea;color:#fff;font-weight:600;
+            padding:10px 20px;border-radius:6px;margin:12px 0;font-size:.95em}
+.vimeo-link:hover{background:#0d9bd4;color:#fff;text-decoration:none}</style>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_basic-calculator.html">Basic Calculator</a> <span class="sep">›</span> <span class="cur">Editorial</span></nav>
+<div class="wrap"><div class="page-title">224. Basic Calculator — Official Editorial</div>
+<div class="page-sub" style="margin-bottom:20px">
+  <span class="badge b-hard">Hard</span> <span class="badge b-tag">Math</span> <span class="badge b-tag">String</span> <span class="badge b-tag">Stack</span> <span class="badge b-tag">Recursion</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/basic-calculator/" target="_blank" style="font-size:.85em">↗ Problem</a>
+  &nbsp;·&nbsp;
+  <a href="problem_basic-calculator.html" style="font-size:.85em">💬 Community Solutions</a>
+</div>
+<div class="sol-body">
+  <p>[TOC]</p>
+<h2>Solution</h2>
+<p>This problem is all about understanding the following:</p>
+<ul>
+<li>Input always contains valid strings</li>
+<li>The rules of addition and subtraction</li>
+<li>Implication of precedence by parenthesis</li>
+<li>Spaces do not affect the evaluation of the input expression</li>
+</ul>
+<center>
+<img src="https://leetcode.com/articles/Figures/224/Basic_Calculator_0.png" width="600"/>
+</center>
+
+<h3>Approach 1: Stack and String Reversal</h3>
+<p><strong>Intuition</strong></p>
+<p>This question qualifies really well for a stack question. Since the expression might have parenthesis, we can use a stack to find the value for each sub-expression within a parenthesis. Essentially, we need to <em>delay</em> processing the main expression until we are done evaluating the interim sub-expressions within parenthesis and to introduce this delay, we use a stack.</p>
+<p>We push the elements of the expression one by one onto the stack until we get a closing bracket <code>)</code>. Then we pop the elements from the stack one by one and evaluate the expression on-the-go. This is done till we find the corresponding <code>(</code> opening bracket. This kind of evaluation is very common when using the stack data structure. However, if you notice the way we calculate the final answer, you will realize that we actually process the values from right to left whereas it should be the other way around.</p>
+<center>
+<img src="https://leetcode.com/articles/Figures/224/Basic_Calculator_1.png" width="600"/>
+</center>
+
+<p>From the above example we realize that following the simple stack push and pop methodology will not help us here. We need to understand how <code>+</code> and <code>-</code> work. <code>+</code> follows the associative property. For the expression $$A+B+C$$,  we have $$(A+B)+C = A+(B+C)$$. However,  <code>-</code> does not follow this rule which is the root cause of all the problems in this approach.</p>
+<p>If we use a stack and read the elements of the expression from left to right, we end up evaluating the expression from right-to-left. This means we are expecting $$(A-B)-C$$ to be equal to $$(C-B)-A$$ which is not correct. Subtraction is neither associative nor commutative.</p>
+<p>This problem could be solved very easily by reversing the string and then using basic drill using a stack. Reversing a string helps since we now put the elements of the expression into the stack from right to left and evaluation for the expression is done correctly from left to right.</p>
+<center>
+<img src="https://leetcode.com/articles/Figures/224/Basic_Calculator_2.png" width="600"/>
+</center>
+
+<p><strong>Algorithm</strong></p>
+<ol>
+<li>Iterate the expression string in reverse order one character at a time. Since we are reading the expression character by character, we need to be careful when we are reading digits and non-digits.</li>
+<li>The operands could be formed by multiple characters. A string "123" would mean a numeric 123, which could be formed as: <code>123</code> &gt;&gt; <code>120 + 3</code> &gt;&gt; <code>100 + 20 + 3</code>. Thus, if the character read is a digit we need to form the operand by multiplying a power of <code>10</code> to the current digit and adding it to the overall operand. We do this since we are processing the string in the reverse order.</li>
+<li>The operands could be formed by multiple characters. We need to keep track of an on-going operand. This part is a bit tricky since in this case the string is reversed. Once we encounter a character which is not a digit, we push the operand onto the stack.</li>
+<li>
+<p>When we encounter an opening parenthesis <code>(</code>, this means an expression just ended. Recall we have reversed the expression. So an opening bracket would signify the end of the an expression. This calls for evaluation of the expression by popping operands and operators off the stack till we pop corresponding closing parenthesis. The final result of the expression is pushed back onto the stack.</p>
+<blockquote>
+<p>Note: We are evaluating all the sub-expressions within the main expression. The sub-expressions on the right get evaluated first but the main expression itself is evaluated from left to right when all its components are resolved, which is very important for correct results.</p>
+</blockquote>
+<p>For eg. For expression $$A - (B+C) + (D+E-F)$$, $$D+E-F$$ is evaluated before $$B+C$$. While evaluating $$D+E-F$$ the order is from left to right. Similarly for the parent expression, all the child components are evaluated and stored on the stack so that final evaluation is left to right.</p>
+</li>
+<li>
+<p>Push the other non-digits onto to the stack.</p>
+</li>
+<li>
+<p>Do this until we get the final result. It's possible that we don't have any more characters left to process but the stack is still non-empty. This would happen when the main expression is not enclosed by parenthesis. So, once we are done evaluating the entire expression, we check if the stack is non-empty. If it is, we treat the elements in it as one final expression and evaluate it the same way we would if we had encountered an opening bracket.</p>
+<p>We can also cover the original expression with a set of parenthesis to avoid this extra call.</p>
+</li>
+</ol>
+<iframe src="https://leetcode.com/playground/kdn6DGoL/shared" frameBorder="0" width="100%" height="500" name="kdn6DGoL"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>
+<p>Time Complexity: $$O(N)$$, where N is the length of the string.</p>
+</li>
+<li>
+<p>Space Complexity: $$O(N)$$, where N is the length of the string.
+<br/>
+<br/></p>
+</li>
+</ul>
+<hr />
+<h3>Approach 2: Stack and No String Reversal</h3>
+<p><strong>Intuition</strong></p>
+<p>A very easy way to solve the problem of associativity for <code>-</code> we tackled in the previous approach, is to use <code>-</code> operator as the magnitude for the operand to the right of the operator. Once we start using <code>-</code> as a magnitude for the operands, we just have one operator left which is addition and <code>+</code> is associative.</p>
+<p>for e.g. $$A - B - C$$ could be re-written as $$A + (-B) + (-C)$$.</p>
+<blockquote>
+<p>The re-written expression would follow associativity rule. Thus evaluating the expression from right or left, won't change the result.</p>
+</blockquote>
+<p>What we need to keep in mind is that the expressions given would be complicated, i.e. there would be expressions nested within other expressions. Even if we have something like <code>(A - (B - C))</code> we need to associate the <code>negative sign</code> outside of <code>B-C</code> with the result of <code>B-C</code> instead of just with <code>B</code>.</p>
+<p>We can solve this problem by following the basic drill before and associating the sign with the expression to the right of it. However, the approach that we will instead take has a small twist to it in that we will be evaluating most of the expression on-the-go. This reduces the number of push and pop operations.</p>
+<center>
+<img src="https://leetcode.com/articles/Figures/224/Basic_Calculator_3.png" width="600"/>
+</center>
+
+<p>Follow the below steps closely. This algorithm is inspired from <a href="https://leetcode.com/problems/basic-calculator/discuss/62361/southpenguin">discussion post</a> by <a href="https://leetcode.com/southpenguin/">southpenguin</a>.</p>
+<p><strong>Algorithm</strong></p>
+<ol>
+<li>Iterate the expression string one character at a time. Since we are reading the expression character by character, we need to be careful when we are reading digits and non-digits.</li>
+<li>The operands could be formed by multiple characters. A string "123" would mean a numeric 123, which could be formed as: <code>123</code> &gt;&gt; <code>120 + 3</code> &gt;&gt; <code>100 + 20 + 3</code>. Thus, if the character read is a digit we need to form the operand by multiplying <code>10</code> to the previously formed continuing operand and adding the digit to it.</li>
+<li>Whenever we encounter an operator such as <code>+</code> or <code>-</code> we first evaluate the expression to the left and then save this <code>sign</code> for the next evaluation.</li>
+</ol>
+<center>
+<img src="https://leetcode.com/articles/Figures/224/Basic_Calculator_4.png" width="600"/>
+</center>
+<ol start="4">
+<li>If the character is an opening parenthesis <code>(</code>, we just push the result calculated so far and the <code>sign</code> on to the stack (the sign and the magnitude) and start a fresh as if we are calculating a new expression.</li>
+<li>If the character is a closing parenthesis <code>)</code>, we first calculate the expression to the left. The result from this would be the result of the expression within the set of parenthesis that just concluded. This result is then multiplied with the sign, if there is any on top of the stack.
+Remember we saved the <code>sign</code> on top of the stack when we had encountered an open parenthesis? This sign is associated with the parenthesis that started then, thus when the expression ends or concludes, we pop the <code>sign</code> and multiply it with result of the expression. It is then just added to the next element on top of the stack.</li>
+</ol>
+<iframe src="https://leetcode.com/playground/dAjj5PB6/shared" frameBorder="0" width="100%" height="500" name="dAjj5PB6"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>
+<p>Time Complexity: $$O(N)$$, where N is the length of the string. The difference in time complexity between this approach and the previous one is that every character in this approach will get processed exactly once. However, in the previous approach, each character can potentially get processed twice, once when it's pushed onto the stack and once when it's popped for processing of the final result (or a subexpression). That's why this approach is faster.</p>
+</li>
+<li>
+<p>Space Complexity: $$O(N)$$, where N is the length of the string.
+<br/>
+<br/></p>
+</li>
+</ul>
+</div></div>
+</body>
+</html>

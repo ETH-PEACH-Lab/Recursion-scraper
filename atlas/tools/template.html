@@ -1,0 +1,283 @@
+<title>Recursion Diagram Atlas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: the paper's design-space table, three ruled columns plus a footer band; a coding opens a side sheet of source figures. */
+:root{
+  --bg:#FFFFFF; --surface:#FFFFFF; --sub:#F3F4F6; --ink:#1C2128; --muted:#5A6370; --rule:#1C2128; --hair:#D6DAE0;
+  --tile:#FFFFFF; --accent:#B4561F; --accent-soft:#FBE4D2; --lc:#FCE3C4; --lc-ink:#7A3A0E; --focus:#2F64B0;
+  --scrim:rgba(20,24,30,.42);
+  --display:'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --body:'Source Sans 3', 'Segoe UI', Helvetica, Arial, sans-serif;
+  --mono:'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+}
+:root{color-scheme:light}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.4;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:28px 48px}
+.wrap{max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+header{display:flex;flex-direction:column;gap:10px}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+.lede{margin:0;color:var(--muted);max-width:70ch;font-size:16px}
+.lede b{color:var(--ink);font-weight:600}
+.filters{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.filters .lab{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-right:4px}
+.chip{font:600 13px/1 var(--body);padding:6px 10px;border-radius:999px;border:1px solid var(--hair);background:var(--surface);color:var(--ink);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.chip .n{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.chip[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.chip[aria-pressed="true"] .n{color:var(--bg);opacity:.75}
+.chip.lc{background:var(--lc);color:var(--lc-ink);border-color:transparent}
+.chip.lc[aria-pressed="true"]{background:var(--lc-ink);color:var(--surface)}
+.chip.reset{border-style:dashed}
+.chip:focus-visible,.row:focus-visible,.sheet button:focus-visible,.thumb:focus-visible,a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px;align-items:start}
+.col{display:flex;flex-direction:column;gap:22px;min-width:0}
+.sec h2{font-size:21px;font-weight:700;margin:0 0 6px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sec h2 span.t{box-shadow:inset 0 -5px 0 var(--c)}
+.sec h2 .q{font-size:13px;font-weight:400;color:var(--muted)}
+.box{background:var(--surface);border:1.5px solid var(--rule);border-top:4px solid var(--rule)}
+.grp{padding:6px 14px;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;border-bottom:1px solid var(--rule)}
+.item{border-bottom:1px solid var(--rule);display:grid;grid-template-columns:minmax(0,1fr)}
+.item:last-child{border-bottom:none}
+.item.has-subs{grid-template-columns:minmax(0,42%) minmax(0,58%)}
+.subs{border-left:1px solid var(--rule);display:flex;flex-direction:column}
+.row{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 14px;min-height:64px;width:100%}
+.row:hover{background:var(--accent-soft)}
+.row.subrow{background:var(--sub);border-bottom:1px solid var(--rule);font-style:italic;min-height:58px}
+.row.subrow:last-child{border-bottom:none}
+.row.subrow:hover{background:var(--accent-soft)}
+.row.parent{align-items:flex-start}
+.row .txt{display:flex;flex-direction:column;gap:3px;min-width:0}
+.row .nm{font-weight:700;font-size:16px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.row.subrow .nm{font-weight:400;font-size:15px}
+.row .ds{font-size:13px;color:var(--muted);font-style:normal}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px;font-style:normal}
+.tag{font:600 11px/1 var(--body);padding:3px 7px;border:1px solid var(--hair);border-radius:9px;color:var(--muted);white-space:nowrap}
+.tag.lc{background:var(--lc);border-color:transparent;color:var(--lc-ink)}
+.tag .k{font-family:var(--mono);font-size:10px;margin-left:3px}
+.new{font:700 10px/1 var(--body);background:var(--accent);color:var(--surface);padding:3px 5px;border-radius:4px;font-style:normal;letter-spacing:.02em}
+.ic{flex:0 0 auto;background:var(--tile);border-radius:8px;padding:2px 4px;display:flex}
+.ic svg{display:block;width:118px;height:56px}
+.row.dim{opacity:.32}
+.row.dim:hover{opacity:.6}
+.codebox{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.codebox .item{border-bottom:1px solid var(--rule)}
+.codebox .item:nth-child(odd){border-right:1px solid var(--rule)}
+.codebox .item:nth-last-child(-n+2){border-bottom:none}
+.foot{max-width:900px;width:100%;margin:0 auto}
+.note{color:var(--muted);font-size:13px;margin:0;max-width:80ch}
+/* sheet */
+.scrim{position:fixed;inset:0;background:var(--scrim);z-index:20}
+.sheet{position:fixed;top:0;right:0;bottom:0;width:min(760px,100%);background:var(--surface);z-index:21;display:flex;flex-direction:column;
+  border-left:1.5px solid var(--rule);box-shadow:-12px 0 40px rgba(0,0,0,.18);
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-right:env(safe-area-inset-right,0px)}
+.sheet-head{padding:18px 22px 14px;border-bottom:4px solid var(--rule);display:flex;flex-direction:column;gap:8px}
+.sheet-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.sheet h3{font-family:var(--display);font-size:28px;margin:2px 0 0;line-height:1.15;text-wrap:balance}
+.sheet .ds{color:var(--muted);margin:0}
+.x{all:unset;cursor:pointer;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--hair);font-size:20px;flex:0 0 auto}
+.x:hover{background:var(--sub)}
+.sheet-body{overflow:auto;padding:16px 22px 28px;display:flex;flex-direction:column;gap:18px;min-height:0}
+.count{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.ex{flex-shrink:0;border:1px solid var(--hair);border-radius:10px;overflow:hidden;background:#F7F8FA}
+.ex-head{padding:12px 14px;display:flex;flex-direction:column;gap:4px;background:var(--surface);border-bottom:1px solid var(--hair)}
+.ex-title{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-weight:700;font-size:16px}
+.ex-sub{font-size:12.5px;color:var(--muted);font-family:var(--mono)}
+.ex-note{font-size:14px;margin:0;color:var(--ink)}
+.ex-codes{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
+.ex-codes button{all:unset;cursor:pointer;font-size:12px;padding:2px 7px;border-radius:6px;background:var(--sub);color:var(--muted)}
+.ex-codes button.cur{background:var(--ink);color:var(--surface)}
+.ex-codes button:hover{color:var(--ink)}
+.ex a.open{font-size:13px;color:var(--focus);font-weight:600;text-decoration:none;align-self:flex-start}
+.ex a.open:hover{text-decoration:underline}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;padding:10px}
+.thumb{all:unset;cursor:zoom-in;background:#FFFFFF;border-radius:6px;border:1px solid var(--hair);aspect-ratio:4/3;display:grid;place-items:center;overflow:hidden;position:relative}
+.thumb img{width:100%;height:100%;object-fit:contain;display:block}
+.thumb .gif{position:absolute;right:4px;bottom:4px;font:700 9px/1 var(--body);background:var(--ink);color:var(--surface);padding:2px 4px;border-radius:3px}
+.thumbs.one{grid-template-columns:1fr}
+.thumbs.one .thumb{aspect-ratio:auto;max-height:420px}
+.verdict{font:700 11px/1 var(--body);padding:4px 8px;border-radius:999px;white-space:nowrap}
+.v-good{background:#DDF1E6;color:#17603E}.v-partial{background:#FFF1C9;color:#7A5300}.v-misleading{background:#FBDCDC;color:#9A1F1F}.v-off{background:#E6E8EC;color:#454C57}
+.review{font-size:13.5px;margin:2px 0 0;padding:8px 10px;border-radius:6px;background:var(--sub);color:var(--ink)}
+.review b{font-weight:700}
+.thumb .flag{position:absolute;left:4px;top:4px;font:700 10px/1.1 var(--body);background:#454C57;color:#fff;padding:3px 5px;border-radius:3px;max-width:90%}
+.thumb.flagged img{opacity:.55}
+.chip.v{gap:7px}.chip.v .dot{width:9px;height:9px;border-radius:50%}
+.empty{color:var(--muted);border:1px dashed var(--hair);border-radius:10px;padding:18px}
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:30;background:rgba(12,14,18,.92);display:flex;flex-direction:column;
+  padding:max(14px,env(safe-area-inset-top,0px)) max(14px,env(safe-area-inset-right,0px)) max(14px,env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px))}
+.lb-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;color:#E7EAEE}
+.lb-cap{font-size:14px;min-width:0}
+.lb-cap b{font-weight:700}
+.lb-stage{flex:1;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;min-height:0;margin-top:10px}
+.lb-stage img{max-width:100%;max-height:calc(100vh - 110px);margin:0 auto;display:block;background:#fff;border-radius:6px}
+.lb button{all:unset;cursor:pointer;color:#fff;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.3);font-size:22px}
+.lb button:hover{background:rgba(255,255,255,.12)}
+.lb button:focus-visible{outline:2px solid #8DB4F0}
+.lb button[disabled]{opacity:.25;cursor:default}
+@media (max-width:1100px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:720px){.grid{grid-template-columns:minmax(0,1fr)}.item.has-subs{grid-template-columns:minmax(0,1fr)}.subs{border-left:none;border-top:1px solid var(--rule)}
+  .codebox{grid-template-columns:minmax(0,1fr)}.codebox .item:nth-child(odd){border-right:none}.codebox .item:nth-last-child(2){border-bottom:1px solid var(--rule)}
+  .ic svg{width:96px;height:46px}.lb-stage{grid-template-columns:minmax(0,1fr)}.lb-stage .nav{display:none}}
+@media (prefers-reduced-motion:no-preference){.sheet{animation:slide .18s ease-out}@keyframes slide{from{transform:translateX(24px);opacity:.6}to{transform:none;opacity:1}}}
+</style>
+
+<div hidden>__DEFS__</div>
+<div class="wrap">
+  <header>
+    <h1>Recursion Diagram Atlas</h1>
+    <p class="lede" id="lede"></p>
+    <div class="filters" id="filters" role="group" aria-label="Filter by source"></div>
+  </header>
+  <div class="grid" id="grid"></div>
+  <div class="foot" id="foot"></div>
+  <p class="note">Coding is a first pass by one reviewer; each LeetCode diagram was checked against the solution’s recursive code, and three solutions with misleading or no recursion diagrams were left out. LeetCode = solutions with 5 or more votes from the local scrape (votes are the snapshot). Images are copies kept for review; follow “Open original” for the source.</p>
+</div>
+<div id="layer"></div>
+
+<script>
+const DATA = __DATA__;
+const $ = (s, el=document) => el.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SRC = Object.fromEntries(DATA.sources.map(s => [s.id, s]));
+const isLC = id => SRC[id] && SRC[id].kind === 'leetcode';
+
+// index: coding id -> meta; parent -> subs
+const META = {}, KIDS = {};
+for (const d of DATA.dims) for (const [, cs] of d.groups) for (const c of cs) {
+  META[c.id] = {...c, dim:d}; KIDS[c.id] = c.subs.map(s => s.id);
+  for (const s of c.subs) META[s.id] = {...s, dim:d, parent:c};
+}
+const coversOf = id => [id, ...(KIDS[id] || [])];
+const active = new Set();  // selected sources; empty = all
+try { (JSON.parse(localStorage.getItem('atlas-src') || '[]')).forEach(x => SRC[x] && active.add(x)); } catch(e) {}
+const VERD = [['good','Accurate','#2E9A62'],['partial','Partial','#D9A21B']];
+const VLAB = Object.fromEntries(VERD.map(v => [v[0], v[1]]));
+const vact = new Set();
+try { (JSON.parse(localStorage.getItem('atlas-ver') || '[]')).forEach(x => VLAB[x] && vact.add(x)); } catch(e) {}
+vact.clear();
+const passes = ex => active.size === 0 || active.has(ex.src);
+const examplesFor = id => { const ids = new Set(coversOf(id)); return DATA.examples.filter(e => e.codes.some(c => ids.has(c))); };
+
+function tagsFor(id){
+  const counts = {};
+  for (const e of examplesFor(id)) if (passes(e)) counts[e.src] = (counts[e.src] || 0) + 1;
+  return DATA.sources.filter(s => counts[s.id]).map(s => `<span class="tag${isLC(s.id) ? ' lc' : ''}">${esc(s.id)}${counts[s.id] > 1 || s.id === 'LeetCode' ? `<span class="k">×${counts[s.id]}</span>` : ''}</span>`).join('');
+}
+const icon = k => k && DATA.icons[k] ? `<span class="ic" aria-hidden="true">${DATA.icons[k]}</span>` : '';
+const newB = n => n ? ' <span class="new">new</span>' : '';
+
+function rowBtn(c, cls){
+  const n = examplesFor(c.id).filter(passes).length;
+  return `<button class="row ${cls}${n ? '' : ' dim'}" data-id="${c.id}" aria-label="${esc(c.name)}: ${n} examples">
+    <span class="txt"><span class="nm">${esc(c.name)}${newB(c.new)}</span>${c.desc && cls !== 'subrow' ? `<span class="ds">${esc(c.desc)}</span>` : ''}<span class="tags">${tagsFor(c.id)}</span></span>${icon(c.icon)}</button>`;
+}
+function itemHTML(c){
+  if (!c.subs.length) return `<div class="item">${rowBtn(c, '')}</div>`;
+  return `<div class="item has-subs">${rowBtn(c, 'parent')}<div class="subs">${c.subs.map(s => rowBtn(s, 'subrow')).join('')}</div></div>`;
+}
+function secHTML(d){
+  const body = d.groups.map(([g, cs]) => (g ? `<div class="grp">${esc(g)}</div>` : '') + cs.map(itemHTML).join('')).join('');
+  return `<section class="sec" style="--c:${d.color}55"><h2><span class="t">${esc(d.name)}</span><span class="q">${esc(d.q)}</span></h2><div class="box${d.id === 'code' ? ' codebox' : ''}">${body}</div></section>`;
+}
+function render(){
+  const cols = [[], [], []];
+  for (const d of DATA.dims) if (d.col < 3) cols[d.col].push(secHTML(d));
+  $('#grid').innerHTML = cols.map(c => `<div class="col">${c.join('')}</div>`).join('');
+  $('#foot').innerHTML = secHTML(DATA.dims.find(d => d.id === 'code'));
+  const exs = DATA.examples.filter(passes), imgs = exs.reduce((a, e) => a + e.imgs.length, 0);
+  const nCod = Object.keys(META).length;
+  $('#lede').innerHTML = `<b>${nCod} codings</b> across 8 dimensions, backed by <b>${exs.length} examples</b> and <b>${imgs} source images</b>${active.size ? ' in the selected sources' : ' from textbooks and LeetCode'}. Select a coding to see the figures behind it.`;
+  const counts = {}; for (const e of DATA.examples) counts[e.src] = (counts[e.src] || 0) + 1;
+  $('#filters').innerHTML = `<span class="lab">Sources</span>` + DATA.sources.map(s => `<button class="chip${isLC(s.id) ? ' lc' : ''}" data-src="${s.id}" aria-pressed="${active.has(s.id)}" title="${esc(s.name)}">${esc(s.id)}<span class="n">${counts[s.id] || 0}</span></button>`).join('')
+    + (active.size || vact.size ? `<button class="chip reset" data-src="__all">Show all</button>` : '');
+
+}
+function saveSrc(){ try { localStorage.setItem('atlas-src', JSON.stringify([...active])); } catch(e) {} }
+
+document.addEventListener('click', e => {
+  const chip = e.target.closest('.chip');
+  if (chip) {
+    const s = chip.dataset.src;
+    if (chip.dataset.ver) { const k = chip.dataset.ver; vact.has(k) ? vact.delete(k) : vact.add(k); try { localStorage.setItem('atlas-ver', JSON.stringify([...vact])); } catch(e) {} render(); if (openId) openSheet(openId, true); return; }
+    if (s === '__all') { active.clear(); vact.clear(); try { localStorage.setItem('atlas-ver', '[]'); } catch(e) {} }
+    else if (s === '__lc') { active.clear(); active.add('LC'); active.add('LC-cn'); }
+    else active.has(s) ? active.delete(s) : active.add(s);
+    saveSrc(); render(); if (openId) openSheet(openId, true); return;
+  }
+  const row = e.target.closest('.row'); if (row) { openSheet(row.dataset.id); return; }
+});
+
+// ---------- sheet ----------
+let openId = null, lastFocus = null;
+function openSheet(id, keep){
+  const m = META[id]; if (!m) return;
+  if (!keep) lastFocus = document.activeElement;
+  openId = id;
+  const all = examplesFor(id), list = all.filter(passes);
+  const order = DATA.sources.map(s => s.id);
+  list.sort((a, b) => order.indexOf(a.src) - order.indexOf(b.src));
+  const imgN = list.reduce((a, e) => a + e.imgs.length, 0);
+  const path = m.parent ? `${m.dim.name} · ${m.parent.name}` : m.dim.name;
+  const desc = m.desc || (m.parent && m.parent.desc) || '';
+  const kids = (KIDS[id] || []).map(k => META[k].name);
+  const body = list.length ? list.map((e, i) => exHTML(e, i, id)).join('')
+    : `<div class="empty">${all.length ? 'No examples in the selected sources. Clear the source filter to see the ' + all.length + ' others.' : 'No example coded yet.'}</div>`;
+  $('#layer').innerHTML = `<div class="scrim" data-close></div>
+  <aside class="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-t">
+    <div class="sheet-head"><div class="sheet-top"><div><div class="eyebrow">${esc(path)}</div><h3 id="sh-t">${esc(m.name)}${newB(m.new)}</h3></div><button class="x" data-close aria-label="Close">×</button></div>
+      ${desc ? `<p class="ds">${esc(desc)}${kids.length ? ' Includes ' + kids.map(esc).join(', ') + '.' : ''}</p>` : ''}
+      <div class="count">${list.length} examples · ${imgN} images${active.size ? ' · filtered' : ''}</div></div>
+    <div class="sheet-body">${body}</div></aside>`;
+  if (!keep) $('.sheet .x').focus();
+  try { history.replaceState(null, '', '#' + id); } catch(e) {}
+}
+function exHTML(e, i, cur){
+  const src = SRC[e.src];
+  const codes = e.codes.map(c => `<button data-goto="${c}" class="${coversOf(cur).includes(c) ? 'cur' : ''}">${esc(META[c].name)}</button>`).join('');
+  const th = e.imgs.map((im, j) => `<button class="thumb${im.flag ? ' flagged' : ''}" data-ex="${i}" data-i="${j}" aria-label="Enlarge image ${j + 1} of ${esc(e.title)}${im.flag ? ' (' + esc(im.flag) + ')' : ''}">${im.flag ? `<span class="flag">${esc(im.flag)}</span>` : ''}<img src="${im.src}" alt="${esc(e.title)}, image ${j + 1}" loading="lazy" width="${im.w}" height="${im.h}">${im.anim ? '<span class="gif">GIF</span>' : ''}</button>`).join('');
+  return `<article class="ex"><div class="ex-head"><div class="ex-title"><span class="tag${isLC(e.src) ? ' lc' : ''}" title="${esc(src.name)}">${esc(e.src)}</span>${esc(e.title)}</div>
+    ${e.sub ? `<div class="ex-sub">${esc(e.sub)}</div>` : ''}<p class="ex-note">${esc(e.note)}</p>${e.review ? `<p class="review"><b>Check:</b> ${esc(e.review)}</p>` : ''}
+    <div class="ex-codes" aria-label="Also coded as">${codes}</div>
+    ${e.link ? `<a class="open" href="${esc(e.link)}" target="_blank" rel="noopener">Open original ↗</a>` : ''}</div>
+    <div class="thumbs${e.imgs.length === 1 ? ' one' : ''}">${th}</div></article>`;
+}
+let shown = [];
+$('#layer').addEventListener('click', e => {
+  if (e.target.closest('[data-close]')) { closeSheet(); return; }
+  const g = e.target.closest('[data-goto]'); if (g) { openSheet(g.dataset.goto, true); $('.sheet-body').scrollTop = 0; return; }
+  const t = e.target.closest('.thumb');
+  if (t) { shown = examplesFor(openId).filter(passes).sort((a, b) => DATA.sources.findIndex(s => s.id === a.src) - DATA.sources.findIndex(s => s.id === b.src)); openLB(+t.dataset.ex, +t.dataset.i); }
+});
+function closeSheet(){ $('#layer').innerHTML = ''; openId = null; try { history.replaceState(null, '', location.pathname + location.search); } catch(e) {} if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+
+// ---------- lightbox ----------
+let lb = null;
+function openLB(ei, ii){
+  lb = {ei, ii};
+  const box = document.createElement('div'); box.className = 'lb'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-label', 'Image viewer');
+  document.body.appendChild(box); drawLB(); box.querySelector('[data-lbx]').focus();
+}
+function drawLB(){
+  const e = shown[lb.ei], im = e.imgs[lb.ii], box = $('.lb');
+  box.innerHTML = `<div class="lb-bar"><div class="lb-cap"><b>${esc(e.src)} · ${esc(e.title)}</b>${e.sub ? ' · ' + esc(e.sub) : ''} — image ${lb.ii + 1} of ${e.imgs.length}${im.flag ? ' · ' + esc(im.flag) : ''}</div><button data-lbx aria-label="Close viewer">×</button></div>
+    <div class="lb-stage"><button class="nav" data-step="-1" aria-label="Previous image" ${lb.ii ? '' : 'disabled'}>‹</button><img src="${im.src}" alt="${esc(e.title)}, image ${lb.ii + 1}"><button class="nav" data-step="1" aria-label="Next image" ${lb.ii < e.imgs.length - 1 ? '' : 'disabled'}>›</button></div>`;
+}
+document.addEventListener('click', e => {
+  if (!lb) return;
+  if (e.target.closest('[data-lbx]') || e.target.classList.contains('lb') || e.target.classList.contains('lb-stage')) { closeLB(); return; }
+  const s = e.target.closest('[data-step]'); if (s) step(+s.dataset.step);
+});
+function step(d){ const e = shown[lb.ei]; const n = lb.ii + d; if (n >= 0 && n < e.imgs.length) { lb.ii = n; drawLB(); } }
+function closeLB(){ const b = $('.lb'); if (b) b.remove(); lb = null; const t = $('.sheet .x'); if (t) t.focus(); }
+document.addEventListener('keydown', e => {
+  if (lb) { if (e.key === 'Escape') closeLB(); else if (e.key === 'ArrowRight') step(1); else if (e.key === 'ArrowLeft') step(-1); return; }
+  if (openId && e.key === 'Escape') closeSheet();
+});
+
+render();
+const h = location.hash.slice(1); if (h && META[h]) openSheet(h);
+</script>

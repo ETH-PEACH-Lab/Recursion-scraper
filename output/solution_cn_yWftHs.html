@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>203. 移除链表元素(五种方法) – Remove Linked List Elements</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_remove-linked-list-elements.html">Remove Linked List Elements / 移除链表元素</a> <span class="sep">›</span> <span class="cur">203. 移除链表元素(五种方法)</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">203. 移除链表元素(五种方法)</div>
+  <div class="meta">
+    <span>👤 Dine</span>
+    <span>👍 253</span>
+    <span>2020-07-22</span>
+    <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞 Slide</span>
+    <a href="https://leetcode.cn/problems/remove-linked-list-elements/solution/203-yi-chu-lian-biao-yuan-su-you-ya-di-gui-c-yu-ya/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>题解</h1>
+<h1>方法一：递归</h1>
+<p>链表具有天然的<strong>递归性</strong>。</p>
+<p>以单链表 <strong>1-&gt;2-&gt;3-&gt;null</strong> 为例，如下图示：<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1622946459-wEmaRI-image.png" /></p>
+<p>可以将原链表看成头节点 1 后挂接一个<strong>更短的链表</strong>：<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1622946503-cfvQym-image.png" /></p>
+<p>继续拆解，直至无法继续拆：<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1622946519-TtVVsH-image.png" /></p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1622946529-tzJPEa-image.png" /></p>
+<p>有了这样的思考，链表中的很多操作，都可以采用<strong>递归</strong>这种逻辑思维方式去完成。</p>
+<p>例如本题，如下图示：</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1662369665-fKvxsK-image.png" /></p>
+<p>如果头节点的值<strong>不等于 val ，原问题的结果为头节点后挂接子问题求得的紫色的链表，否则，结果就为子问题求得的紫色的链表</strong>。</p>
+<p>以链表 <strong>1-&gt;2-&gt;3-null</strong> 为例子，删除值为 3 的节点，递归的具体过程如下动图示：</p>
+<p><img alt="删除链表元素.gif" src="https://pic.leetcode.cn/1622946742-kKLFCx-%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E5%85%83%E7%B4%A0.gif" /></p>
+<h1>Show me the code</h1>
+<pre><code class="language-c">struct ListNode* removeElements(struct ListNode* head, int val){ 
+    if (NULL == head) {
+        return head;
+    }     
+
+    /* 删除头节点后所有值为 val 的节点 */
+    struct ListNode* res = removeElements(head-&gt;next, val);
+
+    /* 头节点是待删除的节点 */
+    if (head-&gt;val == val) {
+        return res;
+    /* 头节点不是待删除的节点，头节点后面挂接已处理的链表（更短的） */
+    } else {
+        head-&gt;next = res;
+        return head;
+    }
+}
+</code></pre>
+<h1>进一步化简</h1>
+<p>直接将 removeElements(head-&gt;next, val) 的结果存放到 head-&gt;next 中，再判断 <strong>head-&gt;val 是否等于 val</strong>。</p>
+<p>```c []<br />
+struct ListNode<em> removeElements(struct ListNode</em> head, int val){ <br />
+    if (NULL == head) {<br />
+        return head;<br />
+    }     </p>
+<pre><code>head-&gt;next = removeElements(head-&gt;next, val);
+return head-&gt;val == val ? head-&gt;next : head;
+</code></pre>
+<p>}</p>
+<pre><code>```c++ []
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        if(!head) {
+            return head;
+        }
+
+        head-&gt;next = removeElements(head-&gt;next,val);
+        return head-&gt;val == val ? head-&gt;next : head;
+    }
+};
+</code></pre>
+<p>```java []<br />
+class Solution {<br />
+    public ListNode removeElements(ListNode head, int val) {<br />
+        if(null == head) {<br />
+            return head;<br />
+        }  </p>
+<pre><code>    head.next=removeElements(head.next,val);
+    return head.val == val ? head.next : head;
+}
+</code></pre>
+<p>}</p>
+<pre><code>```python []
+class Solution:
+    def removeElements(self, head: ListNode, val: int) -&gt; ListNode:
+        if not head: return 
+        head.next = self.removeElements(head.next, val)
+        return head.next if head.val == val else head
+</code></pre>
+<p>```go []<br />
+func removeElements(head <em>ListNode, val int) </em>ListNode {<br />
+    if nil == head {<br />
+        return head<br />
+    }</p>
+<pre><code>head.Next = removeElements(head.Next, val)
+if head.Val == val {
+    return head.Next
+}
+return head
+</code></pre>
+<p>}</p>
+<pre><code># 方法二：迭代
+
+删除链表中给定值的节点，一般的步骤是：
+
+1. 遍历链表，**找到所有值为 val 的节点**；
+
+2. 将**值为 val 的节点的上一个节点直接指向该节点的下一个节点**（pre-&gt;next = pre-&gt;next-&gt;next）。
+
+# 注意点
+
+1. 在寻找值为给定值的节点时，需要**先判断节点是否为空节点**；
+
+```c++
+/* 没有判断 head 节点是否为空节点 */
+if (head-&gt;val == val) {
+    ...........
+}
+</code></pre>
+<p>改为如下：</p>
+<pre><code class="language-c++">if (head != nullptr &amp;&amp; head-&gt;val == val) {
+    head = head-&gt;next;
+}
+</code></pre>
+<p>执行上面的操作之后，把<strong>值等于给定值的头节点</strong>删除了，但很有<strong>可能新的头节点（原链表的第二个节点）的值还跟 val 相等</strong>，所以 <strong>if 应当改为 while</strong>，循环删除。</p>
+<pre><code class="language-c++">while (head != nullptr &amp;&amp; head-&gt;val == val) {
+    head = head-&gt;next;
+}
+</code></pre>
+<ol start="2">
+<li><strong>链表的所有节点的值可能都为 val，因此删除完之后需要再判断链表是否为空</strong>。</li>
+</ol>
+<pre><code class="language-c++">while (head != nullptr &amp;&amp; head-&gt;val == val) {
+    head = head-&gt;next;
+}
+
+/* 判断此时链表是否为空，为空的话直接返回 */
+if (head == nullptr) {
+    return head;
+}
+</code></pre>
+<p>例如：<strong>head = [7,7,7,7], val = 7</strong> 这种用例。</p>
+<h1>举栗</h1>
+<p>以链表 <strong>1-&gt;2-&gt;6-&gt;3-&gt;4-&gt;5-&gt;6, val = 6</strong> 为例子。</p>
+<ol>
+<li>
+<p>首先，<strong>pre 指向 head</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1607529142-ZAUCIw-image.png" /></p>
+</li>
+<li>
+<p><strong>当 pre 指向的节点的下一个节点的值不等于 val 时，右移 pre 进行遍历</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1607529652-FryQBQ-image.png" /></p>
+</li>
+<li>
+<p><strong>等于时，将 pre 指向其下一个节点的下一个节点，相当于删除了 pre 之前指向节点的下一个节点</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1607529811-oBupyJ-image.png" /></p>
+</li>
+<li>
+<p><strong>继续遍历，操作步骤跟前面两步一样</strong><br />
+<img alt="image.png" src="https://pic.leetcode.cn/1615688115-MrdBil-image.png" /></p>
+</li>
+</ol>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1615688240-EgDMzc-image.png" /></p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1607530059-TroltH-image.png" /></p>
+<p>处理后的结果：</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1607530139-pAkasa-image.png" /></p>
+<h1>Show me the code</h1>
+<p>```c []<br />
+struct ListNode<em> removeElements(struct ListNode</em> head, int val){<br />
+    while (NULL != head &amp;&amp; head-&gt;val == val) {<br />
+        head = head-&gt;next;<br />
+    }</p>
+<pre><code>if (NULL == head) {
+    return head;
+}
+
+struct ListNode* pre = head;
+while (pre-&gt;next != NULL) {
+    /* 找到值为 val 的节点，并将其删除 */
+    if (pre-&gt;next-&gt;val == val) {
+        pre-&gt;next = pre-&gt;next-&gt;next;   
+    } else {
+        /* 没找到，则继续遍历查找 */
+        pre = pre-&gt;next;
+    }
+}
+return head;
+</code></pre>
+<p>}</p>
+<pre><code>```c++ []
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        while (head &amp;&amp; head-&gt;val == val) {
+            head = head-&gt;next;
+        }
+
+        if (!head) {
+            return head;
+        }
+
+        ListNode* pre = head;
+        while (pre-&gt;next) {
+            if (pre-&gt;next-&gt;val == val) {
+                pre-&gt;next = pre-&gt;next-&gt;next;
+            } else {
+                pre = pre-&gt;next;
+            }
+        }
+        return head;
+    }
+};
+</code></pre>
+<p>```java []<br />
+class Solution {<br />
+    public ListNode removeElements(ListNode head, int val) {<br />
+        while (null != head &amp;&amp; head.val == val) {<br />
+            head = head.next;<br />
+        }</p>
+<pre><code>    if (null == head) {
+        return head;
+    }
+
+    ListNode pre = head;
+    while (pre.next != null) {
+        if (pre.next.val == val) {
+            pre.next = pre.next.next;
+        } else {
+            pre = pre.next;
+        }
+    }
+    return head;
+}
+</code></pre>
+<p>}</p>
+<pre><code>```python []
+class Solution:
+    def removeElements(self, head: ListNode, val: int) -&gt; ListNode:
+        while head and head.val == val:
+            head = head.next
+        if not head: return
+        pre = head
+        while pre.next:
+            if pre.next.val == val:
+                pre.next = pre.next.next
+            else:
+                pre = pre.next
+        return head
+</code></pre>
+<p>```go []<br />
+func removeElements(head <em>ListNode, val int) </em>ListNode {<br />
+    for nil != head &amp;&amp; head.Val == val {<br />
+        head = head.Next<br />
+    }</p>
+<pre><code>if nil == head {
+    return head
+}
+
+pre := head
+for pre.Next != nil {
+    if pre.Next.Val == val {
+        pre.Next = pre.Next.Next
+    } else {
+        pre = pre.Next
+    }
+}
+return head
+</code></pre>
+<p>}</p>
+<pre><code>
+# 方法三：双指针
+
+**解题步骤**：
+
+1. 设置两个均指向头节点的指针，pre（记录**待删除节点的前一节点**）和 cur (记录**当前节点**)；
+
+2. 遍历整个链表，**查找节点值为 val 的节点，找到即删除该节点**，否则继续查找。
+
+   2.1 找到，将当前节点的前一节点（之前最近一个值不等于 val 的节点(pre)）连接到当前节点（cur）的下一个节点（即将 **pre 的下一节点指向 cur 的下一节点**：pre-&gt;next = cur-&gt;next）。
+
+   2.2 没找到，**更新最近一个值不等于 val 的节点**（即 **pre = cur**），并继续遍历（**cur = cur-&gt;next**）。
+
+# 举栗
+还是**以链表 1-&gt;2-&gt;6-&gt;3-&gt;4-&gt;5-&gt;6, val = 6** 为例子，利用双指针进行删除操作如下：
+
+![image.png](https://pic.leetcode.cn/1648369096-XmQspr-image.png)
+
+
+![image.png](https://pic.leetcode.cn/1648369486-waIHWi-image.png)
+
+
+![image.png](https://pic.leetcode.cn/1648369661-OouXhc-image.png)
+
+
+![image.png](https://pic.leetcode.cn/1648369735-LDVIYS-image.png)
+
+
+![image.png](https://pic.leetcode.cn/1648370125-fgruUL-image.png)
+
+
+![image.png](https://pic.leetcode.cn/1648370219-QHSKAo-image.png)
+
+
+![image.png](https://pic.leetcode.cn/1648370314-QARZci-image.png)
+
+
+![image.png](https://pic.leetcode.cn/1648370396-rGPudh-image.png)
+
+
+![image.png](https://pic.leetcode.cn/1648370479-pzAdZE-image.png)
+
+
+![image.png](https://pic.leetcode.cn/1648370560-PAavQF-image.png)
+
+
+![image.png](https://pic.leetcode.cn/1648370630-DEUPyl-image.png)
+
+
+![image.png](https://pic.leetcode.cn/1648370716-jUfgrs-image.png)
+
+
+![image.png](https://pic.leetcode.cn/1648370844-sSrNwy-image.png)
+
+
+![image.png](https://pic.leetcode.cn/1648370900-drIKhq-image.png)
+
+
+# Show me the Code
+```c []
+struct ListNode* removeElements(struct ListNode* head, int val){
+    while (NULL != head &amp;&amp; head-&gt;val == val) {
+        head = head-&gt;next;
+    }
+
+    struct ListNode* cur = head;
+    struct ListNode* pre = head;
+    while (cur != NULL) {
+        if (cur-&gt;val == val) {
+            pre-&gt;next = cur-&gt;next;
+        } else {
+            pre = cur;
+        }
+        cur = cur-&gt;next;
+    }
+    return head;
+}
+</code></pre>
+<p>```c++ []<br />
+class Solution {<br />
+public:<br />
+    ListNode<em> removeElements(ListNode</em> head, int val) {<br />
+        while (head &amp;&amp; head-&gt;val == val) {<br />
+            head = head-&gt;next;<br />
+        }</p>
+<pre><code>    ListNode* cur = head;
+    ListNode* pre = head;
+    while (cur) {
+        if (cur-&gt;val == val) {
+            pre-&gt;next = cur-&gt;next;
+        } else {
+            pre = cur;
+        }
+        cur = cur-&gt;next;
+    }
+    return head;
+}
+</code></pre>
+<p>};</p>
+<pre><code>```java []
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        while (null != head &amp;&amp; head.val == val) {
+            head = head.next;
+        }
+
+        ListNode cur = head;
+        ListNode pre = head;
+        while (cur != null) {
+            if (cur.val == val) {
+                pre.next = cur.next;
+            } else {
+                pre = cur;
+            }
+            cur = cur.next;
+        }
+        return head;
+    }
+}
+</code></pre>
+<p>```python []<br />
+class Solution:<br />
+    def removeElements(self, head: ListNode, val: int) -&gt; ListNode:<br />
+        while head and head.val == val:<br />
+            head = head.next<br />
+        pre, cur = head, head<br />
+        while cur:<br />
+            if cur.val == val:<br />
+                pre.next = cur.next<br />
+            else:<br />
+                pre = cur<br />
+            cur = cur.next       <br />
+        return head</p>
+<pre><code>```go []
+func removeElements(head *ListNode, val int) *ListNode {
+    for nil != head {
+        if head.Val != val {
+            break
+        }
+        head = head.Next
+    }
+
+
+    pre, cur := head, head
+    for cur != nil {
+        if cur.Val == val {
+            pre.Next = cur.Next
+        } else {
+            pre = cur
+        }
+        cur = cur.Next
+    }
+    return head
+}
+</code></pre>
+<h1>说明</h1>
+<p>针对例子 head = [7,7,7,7,7], val = 7 这样的用例（<strong>所有节点都是待删除节点</strong>），上述代码也适合，代码运行时不会进入到第二个循环中去。</p>
+<p>当然代码也可以写成如下形式，只不过<strong>在第一个循环结束后，还需要判断此时的 head 是否为空</strong>。</p>
+<pre><code class="language-c++">class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        while (nullptr != head &amp;&amp; val == head-&gt;val) {
+            head = head-&gt;next;
+        }
+
+        if (nullptr == head) {
+            return head;
+        }
+
+        ListNode* pre = head, *cur = head-&gt;next;
+        while (nullptr != cur) {
+            if (cur-&gt;val == val) {
+                pre-&gt;next = cur-&gt;next;
+            } else {
+                pre = cur;
+            }
+            cur = cur-&gt;next;
+        }
+        return head;
+    }
+};
+</code></pre>
+<h1>方法四：虚拟头节点（哨兵）</h1>
+<p>前三种方法均需要判断<strong>头节点是否为待删除的节点</strong>，且处理头节点的代码逻辑与其它节点特别相似，有没有方法使得<strong>代码更优美并且能避免对头节点的判断呢</strong>？</p>
+<p>答案是有的。可以通过<strong>在头节点前增加虚拟头节点，这样头节点就成了普通节点，不需要单独拎出来考虑</strong>，但是在返回的时候，返回的是<strong>虚拟头节点的下一节点而不是虚拟头节点</strong>。</p>
+<h1>Show me the Code</h1>
+<p>```c []<br />
+struct ListNode<em> removeElements(struct ListNode</em> head, int val){<br />
+    struct ListNode<em> dummyHead = (struct ListNode</em>)malloc(sizeof(struct ListNode));<br />
+    if (NULL == dummyHead) {<br />
+        return NULL;<br />
+    }</p>
+<pre><code>dummyHead-&gt;next = head;
+struct ListNode* cur = dummyHead;
+while (cur-&gt;next != NULL) {
+    if (cur-&gt;next-&gt;val == val) {
+        ListNode* delNode = cur-&gt;next;
+        cur-&gt;next = delNode-&gt;next;
+        free(delNode);
+    } else {
+        cur = cur-&gt;next;
+    }
+}
+
+struct ListNode* retNode = dummyHead-&gt;next;
+free(dummyHead);
+return retNode;
+</code></pre>
+<p>}</p>
+<pre><code>```c++ []
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        ListNode* dummyHead = new ListNode(0, head);  
+        ListNode* cur = dummyHead;  
+        while (cur-&gt;next) {
+            if (cur-&gt;next-&gt;val == val) {
+                ListNode* delNode = cur-&gt;next;
+                cur-&gt;next = delNode-&gt;next;
+                delete delNode;
+            } else {
+                cur = cur-&gt;next;
+            }
+        }
+
+        ListNode* retNode = dummyHead-&gt;next;
+        delete dummyHead;
+        return retNode;
+    }
+};
+</code></pre>
+<p>```java []<br />
+class Solution {<br />
+    public ListNode removeElements(ListNode head, int val) {<br />
+        ListNode dummyHead = new ListNode(0, head);<br />
+        ListNode cur = dummyHead;<br />
+        while (cur.next != null) {<br />
+            if (cur.next.val == val) {<br />
+                cur.next = cur.next.next;<br />
+            } else {<br />
+                cur = cur.next;<br />
+            }<br />
+        }<br />
+        return dummyHead.next;<br />
+    }<br />
+}</p>
+<pre><code>```python []
+class Solution:
+    def removeElements(self, head: ListNode, val: int) -&gt; ListNode:
+        dummyHead = ListNode(-1, head) 
+        cur = dummyHead 
+        while cur.next: 
+            if cur.next.val == val: 
+                cur.next = cur.next.next 
+            else: 
+                cur = cur.next 
+        return dummyHead.next
+</code></pre>
+<p>```go []<br />
+func removeElements(head <em>ListNode, val int) </em>ListNode {<br />
+    dummyHead := &amp;ListNode{Next: head}<br />
+    for cur := dummyHead; nil != cur.Next; {<br />
+        if cur.Next.Val == val {<br />
+            cur.Next = cur.Next.Next<br />
+        } else {<br />
+            cur = cur.Next<br />
+        }<br />
+    }<br />
+    return dummyHead.Next<br />
+}</p>
+<pre><code>
+# 方法五：栈
+本题还可以采用**栈**去做。
+
+1. 将**值不等于 val 的节点**依次压入栈中；
+
+2. 将压入栈的节点重新连接，栈底的节点作为新的头节点返回。
+
+# Show me the Code
+
+```java
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        Stack&lt;ListNode&gt; stack = new Stack&lt;ListNode&gt;();
+        while (null != head) {
+            if (head.val != val) {
+                stack.push(head);
+            }
+            head = head.next;
+        }
+
+        while (!stack.isEmpty()) {
+            stack.peek().next = head;
+            head = stack.pop();
+        }
+        return head;
+    }
+}
+</code></pre>
+<p><strong>如果感觉题解对你有帮助，不要吝啬给一个👍哦！</strong></p>
+</div>
+</div>
+</body>
+</html>

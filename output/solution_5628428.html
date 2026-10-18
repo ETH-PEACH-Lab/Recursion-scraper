@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Easy Solution, Explanation and Clean Code - O(log n) Solution – Integer to English Words</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_integer-to-english-words.html">Integer to English Words</a> <span class="sep">›</span> <span class="cur">Easy Solution, Explanation and Clean Code - O(log n) Solution</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">Easy Solution, Explanation and Clean Code - O(log n) Solution</div>
+  <div class="meta">
+    <span>👤 Jefferson_Farias</span>
+    <span>👍 0</span>
+    <span>2024-08-12</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/integer-to-english-words/solutions/5628428/easy-solution-explanation-and-clean-code-olog-n-solution/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>Overall Performance</h1>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/ccfa4fbc-f7eb-4fd0-8e09-f31f9d2cf549_1723487287.9739711.png" /></p>
+<h1>Intuition</h1>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>My first thought was to make a dict with the numbers and their respective numbers in word form.</p>
+<p>First, do this for the number from 0 to 19. Now I have to do it with other numbers with different names, like tens (Twenty, Thirty, Forty, [...], Ninety).</p>
+<p>After that, I would start with suffix words like hundreds, thousands, millions, etc. But I can't do it forever, so I read the Constraints and the number limit is 0 &lt;= num &lt;= 2\xB3\xB9 - 1, where the highest suffix is billion, so let's work with it.</p>
+<h1>Approach</h1>
+<!-- Describe your approach to solving the problem. -->
+<ul>
+<li>1\xBA Step: Make a list of the numbers from 0 to 19 in words version, so that the index 0th result in "Zero", the 10th in "Ten" and 19th in "Nineteen".</li>
+<li>2\xBA Step: Make a list of tens like te first one, so the 4th is "Forty" and the sixth is "Sixty", so to do that make a list with empty arrays until the 2th index:</li>
+</ul>
+<pre><code>self.tens = [&quot;&quot;, &quot;&quot;, &quot;Twenty&quot;, &quot;Thirty&quot;, &quot;Forty&quot;, &quot;Fifty&quot;, &quot;Sixty&quot;, &quot;Seventy&quot;, &quot;Eighty&quot;, &quot;Ninety&quot;]
+</code></pre>
+<ul>
+<li>3\xBA Step: Make suffix list, with Billion, Million, etc.</li>
+<li>4\xBA Step: create a string copy of num, so we can better manipulate the passed number.</li>
+<li>5\xBA Step: Make if/else block to verify the value of the number, if it's tens, hudreds, millions, etc, and use it to create each part of the number in word form.</li>
+<li>6\xBA Step: Break the string copy of num in 2 parts, x and y, x is a range and y the rest, recursive call numberToWords in Y until it's a unit, and x if x isn't a ten or a unit.</li>
+</ul>
+<h1>Example</h1>
+<p><code>num = 1,234,567</code><br />
+- Found x and y<br />
+<code>x = 1</code><br />
+<code>y = 234,567</code><br />
+- <strong>Recursive call x</strong><br />
+    - x is just 1 from the million range so put the million suffix after it and call:<br />
+<code>x = 1</code><br />
+<code>y = None</code><br />
+        - x is from unit range so take it from the zero_to_nineteen list 1th index:<br />
+<code>x = 1</code></p>
+<ul>
+<li>
+<p><strong>Recursive call y</strong> </p>
+<ul>
+<li>y is in thousand range so take off new x and new y:<br />
+<code>x = 234</code><br />
+<code>y = 567</code><ul>
+<li><strong>Recursive Call x</strong><br />
+<code>x = 2</code><br />
+<code>y = 34</code></li>
+<li>x is from the thousand range so put the thousand suffix after it, and call it<ul>
+<li>x is a hundred so put Hundred suffix after it<br />
+<code>x = 2</code><ul>
+<li><strong>Recursive call x:</strong><ul>
+<li>x is a unit so take it from the zero_to_nineteen list 2th index<br />
+<code>x = 2 -&gt; x = Two</code><br />
+<code>y = None</code></li>
+</ul>
+</li>
+<li><strong>Recursive Call y:</strong><br />
+<code>y = 34</code><ul>
+<li>x is a ten so take it from ten's list's 3th index<br />
+<code>x = 3 -&gt; x = Thirty</code> </li>
+<li>y is a unit so take it from the zero_to_nineteen list 4th index<br />
+<code>y = 4 -&gt; y = Four</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Recursive Call y</strong><br />
+<code>x = 5</code><br />
+<code>y = 67</code><ul>
+<li><strong>Recursive Call x:</strong><br />
+<code>x = 5</code><ul>
+<li>x is a hundred so put hundred after it<ul>
+<li>x is unit so take it from zero_to_ninteen's list 5th <br />
+<code>x = 5 -&gt; Five</code><br />
+<code>y =  None</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Recursive Call y:</strong><br />
+<code>y = 67</code><ul>
+<li>x is from ten's range so take it from ten's list 6th index<br />
+<code>x = 6 -&gt; x = Sixty</code></li>
+<li>y is unit so take it from zero_to_ninteen's list 7th index<br />
+<code>y = 7 -&gt; y = seven</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Result:</strong><br />
+<code>num = One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven</code></p>
+</li>
+</ul>
+<h1>Complexity</h1>
+<ul>
+<li>Time complexity: O(log n)</li>
+</ul>
+<!-- Add your time complexity here, e.g. O(n) -->
+
+<ul>
+<li>Space complexity: O(log n)</li>
+</ul>
+<!-- Add your space complexity here, e.g. O(n) -->
+
+<h1>Code</h1>
+<pre><code>
+class Solution:
+    def __init__(self):
+        self.zero_to_nineteen = [&quot;Zero&quot;, &quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;, &quot;Four&quot;, &quot;Five&quot;, &quot;Six&quot;, &quot;Seven&quot;, &quot;Eight&quot;, &quot;Nine&quot;, &quot;Ten&quot;, &quot;Eleven&quot;, &quot;Twelve&quot;, &quot;Thirteen&quot;, &quot;Fourteen&quot;, &quot;Fifteen&quot;, &quot;Sixteen&quot;, &quot;Seventeen&quot;, &quot;Eighteen&quot;, &quot;Nineteen&quot;]
+        self.tens = [&quot;&quot;, &quot;&quot;, &quot;Twenty&quot;, &quot;Thirty&quot;, &quot;Forty&quot;, &quot;Fifty&quot;, &quot;Sixty&quot;, &quot;Seventy&quot;, &quot;Eighty&quot;, &quot;Ninety&quot;]
+        self.postfix_word = [&quot; Billion&quot;, &quot; Million&quot;,&quot; Thousand&quot;, &quot; Hundred&quot;, &quot;&quot;]
+    def numberToWords(self, num: int) -&gt; str:
+        new_number = str(num)
+        if 0 &lt;= num &lt; 20: 
+            return self.zero_to_nineteen[num]
+        elif 20 &lt;= num &lt; 100: 
+            x = int(new_number[0]) 
+            y = int(new_number[1]) 
+            w = -1 #is a ten
+        elif 100 &lt;= num &lt; 1000: 
+            x = int(new_number[0]) 
+            y = int(new_number[1:]) 
+            w = -2  #is a hundred
+        elif 1000 &lt;= num &lt; 10**6: 
+            x = int(new_number[:-3]) 
+            y = int(new_number[-3:])
+            w = -3 #is a thousand
+        elif 10**6 &lt;= num &lt; 10**9: 
+            x = int(new_number[:-6]) 
+            y = int(new_number[-6:]) 
+            w = -4 #is a million
+        elif 10**9 &lt;= num &lt; 2**31: 
+            x = int(new_number[:-9]) 
+            y = int(new_number[-9:]) 
+            w = -5 #is a billion
+        a = self.numberToWords(x) if w &lt; -1 else self.tens[x]
+        b = &quot; &quot; + self.numberToWords(y) if y else &quot;&quot;
+        return a + self.postfix_word[w] + b
+
+</code></pre>
+</div>
+</div>
+</body>
+</html>

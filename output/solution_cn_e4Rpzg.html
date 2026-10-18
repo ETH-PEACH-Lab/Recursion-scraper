@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>在所有 Java 提交中击败了 100.00% 的用户 – Hanota LCCI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_hanota-lcci.html">Hanota LCCI / 汉诺塔问题</a> <span class="sep">›</span> <span class="cur">在所有 Java 提交中击败了 100.00% 的用户</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">在所有 Java 提交中击败了 100.00% 的用户</div>
+  <div class="meta">
+    <span>👤 sherlcok314159</span>
+    <span>👍 0</span>
+    <span>2021-03-04</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/hanota-lcci/solution/zai-suo-you-java-ti-jiao-zhong-ji-bai-li-xmyx/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p><em>题目链接</em></p>
+<p>https://leetcode.cn/problems/hanota-lcci/</p>
+<p><em>题目介绍</em></p>
+<hr />
+<p>面试题 08.06. 汉诺塔问题</p>
+<p>在经典汉诺塔问题中，有 3 根柱子及 N 个不同大小的穿孔圆盘，盘子可以滑入任意一根柱子。一开始，所有盘子自上而下按升序依次套在第一根柱子上(即每一个盘子只能放在更大的盘子上面)。移动圆盘时受到以下限制:</p>
+<p>(1) 每次只能移动一个盘子;</p>
+<p>(2) 盘子只能从柱子顶端滑出移到下一根柱子;</p>
+<p>(3) 盘子只能叠在比它大的盘子上。</p>
+<p>请编写程序，用栈将所有盘子从第一根柱子移到最后一根柱子。</p>
+<p>你需要原地修改栈。</p>
+<p>示例1:</p>
+<p>输入：A = [2, 1, 0], B = [], C = []</p>
+<p>输出：C = [2, 1, 0]</p>
+<hr />
+<p><strong>解题思路</strong></p>
+<p>其实汉诺塔问题，就是一个递归问题。</p>
+<p>递归的思想很重要，假如把这个问题<strong>分解</strong>成一个很<strong>小的问题</strong>，我该怎么做。那么，如果小问题能解决，那么这个问题在哪个地方进行了<strong>复杂化</strong></p>
+<p>因为无论是大问题还是小问题，它们往往<strong>共享</strong>着同一个<strong>本质内核</strong>，而那往往也是解决问题的关键。</p>
+<p>A：1个。你会如何做？直接拿过去，很简单！</p>
+<p>A：2个。复杂点了，刚刚我们已经解决了一个了，那我们能不能把这个问题转换为1个呢？把A的一个拿到B上，那么问题就迎刃而解了。</p>
+<p>A：3个。更复杂了，那我们能不能也像之前一样，把A变成1个呢？把A上面2个拿到B上，那么A不就剩下1个了。再把B上的两个拿过去不就结束了。（可以<strong>类比</strong>一下A：2个的情况，只是变成了B到C，A是过渡的柱子）</p>
+<p><img alt="hano_init.png" src="https://pic.leetcode.cn/1614859525-togVLR-hano_init.png" /></p>
+<p><img alt="hano_2.png" src="https://pic.leetcode.cn/1614859549-WYkVXX-hano_2.png" /></p>
+<p><img alt="hano_3.png" src="https://pic.leetcode.cn/1614859566-BZkMgj-hano_3.png" /></p>
+<p><img alt="hano_4.png" src="https://pic.leetcode.cn/1614859598-EtUsTc-hano_4.png" /></p>
+<pre><code class="language-java">class Solution {
+    public void hano(int n,List&lt;Integer&gt; A, List&lt;Integer&gt; B, List&lt;Integer&gt; C) {
+        // 基例 A上只有一个
+        if (n == 1) {
+            C.add(A.remove(A.size() - 1)); // A别忘了清空
+            return; //不返回值，但是会中断下面进程
+        } else {
+            hano(n-1,A,C,B);
+            hano(1,A,B,C);
+            hano(n-1,B,A,C);
+        }
+    }
+    public void hanota(List&lt;Integer&gt; A, List&lt;Integer&gt; B, List&lt;Integer&gt; C) {
+        hano(A.size(),A,B,C);
+    }
+}
+</code></pre>
+<hr />
+<p><strong>最优解</strong></p>
+<p>其实很多时候，想要有<strong>本质</strong>上的<strong>突破</strong>，应该回到<strong>最初</strong>的地方，<strong>换个角度思考</strong>，再一次从山脚重新出发，其实这个问题不就是让我把A里的全给C嘛！很简单！</p>
+<pre><code class="language-java">class Solution {
+    public void hanota(List&lt;Integer&gt; A, List&lt;Integer&gt; B, List&lt;Integer&gt; C) {
+        for (Integer i:A) {
+            C.add(i);
+        }
+    }
+}
+</code></pre>
+<hr />
+<p><strong>拓展提升</strong></p>
+<p>其实很多时候学算法，但算法又是什么，算法不是凭空捏造的，若算法成了纯理论，它将不复有意义，<strong>算法是为了解决实际问题而设计的</strong>，说白了，与那些数学物理的思想有什么大的区别呢？就比如这道题，数学物理和算法的区别好比是python和java解决问题一样。</p>
+<p>既然如此，很多时候遇到新的问题，不妨<strong>联想类比一下新的思想</strong>，我一直都相信，<strong>真正好的方法绝对共通的</strong>，只是可能<strong>表达形式不一样</strong>，正是这些基础的好方法构成了林林总总的方法论。</p>
+<p>就拿这个递归来讲，其实不就是将问题转换为最简单，我们已知的可以解决的问题吗？</p>
+<p>数学上当你学习新的理论的时候，数学老师总会说把这个陌生的问题转换为已知的问题去解决，然后用已知的推未知的</p>
+<p>物理当你学变速运动，你不用记很多公式，你只需要记得加速度对时间的二阶导数是位移，其他你通过积分，转换就可以出来</p>
+<p>算法上抛开本题，还有一类题目叫做动态规划，里面会有<strong>记事本</strong>，换了个名字，其实不就是记录下来我们已知的可以解决的问题吗？</p>
+<p>当你学的越多，你可以思考的维度就越多，而当你把这一切联系起来的时候，一切都会不同。</p>
+<p><strong><em>Simple is the best!</em></strong></p>
+<p>大家觉得我写的好，可以关注我的Github，近期会一直更新java。<br />
+https://github.com/sherlcok314159/leetcode-java/blob/main/md/hano.md</p>
+</div>
+</div>
+</body>
+</html>

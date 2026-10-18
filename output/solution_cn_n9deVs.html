@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>234. 回文链表 – Palindrome Linked List</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_palindrome-linked-list.html">Palindrome Linked List / 回文链表</a> <span class="sep">›</span> <span class="cur">234. 回文链表</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">234. 回文链表</div>
+  <div class="meta">
+    <span>👤 sloane_h</span>
+    <span>👍 0</span>
+    <span>2022-11-17</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/palindrome-linked-list/solution/by-sloane_h-bya8/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <blockquote>
+<p>Problem: <a href="https://leetcode.cn/problems/palindrome-linked-list/description/">234. 回文链表</a></p>
+</blockquote>
+<p>[TOC]</p>
+<h1>思路1</h1>
+<blockquote>
+<p>判断回文链表，我们找到链表的中间结点，然后把从中间结点到结尾的部分都翻转一下，这样我们再判断从头结点到中间节点的每个结点，是否与翻转后的另一部分链表结点一一相等。</p>
+</blockquote>
+<h1>解题方法1</h1>
+<ul>
+<li>找到中间结点（使用双指针）</li>
+</ul>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1668703089-lObEgG-image.png" /></p>
+<ul>
+<li>翻转中间结点到结尾的结点</li>
+</ul>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1668703112-YWhAyd-image.png" /></p>
+<ul>
+<li>比较两部分结点的值是否一一相等</li>
+</ul>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1668703129-wlvOZD-image.png" /></p>
+<p>偶数链表的情况：</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1668703169-XSpDNP-image.png" /></p>
+<h1>复杂度1</h1>
+<ul>
+<li>
+<p>时间复杂度: </p>
+<blockquote>
+<p>$O(n)$</p>
+</blockquote>
+</li>
+<li>
+<p>空间复杂度: </p>
+<blockquote>
+<p>$O(1)$</p>
+</blockquote>
+</li>
+</ul>
+<h1>Code1</h1>
+<p>```JavaScript []</p>
+<p>/<strong><br />
+ * Definition for singly-linked list.<br />
+ * function ListNode(val, next) {<br />
+ *     this.val = (val===undefined ? 0 : val)<br />
+ *     this.next = (next===undefined ? null : next)<br />
+ * }<br />
+ */<br />
+/</strong><br />
+ * @param {ListNode} head<br />
+ * @return {boolean}<br />
+ */<br />
+var isPalindrome = function(head) {<br />
+    let slow = head, fast = head, prev, temp;</p>
+<pre><code>// 找到链表的中点
+while (fast &amp;&amp; fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+}
+
+// 翻转链表的后半部分
+prev = slow, slow = slow.next, prev.next = null;
+while (slow) {
+    temp = slow.next;
+    slow.next = prev;
+    prev = slow;
+    slow = temp;
+}
+
+// 比较
+fast = head, slow = prev
+while (slow) {
+    if (fast.val !== slow.val) {
+        return false
+    } else {
+        fast = fast.next, slow = slow.next;
+    }
+}
+return true
+</code></pre>
+<p>};</p>
+<pre><code>
+# 思路2
+使用递归，这里用到了一个递归可以实现逆序打印链表的特点，然后将正序的结点和逆序的结点值一一比较。
+
+</code></pre>
+<p>var isPalindrome = function(head) {<br />
+    // head: 1, 2, 2, 1<br />
+    traverse(head);  <br />
+};<br />
+var traverse = function (head) {<br />
+    if (head === null) return;<br />
+    console.log(head.val); // 1 2 2 1<br />
+    traverse(head.next);<br />
+}</p>
+<pre><code># 解题方法2
+- 定义一个 left 变量，它是从左向右，right 变量则保存我们递归逆序拿到的结点
+- 两两比较
+
+# 复杂度2
+- 时间复杂度: 
+&gt; $O(n)$
+
+- 空间复杂度: 
+&gt; $O(n)$
+
+这个方法不好，一是比较难理解，二是空间复杂度也比第一种方法高。
+
+# Code2
+</code></pre>
+<p>/<strong><br />
+ * Definition for singly-linked list.<br />
+ * function ListNode(val, next) {<br />
+ *     this.val = (val===undefined ? 0 : val)<br />
+ *     this.next = (next===undefined ? null : next)<br />
+ * }<br />
+ */<br />
+/</strong><br />
+ * @param {ListNode} head<br />
+ * @return {boolean}<br />
+ */<br />
+let left;<br />
+var isPalindrome = function(head) {<br />
+    left = head;<br />
+    return traverse(head.next);<br />
+};</p>
+<p>var traverse = function(right) {<br />
+    if(right === null) return true;<br />
+    let res = traverse(right.next);<br />
+    res = res &amp;&amp; right.val === left.val;<br />
+    left = left.next;<br />
+    return res;<br />
+}<br />
+```</p>
+<p>参考：</p>
+<p><a href="https://leetcode.com/problems/palindrome-linked-list/discuss/1137027/JS-Python-Java-C%2B%2B-or-Easy-Floyd's-%2B-Reversal-Solution-w-Explanation">JS, Python, Java, C++ | Easy Floyd's + Reversal Solution w/ Explanation</a></p>
+</div>
+</div>
+</body>
+</html>

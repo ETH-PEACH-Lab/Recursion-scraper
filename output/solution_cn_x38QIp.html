@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>数字1的个数（数学排列组合的方法） – Number of Digit One</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_number-of-digit-one.html">Number of Digit One / 数字 1 的个数</a> <span class="sep">›</span> <span class="cur">数字1的个数（数学排列组合的方法）</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">数字1的个数（数学排列组合的方法）</div>
+  <div class="meta">
+    <span>👤 alex-wong-9</span>
+    <span>👍 0</span>
+    <span>2021-08-13</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/number-of-digit-one/solution/shu-zi-1de-ge-shu-shu-xue-pai-lie-zu-he-tox7l/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p><img alt="image.png" src="https://pic.leetcode.cn/1628822782-nEKbaM-image.png" /></p>
+<p>睡前看题，睡醒解题，欸嘿~</p>
+<h1>解题思路</h1>
+<ol>
+<li>假设数字 n 有 i 位，每一位从高到低对应 [x0,x1,x2,x3,...,x(i-1)]</li>
+<li>将 n 看成两部分，最高位 x0 以及次高位到个位组成的数字 [x1,x2,x3,...,x(i-1)]，分别对应 x0<em>10</em><em>(i-1)，n % 10</em>*(i-1)</li>
+<li>我们可以想象一个长度为 i 的数组，当第一位填入 1 的时候，后面的 i-1 为可以从 0-9 中选择一个数任意填充，因此，第一位有 1 的数字就有 10**(i-1) 个；同理，数组第2位到第 i 位填入1时，也可以用排列组合方式计算出对应的数字个数，要注意的是：<ul>
+<li>数组第2位到第 i 位填入1时，第一位只能填入 0 - x0-1 这个范围的数字 </li>
+<li>第一位 x0 == 1 时，10<strong>(i-1) 个以1开头的数字不能计算在内，但是对应的有 n % 10</strong>(i-1) 个是符合以1开头的数字</li>
+</ul>
+</li>
+<li>由此计算完 0 - x0<em>10</em><em>(i-1) 的数字中 1 的个数，再计算 0 - n % 10</em>*(i-1) 中 1 的个数</li>
+</ol>
+<h1>以 n=2121 为例：</h1>
+<ol>
+<li>分为两部分： 2000 和 121</li>
+<li>计算 0000-2000 中 1 的个数：<br />
+    ① 当第一位填入1，则第 2-4 位可以从 0-9 中选择一个数任意填入，相当于有1000个数，即1000-1999；<br />
+    ② 当第 2 位填入1时，第一位只能填入 0 或 1 两个数(&lt;2)，其他两位（第3、4位）可以填入 0-9 中任意一个数，对应的数字有 2x10x10=200 个<br />
+    ③ 第 3、4 填入 1 时与 ② 同理<br />
+    ④ 因此 0000-2000 中 1 的个数为 1000 + 3 * 200 = 1600</li>
+<li>计算 2000-2121 中 1 的个数，等价于计算 0-121 中 1 的个数</li>
+<li>依然分为两部分 100 和 21</li>
+<li>计算 000-100 中 1 的个数：<br />
+    ① 当第一位填入1，则第 2-3 位可以从 0-9 中选择一个数任意填入，相当于有100个数，即100-199；<br />
+    ② 此时需要注意，最大的数字是 121，而我们计算到了199，因此减去 122-199 中 1的个数，这样计算反而变复杂了<br />
+    ③ 可以发现，当第一位数字是 1 时，从 100 开始到 121 ，第一位包含 1 的个数刚好等于 21+1（包含100），而不用做多余的计算；<br />
+    ④ 当第 2 位填入1时，第一位只能填入 0 (&lt;1)，第3位可以填入 0-9 中任意一个数，对应的数字有 1x10 = 10 个<br />
+    ⑤ 第 3 位 填入 1 时与 ② 同理<br />
+    ⑥ 因此 000-100  中 1 的个数为 22 + 2 * 10 = 42</li>
+<li>计算 0-21 中 1 的个数（12个）......</li>
+<li>计算 0-1总 1 的个数（1个）......</li>
+<li>综上 0-2121 中 1 的个数为 1600 + 42 + 12 + 1 = 1655</li>
+</ol>
+<p>术语不过关，没有图好难说清楚。。。。。</p>
+<pre><code>/**
+ * @param {number} n
+ * @return {number}
+ */
+var countDigitOne = function(n) {
+    if(n == 0) return 0;
+    if(n &lt; 10) return 1; # 小于10的数字直接输出
+    const a = n.toString().length; # 计算数字位数
+    const m = 10 ** (a-1); # 0-最高位所包含的数字1的个数
+    let x1 = n % m, x0 = (n - x1) / m; # 获取最高位数字以及，次高位到个位组成的数字
+    let ans = m + x0*(a-1)*m/10;
+    if(x0 == 1) ans = ans - m + x1 + 1; #当最高位为1时的特殊情况
+    ans += countDigitOne(x1); # 进入递归
+    return ans;
+};
+</code></pre>
+<h1>复杂度计算</h1>
+<p>时间复杂度：O(a)，a为数字 n 的位数<br />
+空间复杂度：O(a)，递归 a 次</p>
+</div>
+</div>
+</body>
+</html>

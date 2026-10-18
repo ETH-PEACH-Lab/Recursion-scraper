@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>#通配符匹配 – Wildcard Matching</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_wildcard-matching.html">Wildcard Matching / 通配符匹配</a> <span class="sep">›</span> <span class="cur">#通配符匹配</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">#通配符匹配</div>
+  <div class="meta">
+    <span>👤 xdeng7</span>
+    <span>👍 0</span>
+    <span>2020-08-21</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/wildcard-matching/solution/tong-pei-fu-pi-pei-by-xdeng7/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p>通配符匹配与正则化匹配是相似问题，花了好久才解出来这两个，分享一下心路历程，大神勿喷。<br />
+正则化比通配符问题要复杂，所以先解决通配符问题。这两个问题可以通过动态规划或递归解决。</p>
+<h1>动态规划</h1>
+<p>该问题难点在于符号‘ * ’，因为‘ * ’可以匹配任意多个字符串包括空字符，所以我们要穷举出它能匹配的所有字符的个数。我们通过动态规划的表格记录匹配过程。<code>vector&lt;vector&lt;int&gt;&gt; dp(s_size+1,vector&lt;int&gt;(p_size+1))</code>，返回 <code>dp[s_size][p_size]</code>。<br />
+Base Cases:<br />
+    1. 首先空字符与空字符是匹配的则初始化<code>dp[0][0]=true</code>。<br />
+    2.<code>dp[0][j] for j in (1:p.size);</code>当s为空字符串时，只有当p为‘<em>’字符可以匹配，则只有第一个‘</em>’为true，其他为false<br />
+    3. <code>dp[i][0] for i in (1:s.size);</code>当p为空字符串，只有s同为空字符串可以匹配，其他情况都不可以。<br />
+我们以示例4为例，演示匹配过程**<br />
+<img alt="批注 2020-08-21 125744.png" src="https://pic.leetcode.cn/1598029081-jhnHJa-%E6%89%B9%E6%B3%A8%202020-08-21%20125744.png" /></p>
+<p><strong>外层循环为字符串s，内层循环为字符串p。所以整个匹配过程即为s中每一个字符匹配p中的每一个字符。我们已知该问题为动态规划问题，则在匹配过程中，我们要解决每一个字符前的所有子问题。解决<code>dp[i][j]</code>前我们需要解决<code>dp[i][:j]</code>。同理，也要解决<code>dp[:i][j]</code>。</strong><br />
+    1. <code>if p[j-1]==s[i-1] or p[j-1]=='?':dp[i][j]=dp[i-1][j-1];</code><strong>即当<code>dp[i][j]</code>的子问题都为true时当前字符匹配才成功。</strong></p>
+<pre><code>    if(p[j-1]==s[i-1]&amp;&amp;p[j-1]=='?')
+    {
+        dp[i][j]=dp[i-1][j-1]
+    }
+</code></pre>
+<p><strong>2. <code>if p[j-1]=='*':dp[i][j]=dp[i-1][j] or dp[i][j-1];</code>当<code>p[j-1]=' * '</code>为该问题的主要难点，我们需要列出‘<em>’匹配的所以情况。<br />
+        ○ 当‘ * ’前的不包含‘ * ’p中字符段与s当前字符段匹配上，则‘ * ’可能与后续字符发生匹配，或者不匹配任何字符，此时该问题为真。即<code>dp[i][j]=dp[i][j-1]（if [N,a,d]==[N,*,d,]-&gt;[N,a,d]=[N,*,d,*]）</code><br />
+        ○ 当包含‘ * ’的p中当前字符段与s中当前字符之前的字符段发生匹配，则此问题为真。即<code>dp[i][j]=dp[i-1][j]</code>。(<code>if [N,a,d]==[N,*,d,*]-&gt;[N,a,d,e]=[N,*,d,*]</code>)<br />
+        ○ 当‘ * ’为p的第一个字符，则‘</em>’可以匹配空字符,或者s的后续字符中有可以与‘<em>’后p中第一个字母字符相匹配,则'</em>'可以匹配当前字符。换言之，当只要s的后续字符段有可以完全匹配'<em>'后的字符段，则‘</em>’可以匹配任意长度的字符段。(<code>if [N,a,d]==[N,a,d,*]-&gt;[N,a,d,c,e,b]=[N,a,d,*]</code>)<br />
+因为我们使用动态规划解决该问题，所以我们只考虑当前问题之前的子问题是否为true，不考虑当前问题的后续问题，后续问题交给算法继续处理，我们只保证当前问题与之前子问题获得解。所以我们先分析前两种情况。第一种情况，若‘ * ’前p的字符段都与s中i-1以前的字符串匹配，则该‘*’可以与<code>s[i-1]</code>的字符匹配。若‘ * ’前p的字符段不与s中i-1以前的字符段完全相匹配，则‘ * ’可能匹配了s中i-1以前的字符段，如若不然，字符串匹配失败。最后，我们来看看第三种情况，若‘ * ’不与当前s的字符发生匹配，且s当前字符与p中‘ * ’后第一个字母字符发生匹配，则‘ * ’有两种选择，与s中当前字符前的字符段发生匹配，或不与任何字符匹配，则将后续字符段继续交给算法继续处理。第三种情况。若‘ * ’为第一个字符，它可以匹配s中的空字符。若s第一个字符与‘ * ’后第一个字母字符没有匹配上，则此时‘ * ’可以匹配s中当前字符。换言之，‘ * ’可以匹配s中所有字符，都为true，即第三种情况包含在第二种情况里。</strong><br />
+<code>if(p[j-1]=='*') dp[i][j]=dp[i][j-1]||dp[i-1][j]== p[j-1]</code></p>
+<p>完整代码</p>
+<pre><code>class Solution {
+public:
+    bool isMatch(string s, string p) {
+        int m = s.size();
+        int n = p.size();
+        vector&lt;vector&lt;int&gt;&gt; dp(m + 1, vector&lt;int&gt;(n + 1));
+        dp[0][0] = true;
+        for (int i = 1; i &lt;= n; ++i) {
+            if (p[i - 1] == '*') {
+                dp[0][i] = true;
+            }
+            else {
+                break;
+            }
+        }
+        for (int i = 1; i &lt;= m; ++i) {
+            for (int j = 1; j &lt;= n; ++j) {
+                if (p[j - 1] == '*') {
+                    dp[i][j] = dp[i][j - 1] | dp[i - 1][j];
+                }
+                else if (p[j - 1] == '?' || s[i - 1] == p[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                }
+            }
+        }
+        return dp[m][n];
+    }
+};
+</code></pre>
+<h1>递归</h1>
+<p>在动态规划中，我们已经分析了当出现‘ * ’字符的处理情况，当‘ * ’字符在字符段中间时，' * '字符无非就是匹配当前字符或者不匹配当前字符两种情况<br />
+    • 若‘ * ’不匹配当前字符，我们将用s中当前字符与‘<em>’后续字符匹配<br />
+    • 若‘ * ’匹配当前字符，我们就用s中后续字符匹配‘</em>’的后续字符<br />
+若‘*’在字符段开始位置或者结尾位置，<br />
+    • 结尾处，若s的指针已经迭代完成，则‘ * ’不发生匹配，我们直接返回true。若s的指针不在结尾处‘ * ’匹配后续s的字符段，这与‘ * ’在字符段中间情况一样。<br />
+    • 开始处，‘ * ’的匹配情况于在字符段中间一样，不再讨论。<br />
+Base Cases:<br />
+    1. ‘ * ’字符不与s种任何字符匹配，则j将迭代到尾部，且i不在s的尾部，则<code>if(j==p.length()) return s==s.length();</code><br />
+    2. i已经迭代到尾部，j没有迭代到p的尾部。若p的剩余字符为‘ * ’则返回true。否则，匹配失败。</p>
+<pre><code>class Solution {
+public:
+    unordered_map&lt;int,bool&gt; dict;
+    bool dp(int i,int j,string &amp; s,string &amp; p)
+    {
+        if(dict.find(i*100+j)!=dict.end())
+            return dict[i*100+j];
+        if(j==p.length())
+            return i==s.length();
+        if(i==s.length())
+            return p[j]=='*'&amp;&amp;j==p.length()-1;
+        bool ans=false;
+        bool first=s[i]==p[j]||p[j]=='?';
+        if(first)
+        {
+            ans=dp(i+1,j+1,s,p);
+        }
+        else if(p[j]=='*')
+        {
+            ans=dp(i+1,j,s,p)||dp(i,j+1,s,p);
+        }
+        dict[i*100+j]=ans;
+        return ans;
+    }
+    bool isMatch(string s, string p)
+    {
+        if(p.find('*')!=p.npos)
+        {
+            string nodup;
+            nodup+=p[0];
+            for(int i=1;i&lt;p.length();++i)
+            {
+                if(p[i-1]==p[i]&amp;&amp;p[i]=='*')
+                    continue;
+                else
+                    nodup+=p[i];
+            }
+            p=nodup;
+        }
+        return dp(0,0,s,p);    
+    }
+};
+</code></pre>
+<h1>循环与指针</h1>
+<p>分享一下某大神的代码。设置两个指针i与j分别在s与p中迭代，同时设置i与j前进与暂停的条件和彻底停止的条件。<br />
+i，j 同时前进：</p>
+<pre><code>if(j&lt;n&amp;&amp;(p[j]==s[i]||p[j]=='?')) 
+{
+    i++;
+    j++;
+}
+</code></pre>
+<p>暂停i，前进j</p>
+<pre><code>if(j&lt;n&amp;&amp;p[j]=='*')
+{
+    iStar=i;//记录当前字符s[i]，准备开始查找‘*’匹配的任意长度字符，直到‘*’后的第一个字符与s中后续字符匹配
+    jStar=j++;
+    //若出现连续的‘*’，返回i给iStar，iStar上一次迭代中的前进1失效，达到固定iStar不动效果，一直移动j,直到找到连续‘*’中最后的‘*’
+}
+</code></pre>
+<p>检查当前i与‘*’后第一个字母字符，若不匹配， 前进i</p>
+<pre><code>else if(iStar&gt;=0)
+{
+    //若iStar在上一次迭代中前进了1，赋值给i让i前进1，并让iStar继续前进1；否则‘*’匹配第一个s中字符；重复该过程直到找到i后续字符中与p中‘*’后第一个字母字符匹配的字符，如若不然匹配失败
+    i=iStar++;
+    j=jStar+1;//若jStar为字母前最后一个‘*’，p[j+1]为‘*’后第一个字母。不然，下一次迭代中，继续前进jStar
+}
+</code></pre>
+<p><code>if(j&lt;n&amp;&amp;(p[j]==s[i]||p[j]=='?')) i++;j++;</code>检查当前i与‘<em>’后第一个字母字符。若不匹配，下一次迭代中前进i，或p[j]还为‘</em>’，下一次赋值给jStar，jStar前进1。<br />
+若i没到达s的尾部，j到达p的尾部，退出迭代并返回false。若s字符串迭代完成，而j没有到达尾部，即j中当前字母字符不与s中任何字符匹配，返回false</p>
+<pre><code>class Solution {
+public:
+    bool isMatch(string s, string p)
+    {
+        int m=s.length();
+        int n=p.length();
+        int iStar=-1;
+        int jStar=-1;
+        int i=0,j=0;
+        while(i&lt;m)
+            if(j&lt;n&amp;&amp;(p[j]==s[i]||p[j]=='?'))
+            {
+                i++;
+                j++;
+            }
+            else if(j&lt;n&amp;&amp;p[j]=='*')
+            {
+                iStar=i;
+                jStar=j++;
+            }
+            else if(iStar&gt;=0)
+            {
+                i=iStar++;
+                j=jStar+1;
+            }
+            else
+                return false;
+        while(j&lt;n&amp;&amp;p[j]=='*') j++;//过滤掉p结尾处的‘*’，或中间出现的连续‘*’
+        return j==n;
+    }
+};
+</code></pre>
+</div>
+</div>
+</body>
+</html>

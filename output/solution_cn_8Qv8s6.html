@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>经典分治问题 – Hanota LCCI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_hanota-lcci.html">Hanota LCCI / 汉诺塔问题</a> <span class="sep">›</span> <span class="cur">经典分治问题</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">经典分治问题</div>
+  <div class="meta">
+    <span>👤 已注销</span>
+    <span>👍 4</span>
+    <span>2023-12-15</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/hanota-lcci/solution/jing-dian-fen-zhi-wen-ti-by-kiskis-tcsb/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <blockquote>
+<p>Problem: <a href="https://leetcode.cn/problems/hanota-lcci/description/">面试题 08.06. 汉诺塔问题</a></p>
+</blockquote>
+<p>[TOC]</p>
+<h1>思路</h1>
+<blockquote>
+<p>一个非常经典的分治问题<br />
+首先思考几个简单的问题<br />
+1.如果A上只有一个圆盘该怎么移动？<br />
+2.如果A上有两个圆盘该怎么移动?<br />
+3.如果A上有三个圆盘该怎么移动？<br />
+这三个问题都是非常易解的<br />
+1 -&gt; 直接移动到C柱<br />
+2 -&gt; 先将A顶部的一块移动到B,再将底部最大的移动到C，最后把B上的圆盘移动到C<br />
+3 -&gt; 先将A底部上的两块移动到B,再将A剩下的一块移动到C，最后把B上的两快圆盘移动到C</p>
+</blockquote>
+<p><em>那么对于n个圆盘呢？</em><br />
+我们试着从上面的简单案例得出解<br />
+1. -&gt; 先将A顶部的 n - 1个圆盘移动到B (借助C)<br />
+2. -&gt; 再将A剩下的一个圆盘移动到C<br />
+3. -&gt; 最后将B上的n - 1个圆盘移动到C (借助A)<br />
+至此,n个圆盘的解已经得到了,跟着思路写代码便是一个很简单的过程了</p>
+<h1>答疑</h1>
+<p>也许你在思考,如何把A上的i - 1个圆盘移动到C?<br />
+当你在思考这个问题的时候,这就已经是答案了,你在思考i - 1个圆盘的时候<br />
+接踵而至的是 i - 2 , i - 3... 直到1,我们始终在重复这个过程。<br />
+这就是分治的一种思想,你在思考如何将 i - 1个圆盘移动的时候 ,自然就会先想到<br />
+i - 2。至于如何移动盘子,那不是我们所关心的问题,我们需要的是分割问题,将它分解成多个子问题。再到子问题中寻求最终解。</p>
+<h1>解题方法</h1>
+<blockquote>
+<p>附上java和python的代码,每一步都有详细注释</p>
+</blockquote>
+<h1>时间复杂度及其空间复杂度分析</h1>
+<p><em>时间复杂度</em> -&gt; 在汉诺塔问题中,时间复杂度是非常高的,我们每开启一个子问题都会会开启另外两个子问题(移动的操作为常数级,不计),那么时间复杂度是2的n次方<br />
+<em>空间复杂度</em> -&gt; 对于n个圆盘,我们在递归的过程中会开启一颗高度为n的递归树<br />
+所以空间复杂度是n<br />
+附上递归树的图片(手画有点潦草)<br />
+<img alt="22a22a7a69f681db8c758ad5435e78e.png" src="https://pic.leetcode.cn/1702618105-kZCCTM-22a22a7a69f681db8c758ad5435e78e.png" /></p>
+<h1>复杂度</h1>
+<p>时间复杂度:</p>
+<blockquote>
+<p>$O(2^n)$</p>
+</blockquote>
+<p>空间复杂度:</p>
+<blockquote>
+<p>$O(n)$</p>
+</blockquote>
+<h1>Code</h1>
+<p>```Java []<br />
+class Solution {<br />
+    public void hanota(List<Integer> A, List<Integer> B, List<Integer> C) {<br />
+        DFS(A.size(), A, B, C);<br />
+    }<br />
+    // move -&gt; 移动圆盘<br />
+    void move(List<Integer> A, List<Integer> C) {<br />
+        // 从A栈顶取出<br />
+        Integer temp = A.remove(A.size() - 1);<br />
+        // 放入C栈顶<br />
+        C.add(temp);<br />
+    }<br />
+    // 分解子问题 f(n) -&gt; f(1) + f(n - 1) + f(n - 1)<br />
+    void DFS(int i, List<Integer> A, List<Integer> B, List<Integer> C) {<br />
+        // 如果A只剩一个圆盘 -&gt; 直接移动到C<br />
+        if (i == 1) {<br />
+            move(A,C);<br />
+            return;<br />
+        }<br />
+        // 子问题1 -&gt; 将A顶部i - 1个圆盘移动到B<br />
+        DFS(i - 1, A, C, B);<br />
+        // 子问题2 -&gt; 将A剩下的1个圆盘移动到C<br />
+        move(A,C);<br />
+        // 子问题3 -&gt; 将B顶部i - 1个圆盘移动到C<br />
+        DFS(i - 1,B, A, C);<br />
+    }<br />
+}</p>
+<pre><code>
+```python3 []
+class Solution:
+    def hanota(self, A: List[int], B: List[int], C: List[int]) -&gt; None:
+        &quot;&quot;&quot;
+        Do not return anything, modify C in-place instead.
+        &quot;&quot;&quot;
+        self.DFS(len(A), A, B, C)
+    # 将A栈顶元素移动到C
+    def move(self, A: List[int], C:List[int]) -&gt; None:
+        # 取出
+        temp = A.pop()
+        # 入C栈
+        C.append(temp)
+    def DFS(self, i: int, A: List[int], B: List[int], C: List[int]) -&gt; None:
+        if i == 1:
+            self.move(A, C)
+            return
+        # 子问题1 -&gt; 将A顶部 i - 1个圆盘移动到B(C为缓冲柱,B为目标柱)
+        self.DFS(i - 1, A, C, B)
+        # 子问题2 -&gt; 将A剩下的1个圆盘移动到C
+        self.move(A, C)
+        # 子问题3 -&gt; 将B顶部的 i - 1个圆盘移动到C(A为缓冲柱,C为目标柱)
+        self.DFS(i - 1,B, A, C)
+</code></pre>
+</div>
+</div>
+</body>
+</html>

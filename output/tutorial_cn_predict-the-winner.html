@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Predict the Winner – CN Editorial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index_cn.html">🔄 CN Recursion Solutions</a> <span class="sep">›</span> <span class="cur">Editorial</span></nav>
+<div class="wrap">
+<div class="page-title">486. Predict the Winner / 预测赢家 — Official Editorial</div>
+<div class="page-sub" style="margin-bottom:20px">
+  <span class="badge b-tag">MEDIUM</span> <span class="badge b-tag">递归</span> <span class="badge b-tag">数组</span> <span class="badge b-tag">数学</span> <span class="badge b-tag">动态规划</span> <span class="badge b-tag">博弈</span>
+  &nbsp;
+  <a href="https://leetcode.cn/problems/predict-the-winner/" target="_blank" style="font-size:.85em">↗ LeetCode CN</a>
+  &nbsp;·&nbsp;
+  <a href="index_cn.html" style="font-size:.85em">← Back</a>
+</div>
+<div class="sol-header" style="margin-bottom:12px">
+  <div class="stitle">预测赢家</div>
+  <div class="meta">
+    <span>🏆 Official</span>
+    <span>👍 143</span>
+    <span>2020-08-31</span>
+    <a href="https://leetcode.cn/problems/predict-the-winner/solution/yu-ce-ying-jia-by-leetcode-solution/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body" style="margin-bottom:32px">
+  <h4>方法一：递归</h4>
+<p>为了判断哪个玩家可以获胜，需要计算一个总分，即先手得分与后手得分之差。当数组中的所有数字都被拿取时，如果总分大于或等于 $0$，则先手获胜，反之则后手获胜。</p>
+<p>由于每次只能从数组的任意一端拿取数字，因此可以保证数组中剩下的部分一定是连续的。假设数组当前剩下的部分为下标 $    extit{start}$ 到下标 $ extit{end}$，其中 $0 \le   extit{start} \le    extit{end} &lt;    extit{nums}.    ext{length}$。如果 $   extit{start}=   extit{end}$，则只剩一个数字，当前玩家只能拿取这个数字。如果 $   extit{start}&lt;   extit{end}$，则当前玩家可以选择 $ extit{nums}[    extit{start}]$ 或 $  extit{nums}[    extit{end}]$，然后轮到另一个玩家在数组剩下的部分选取数字。这是一个递归的过程。</p>
+<p>计算总分时，需要记录当前玩家是先手还是后手，判断当前玩家的得分应该记为正还是负。当数组中剩下的数字多于 $1$ 个时，当前玩家会选择最优的方案，使得自己的分数最大化，因此对两种方案分别计算当前玩家可以得到的分数，其中的最大值为当前玩家最多可以得到的分数。</p>
+<p><img alt="fig1" src="https://assets.leetcode.cn/solution-static/486/486_fig1.png" /></p>
+<p>```Java [sol1-Java]<br />
+class Solution {<br />
+    public boolean PredictTheWinner(int[] nums) {<br />
+        return total(nums, 0, nums.length - 1, 1) &gt;= 0;<br />
+    }</p>
+<pre><code>public int total(int[] nums, int start, int end, int turn) {
+    if (start == end) {
+        return nums[start] * turn;
+    }
+    int scoreStart = nums[start] * turn + total(nums, start + 1, end, -turn);
+    int scoreEnd = nums[end] * turn + total(nums, start, end - 1, -turn);
+    return Math.max(scoreStart * turn, scoreEnd * turn) * turn;
+}
+</code></pre>
+<p>}</p>
+<pre><code>
+```C [sol1-C]
+int total(int* nums, int start, int end, int turn) {
+    if (start == end) {
+        return nums[start] * turn;
+    }
+    int scoreStart = nums[start] * turn + total(nums, start + 1, end, -turn);
+    int scoreEnd = nums[end] * turn + total(nums, start, end - 1, -turn);
+    return fmax(scoreStart * turn, scoreEnd * turn) * turn;
+}
+
+bool PredictTheWinner(int* nums, int numsSize) {
+    return total(nums, 0, numsSize - 1, 1) &gt;= 0;
+}
+</code></pre>
+<p>```cpp [sol1-C++]<br />
+class Solution {<br />
+public:<br />
+    bool PredictTheWinner(vector<int>&amp; nums) {<br />
+        return total(nums, 0, nums.size() - 1, 1) &gt;= 0;<br />
+    }</p>
+<pre><code>int total(vector&lt;int&gt;&amp; nums, int start, int end, int turn) {
+    if (start == end) {
+        return nums[start] * turn;
+    }
+    int scoreStart = nums[start] * turn + total(nums, start + 1, end, -turn);
+    int scoreEnd = nums[end] * turn + total(nums, start, end - 1, -turn);
+    return max(scoreStart * turn, scoreEnd * turn) * turn;
+}
+</code></pre>
+<p>};</p>
+<pre><code>
+```golang [sol1-Golang]
+func PredictTheWinner(nums []int) bool {
+    return total(nums, 0, len(nums) - 1, 1) &gt;= 0
+}
+
+func total(nums []int, start, end int, turn int) int {
+    if start == end {
+        return nums[start] * turn
+    }
+    scoreStart := nums[start] * turn + total(nums, start + 1, end, -turn)
+    scoreEnd := nums[end] * turn + total(nums, start, end - 1, -turn)
+    return max(scoreStart * turn, scoreEnd * turn) * turn
+}
+
+func max(x, y int) int {
+    if x &gt; y {
+        return x
+    }
+    return y
+}
+</code></pre>
+<p>```Python [sol1-Python3]<br />
+class Solution:<br />
+    def PredictTheWinner(self, nums: List[int]) -&gt; bool:<br />
+        def total(start: int, end: int, turn: int) -&gt; int:<br />
+            if start == end:<br />
+                return nums[start] * turn<br />
+            scoreStart = nums[start] * turn + total(start + 1, end, -turn)<br />
+            scoreEnd = nums[end] * turn + total(start, end - 1, -turn)<br />
+            return max(scoreStart * turn, scoreEnd * turn) * turn</p>
+<pre><code>    return total(0, len(nums) - 1, 1) &gt;= 0
+</code></pre>
+<pre><code>
+**复杂度分析**
+
+- 时间复杂度：$O(2^n)$，其中 $n$ 是数组的长度。
+
+- 空间复杂度：$O(n)$，其中 $n$ 是数组的长度。空间复杂度取决于递归使用的栈空间。
+
+#### 方法二：动态规划
+
+方法一使用递归，存在大量重复计算，因此时间复杂度很高。由于存在重复子问题，因此可以使用动态规划降低时间复杂度。
+
+定义二维数组 $    extit{dp}$，其行数和列数都等于数组的长度，$ extit{dp}[i][j]$ 表示当数组剩下的部分为下标 $i$ 到下标 $j$ 时，即在下标范围 $[i, j]$ 中，当前玩家与另一个玩家的分数之差的最大值，注意当前玩家不一定是先手。
+
+只有当 $i \le j$ 时，数组剩下的部分才有意义，因此当 $i&gt;j$ 时，$   extit{dp}[i][j]=0$。
+
+当 $i=j$ 时，只剩一个数字，当前玩家只能拿取这个数字，因此对于所有 $0 \le i &lt;     extit{nums}.    ext{length}$，都有 $   extit{dp}[i][i]=    extit{nums}[i]$。
+
+当 $i&lt;j$ 时，当前玩家可以选择 $    extit{nums}[i]$ 或 $ extit{nums}[j]$，然后轮到另一个玩家在数组剩下的部分选取数字。在两种方案中，当前玩家会选择最优的方案，使得自己的分数最大化。因此可以得到如下状态转移方程：
+
+
+    extit{dp}[i][j]=\max(   extit{nums}[i] -    extit{dp}[i + 1][j],    extit{nums}[j] -    extit{dp}[i][j - 1])
+
+
+最后判断 $  extit{dp}[0][   extit{nums}.    ext{length}-1]$ 的值，如果大于或等于 $0$，则先手得分大于或等于后手得分，因此先手成为赢家，否则后手成为赢家。
+
+&lt;![fig1](https://assets.leetcode.cn/solution-static/486/1.png),![fig2](https://assets.leetcode.cn/solution-static/486/2.png),![fig3](https://assets.leetcode.cn/solution-static/486/3.png),![fig4](https://assets.leetcode.cn/solution-static/486/4.png),![fig5](https://assets.leetcode.cn/solution-static/486/5.png),![fig6](https://assets.leetcode.cn/solution-static/486/6.png),![fig7](https://assets.leetcode.cn/solution-static/486/7.png),![fig8](https://assets.leetcode.cn/solution-static/486/8.png),![fig9](https://assets.leetcode.cn/solution-static/486/9.png),![fig10](https://assets.leetcode.cn/solution-static/486/10.png),![fig11](https://assets.leetcode.cn/solution-static/486/11.png),![fig12](https://assets.leetcode.cn/solution-static/486/12.png),![fig13](https://assets.leetcode.cn/solution-static/486/13.png),![fig14](https://assets.leetcode.cn/solution-static/486/14.png),![fig15](https://assets.leetcode.cn/solution-static/486/15.png),![fig16](https://assets.leetcode.cn/solution-static/486/16.png),![fig17](https://assets.leetcode.cn/solution-static/486/17.png)&gt;
+
+```Java [sol2-Java]
+class Solution {
+    public boolean PredictTheWinner(int[] nums) {
+        int length = nums.length;
+        int[][] dp = new int[length][length];
+        for (int i = 0; i &lt; length; i++) {
+            dp[i][i] = nums[i];
+        }
+        for (int i = length - 2; i &gt;= 0; i--) {
+            for (int j = i + 1; j &lt; length; j++) {
+                dp[i][j] = Math.max(nums[i] - dp[i + 1][j], nums[j] - dp[i][j - 1]);
+            }
+        }
+        return dp[0][length - 1] &gt;= 0;
+    }
+}
+</code></pre>
+<p>```C [sol2-C]<br />
+bool PredictTheWinner(int* nums, int numsSize) {<br />
+    int dp[numsSize][numsSize];<br />
+    for (int i = 0; i &lt; numsSize; i++) {<br />
+        dp[i][i] = nums[i];<br />
+    }<br />
+    for (int i = numsSize - 2; i &gt;= 0; i--) {<br />
+        for (int j = i + 1; j &lt; numsSize; j++) {<br />
+            dp[i][j] = fmax(nums[i] - dp[i + 1][j], nums[j] - dp[i][j - 1]);<br />
+        }<br />
+    }<br />
+    return dp[0][numsSize - 1] &gt;= 0;<br />
+}</p>
+<pre><code>
+```cpp [sol2-C++]
+class Solution {
+public:
+    bool PredictTheWinner(vector&lt;int&gt;&amp; nums) {
+        int length = nums.size();
+        auto dp = vector&lt;vector&lt;int&gt;&gt; (length, vector&lt;int&gt;(length));
+        for (int i = 0; i &lt; length; i++) {
+            dp[i][i] = nums[i];
+        }
+        for (int i = length - 2; i &gt;= 0; i--) {
+            for (int j = i + 1; j &lt; length; j++) {
+                dp[i][j] = max(nums[i] - dp[i + 1][j], nums[j] - dp[i][j - 1]);
+            }
+        }
+        return dp[0][length - 1] &gt;= 0;
+    }
+};
+</code></pre>
+<p>```golang [sol2-Golang]<br />
+func PredictTheWinner(nums []int) bool {<br />
+    length := len(nums)<br />
+    dp := make([][]int, length)<br />
+    for i := 0; i &lt; length; i++ {<br />
+        dp[i] = make([]int, length)<br />
+        dp[i][i] = nums[i]<br />
+    }<br />
+    for i := length - 2; i &gt;= 0; i-- {<br />
+        for j := i + 1; j &lt; length; j++ {<br />
+            dp[i][j] = max(nums[i] - dp[i + 1][j], nums[j] - dp[i][j - 1])<br />
+        }<br />
+    }<br />
+    return dp[0][length - 1] &gt;= 0<br />
+}</p>
+<p>func max(x, y int) int {<br />
+    if x &gt; y {<br />
+        return x<br />
+    }<br />
+    return y<br />
+}</p>
+<pre><code>
+```Python [sol2-Python3]
+class Solution:
+    def PredictTheWinner(self, nums: List[int]) -&gt; bool:
+        length = len(nums)
+        dp = [[0] * length for _ in range(length)]
+        for i, num in enumerate(nums):
+            dp[i][i] = num
+        for i in range(length - 2, -1, -1):
+            for j in range(i + 1, length):
+                dp[i][j] = max(nums[i] - dp[i + 1][j], nums[j] - dp[i][j - 1])
+        return dp[0][length - 1] &gt;= 0
+</code></pre>
+<p>上述代码中使用了二维数组 $  extit{dp}$。分析状态转移方程可以看到，$   extit{dp}[i][j]$ 的值只和 $ extit{dp}[i + 1][j]$ 与 $    extit{dp}[i][j - 1]$ 有关，即在计算 $  extit{dp}$ 的第 $i$ 行的值时，只需要使用到 $ extit{dp}$ 的第 $i$ 行和第 $i+1$ 行的值，因此可以使用一维数组代替二维数组，对空间进行优化。</p>
+<p>```Java [sol3-Java]<br />
+class Solution {<br />
+    public boolean PredictTheWinner(int[] nums) {<br />
+        int length = nums.length;<br />
+        int[] dp = new int[length];<br />
+        for (int i = 0; i &lt; length; i++) {<br />
+            dp[i] = nums[i];<br />
+        }<br />
+        for (int i = length - 2; i &gt;= 0; i--) {<br />
+            for (int j = i + 1; j &lt; length; j++) {<br />
+                dp[j] = Math.max(nums[i] - dp[j], nums[j] - dp[j - 1]);<br />
+            }<br />
+        }<br />
+        return dp[length - 1] &gt;= 0;<br />
+    }<br />
+}</p>
+<pre><code>
+```C [sol3-C]
+bool PredictTheWinner(int* nums, int numsSize) {
+    int dp[numsSize];
+    for (int i = 0; i &lt; numsSize; i++) {
+        dp[i] = nums[i];
+    }
+    for (int i = numsSize - 2; i &gt;= 0; i--) {
+        for (int j = i + 1; j &lt; numsSize; j++) {
+            dp[j] = fmax(nums[i] - dp[j], nums[j] - dp[j - 1]);
+        }
+    }
+    return dp[numsSize - 1] &gt;= 0;
+}
+</code></pre>
+<p>```cpp [sol3-C++]<br />
+class Solution {<br />
+public:<br />
+    bool PredictTheWinner(vector<int>&amp; nums) {<br />
+        int length = nums.size();<br />
+        auto dp = vector<int>(length);<br />
+        for (int i = 0; i &lt; length; i++) {<br />
+            dp[i] = nums[i];<br />
+        }<br />
+        for (int i = length - 2; i &gt;= 0; i--) {<br />
+            for (int j = i + 1; j &lt; length; j++) {<br />
+                dp[j] = max(nums[i] - dp[j], nums[j] - dp[j - 1]);<br />
+            }<br />
+        }<br />
+        return dp[length - 1] &gt;= 0;<br />
+    }<br />
+};</p>
+<pre><code>
+```golang [sol3-Golang]
+func PredictTheWinner(nums []int) bool {
+    length := len(nums)
+    dp := make([]int, length)
+    for i := 0; i &lt; length; i++ {
+        dp[i] = nums[i]
+    }
+    for i := length - 2; i &gt;= 0; i-- {
+        for j := i + 1; j &lt; length; j++ {
+            dp[j] = max(nums[i] - dp[j], nums[j] - dp[j - 1])
+        }
+    }
+    return dp[length - 1] &gt;= 0
+}
+
+func max(x, y int) int {
+    if x &gt; y {
+        return x
+    }
+    return y
+}
+</code></pre>
+<p><code>Python [sol3-Python3]
+class Solution:
+    def PredictTheWinner(self, nums: List[int]) -&gt; bool:
+        length = len(nums)
+        dp = [0] * length
+        for i, num in enumerate(nums):
+            dp[i] = num
+        for i in range(length - 2, -1, -1):
+            for j in range(i + 1, length):
+                dp[j] = max(nums[i] - dp[j], nums[j] - dp[j - 1])
+        return dp[length - 1] &gt;= 0</code></p>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>
+<p>时间复杂度：$O(n^2)$，其中 $n$ 是数组的长度。需要计算每个子数组对应的 $   extit{dp}$ 的值，共有 $\frac{n(n+1)}{2}$ 个子数组。</p>
+</li>
+<li>
+<p>空间复杂度：$O(n)$，其中 $n$ 是数组的长度。空间复杂度取决于额外创建的数组 $  extit{dp}$，如果不优化空间，则空间复杂度是 $O(n^2)$，使用一维数组优化之后空间复杂度可以降至 $O(n)$。</p>
+</li>
+</ul>
+<h4>拓展练习</h4>
+<p>读者在做完这道题之后，可以做另一道类似的题：「<a href="https://leetcode.cn/problems/stone-game">877. 石子游戏</a>」。和这道题相比，第 877 题增加了两个限制条件：</p>
+<ul>
+<li>
+<p>数组的长度是偶数；</p>
+</li>
+<li>
+<p>数组的元素之和是奇数，所以没有平局。</p>
+</li>
+</ul>
+<p>对于第 877 题，除了使用这道题的解法以外，能否利用上述两个限制条件进行求解？</p>
+</div>
+</div>
+</body>
+</html>

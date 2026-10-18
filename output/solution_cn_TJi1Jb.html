@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>lc - 206 反转链表 双指针and递归解法（自用） – Reverse Linked List</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_reverse-linked-list.html">Reverse Linked List / 反转链表</a> <span class="sep">›</span> <span class="cur">lc - 206 反转链表 双指针and递归解法（自用）</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">lc - 206 反转链表 双指针and递归解法（自用）</div>
+  <div class="meta">
+    <span>👤 elated-ishi2akanf4</span>
+    <span>👍 0</span>
+    <span>2024-03-01</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/reverse-linked-list/solution/lc-206-fan-zhuan-lian-biao-shuang-zhi-zh-k86g/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <blockquote>
+<p>Problem: <a href="https://leetcode.cn/problems/reverse-linked-list/description/">206. 反转链表</a></p>
+</blockquote>
+<p>[TOC]</p>
+<h1>思路</h1>
+<p>（狠狠复习链表内容）<br />
+双指针法反转链表</p>
+<h2>双指针法反转链表</h2>
+<ol>
+<li><strong>初始化三个指针</strong>：<ul>
+<li><code>prev</code>：最初指向<code>None</code>，因为反转后的链表的第一个节点将指向<code>None</code>。</li>
+<li><code>current</code>：最初指向链表的头节点，即值为<code>1</code>的节点。</li>
+<li><code>next_node</code>：在遍历过程中用来临时存储<code>current</code>的下一个节点。故<code>next_node</code>又称为<code>reserve</code>节点</li>
+</ul>
+</li>
+<li><strong>遍历链表</strong>：移动<code>current</code>指针遍历整个链表，对于每个节点：<ul>
+<li>临时保存<code>current.next</code>到<code>next_node</code>，因为一旦我们改变<code>current.next</code>的指向，我们将失去对原链表中下一个节点的引用。</li>
+<li>将<code>current.next</code>指向<code>prev</code>，实现反转。</li>
+<li>移动<code>prev</code>和<code>current</code>指针前进到下一位置，准备下一次迭代。</li>
+</ul>
+</li>
+</ol>
+<h3>图例演示</h3>
+<p>通过具体的图例来看看这个过程：</p>
+<p><strong>初始状态</strong>：</p>
+<pre><code>None   1 -&gt; 2 -&gt; 3 -&gt; None
+^      ^
+prev   current
+</code></pre>
+<p><strong>第一次迭代</strong>：</p>
+<ul>
+<li>保存<code>current.next</code>（即<code>2</code>）到<code>next_node</code>。</li>
+<li>将<code>current.next</code>指向<code>prev</code>（即<code>None</code>）。</li>
+<li>移动<code>prev</code>到<code>current</code>，<code>current</code>到<code>next_node</code>。</li>
+</ul>
+<pre><code>None &lt;- 1    2 -&gt; 3 -&gt; None
+        ^    ^
+       prev current
+</code></pre>
+<p><strong>第二次迭代</strong>：</p>
+<ul>
+<li>重复上述步骤，继续反转。</li>
+</ul>
+<pre><code>None &lt;- 1 &lt;- 2    3 -&gt; None
+              ^    ^
+             prev current
+</code></pre>
+<p><strong>第三次迭代</strong>：</p>
+<ul>
+<li>继续反转直到<code>current</code>为空。</li>
+</ul>
+<pre><code>None &lt;- 1 &lt;- 2 &lt;- 3
+                    ^
+                   prev
+</code></pre>
+<p><strong>最终结果</strong>：</p>
+<ul>
+<li>当<code>current</code>为空时，<code>prev</code>指向了原链表的最后一个节点，现在成为反转后链表的头节点。</li>
+</ul>
+<h3>代码</h3>
+<p>```Python3 []</p>
+<h1>Definition for singly-linked list.</h1>
+<h1>class ListNode:</h1>
+<h1>def <strong>init</strong>(self, val=0, next=None):</h1>
+<h1>self.val = val</h1>
+<h1>self.next = next</h1>
+<p>class Solution:<br />
+    def reverseList(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:<br />
+        prev = None<br />
+        current = head<br />
+        while current: # current不为空则继续向下遍历<br />
+            next_node = current.next # next_node又叫reserve_node<br />
+            current.next = prev #  改变cur-&gt;next的指向，反转current的下一个节点<br />
+            prev = current<br />
+            current = next_node<br />
+        return prev # current为空跳出循环的时候，prev指向的刚好是之前的最后一个非空节点（即反转后的头结点）</p>
+<pre><code>
+
+时间复杂度:
+$O(n)$，n为链表长度
+
+空间复杂度:
+$O(1)$
+
+## 递归法反转链表
+考虑使用递归法遍历链表，当越过尾节点后终止递归，在回溯时修改各节点的 next 引用指向。
+![image.png](https://pic.leetcode.cn/1709303856-rDzcpz-image.png)
+![image.png](https://pic.leetcode.cn/1709303880-GsKicV-image.png)
+
+
+### 代码：
+可以看作双指针法的改写，思路都是一样的，只是在回溯的时候修改
+```Python3 []
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:
+        &quot;&quot;&quot;递归解法&quot;&quot;&quot;
+        def reverse(current, prev):
+            if current == None: # 递归出口：cur为空
+                return prev
+            next_node = current.next # 保存current到next
+            current.next = prev #  反转current的下一个节点
+            return reverse(next_node, current) # 用递归来代替节点移动过程
+        return reverse(head, None) # 初始化依然是current指向head，prev指向None
+
+</code></pre>
+<h3>递归解法分析</h3>
+<ol>
+<li>
+<p><strong>基本思想</strong>：递归解法将大问题分解为小问题。在这里，大问题是反转整个链表，而小问题是反转链表的一小部分，最终通过递归调用来解决整个问题。</p>
+</li>
+<li>
+<p><strong>递归函数</strong>：<code>reverse(current, prev)</code>是一个内部定义的递归函数，它接受当前节点<code>current</code>和前一个节点<code>prev</code>作为参数。这个函数的目的是在遍历链表的过程中，逐个反转节点的指向。</p>
+</li>
+<li>
+<p><strong>递归出口</strong>：当<code>current</code>为空时，递归达到出口。这表示已经遍历到链表的末尾，此时<code>prev</code>指向反转后链表的头节点，应将其返回。</p>
+</li>
+<li>
+<p><strong>反转操作</strong>：在每次递归调用中，函数先保存<code>current</code>的下一个节点<code>next_node</code>，然后将<code>current.next</code>指向<code>prev</code>，实现反转。随后，递归调用<code>reverse(next_node, current)</code>，以<code>next_node</code>作为当前节点继续递归，直到链表完全反转。</p>
+</li>
+<li>
+<p><strong>初始化调用</strong>：最初调用<code>reverse(head, None)</code>时，<code>head</code>是链表的头节点，<code>None</code>表示反转后链表尾部应指向<code>None</code>。</p>
+</li>
+</ol>
+<h3>与双指针方法的区别</h3>
+<ul>
+<li>
+<p><strong>空间复杂度</strong>：递归方法的空间复杂度主要由递归调用栈的深度决定，对于长度为<code>n</code>的链表，其空间复杂度为<code>O(n)</code>。而双指针方法的空间复杂度为<code>O(1)</code>，因为它只需要修改指针，不需要额外的栈空间。</p>
+</li>
+<li>
+<p><strong>实现复杂度</strong>：递归方法的代码通常更简洁、更易于理解，尤其是在逻辑较为复杂的情况下。双指针方法虽然空间效率更高，但在某些情况下代码的编写可能稍显复杂。</p>
+</li>
+<li>
+<p><strong>性能考虑</strong>：对于非常长的链表，递归方法可能会导致栈溢出错误，因为每一层递归调用都会消耗一定的栈空间。双指针方法不会有这个问题，因为它不依赖于调用栈。</p>
+</li>
+</ul>
+</div>
+</div>
+</body>
+</html>

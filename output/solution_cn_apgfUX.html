@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>「递归下降法」从 LL(2) 语法到 LL(1) 语法，查找表列表处理嵌套作用域，代码结构清晰（代码注释版） – Parse Lisp Expression</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_parse-lisp-expression.html">Parse Lisp Expression / Lisp 语法解析</a> <span class="sep">›</span> <span class="cur">「递归下降法」从 LL(2) 语法到 LL(1) 语法，查找表列表处理嵌套作用域，代码结构清晰（代码注释版）</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">「递归下降法」从 LL(2) 语法到 LL(1) 语法，查找表列表处理嵌套作用域，代码结构清晰（代码注释版）</div>
+  <div class="meta">
+    <span>👤 kingda-2</span>
+    <span>👍 1</span>
+    <span>2022-11-21</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/parse-lisp-expression/solution/di-gui-xia-jiang-fa-by-kingda-2-4thu/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p>因为 Lisp 语法本身就是递归定义的，所以很自然会采用递归的解法。根据题意，容易写出语法：</p>
+<pre><code class="language-text">Expr            -&gt; ( Operation )
+                 | integer
+                 | name
+Operation       -&gt; let AssignmentList Expr
+                 | add Expr Expr
+                 | mult Expr Expr
+AssignmentList  -&gt; name Expr AssignmentList'
+AssignmentList' -&gt; name Expr AssignmentList'
+                 | ε
+</code></pre>
+<p>不过上面的语法不是 LL(1) 的，而是 LL(2) 的。在代码实现中，处理某个产生式的时候，要前瞻两个符号才能确定下一个产生式的选择。在本题中代码并不难实现（本文最下面会贴代码）</p>
+<p>要想尝试将 LL(2) 语法转换成 LL(1) 的话，首先要找到问题所在。<br />
+手工/程序自动化计算每一个产生式的 FIRST+ 集合后注意到：FIRST+ 集合冲突发在最后两个产生式，这两个产生式都属于同一个非终结符 AssignmentList'，且对应的 FIRST+ 集合中都含有 name。<br />
+如果程序执行到某处，选择了规则 <code>AssignmentList  -&gt; name Expr AssignmentList'</code>，在消耗了 <code>name Expr</code> 符号后，紧接着要处理左侧是 AssignmentList' 的产生式，它代表的意思是紧接 0 到多个 <code>name Expr</code>，如果当前前瞻一个符号是 name，程序不知道要选择产生式左侧是 AssignmentList' 中的哪一个规则。因为此时程序如果选择采用产生式 <code>AssignmentList' -&gt; ε</code> 的话，程序此时已经消耗了产生式 <code>AssignmentList  -&gt; name Expr AssignmentList'</code> 中的所有符号和产生式 <code>Operation -&gt; let AssignmentList Expr</code> 中的 <code>let AssignmenList</code> 这两个符号，而紧接着非终结符 Expr，它能代表 <code>( Operation )</code>、<code>integer</code>、<code>name</code> 中的一种。这意味着，最后两个产生式对于前瞻符号 name，都是合法、可以「消耗」的。</p>
+<p>对上述语法尝试采取「提取左因子」的方法进行转换，有可能在至多前瞻一个符号下，该语法是无回溯的。不过上面每个产生式的右侧看上去好像没有共同的「左因子」。但根据上面的分析，我们知道应该让产生式 <code>Operation -&gt; let AssignmentList Expr</code> 中的符号 Expr 交由非终结符 AssignmentList 处理，所以先改写语法成这样子：</p>
+<pre><code class="language-text">Expr            -&gt; ( Operation )
+                 | integer
+                 | name
+Operation       -&gt; let LetOperandList
+                 | add Expr Expr
+                 | mult Expr Expr
+LetOperandList  -&gt; name Expr LetOperandList'
+LetOperandList' -&gt; name Expr LetOperandList'
+                 | ( Operation )
+                 | integer
+                 | name
+</code></pre>
+<p>接着，注意到上面非终结符 LetOperandList' 产生式的右侧的左侧都有共同的「左因子」 name。为了清除该「左因子」，我们引入非终结符 LetOperandListNameRightAfter：</p>
+<pre><code class="language-text">Expr            -&gt; ( Operation )
+                 | integer
+                 | name
+Operation       -&gt; let LetOperandList
+                 | add Expr Expr
+                 | mult Expr Expr
+LetOperandList  -&gt; name Expr LetOperandList'
+LetOperandList' -&gt; name LetOperandNameRightAfter
+                 | ( Operation )
+                 | integer
+LetOperandNameRightAfter -&gt; Expr LetOperandList'
+                          | ε
+</code></pre>
+<p>可以手工/程序自动化计算证明该语法是 LL(1) 的。</p>
+<p>关于嵌套作用域，非常简单。<br />
+- 当进入一层「括号」时，就创建新的作用域。<br />
+- 当退出一层「括号」时，就销毁最内层的作用域。<br />
+- 要创建/更新某个变量的值的时候，只在最内层的作用域中新建/更新变量的值。<br />
+- 要查找某个变量名的值的时候，先从最内部作用域中查找该变量的值，如果找到就返回；如果没有找到，就到外面一层的作用域中查找该变量名的值，如果找到就返回；如果没有找到，就到再外面一层的作用域……</p>
+<p>以上四种操作，在本题中都可以用非常简单的数据结构 <code>vector&lt;unordered_map&lt;string, int&gt;&gt;</code> 来实现。</p>
+<p>LL(1) 语法实现的代码：<br />
+<img alt="submission.png" src="https://pic.leetcode.cn/1669031842-lfmReo-submission.png" /></p>
+<pre><code class="language-C++">class Solution {
+enum TokenType {
+    TOKEN_TYPE_LEFT_PARENTHESIS,
+    TOKEN_TYPE_RIGHT_PARENTHESIS,
+    TOKEN_TYPE_LET,
+    TOKEN_TYPE_ADD,
+    TOKEN_TYPE_MULT,
+    TOKEN_TYPE_NAME,
+    TOKEN_TYPE_INTEGER,
+    TOKEN_TYPE_EOF
+};
+
+public:
+    int evaluate(string expression) {
+        // 递归下降法
+        // 分成三个模块：词法分析、语法分析、嵌套作用域
+
+        str = &amp;expression;
+        next_token();
+        return expr();
+    }
+
+private:
+    int pos = 0;
+    string *str;
+    enum TokenType t;
+    string name;
+    int integer;
+    // 作用域符号表列表，用于处理嵌套的作用域。第 i 个符号表用于第 i 层的作用域
+    vector&lt;unordered_map&lt;string, int&gt;&gt; scopes;
+
+    int expr() {
+        int res;
+        switch (t) {
+        case TOKEN_TYPE_LEFT_PARENTHESIS:
+            /* Expr -&gt; ( Operation ) */
+            next_token();
+            scope_push();
+            res = operation();
+            scope_pop();
+            next_token();
+            break;
+        case TOKEN_TYPE_INTEGER:
+            /* Expr -&gt; integer */
+            res = integer;
+            next_token();
+            break;
+        case TOKEN_TYPE_NAME:
+            /* Expr -&gt; name */
+            res = scope_lookup(name);
+            next_token();
+            break;
+        }
+        return res;
+    }
+
+    int operation() {
+        int res;
+        switch (t) {
+        case TOKEN_TYPE_LET:
+            /* Operation -&gt; let LetOperandList */
+            next_token();
+            res = let_operand_list();
+            break;
+        case TOKEN_TYPE_ADD:
+            /* Operation -&gt; add Expr Expr */
+            next_token();
+            res = expr() + expr();
+            break;
+        case TOKEN_TYPE_MULT:
+            /* Operation -&gt; mult Expr Expr */
+            next_token();
+            res = expr() * expr();
+            break;
+        }
+        return res;
+    }
+
+    int let_operand_list() {
+        /* LetOperandList -&gt; name Expr LetOperandList' */
+        int res;
+        while (true) {
+            switch (t) {
+            case TOKEN_TYPE_LEFT_PARENTHESIS:
+                /* LetOperandList' -&gt; ( Operation ) */
+                next_token();
+                scope_push();
+                res = operation();
+                scope_pop();
+                next_token();
+                goto out;
+            case TOKEN_TYPE_INTEGER:
+                /* LetOperandList' -&gt; integer */
+                res = integer;
+                next_token();
+                goto out;
+            case TOKEN_TYPE_NAME:
+                /* LetOperandList' -&gt; name LetOperandListNameRightAfter
+                   LetOperandListNameRightAfter -&gt; Expr LetOperandList'
+                                                 | ε */
+                string n = move(name);
+                next_token();
+                if (t == TOKEN_TYPE_RIGHT_PARENTHESIS) {
+                    res = scope_lookup(n);
+                    goto out;
+                }
+                int val = expr();
+                scope_insert(n, val);
+            }
+        }
+        out:
+        return res;
+    }
+
+    /* 作用域辅助函数 */
+    int scope_lookup(string &amp;name) {
+        int res;
+        for (int i = scopes.size() - 1; i &gt;= 0; i--) {
+            if (scopes[i].count(name) == 1) {
+                res = scopes[i][name];
+                break;
+            }
+        }
+        return res;
+    }
+
+    void scope_insert(string &amp;name, int val) {
+        scopes.back()[name] = val;
+    }
+
+    void scope_push() {
+        scopes.emplace_back();
+    }
+
+    void scope_pop() {
+        scopes.pop_back();
+    }
+
+    /* 词法分析 */
+    void next_token() {
+        while (pos &lt; str-&gt;size() &amp;&amp; (*str)[pos] == ' ') {
+            pos++;
+        }
+
+        if (pos == str-&gt;size()) {
+            t = TOKEN_TYPE_EOF;
+            return;
+        }
+
+        char c = (*str)[pos++];
+        bool is_negative = false;
+        switch (c) {
+        case '(': t = TOKEN_TYPE_LEFT_PARENTHESIS; break;
+        case ')': t = TOKEN_TYPE_RIGHT_PARENTHESIS; break;
+        case '-':
+            is_negative = true;
+            c = (*str)[pos++];
+        case '0': case '1': case '2': case '3': case '4': case '5':
+        case '6': case '7': case '8': case '9':
+            integer = c - '0';
+            while (pos &lt; str-&gt;size() &amp;&amp; isdigit((*str)[pos])) {
+                integer = integer * 10 + ((*str)[pos++] - '0');
+            }
+            if (is_negative) {
+                integer = -integer;
+            }
+            t = TOKEN_TYPE_INTEGER;
+            break;
+        default: /* 变量或操作符 */
+            name = c;
+            while (pos &lt; str-&gt;size() &amp;&amp; (isdigit((*str)[pos]) || isalpha((*str)[pos]))) {
+                name += (*str)[pos++];
+            }
+            if (name == &quot;let&quot;) {
+                t = TOKEN_TYPE_LET;
+            } else if (name == &quot;add&quot;) {
+                t = TOKEN_TYPE_ADD;
+            } else if (name == &quot;mult&quot;) {
+                t = TOKEN_TYPE_MULT;
+            } else {
+                t = TOKEN_TYPE_NAME;
+            }
+        }
+    }
+};
+</code></pre>
+<p>附：LL(2) 语法实现的代码</p>
+<pre><code class="language-C++">class Solution {
+enum TokenType {
+    TOKEN_TYPE_LEFT_PARENTHESIS,
+    TOKEN_TYPE_RIGHT_PARENTHESIS,
+    TOKEN_TYPE_LET,
+    TOKEN_TYPE_ADD,
+    TOKEN_TYPE_MULT,
+    TOKEN_TYPE_NAME,
+    TOKEN_TYPE_INTEGER,
+    TOKEN_TYPE_EOF
+};
+
+public:
+    int evaluate(string expression) {
+        // 递归下降法
+        // 分成三个模块：词法分析、语法分析、嵌套作用域
+        /* LL(2) 语法：
+           起始符号 Expr
+           Expr -&gt; ( Operation )
+                 | integer
+                 | name
+           Operation -&gt; let AssignmentList Expr
+                      | add Expr Expr
+                      | mult Expr Expr
+           AssignmentList -&gt; name Expr Assignment'
+           AssignmentList' -&gt; name Expr AssignmentList'
+                            | ε
+        */
+        // 其中，表达式：a，根据题意该表达式是合法的，但没有定义其值
+
+        str = &amp;expression;
+        next_token();
+        next_token();
+        return expr();
+    }
+
+private:
+    int pos = 0;
+    string *str;
+    enum TokenType t, t2; // 至多前瞻 2 个符号
+    string name, name2;
+    int integer, integer2;
+    // 作用域符号表列表，用于处理嵌套的作用域。第 i 个符号表用于第 i 层的作用域
+    vector&lt;unordered_map&lt;string, int&gt;&gt; scopes;
+
+    int expr() {
+        int res;
+        switch (t) {
+        case TOKEN_TYPE_LEFT_PARENTHESIS:
+            /* Expr -&gt; ( Operation ) */
+            next_token();
+            scope_push();
+            res = operation();
+            scope_pop();
+            next_token();
+            break;
+        case TOKEN_TYPE_INTEGER:
+            /* Expr -&gt; integer */
+            res = integer;
+            next_token();
+            break;
+        case TOKEN_TYPE_NAME:
+            /* Expr -&gt; name */
+            res = scope_lookup(name);
+            next_token();
+            break;
+        }
+        return res;
+    }
+
+    int operation() {
+        int res;
+        switch (t) {
+        case TOKEN_TYPE_LET:
+            /* Operation -&gt; let AssignmentList Expr */
+            next_token();
+            assignment_list();
+            res = expr();
+            break;
+        case TOKEN_TYPE_ADD:
+            /* Operation -&gt; add Expr Expr */
+            next_token();
+            res = expr() + expr();
+            break;
+        case TOKEN_TYPE_MULT:
+            /* Operation -&gt; mult Expr Expr */
+            next_token();
+            res = expr() * expr();
+            break;
+        }
+        return res;
+    }
+
+    void assignment_list() {
+        /* AssignmentList -&gt; name Expr Assignment' */
+        // 这里前瞻两个符号以确定到底用哪个产生式
+        do {
+            /* AssignmentList' -&gt; name Expr AssignmentList'
+                                | ε */
+            string n = name;
+            next_token();
+            int val = expr();
+            scope_insert(n, val);
+        } while (t == TOKEN_TYPE_NAME &amp;&amp; t2 != TOKEN_TYPE_RIGHT_PARENTHESIS);
+    }
+
+    /* 作用域辅助函数 */
+    int scope_lookup(string &amp;name) {
+        int res;
+        for (int i = scopes.size() - 1; i &gt;= 0; i--) {
+            if (scopes[i].count(name) == 1) {
+                res = scopes[i][name];
+                break;
+            }
+        }
+        return res;
+    }
+
+    void scope_insert(string &amp;name, int val) {
+        scopes.back()[name] = val;
+    }
+
+    void scope_push() {
+        scopes.emplace_back();
+    }
+
+    void scope_pop() {
+        scopes.pop_back();
+    }
+
+    /* 词法分析 */
+    void next_token() {
+        while (pos &lt; str-&gt;size() &amp;&amp; (*str)[pos] == ' ') {
+            pos++;
+        }
+
+        t = t2;
+        name = move(name2);
+        integer = integer2;
+
+        if (pos == str-&gt;size()) {
+            t2 = TOKEN_TYPE_EOF;
+            return;
+        }
+
+        char c = (*str)[pos++];
+        bool is_negative = false;
+        switch (c) {
+        case '(': t2 = TOKEN_TYPE_LEFT_PARENTHESIS; break;
+        case ')': t2 = TOKEN_TYPE_RIGHT_PARENTHESIS; break;
+        case '-':
+            is_negative = true;
+            c = (*str)[pos++];
+        case '0': case '1': case '2': case '3': case '4': case '5':
+        case '6': case '7': case '8': case '9':
+            integer2 = c - '0';
+            while (pos &lt; str-&gt;size() &amp;&amp; isdigit((*str)[pos])) {
+                integer2 = integer2 * 10 + ((*str)[pos++] - '0');
+            }
+            if (is_negative) {
+                integer2 = -integer2;
+            }
+            t2 = TOKEN_TYPE_INTEGER;
+            break;
+        default: /* 变量或操作符 */
+            name2 = c;
+            while (pos &lt; str-&gt;size() &amp;&amp; (isdigit((*str)[pos]) || isalpha((*str)[pos]))) {
+                name2 += (*str)[pos++];
+            }
+            if (name2 == &quot;let&quot;) {
+                t2 = TOKEN_TYPE_LET;
+            } else if (name2 == &quot;add&quot;) {
+                t2 = TOKEN_TYPE_ADD;
+            } else if (name2 == &quot;mult&quot;) {
+                t2 = TOKEN_TYPE_MULT;
+            } else {
+                t2 = TOKEN_TYPE_NAME;
+            }
+        }
+    }
+};
+</code></pre>
+</div>
+</div>
+</body>
+</html>

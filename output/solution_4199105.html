@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>📢 Efficiently Detecting Powers of Four with Math | Bit Manipulation | Recursion || Mr. Robot – Power of Four</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_power-of-four.html">Power of Four</a> <span class="sep">›</span> <span class="cur">📢 Efficiently Detecting Powers of Four with Math | Bit Manipulation | Recursion || Mr. Robot</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">📢 Efficiently Detecting Powers of Four with Math | Bit Manipulation | Recursion || Mr. Robot</div>
+  <div class="meta">
+    <span>👤 LakshayBrejwal_1_0</span>
+    <span>👍 2</span>
+    <span>2023-10-23</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/power-of-four/solutions/4199105/efficiently-detecting-powers-of-four-with-math-bit-manipulation-recursion-mr-robot/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>Is Power of Four ❓</h1>
+<h2>Approach 1: Using Logarithms</h2>
+<h3>✨ Explanation</h3>
+<p>This problem tests whether a given integer is a power of four. The approach is based on the observation that if a number <code>n</code> is a power of four, it must satisfy two conditions: <br />
+1. It should be a power of two.<br />
+2. The logarithm of <code>n</code> to the base 4 should result in an integer.</p>
+<p>The <code>isPowerOfFour</code> function checks if <code>n</code> is greater than 0 and then calculates the logarithm of <code>n</code> to the base 4 using the properties of logarithms. It then raises 4 to the power of the calculated integer value and checks if it's equal to <code>n</code>. If they are equal, the function returns <code>true</code>; otherwise, it returns <code>false</code>.</p>
+<h3>Dry Run</h3>
+<p>Let's dry run the <code>isPowerOfFour</code> function with an example:<br />
+- Input: <code>n = 16</code><br />
+- <code>n</code> is greater than 0.<br />
+- Calculate <code>x = log2(16) / log2(4) = 2</code>.<br />
+- Calculate <code>power = 4^2 = 16</code>.<br />
+- <code>power</code> is equal to <code>n</code>, so the function returns <code>true</code>.</p>
+<h3>Edge Cases</h3>
+<ul>
+<li>The function handles cases where <code>n</code> is less than or equal to 0 and <code>n</code> is equal to 1.</li>
+</ul>
+<h3>️ Complexity Analysis</h3>
+<ul>
+<li>Time Complexity: O(1), as it performs a fixed number of mathematical operations.</li>
+<li>Space Complexity: O(1), as it uses only a few variables.</li>
+</ul>
+<h3>‍ Code in C++</h3>
+<pre><code class="language-cpp">class Solution {
+public:
+    bool isPowerOfFour(int n) {
+        if (n &lt;= 0) return false;
+        if (n == 1) return true;
+        double x = log2(n) / log2(4);
+        int power = pow(4, int(x));
+        return power == n;
+    }
+};
+</code></pre>
+<h3>☕ Code in Java</h3>
+<pre><code class="language-java">class Solution {
+    public boolean isPowerOfFour(int n) {
+        if (n &lt;= 0) return false;
+        if (n == 1) return true;
+        double x = Math.log(n) / Math.log(4);
+        int power = (int) Math.pow(4, x);
+        return power == n;
+    }
+}
+</code></pre>
+<h3>Code in Python</h3>
+<pre><code class="language-python">class Solution:
+    def isPowerOfFour(self, n: int) -&gt; bool:
+        if n &lt;= 0:
+            return False
+        if n == 1:
+            return True
+        x = math.log(n) / math.log(4)
+        power = int(4 ** x)
+        return power == n
+</code></pre>
+<h3>Code in C</h3>
+<pre><code class="language-csharp">public class Solution {
+    public bool IsPowerOfFour(int n) {
+        if (n &lt;= 0) return false;
+        if (n == 1) return true;
+        double x = Math.Log(n) / Math.Log(4);
+        int power = (int) Math.Pow(4, x);
+        return power == n;
+    }
+}
+</code></pre>
+<h3>Code in JavaScript</h3>
+<pre><code class="language-javascript">var isPowerOfFour = function (n) {
+    if (n &lt;= 0) return false;
+    if (n === 1) return true;
+    const x = Math.log(n) / Math.log(4);
+    const power = Math.pow(4, x);
+    return power === n;
+};
+</code></pre>
+<hr />
+<h2>Approach 2: Recursive Approach</h2>
+<h3>✨ Explanation</h3>
+<p>This approach checks whether a given integer <code>n</code> is a power of four using recursion. The idea is to continuously divide <code>n</code> by 4 and check if it eventually becomes 1. If it does, <code>n</code> is a power of four; otherwise, it's not.</p>
+<p>The <code>isPowerOfFour</code> function first handles the base cases: if <code>n</code> is less than or equal to 0, it returns <code>False</code>, as negative numbers and zero are not powers of four. If <code>n</code> is equal to 1, it returns <code>True</code>, as 4^0 is 1, which is indeed a power of four.</p>
+<p>For other values of <code>n</code>, the function checks if <code>n</code> is divisible by 4. If it is, the function calls itself recursively with <code>n</code> divided by 4. The recursion continues until <code>n</code> becomes 1 or it's no longer divisible by 4. If <code>n</code> eventually becomes 1, the function returns <code>True</code>, indicating that <code>n</code> is a power of four. Otherwise, it returns <code>False</code>.</p>
+<h3>Dry Run</h3>
+<p>Let's dry run the <code>isPowerOfFour</code> function with an example:<br />
+- Input: <code>n = 16</code><br />
+- <code>n</code> is not less than or equal to 0.<br />
+- <code>n</code> is not equal to 1.<br />
+- Since 16 is divisible by 4, the function calls itself with <code>n // 4 = 4</code>.<br />
+- Now, 4 is divisible by 4, so the function calls itself with <code>n // 4 = 1</code>.<br />
+- <code>n</code> becomes 1, so the function returns <code>True</code>.</p>
+<h3>Edge Cases</h3>
+<ul>
+<li>The function handles cases where <code>n</code> is less than or equal to 0 and <code>n</code> is equal to 1.</li>
+</ul>
+<h3>️ Complexity Analysis</h3>
+<ul>
+<li>Time Complexity: O(log4(n)), where <code>n</code> is the input number. The function divides <code>n</code> by 4 in each recursive call, and it runs in logarithmic time.</li>
+<li>Space Complexity: O(log4(n)) for the recursive call stack, as it uses additional space proportional to the depth of the recursion.<br />
+Certainly! Here's the recursive approach implemented in C++, Java, C#, and JavaScript:</li>
+</ul>
+<h3>‍ Code in C++</h3>
+<pre><code class="language-cpp">class Solution {
+public:
+    bool isPowerOfFour(int n) {
+        if (n &lt;= 0)
+            return false;
+        if (n == 1)
+            return true;
+        if (n % 4 == 0)
+            return isPowerOfFour(n / 4);
+        return false;
+    }
+};
+</code></pre>
+<h3>☕ Code in Java</h3>
+<pre><code class="language-java">class Solution {
+    public boolean isPowerOfFour(int n) {
+        if (n &lt;= 0)
+            return false;
+        if (n == 1)
+            return true;
+        if (n % 4 == 0)
+            return isPowerOfFour(n / 4);
+        return false;
+    }
+}
+</code></pre>
+<h3>Code in Python</h3>
+<pre><code class="language-python">class Solution:
+    def isPowerOfFour(self, n: int) -&gt; bool:
+        if n &lt;= 0:
+            return False
+        if n == 1:
+            return True
+        if n % 4 == 0:
+            return self.isPowerOfFour(n // 4)
+        return False
+</code></pre>
+<h3>Code in C</h3>
+<pre><code class="language-csharp">public class Solution {
+    public bool IsPowerOfFour(int n) {
+        if (n &lt;= 0)
+            return false;
+        if (n == 1)
+            return true;
+        if (n % 4 == 0)
+            return IsPowerOfFour(n / 4);
+        return false;
+    }
+}
+</code></pre>
+<h3>Code in JavaScript</h3>
+<pre><code class="language-javascript">var isPowerOfFour = function (n) {
+    if (n &lt;= 0)
+        return false;
+    if (n == 1)
+        return true;
+    if (n % 4 == 0)
+        return isPowerOfFour(n / 4);
+    return false;
+};
+</code></pre>
+<hr />
+<h2>Approach 3: Bit Manipulation</h2>
+<h3>✨ Explanation</h3>
+<p>This approach utilizes bit manipulation to efficiently determine if a given integer <code>n</code> is a power of four. The key insight is that powers of four in binary have the form <code>1</code> followed by an even number of <code>0</code>s. To check this pattern, we perform two main checks:<br />
+1. Verify if <code>n</code> is a power of 2, which means it has only one '1' bit in its binary representation. This is achieved by checking if <code>(n &amp; (n - 1))</code> is zero.<br />
+2. Confirm that the number of trailing 0s in <code>n</code> is even by using a bitmask <code>0x55555555</code>, which has '1' bits at even positions in binary.</p>
+<p>The approach returns <code>true</code> if both conditions are met, indicating that <code>n</code> is a power of four. Otherwise, it returns <code>false</code>.</p>
+<h3>Dry Run</h3>
+<p>Let's dry run the <code>isPowerOfFour</code> function with an example:<br />
+- Input: <code>n = 16</code><br />
+- First, we check if <code>n</code> is a power of 2. Since 16 is a power of 2 (binary representation: <code>10000</code>), this check passes.<br />
+- Next, we use a bitmask <code>0x55555555</code> (binary: <code>01010101...</code>) to verify that the number of trailing 0s in 16 is even.<br />
+- The result is <code>true</code>, so the function returns <code>true</code>, indicating that 16 is a power of four.</p>
+<h3>Edge Cases</h3>
+<p>The approach correctly handles cases where <code>n</code> is less than or equal to 0 and where <code>n</code> is equal to 1.</p>
+<h3>️ Complexity Analysis</h3>
+<ul>
+<li>Time Complexity: O(1), as it performs fixed and efficient bitwise operations.</li>
+<li>Space Complexity: O(1), as it uses only a constant amount of space.</li>
+</ul>
+<h3>‍ Code in C++</h3>
+<pre><code class="language-cpp">class Solution {
+public:
+    bool isPowerOfFour(int n) {
+        if (n &lt;= 0 || (n &amp; (n - 1)) != 0) {
+            return false;
+        }
+        return (n &amp; 0x55555555) == n;
+    }
+};
+</code></pre>
+<h3>Code in Python</h3>
+<pre><code class="language-python">class Solution:
+    def isPowerOfFour(self, n: int) -&gt; bool:
+        if n &lt;= 0 or (n &amp; (n - 1)) != 0:
+            return False
+        return (n &amp; 0x55555555) == n
+</code></pre>
+<h3>☕ Code in Java</h3>
+<pre><code class="language-java">class Solution {
+    public boolean isPowerOfFour(int n) {
+        if (n &lt;= 0 || (n &amp; (n - 1)) != 0) {
+            return false;
+        }
+        return (n &amp; 0x55555555) == n;
+    }
+}
+</code></pre>
+<h3>Code in C</h3>
+<pre><code class="language-csharp">public class Solution {
+    public bool IsPowerOfFour(int n) {
+        if (n &lt;= 0 || (n &amp; (n - 1)) != 0) {
+            return false;
+        }
+        return (n &amp; 0x55555555) == n;
+    }
+}
+</code></pre>
+<h3>Code in JavaScript</h3>
+<pre><code class="language-javascript">var isPowerOfFour = function (n) {
+    if (n &lt;= 0 || (n &amp; (n - 1)) !== 0) {
+        return false;
+    }
+    return (n &amp; 0x55555555) === n;
+};
+</code></pre>
+<hr />
+<h1>Analysis</h1>
+<table>
+<thead>
+<tr>
+<th>Language</th>
+<th>Runtime</th>
+<th>Memory</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C++</td>
+<td>&lt; 1 ms</td>
+<td>~ 3 MB</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>Java</td>
+<td>&lt; 1 ms</td>
+<td>~ 6 MB</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>&lt; 1 ms</td>
+<td>~ 10 MB</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>C#</td>
+<td>&lt; 1 ms</td>
+<td>~ 4 MB</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>JavaScript</td>
+<td>&lt; 1 ms</td>
+<td>~ 2 MB</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1>Consider UPVOTING⬆️</h1>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/853344be-bb84-422b-bdec-6ad5f07d0a7f_1696956449.7358863.png" /></p>
+<h1>DROP YOUR SUGGESTIONS IN THE COMMENT</h1>
+<h2>Keep Coding‍</h2>
+<p>-- <em>MR.ROBOT SIGNING OFF</em></p>
+</div>
+</div>
+</body>
+</html>

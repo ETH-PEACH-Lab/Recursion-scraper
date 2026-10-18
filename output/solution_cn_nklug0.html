@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>动态规划和递归两种方式解决 – Regular Expression Matching</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_regular-expression-matching.html">Regular Expression Matching / 正则表达式匹配</a> <span class="sep">›</span> <span class="cur">动态规划和递归两种方式解决</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">动态规划和递归两种方式解决</div>
+  <div class="meta">
+    <span>👤 sdwwld</span>
+    <span>👍 25</span>
+    <span>2020-10-07</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/regular-expression-matching/solution/dong-tai-gui-hua-he-di-gui-liang-chong-fang-shi-2/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h3>1，动态规划求解</h3>
+<p>我们也可以看下之前写的一道和这题非常类似的一道题<a href="https://leetcode.cn/problems/wildcard-matching/solution/dong-tai-gui-hua-ji-dai-ma-you-hua-tu-wen-xiang-ji/">44. 通配符匹配</a>，今天这题和第44题有一点不同的是，第44题的“*”可以匹配任意字符串，而这题的“*”表示他前面的字符可以出现任意次（包含0次）。</p>
+<p>我们先定义一个二维数组dp，其中<strong>dp[i][j]表示的是p的前j个字符和s的前i个字符匹配的结果</strong>。<br />
+<strong>一，边界条件</strong></p>
+<p>我们<strong>默认dp[0][0]=true</strong>；也就是p的前0个字符和s的前0个字符是可以匹配的。因为字符“*”表示的是匹配他前面的字符0次或者多次，如果p的字符类似于“a*b*c”，那么字符“*”是可以消去前面的一个字符的。我们就以字符"a*b*c"为例来画个图看一下<br />
+<img alt="image.png" src="https://pic.leetcode.cn/274153656b09ee0757668b69ddadf95fc8f915a4339a2b439ed3944984750ce8-image.png" /><br />
+<img alt="image.png" src="https://pic.leetcode.cn/ef46470192e7806a98a2c6e6b112111dad36631db4750d778990c566b4504d1f-image.png" /><br />
+所以边界条件的代码如下</p>
+<pre><code>public boolean isMatch(String s, String p) {
+    if (s == null || p == null)
+        return false;
+    int m = s.length();
+    int n = p.length();
+    boolean[][] dp = new boolean[m + 1][n+1];
+    dp[0][0] = true;
+    for (int i = 0; i &lt; n; i++) {
+        //如果p的第i+1个字符也就是p.charAt(i)是&quot;*&quot;的话，
+        //那么他就可以把p的第i个字符给消掉（也就是匹配0次）。
+        //我们只需要判断p的第i-1个字符和s的前0个字符是否匹
+        //配即可。比如p是&quot;a*b*&quot;，如果要判断p的第4个字符
+        //&quot;*&quot;和s的前0个字符是否匹配，因为字符&quot;*&quot;可以消去
+        //前面的任意字符，只需要判断p的&quot;a*&quot;和s的前0个字
+        //符是否匹配即可
+        if (p.charAt(i) == '*' &amp;&amp; dp[0][i - 1]) {
+            dp[0][i + 1] = true;
+        }
+    }
+    ……
+}
+</code></pre>
+<p>边界条件我们已经找到了，下面再来看一下递推公式。</p>
+<p><br></p>
+<h3>二，递推公式</h3>
+<p><strong>1，</strong> 如果p的第j+1个字符和s的第i+1个字符相同，或者p的第j+1个字符是“.”（"."可以匹配任意字符），我们只需要判断p的前j个字符和s的前i个字符是否匹配，这个还好理解，我们画个图看一下<br />
+<img alt="image.png" src="https://pic.leetcode.cn/2ebe55293afb747952dcf08e1c40f2dfa984553886b826b02b6cab25cda971a8-image.png" /><br />
+p的第3个字符"."是可以和s的第3个字符"f"匹配成功的，我们只需要判断p的前2个字符和s的前2个字符是否匹配成功即可。</p>
+<p>代码如下</p>
+<pre><code> if (p.charAt(j) == s.charAt(i) || p.charAt(j) == '.') {
+        dp[i + 1][j + 1] = dp[i][j];
+ }
+</code></pre>
+<p><strong>2，</strong> 如果p的第j+1个字符和s的第i+1个字符不能匹配，并且p的第j+1个字符是"*"，那么就要分两种情况</p>
+<p>（1）<strong>p的第j个字符和s的第i+1个字符不能匹配</strong>，</p>
+<p>比如：s="abc"，p="abcd*"</p>
+<p>我们就让p的第j个和第j+1个字符同时消失，也就是让"d*"消失，只需要判断p的前j-1个字符和s的前i+1个字符是否匹配即可。</p>
+<p>也就是下面这样</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/08de7dd3c91f5eca378bf91dce51b3f6dac2f768bbaf7b7ceaec2eeb4fa638ab-image.png" /><br />
+代码如下</p>
+<pre><code>if (p.charAt(j) == '*') {
+    if (p.charAt(j - 1) != s.charAt(i) &amp;&amp; p.charAt(j - 1) != '.') {
+        dp[i + 1][j + 1] = dp[i + 1][j - 1];
+    }
+}
+</code></pre>
+<p>（2）p的第j个字符和s的第i+1个字符匹配成功，有3种情况<br />
+- 类似于s="abc"，p="abcc*";   我们就让*匹配0个，把p的"c*"砍掉，判断s="abc"和p="abc"是否匹配</p>
+<pre><code>dp[i+1][j+1] = dp[i+1][j-1]
+</code></pre>
+<ul>
+<li>类似于s="abc"，p="abc*";   我们就让*匹配1个，把p的字符"*"砍掉，判断s="abc"和p="abc"是否匹配</li>
+</ul>
+<pre><code>dp[i+1][j+1] = dp[i+1][j]
+</code></pre>
+<ul>
+<li>类似于s="abcc"(或者s="abccc"，s="abcccc"……)，p="abc*";  我们就让*匹配多个，把s的最后一个字符"c"砍掉，判断s="abc"(或者s="abcc"，s="abccc"……)和p="abc*"是否匹配</li>
+</ul>
+<pre><code>dp[i+1][j+1] = dp[i][j+1]
+</code></pre>
+<p>前面两个的递推公式很好理解，关键是第3个为什么要这样写。其实我们可以这样想，把"c*"看做是一个整体，比如"abccc"的最后一个字符"c"和p的倒数第二个字符匹配成功，因为"c*"可以匹配多个，我们就把"abccc"砍掉一个字符"c"，然后再判断"abcc"和"abc*"是否匹配。<br />
+<strong>上面三个递推公式只要有一个为true，就表示能够匹配成功</strong></p>
+<p>我们来看下完整的递推公式</p>
+<pre><code>if (p.charAt(j) == s.charAt(i) || p.charAt(j) == '.') {
+    dp[i + 1][j+1] = dp[i][j];
+} else if (p.charAt(j) == '*') {
+    if (p.charAt(j - 1) != s.charAt(i) &amp;&amp; p.charAt(j - 1) != '.') {
+        dp[i + 1] [j+1]= dp[i + 1][j-1];
+    } else {
+        dp[i + 1][j+1] = (dp[i + 1][j] || dp[i][j+1]|| dp[i + 1][j-1]);
+    }
+}
+</code></pre>
+<p>其实上面代码有个重复的地方就是当p的第j+1个字符是"*"的时候，里面的两种判断方式都会有一个匹配0个的判断，我们可以把它提取出来，实际上匹配1个和匹配多个也可以合并</p>
+<pre><code>if (p.charAt(j) == s.charAt(i) || p.charAt(j) == '.') {
+    dp[i + 1][j + 1] = dp[i][j];
+} else if (p.charAt(j) == '*') {
+    //递归公式
+    if (p.charAt(j - 1) == s.charAt(i) || p.charAt(j - 1) == '.') {
+        dp[i + 1][j + 1] = dp[i][j + 1];
+    }
+    dp[i + 1][j + 1] |= dp[i + 1][j - 1];
+}
+</code></pre>
+<p>边界条件和递推公式都有了，我们再来看下完整代码</p>
+<pre><code>    public boolean isMatch(String s, String p) {
+        if (s == null || p == null || (!p.isEmpty() &amp;&amp; p.charAt(0) == '*'))
+            return false;
+        int m = s.length();
+        int n = p.length();
+        boolean[][] dp = new boolean[m + 1][n + 1];
+        dp[0][0] = true;
+        for (int i = 1; i &lt; n; i++) {
+            //如果p的第i+1个字符也就是p.charAt(i)是&quot;*&quot;的话，
+            //那么他就可以把p的第i个字符给消掉（也就是匹配0次）。
+            //我们只需要判断p的第i-1个字符和s的前0个字符是否匹
+            //配即可。比如p是&quot;a*b*&quot;，如果要判断p的第4个字符
+            //&quot;*&quot;和s的前0个字符是否匹配，因为字符&quot;*&quot;可以消去
+            //前面的任意字符，只需要判断p的&quot;a*&quot;和s的前0个字
+            //符是否匹配即可
+            if (p.charAt(i) == '*' &amp;&amp; dp[0][i - 1]) {
+                dp[0][i + 1] = true;
+            }
+        }
+        for (int i = 0; i &lt; m; i++) {
+            for (int j = 0; j &lt; n; j++) {
+                if (p.charAt(j) == s.charAt(i) || p.charAt(j) == '.') {
+                    dp[i + 1][j + 1] = dp[i][j];
+                } else if (p.charAt(j) == '*') {
+                    //递归公式
+                    if (p.charAt(j - 1) == s.charAt(i) || p.charAt(j - 1) == '.') {
+                        dp[i + 1][j + 1] = dp[i][j + 1];
+                    }
+                    dp[i + 1][j + 1] |= dp[i + 1][j - 1];
+                }
+            }
+        }
+        return dp[m][n];
+    }
+</code></pre>
+<p>看一下运行结果<br />
+<img alt="image.png" src="https://pic.leetcode.cn/1602082199-PaaCgP-image.png" /></p>
+<p>如果觉得代码有点长，还可以看个更简洁的写法，不过原理都一样</p>
+<pre><code>    public boolean isMatch(String s, String p) {
+        if (s == null || p == null || (!p.isEmpty() &amp;&amp; p.charAt(0) == '*'))
+            return false;
+        int m = s.length(), n = p.length();
+        boolean[][] dp = new boolean[m + 1][n + 1];
+        dp[0][0] = true;
+        for (int i = 0; i &lt;= m; i++)
+            for (int j = 1; j &lt;= n; j++)
+                if (p.charAt(j - 1) == '*')
+                    dp[i][j] = dp[i][j - 2] || (i &gt; 0 &amp;&amp; (s.charAt(i - 1) == p.charAt(j - 2) || p.charAt(j - 2) == '.') &amp;&amp; dp[i - 1][j]);
+                else
+                    dp[i][j] = i &gt; 0 &amp;&amp; dp[i - 1][j - 1] &amp;&amp; (s.charAt(i - 1) == p.charAt(j - 1) || p.charAt(j - 1) == '.');
+        return dp[m][n];
+    }
+</code></pre>
+<p><strong>2，递归求解</strong><br />
+先来定义一个函数，他表示的是s的首字符和p的首字符是否匹配。</p>
+<pre><code>//比较s的首字符和p的首字符是否匹配
+private boolean comp(String s, String p) {
+    return s.charAt(0) == p.charAt(0) || p.charAt(0) == '.';
+}
+</code></pre>
+<p>如果要判断字符串s和p是否匹配，我们来看一下递归函数的大致框架</p>
+<pre><code>public boolean isMatch(String s, String p) {
+    if (p.length() == 0) {
+        return s.length() == 0;
+    }
+    if (p.length() &gt; 1 &amp;&amp; p.charAt(1) == '*') {
+        // p的第二个字符是 '*'
+        ……
+    } else {
+        // p的第二个字符不是 '*'
+        ……
+    }
+}
+</code></pre>
+<p>因为字符"*"不能单独存在，他需要和他前面的字符搭配使用，成为一个组合。</p>
+<p>1，当p的第二个字符不是"*"的时候，那么p的第一个字符就可以单独和s的第一个字符进行比较。</p>
+<p>2，如果p的第二个字符是"*"，那么p的第二个字符和第一个字符必须成为一个组合来进行匹配，也就类收于"a*"。下面会分为两种情况<br />
+- 字符"*"匹配0次，让字符"*"和他前面的那个字符同时消失，然后判断字符串s和p.substring(2)是否匹配。</p>
+<ul>
+<li>字符"*"匹配1次或多次，让字符串s砍掉首字符，然后继续和字符串p匹配。<br />
+搞懂了上面的过程，代码就比较简单了，来看下完整代码</li>
+</ul>
+<pre><code>public boolean isMatch(String s, String p) {
+    if (p.length() == 0) {
+        return s.length() == 0;
+    }
+    if (p.length() &gt; 1 &amp;&amp; p.charAt(1) == '*') {
+        // p的第二个字符是 '*'
+        //1,字符&quot;*&quot;把前面的字符消掉，也就是匹配0次
+        //2,字符&quot;*&quot;匹配1次或多次
+        return isMatch(s, p.substring(2)) || (s.length() &gt; 0 &amp;&amp; comp(s, p)) &amp;&amp; isMatch(s.substring(1), p);
+    } else {
+        // p的第二个字符不是 '*'，判断首字符是否相同，如果相同再从第二位继续比较
+        return s.length() &gt; 0 &amp;&amp; comp(s, p) &amp;&amp; (isMatch(s.substring(1), p.substring(1)));
+    }
+}
+
+//比较s的首字符和p的首字符是否匹配
+private boolean comp(String s, String p) {
+    return s.charAt(0) == p.charAt(0) || p.charAt(0) == '.';
+}
+</code></pre>
+<p><br></p>
+<p><strong>如果觉得有用就给个赞吧，你的赞是给我最大的鼓励，也是我写作的最大动力</strong></p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/d56a80459005b444404d2ad6fbaabdabecd2b9ed3cb2cf432e570c315ae2fcf7-image.png" /></p>
+<h5>查看更多答案，可扫码关注我微信公众号“<strong><a href="https://img-blog.csdnimg.cn/20200807155236311.png">数据结构和算法</a></strong>”</h5>
+</div>
+</div>
+</body>
+</html>

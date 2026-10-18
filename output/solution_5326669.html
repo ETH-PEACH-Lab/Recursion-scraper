@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reverse a Linked List || C++ Code || 2 Optimal Approaches || 1 Brute Force Approach – Reverse Linked List</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_reverse-linked-list.html">Reverse Linked List</a> <span class="sep">›</span> <span class="cur">Reverse a Linked List || C++ Code || 2 Optimal Approaches || 1 Brute Force Approach</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">Reverse a Linked List || C++ Code || 2 Optimal Approaches || 1 Brute Force Approach</div>
+  <div class="meta">
+    <span>👤 yuvrajsinghthakur1311</span>
+    <span>👍 0</span>
+    <span>2024-06-17</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/reverse-linked-list/solutions/5326669/reverse-a-linked-list-c-code-2-optimal-approaches-1-brute-force-approach/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>Intuition - Using Stack</h1>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>A straightforward approach to reversing a singly linked list requires an <strong>additional data structure</strong> to temporarily store the values. We can use a <strong><em>*stack</em></strong>* for this. By pushing each node onto the stack as we move through the list, we effectively reverse the order of the nodes. Once all the nodes are stored in the stack, we rebuild the reversed linked list by popping nodes from the stack and assigning them to the nodes. The result is a new linked list with the elements in the opposite order of the original list</p>
+<h1>Approach</h1>
+<!-- Describe your approach to solving the problem. -->
+<p><strong>Step 1:</strong>  Create an empty stack. This stack will be used to temporarily store the nodes from the original linked list as we traverse it.</p>
+<p><strong>Step 2:</strong> Traverse the linked list using a temporary variable <code>temp</code> till it reaches null. At each node, push the value at the current node onto the stack</p>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/04a51580-e3bc-4e2e-b4da-258c2d8fcdcd_1718615531.1506238.png" /></p>
+<p><strong>Step 3:</strong> Set variable <code>temp</code> back to the head of the linked list. While the stack is not empty, set the value at the temp node to the value at the top of the stack. Pop the stack and move temp to the next node till it reaches null.<br />
+<img alt="image.png" src="https://assets.leetcode.com/users/images/26c1ae59-6b9e-475b-b4ce-d86ce010d84e_1718615582.5198636.png" /></p>
+<p><strong>Step 4:</strong> Return the head as the new head of the reversed linked list.</p>
+<h1>Code</h1>
+<pre><code>class Solution {
+public:
+    ListNode* reverseList(ListNode* head) { 
+    // Create a temporary pointer
+    // to traverse the linked list
+      ListNode* temp = head;
+
+    // Create a stack to temporarily
+    // store the data values
+      stack&lt;int&gt; st;
+
+    // Step 1: Push the values of the
+    // linked list onto the stack
+     while(temp != NULL){
+        st.push(temp -&gt; val);
+
+    // Move to the next node
+    // in the linked list
+        temp = temp -&gt; next;
+     }
+
+     // Reset the temporary pointer to
+    // the head of the linked list
+     temp = head;
+
+     // Step 2: Pop values from the stack
+    // and update the linked list
+     while(temp != NULL){
+        // Set the current node's data to
+        // the value at the top of the stack
+        temp -&gt; val = st.top();
+
+        // Pop the top element from the stack
+        st.pop();
+
+       // Move to the next node
+        // in the linked list
+        temp = temp -&gt; next;
+    }
+
+     // Return the new head of
+    // the reversed linked list
+     return head;
+   } 
+};
+</code></pre>
+<h1>Complexity</h1>
+<ul>
+<li>Time complexity: <strong>O(2N)</strong></li>
+</ul>
+<!-- Add your time complexity here, e.g. O(n) -->
+
+<ul>
+<li>Space complexity: <strong>O(N)</strong></li>
+</ul>
+<!-- Add your space complexity here, e.g. O(n) -->
+
+<h1>Intuition - Using Reverse Links in place</h1>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>The previous approach uses O(N) addition space which can be avoided by interchanging the connecting links of the nodes of the linked list in place.</p>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/83ef46da-832d-49d5-98dc-0df4b3c56120_1718615922.8035252.png" /></p>
+<p>The main idea is to <strong>flip</strong> the order of connections in the linked list, which changes the <strong>direction</strong> of the <strong>arrows</strong>. When this happens, the last element becomes the <strong>new first element</strong> of the list. This <strong>in-place reversal</strong> allows us to efficiently transform the original list <strong>without using extra space</strong>.</p>
+<h1>Approach</h1>
+<!-- Describe your approach to solving the problem. -->
+<p><strong>Step 1:</strong> Initialise a ‘temp’ pointer at the head of the linked list. This pointer will be used to traverse the linked list. And initialize the pointer ‘prev’ to ‘NULL’ to keep track of the previous node. This will be used to reverse the direction of the ‘next’ pointers..</p>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/e0da1101-903d-4f80-96fb-5500c7235d14_1718616061.4368415.png" /></p>
+<p><strong>Step 2:</strong> Traverse the entire linked list by moving through each node using the 'temp' pointer until it reaches the end (marked as 'NULL').</p>
+<p>At each iteration within the traversal,</p>
+<ul>
+<li>
+<p>Save the reference to the next node that 'temp' is pointing to in a variable called 'front'. This helps retain the link to the subsequent node before altering the 'next' pointer.<br />
+<img alt="image.png" src="https://assets.leetcode.com/users/images/86d5e17b-1a46-4789-a279-d9ba6cb14943_1718616143.729172.png" /></p>
+</li>
+<li>
+<p>Reverse the direction of the ‘next’ pointer of the current node (pointed to by ‘temp’) to point to the ‘prev’ node. This effectively reversed the direction of the linked list, making the current node point to the previous node. </p>
+</li>
+</ul>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/59b6fea6-f07c-4e22-a3c6-ff00b17176d1_1718616207.710422.png" /></p>
+<ul>
+<li>Move the ‘prev’ pointer to the current node. This sets up the ‘prev’ pointer for the next iteration of the loop.</li>
+<li>Move the ‘temp’ pointer to the ‘front’ node. This advances the traversal to the next node in the original order.</li>
+</ul>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/2da866f5-35f4-44c8-a397-ea6f3ea17eec_1718616254.012554.png" /></p>
+<p>In summary :</p>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/fa70e673-1285-4390-8328-97057fdb4bca_1718616292.350378.png" /></p>
+<p><strong>Step 3:</strong> Keep traversing through the linked list using the 'temp' pointer until it reaches the end, thereby reversing the entire list. Once the 'temp' pointer reaches the end, return the new head of the reversed linked list, which is now indicated by the 'prev' pointer. This 'prev' pointer becomes the first node in the newly reversed list.</p>
+<h1>Code</h1>
+<pre><code>class Solution {
+public:
+    ListNode* reverseList(ListNode* head) { 
+       Node* temp = head;  
+
+   // Initialize pointer 'prev' to NULL,
+   // representing the previous node
+       Node* prev = NULL;  
+
+   // Traverse the list, continue till
+   // 'temp' reaches the end (NULL)
+   while(temp != NULL){  
+       // Store the next node in
+       // 'front' to preserve the reference
+       Node* front = temp-&gt;next;  
+
+       // Reverse the direction of the
+       // current node's 'next' pointer
+       // to point to 'prev'
+       temp-&gt;next = prev;  
+
+        // Move 'prev' to the current
+        // node for the next iteration
+       prev = temp;  
+
+        // Move 'temp' to the 'front' node
+        // advancing the traversal
+       temp = front; 
+   }
+
+   // Return the new head of
+   // the reversed linked list
+   return prev;  
+   } 
+};
+</code></pre>
+<h1>Complexity</h1>
+<ul>
+<li>Time complexity: <strong>O(N)</strong></li>
+</ul>
+<!-- Add your time complexity here, e.g. O(n) -->
+
+<ul>
+<li>Space complexity: <strong>O(1)</strong></li>
+</ul>
+<!-- Add your space complexity here, e.g. O(n) -->
+
+<h1>Intuition - Using Recursion</h1>
+<!-- Describe your first thoughts on how to solve this problem. -->
+<p>Recursion gives the ability to break down a problem statement into small problems that can be solved incrementally. It keeps solving these smaller problems until it reaches the smallest possible solution, often referred to as the base case, from where it can start combining the results of those smaller solutions to ultimately solve the original, larger problem.</p>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/68a59178-3cb9-43fa-a6a0-b6bf3e527866_1718617018.8977802.png" /></p>
+<p>In this case, tackling the larger problem involves reversing a linked list with N = 4 nodes. Recursion allows us to break this task down into progressively smaller subproblems, starting with the case of 3 nodes, then the last 2 nodes, and ultimately reaching the base case where only 1 node remains. In the base case, reversing the linked list is straightforward, as a list with just one node is already in its reversed form, and we can simply return it as is.</p>
+<h1>Approach :</h1>
+<!-- Describe your approach to solving the problem. -->
+
+<p><strong>Base Case :</strong></p>
+<p>Check if the linked list is empty or contains only one node. Return the head as it's already reversed in these cases.</p>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/c6566f6d-71de-4c93-94a3-8ccd887e1393_1718617696.2491195.png" /></p>
+<p><strong>Recursive Function :</strong><br />
+The core of the algorithm lies in implementing a recursive function responsible for reversing the linked list. This function operates based on the following principle :-</p>
+<p>If the base case conditions are not met, the function invokes itself recursively. This recursion continues until it reaches the base case, gradually reversing the linked list starting from the second node (node after it) onward.</p>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/c878f5ed-41f9-48e6-a897-026066a3fef7_1718617614.8313513.png" /></p>
+<p><strong>Return :</strong></p>
+<p>Following the recursion, the function returns the new head of the reversed linked list. This head marks the last node of the original list before reversal, now the first node in the reversed sequence.</p>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/13889857-7617-4ecb-825a-e28484308953_1718617637.9130206.png" /></p>
+<h1>Steps :</h1>
+<p><strong>Step 1:</strong> Establish Base Case Conditions: Check if the linked list is either empty or contains only one node. If so, the list is already reversed; hence, return the head as is.</p>
+<p><strong>Step 2:</strong> Recursively Reverse the List: Begin the recursive step by reversing the linked list, starting from the second node. Utilise a recursive call to the reverse linked list function, passing the next node as an argument.</p>
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/8d4bbd61-2ae4-4e8f-ba7c-208b09fffbd4_1718617589.308025.png" /></p>
+<p><strong>Step 3:</strong> Preserve Access to Remaining Nodes: To maintain access to the rest of the linked list while reversing the order, store a reference to the node following the current 'head' node. This step ensures continuity in the link sequence during reversal.</p>
+<p><strong>Step 4:</strong> Reverse Link Direction: Adjust the 'front' node to point to the current 'head' node in the reversed order. This action effectively reverses the link between the 'head' node and the 'front' node.</p>
+<p><strong>Step 5:</strong> Prevent Cyclic References: Break the link from the current 'head' node to the 'front' node to prevent any cyclic formations. Set 'head-&gt;next' to 'NULL' to ensure the reversed segment of the list does not create a loop.</p>
+<p><strong>Step 6:</strong> Return the New Head: Finally, return the 'newHead,' which signifies the new head of the reversed linked list. This 'newHead' was initially the last node in the list before the reversal commenced.</p>
+<h1>Code</h1>
+<pre><code>class Solution {
+public:
+    ListNode* reverseList(ListNode* head) { 
+      if ( head == NULL || head -&gt; next == NULL){
+           return head;
+       }
+
+    ListNode* newHead = reverseList(head -&gt; next);
+    ListNode* forward = head -&gt; next;
+    forward -&gt; next = head;
+    head -&gt; next = NULL;
+    return newHead;
+   } 
+};
+</code></pre>
+<h1>Complexity</h1>
+<ul>
+<li>Time complexity: <strong>O(N)</strong></li>
+</ul>
+<!-- Add your time complexity here, e.g. O(n) -->
+
+<ul>
+<li>Space complexity: <strong>O(1)</strong></li>
+</ul>
+<!-- Add your space complexity here, e.g. O(n) -->
+</div>
+</div>
+</body>
+</html>

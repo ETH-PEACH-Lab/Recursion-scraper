@@ -1,0 +1,3547 @@
+{
+  "solutions": [
+    {
+      "id": "solution_5537064.html",
+      "title": "O(n) | Beats 100 % | Java | C++ | Python | Go | JavaScript",
+      "votes": 6,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/26bff16c-d9de-446a-bd6b-5ceeb9c55404_1726913595.7584646.png",
+        "https://assets.leetcode.com/users/images/f64cbc27-a20a-4573-aa2d-09d8820afe8e_1726913721.854242.png",
+        "https://assets.leetcode.com/users/images/50ed4a7a-0651-4e89-aabf-c5d39f5a9213_1726914264.7821214.png"
+      ],
+      "categories": [
+        "流程／数据示意"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 图解是链表加法流程。",
+      "image_numbers": [
+        0,
+        1,
+        2
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_3401751.html",
+      "title": "🚀 ✅ Detailed explaination 🔥 with Pictures ✅ 🔥 🚀 in C++,Java , Python , DP bottom up tabulation.",
+      "votes": 370,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/267087b4-5347-4ce1-832b-55364e51e470_1681152399.32624.png",
+        "https://assets.leetcode.com/users/images/691610d4-9872-4118-a2e1-98088037f172_1681152410.7458284.png",
+        "https://assets.leetcode.com/users/images/7957e76b-6f3b-4922-8c7a-b399ceb2ce2c_1681152426.4691515.png",
+        "https://assets.leetcode.com/users/images/9092568d-0cd5-46ad-9797-cac9d3b749f4_1681152758.70305.jpeg"
+      ],
+      "categories": [
+        "DP／状态转移",
+        "无关／求赞配图"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 图解侧重自底向上 DP，含求赞猫图。",
+      "image_numbers": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_4815625.html",
+      "title": "113.1 (Approach 1 : recursive) | O( n)✅ | Python & C++(Step by step explanation)✅",
+      "votes": 9,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/b33df742-f7cd-4084-bbb6-6906ff46fd56_1709455718.8010354.png",
+        "https://assets.leetcode.com/users/images/2fd41334-43fd-4c24-8a38-c34a69a9339e_1709456257.6265855.png",
+        "https://assets.leetcode.com/users/images/0161dd3b-ad9f-4cf6-8c43-49c2e670cc21_1699210823.334661.jpeg"
+      ],
+      "categories": [
+        "递归树／子问题展开",
+        "无关／求赞配图"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        7,
+        8,
+        9
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_1375313.html",
+      "title": "Recursive java solution explain with simple diagram",
+      "votes": 6,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/3d6fe330-4fce-4351-a23a-ec62b3ad48fe_1627782638.5297766.png",
+        "https://assets.leetcode.com/users/images/dec5eaf3-eed2-408d-9f2e-999bda9a3c80_1627782757.7386117.png",
+        "https://assets.leetcode.com/users/images/aa1b88db-4c55-4d11-877f-dbd7ef1940d6_1627783106.4455247.png",
+        "https://assets.leetcode.com/users/images/30385096-f762-4f08-b068-e74c0f16ad95_1627783131.1002207.png",
+        "https://assets.leetcode.com/users/images/e066e3a0-eb4a-4f60-8ff6-8b29810c7bbf_1627783622.9966438.png"
+      ],
+      "categories": [
+        "规则／分支示意"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 图中解释正则匹配规则，没有展示完整调用过程。",
+      "image_numbers": [
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_2705782.html",
+      "title": "JS | Recursion | With exlanation",
+      "votes": 215,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/693abd06-11db-47eb-9bed-92853dcced4f_1665835272.4866369.png",
+        "https://assets.leetcode.com/users/images/c63066ed-9e8c-42c9-aa68-4091e45817b4_1665835300.8266866.png"
+      ],
+      "categories": [
+        "调用栈／递归返回"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        15,
+        16
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_6048156.html",
+      "title": "【Video】Using dummy pointer and recursion solution as a bonus",
+      "votes": 79,
+      "kept": "1",
+      "images": [
+        "https://img.youtube.com/vi/eaRfv5VY7sI/default.jpg",
+        "https://img.youtube.com/vi/9HDVSJn3obo/default.jpg"
+      ],
+      "categories": [
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        17,
+        18
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_4806865.html",
+      "title": "Intuition Explained in detail | Video solution | C++",
+      "votes": 8,
+      "kept": "1",
+      "images": [
+        "https://img.youtube.com/vi/-0q1z0Gwh34/default.jpg"
+      ],
+      "categories": [
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        19
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_1001708.html",
+      "title": "Python/Go/Java/JS/C++ O( m + n )  simple recursion [w/ Comment]",
+      "votes": 11,
+      "kept": "1",
+      "images": [
+        "https://img.youtube.com/vi/yTxbH8q2c6Q/default.jpg"
+      ],
+      "categories": [
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        20
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_1774708.html",
+      "title": "[C++]|Visual Image how links change | Explained every step | Commented code",
+      "votes": 662,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/53a7a769-ce39-4d7d-9e37-cd0420f72bf0_1644988593.5987253.jpeg"
+      ],
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        21
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_2481145.html",
+      "title": "[Go] Many Clean Solutions with images in Go (GoLang) (0ms 100%)",
+      "votes": 23,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/f5bbe08e-42e8-42ce-9977-d5f2a58bc653_1690834893.7782896.png",
+        "https://assets.leetcode.com/users/images/7085cfe8-e298-435b-bc12-739668f3580f_1690834907.7661934.png",
+        "https://assets.leetcode.com/users/images/78c9effb-98e4-4594-b2ff-b91bce480211_1690834920.5882404.png",
+        "https://assets.leetcode.com/users/images/fb93b1d2-41f9-44b6-a05d-f24d58f76c8f_1661481740.6021497.jpeg",
+        "https://assets.leetcode.com/users/images/edacf671-cf94-4da0-8569-d55c1d682b51_1661481740.3160453.jpeg",
+        "https://assets.leetcode.com/users/images/d5342873-a9b1-4b5e-938d-7294231bcf9e_1690831346.3609188.png",
+        "https://assets.leetcode.com/users/images/6f6aa2b9-35b1-48eb-abd2-06e701276bca_1690831364.0310698.png"
+      ],
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 同时包含迭代与递归的链表交换图。",
+      "image_numbers": [
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_1163702.html",
+      "title": "[Python3] Simple recursive solution beats 95.00% (easily understandable, with figure explanation)",
+      "votes": 23,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/399f06f6-0361-4b86-a29d-823f0d42a04a_1618696569.132693.png"
+      ],
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        29
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_3531484.html",
+      "title": "Think Recursive | Python | C++ | Golang",
+      "votes": 7,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/1d8eaf14-3512-4e3d-bc46-57e3dd6746f0_1684253393.1944199.png",
+        "https://assets.leetcode.com/users/images/0409e8be-a0f4-49de-8ca8-7cf14ba869be_1684253489.2341714.png",
+        "https://assets.leetcode.com/users/images/362d02de-00fc-4e49-a1c2-2c80404593c9_1684253531.1400237.png",
+        "https://assets.leetcode.com/users/images/dc72258a-ac45-4dfe-8045-4d4cb40b279a_1684253573.5092244.png"
+      ],
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        30,
+        31,
+        32,
+        33
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_3529774.html",
+      "title": "Easy Java Solution | Detailed Explanation | Two Pointers | O(n) time, O(1) space",
+      "votes": 6,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/05ec86d4-6fc7-4c8b-80b2-17d9c22e173b_1684219328.4818847.jpeg",
+        "https://assets.leetcode.com/users/images/af90cb2b-1003-4027-ae43-3e67f2a59cca_1684219425.2694046.jpeg",
+        "https://assets.leetcode.com/users/images/f62f9709-1fa5-42bc-8523-07cb507f1e42_1684219589.7843626.jpeg",
+        "https://assets.leetcode.com/users/images/43ca3fc2-d1ec-47a5-85d9-bd6eddc3ce47_1684219689.5950298.jpeg",
+        "https://assets.leetcode.com/users/images/a4910cb9-5d0c-45bd-a08e-b181626953cf_1684219778.19854.jpeg"
+      ],
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "visual_recursion": false,
+      "group": "其他算法图解",
+      "note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。 图解为 dummy 与双指针迭代操作。",
+      "image_numbers": [
+        34,
+        35,
+        36,
+        37,
+        38
+      ],
+      "recursion_status": "非递归",
+      "includes_recursion": false,
+      "recursion_note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。"
+    },
+    {
+      "id": "solution_580838.html",
+      "title": "Python/JS/Java/C++ O(n) recursive sol. [w/ Visualization]",
+      "votes": 7,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/b903dd7c-983c-44c2-8166-289928c97fff_1684213084.129816.png",
+        "https://img.youtube.com/vi/DIHuNQ-PQZg/default.jpg"
+      ],
+      "categories": [
+        "链表指针／结构变化",
+        "视频封面"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        39,
+        40
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_3865908.html",
+      "title": "BEST Recursive and iterative approach with VIDEO explanation || Beats 100% !!",
+      "votes": 5,
+      "kept": "1",
+      "images": [
+        "https://img.youtube.com/vi/fi2vh0nQLi0/default.jpg"
+      ],
+      "categories": [
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        41
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_3431696.html",
+      "title": "EASY TO UNDERSTAND RECURSIVE APPROACH | C++",
+      "votes": 7,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/9deb0470-dff9-4582-96f2-0bb7ff79689a_1681834820.5916502.png"
+      ],
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        42
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_4844525.html",
+      "title": "Best C++ ✅✅ Solution || Optimized Approach 🔥🔥 with Explanation 💙💙 || Striver Solution ⚡⚡",
+      "votes": 5,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/31705453-d59e-4e43-910a-46087a4be998_1709924284.5475707.png",
+        "https://assets.leetcode.com/users/images/e33af51f-7ee6-4cbb-bab2-d1e30a830a6c_1709924350.670217.png",
+        "https://assets.leetcode.com/users/images/d1376bc5-9418-4b7f-8979-dd619ab2a01e_1709924357.8959017.png",
+        "https://assets.leetcode.com/users/images/8f757d67-4ec7-4eee-933e-6ab93956d60a_1709924601.5630517.jpeg",
+        "https://assets.leetcode.com/users/images/d43f6bef-fcf1-47cf-8c1e-45f3ebb7b259_1709924590.9423769.jpeg",
+        "https://assets.leetcode.com/users/images/53531780-e79c-4e9f-aaad-ec2a0f696edd_1709924611.2043374.jpeg"
+      ],
+      "categories": [
+        "链表指针／结构变化",
+        "代码／文字讲解"
+      ],
+      "visual_recursion": false,
+      "group": "其他算法图解",
+      "note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。 图解主要为分组反转、指针连接及手写代码。",
+      "image_numbers": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48
+      ],
+      "recursion_status": "非递归",
+      "includes_recursion": false,
+      "recursion_note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。"
+    },
+    {
+      "id": "solution_4246336.html",
+      "title": "✨💯💥Linear Time Solution | Detailed Explanation | Images | Visualisations💥💯✨",
+      "votes": 9,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/4f0fbee5-91d8-44ee-9f23-7ae7d562ca37_1699066595.5983377.gif",
+        "https://assets.leetcode.com/users/images/ae014f02-b52e-445d-ada2-a367243f8846_1699068400.8442802.gif",
+        "https://assets.leetcode.com/users/images/b714383c-c690-47b0-b2b3-a09b6039d556_1699069692.372215.gif"
+      ],
+      "categories": [
+        "匹配过程动画"
+      ],
+      "visual_recursion": false,
+      "group": "其他算法图解",
+      "note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。 三张 GIF 都是通配符匹配过程，不是递归调用动画。",
+      "image_numbers": [
+        49,
+        50,
+        51
+      ],
+      "recursion_status": "非递归",
+      "includes_recursion": false,
+      "recursion_note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。"
+    },
+    {
+      "id": "solution_3807721.html",
+      "title": "2 Optimised Method Bit && recursion || Video Explanation ||Faster log(n) solution",
+      "votes": 40,
+      "kept": "1",
+      "images": [
+        "https://img.youtube.com/vi/mosNm5bl8Ts/default.jpg"
+      ],
+      "categories": [
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        52
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_3807630.html",
+      "title": "C++ LSBF/MSBF in log n time Beats 100%",
+      "votes": 6,
+      "kept": "1",
+      "images": [
+        "https://img.youtube.com/vi/P22N3fd73eM/default.jpg"
+      ],
+      "categories": [
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        53
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_1687578.html",
+      "title": "🧩🧩 (C++) Recursive O[log(N)] solution | Recursion LAWS | Faster than 100%",
+      "votes": 5,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/abe68c78-acda-4118-82cd-557ad7b70592_1642084413.5401745.png"
+      ],
+      "categories": [
+        "数学递推／公式推导"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        54
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_2502436.html",
+      "title": "✔️C++🔥100%✅Fastest solution || Best approach with good explanation || Easy to understand. 1",
+      "votes": 97,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/0e4a79f7-809b-40b3-8f55-c89f81297d35_1661835688.8905008.jpeg",
+        "https://lh5.googleusercontent.com/DgoKjAy6h0xfEl2LcWJ_aDg93Q0_gXEZkwVjH13b52VEkUtJXhrHjkav0GM5HJV8XyoRTsjN4CZrA8hCJt634hG-7vy6BP_xdpZ7HlPF_PAGCOXqNDPT0ikc_fOaQ90ktFZhPI9g",
+        "https://lh4.googleusercontent.com/p62qRS1NYnrf8_DPQd3xg8mKTx-OZQ0otukMXtq7RF4xVr_xz4m569bOtFRTrh3QbTldIPMYi0Cco84dRdiH5nYxMppIYRib5drCzGc2fcXiTzrYEIyZLuDmzHjR1KhrYBt9P4_s",
+        "https://lh5.googleusercontent.com/nv-M9Ju-zoy_O7wtTb8jZZf8f5q4fdr9X987UspvacgJB4E-pVdm-3n4aT5M67KUsBp3LAFNbzNesnBFKz4f5dJoGGhuj51WpulR9dR8zPY821Uu1skTSQ7y4RCfJlfK4HDdD3p-",
+        "https://lh4.googleusercontent.com/kLizY46WNhTvnZDI4mvG-U1JJ6k_cLVD8UbkczsXeUMKf-xA8CWP_3_8DB-i_YgwQ6gBnSn6HxGfYeym9F4Qf24t6ckMhCWTqsxeUS0ExmM5nP-P4f2Az609jOKui5Cq3mc9ApZg",
+        "https://lh4.googleusercontent.com/XSVzdDLZjo7kL5vSOEL6WYrmk7t1JqnzLCV67tYFbWBey5s0UiJ0nKFuL_sYYIqEpy2WE9x4ez-am_P4k-6ytuAEx7i1ZGmm2WtTROgS7QRa8HwxT48my-87VuhAq2VtbIs96448",
+        "https://lh6.googleusercontent.com/ywkmQGIHcK0gpydKJ6PrNH1nTmnfFv7otGzzBTeWSOw9965Mq61wperoFrRi54fVoedVKFG5n2WG9fzbnzMQhGBOzniNsGZw87pnVyFsipAYeda7Rl6CTc2A-zmzpoIO7nWtOS3G",
+        "https://assets.leetcode.com/users/images/de57d8f1-b056-43f1-a511-7092eef574a3_1661822303.9951882.png",
+        "https://assets.leetcode.com/users/images/854d11a9-624b-492a-a9f7-0cc6ae5b1d99_1661822341.666998.png",
+        "https://assets.leetcode.com/users/images/8e2c1e09-bb27-48df-8888-0912df17f2a2_1661835737.2826996.jpeg"
+      ],
+      "categories": [
+        "排列分块／选择过程"
+      ],
+      "visual_recursion": false,
+      "group": "其他算法图解",
+      "note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。 图解侧重阶乘分块选数。",
+      "image_numbers": [
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64
+      ],
+      "recursion_status": "非递归",
+      "includes_recursion": false,
+      "recursion_note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。"
+    },
+    {
+      "id": "solution_1640556.html",
+      "title": "C++ EASY TO SOLVE || Beginner Friendly with detailed explanation and dry run",
+      "votes": 206,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/a436d8ab-0868-4990-9214-74fc5ba59992_1640143095.7645688.jpeg"
+      ],
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        65
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_4912225.html",
+      "title": "Fast & slow find mid & reverse & merge 2 lists vs deque vs Recursion||15ms Beats 98.75%",
+      "votes": 32,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/e748c0d8-f5b5-4a6b-a183-60aa6bdab5cc_1711164614.1751947.png",
+        "https://assets.leetcode.com/users/images/63b66dd9-1064-4587-a706-9d16e7870212_1710993501.6268916.png",
+        "https://img.youtube.com/vi/20M4vc9rGVc/default.jpg"
+      ],
+      "categories": [
+        "链表指针／结构变化",
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 图解侧重快慢指针与迭代反转。",
+      "image_numbers": [
+        66,
+        67,
+        68
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_1059115.html",
+      "title": "[JAVA] One Pass Recursive Solution With Animation Explanation",
+      "votes": 40,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/0b44167d-f0c4-409a-bb80-9cab9e6b05e0_1612957822.2802742.png"
+      ],
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 本地下载到的是静态 PNG，不能确认标题所称动画。",
+      "image_numbers": [
+        69
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_2194971.html",
+      "title": "✅ C++ Solution ||  Recursive Approch || Short Code || Using stack frame of Recursion",
+      "votes": 6,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/30824bf7-bd6a-4f0a-9a71-f0e1eced8ff7_1656154953.5404239.jpeg"
+      ],
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        70
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_4660724.html",
+      "title": "Easy, Beginner solution, with dry run || Time complexity O(n) || Space complexity O(1) || Gits✅👈",
+      "votes": 119,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/9e8e5eac-e8ff-4c23-beef-1eb6c2a385ca_1706457654.9166362.png",
+        "https://assets.leetcode.com/users/images/ba2f56d4-18de-4ccc-a972-7b0554e6be8a_1706458406.7012293.png"
+      ],
+      "categories": [
+        "链表指针／结构变化",
+        "无关／求赞配图"
+      ],
+      "visual_recursion": false,
+      "group": "其他算法图解",
+      "note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。 展示删除节点前后连接关系，未展开递归。",
+      "image_numbers": [
+        71,
+        72
+      ],
+      "recursion_status": "非递归",
+      "includes_recursion": false,
+      "recursion_note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。"
+    },
+    {
+      "id": "solution_2655657.html",
+      "title": "simple recursive solution",
+      "votes": 16,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/a95d85b9-4549-4960-a10a-5f6614b0dd0a_1664804128.6790764.png"
+      ],
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        73
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_5612752.html",
+      "title": "Step By Step Explained with Images. Easiest to understand. Java, C++, Python, JavaScript, Go Codes",
+      "votes": 366,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/d8fcd8d3-5a75-4ecb-85e2-681b2c98759a_1723213518.202446.png",
+        "https://assets.leetcode.com/users/images/fbde4436-ff05-4e68-9ce8-2c3831a72d25_1723213522.6917145.png",
+        "https://assets.leetcode.com/users/images/0983269c-9744-42bb-b2c8-ceddb9c53f8d_1723213525.2782161.png",
+        "https://assets.leetcode.com/users/images/9ba18d0b-da91-4d06-bcb4-e0dc40bfd34e_1723213535.1843827.png",
+        "https://assets.leetcode.com/users/images/13f8a2fa-7249-45b0-8eb5-91d865ae8115_1723213537.8953936.png",
+        "https://assets.leetcode.com/users/images/c57f67f2-9441-4b99-9ad5-2b921c1e2652_1723213540.113058.png",
+        "https://assets.leetcode.com/users/images/38b7676c-a5dc-4825-a7e2-81316bd56938_1723213551.1550446.png",
+        "https://assets.leetcode.com/users/images/762b129e-0fab-484e-9cf9-ac8453912b1a_1723213553.9502525.png",
+        "https://assets.leetcode.com/users/images/21935ff7-9897-42fd-aa89-2abca28864f1_1723213556.1770194.png",
+        "https://assets.leetcode.com/users/images/5e11752e-e0bb-4131-b4c8-40174e9d9f0a_1723213558.4513872.png",
+        "https://assets.leetcode.com/users/images/5330362a-262f-4ec4-948b-b30ccdc8a070_1723213560.7062523.png",
+        "https://assets.leetcode.com/users/images/c3fb74b9-4164-49ff-b355-a90709f256a9_1723213562.565261.png"
+      ],
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "visual_recursion": false,
+      "group": "其他算法图解",
+      "note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。 十二张图逐步解释迭代反转。",
+      "image_numbers": [
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85
+      ],
+      "recursion_status": "非递归",
+      "includes_recursion": false,
+      "recursion_note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。"
+    },
+    {
+      "id": "solution_4907451.html",
+      "title": "ITERATIVE + RECURSIVE  🔥🔥 APPROACH || Explanation with images || Easy to understand || Beats 100%",
+      "votes": 12,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/c4f27e17-0f7a-49d2-ad0b-3da7742793a0_1711034129.3294234.gif",
+        "https://assets.leetcode.com/users/images/0ec6ff93-d575-4aae-b8ce-abc84f45b9be_1711035226.2436209.gif",
+        "https://assets.leetcode.com/users/images/0e7c897a-25e4-4475-aa37-e5e40bb4ce6a_1711047280.7046223.gif"
+      ],
+      "categories": [
+        "链表指针／结构变化",
+        "无关／求赞配图"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        86,
+        87,
+        88
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_2257009.html",
+      "title": "C++ 3 Solutions Two Recursive and One Iterative",
+      "votes": 5,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/e54d3711-8be9-454a-bb5c-8795a020f3fd_1657341737.6022713.gif"
+      ],
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 图片只展示迭代反转，标题虽提到递归。",
+      "image_numbers": [
+        89
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_869957.html",
+      "title": "Javascript Iterative and Recursive solution",
+      "votes": 51,
+      "kept": "1",
+      "images": [
+        "https://img.youtube.com/vi/O0By4Zq0OFc/default.jpg"
+      ],
+      "categories": [
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        90
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_2105240.html",
+      "title": "Reverse Linked List  || Easy recursive solution with image explanation",
+      "votes": 30,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/96b7d4a6-64b6-4a11-922e-55c148b558a7_1654239510.008161.png",
+        "https://assets.leetcode.com/users/images/2e6f2ddf-4f5e-4892-bdc0-99d27289ff9d_1654239786.5388136.png",
+        "https://assets.leetcode.com/users/images/9791019b-b072-42e3-ac2a-622cef5e9aa2_1654239949.2522185.png"
+      ],
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        91,
+        92,
+        93
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_2578707.html",
+      "title": "[Python Explained Recursive Iterative]",
+      "votes": 14,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/1caa5168-a9c7-4716-8a7f-0202926c8dff_1663236706.4428494.png"
+      ],
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        94
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_2249915.html",
+      "title": "🚩[C++] FAANG 😨 Interview Optimized code 😱 INSANE",
+      "votes": 5,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/fbfc10c4-bd99-4eb6-8b58-552789d868a0_1657184348.77025.png"
+      ],
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "visual_recursion": false,
+      "group": "其他算法图解",
+      "note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。 图片为迭代反转图。",
+      "image_numbers": [
+        95
+      ],
+      "recursion_status": "非递归",
+      "includes_recursion": false,
+      "recursion_note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。"
+    },
+    {
+      "id": "solution_2606967.html",
+      "title": "[C++] All 3 Approaches discussed - with dry run - Easy understanding with explanation",
+      "votes": 7,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/35ffa0be-12f7-418a-859b-cb3ff6b6983c_1663783983.5716927.jpeg",
+        "https://assets.leetcode.com/users/images/c13b58b4-3682-40e6-baf8-d5232b04e521_1663783453.6115704.png"
+      ],
+      "categories": [
+        "显式栈",
+        "链表指针／结构变化"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 同时有显式栈操作与迭代反转；显式栈不等于递归调用栈。",
+      "image_numbers": [
+        96,
+        97
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_1741696.html",
+      "title": "My java code is faster than 99.56% with detail Explanation by using recursion- Easy to understand",
+      "votes": 78,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/42baaf60-a0d6-4e44-a466-e6e3aa127640_1643886890.2685964.jpeg"
+      ],
+      "categories": [
+        "数学递推／公式推导"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        98
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_4908086.html",
+      "title": "Fast & Slow then reverse Slow vs Recursion||137ms Beats 96.66%",
+      "votes": 17,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/43e865cb-dc70-4fd2-bc11-3b4160f05fca_1711069953.3644109.png",
+        "https://assets.leetcode.com/users/images/63b66dd9-1064-4587-a706-9d16e7870212_1710993501.6268916.png"
+      ],
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 图片为快慢指针与迭代反转。",
+      "image_numbers": [
+        99,
+        67
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_3293892.html",
+      "title": "🔥🔥 3 Best Solutions Explained 🔥🔥",
+      "votes": 50,
+      "kept": "1",
+      "images": [
+        "https://img.youtube.com/vi/8h2UOPDCGPM/default.jpg"
+      ],
+      "categories": [
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "仅视频封面",
+      "note": "本地正文只有视频链接、缺失代码或概念说明，不能确认具体递归实现，暂不纳入。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        100
+      ],
+      "recursion_status": "待确认",
+      "includes_recursion": false,
+      "recursion_note": "本地正文只有视频链接、缺失代码或概念说明，不能确认具体递归实现，暂不纳入。"
+    },
+    {
+      "id": "solution_4626316.html",
+      "title": "[Python] ✅ || Easy Explanation - Mind Map Diagram || Fast & Slow pointers || [Space O(1)]",
+      "votes": 19,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/019f483d-dd3d-4d09-b822-f4b943cce690_1706213729.9249492.png"
+      ],
+      "categories": [
+        "流程／数据示意"
+      ],
+      "visual_recursion": false,
+      "group": "其他算法图解",
+      "note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。 思维导图描述迭代回文链表算法。",
+      "image_numbers": [
+        101
+      ],
+      "recursion_status": "非递归",
+      "includes_recursion": false,
+      "recursion_note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。"
+    },
+    {
+      "id": "solution_4911498.html",
+      "title": "[ VIDEO ] C++ | Easy Appraoch",
+      "votes": 6,
+      "kept": "1",
+      "images": [
+        "https://img.youtube.com/vi/4SEr7HH4K9w/default.jpg"
+      ],
+      "categories": [
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        102
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_1345716.html",
+      "title": "[C++] Recursive Approach | Easy To Understand | Explained with diagram",
+      "votes": 15,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/644d79b7-ff09-4393-9eb2-5aacd7ae93b9_1626600564.1930144.png"
+      ],
+      "categories": [
+        "递归返回／遍历方向"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        103
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_5806427.html",
+      "title": "recursive/iterative Catalan number-like DP solution||beats 100%",
+      "votes": 18,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/3328bcad-aa9c-4ec8-a26c-944d7bb6a89c_1726711331.547305.png",
+        "https://img.youtube.com/vi/VFG8O3zHTKU/default.jpg",
+        "https://img.youtube.com/vi/AVbHDf6H_gE/default.jpg"
+      ],
+      "categories": [
+        "树结构／组合构造",
+        "视频封面"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        104,
+        105,
+        106
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_1294189.html",
+      "title": "C++ Recursive Solution | Using Expression Trees",
+      "votes": 498,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/811924c6-d550-4135-909c-e10f7a58af26_1624537462.121658.png"
+      ],
+      "categories": [
+        "树结构／组合构造"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 图是表达式树，展示括号组合，不是函数调用栈。",
+      "image_numbers": [
+        107
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_5808079.html",
+      "title": "Recursive Expression Evaluation: Splitting and Merging Sub-Expressions | Java | C++ | Video Solution",
+      "votes": 7,
+      "kept": "1",
+      "images": [
+        "https://img.youtube.com/vi/eIHScR29r8s/default.jpg"
+      ],
+      "categories": [
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        108
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_5806873.html",
+      "title": "Recursion, Recursion Tree, DP || Chalo Samjhe Concepts",
+      "votes": 20,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/1a657d6b-4c36-499b-b280-4a8f1fd144b0_1726718988.8129702.png",
+        "https://assets.leetcode.com/users/images/86ede243-4b8d-48fc-86e8-eaa4196f0bd6_1726719001.4924624.png",
+        "https://assets.leetcode.com/users/images/a953a3c4-598b-4e4f-9f4e-526b6da9a694_1726719138.5248144.png",
+        "https://assets.leetcode.com/users/images/f017b57c-711f-4b53-b649-cf417986405b_1726719170.00947.png",
+        "https://assets.leetcode.com/users/images/042db405-5258-413e-adf8-365507eca91f_1726719185.9952478.png",
+        "https://assets.leetcode.com/users/images/e353041b-e018-4eea-bce1-8349f1c71979_1726719197.4782734.png",
+        "https://assets.leetcode.com/users/images/18bcffce-2015-4055-b47f-3d25cd128a03_1726719207.6079047.png",
+        "https://assets.leetcode.com/users/images/0dfc3768-c430-484b-a665-b3468674b886_1726719229.1751573.png",
+        "https://assets.leetcode.com/users/images/937cc665-eb48-4817-a1ab-73704dd67a54_1726719282.9935985.png",
+        "https://assets.leetcode.com/users/images/ca55ae59-1160-4d39-b36b-98ebb70f38b1_1726719293.2157547.png",
+        "https://assets.leetcode.com/users/images/8e8a3bce-fcde-4de9-b785-cb7a1f250d3c_1726719312.2877438.png",
+        "https://assets.leetcode.com/users/images/16c96632-12f5-43f4-9fd3-b49c72e74951_1726719312.4471858.png",
+        "https://assets.leetcode.com/users/images/28849cb4-9eb3-4bb5-8082-74afc71b989c_1726719698.3841186.png",
+        "https://assets.leetcode.com/users/images/a09ae12c-2720-4f8e-b243-a9af9b4ff342_1726719353.4487672.png",
+        "https://img.youtube.com/vi/Z-y47DiYjTc/default.jpg"
+      ],
+      "categories": [
+        "思路推导／子问题缩减",
+        "递归树／子问题展开",
+        "代码／文字讲解",
+        "跑分截图",
+        "视频封面"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 有详细递归树、错误切分对比和记忆化说明；另含跑分图与视频封面。",
+      "image_numbers": [
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_2369098.html",
+      "title": "Divide and Conquer solution with image explanation/illustration in C++",
+      "votes": 21,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/e4b07063-d5b7-4244-b972-b62684c058b2_1659440138.4830947.jpeg"
+      ],
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        124
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_1797052.html",
+      "title": "Java Recursive Solution",
+      "votes": 5,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/811924c6-d550-4135-909c-e10f7a58af26_1624537462.121658.png"
+      ],
+      "categories": [
+        "树结构／组合构造"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        107
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_4197898.html",
+      "title": "✅ Easier Than Easy ✅ Multiple Approach Multiple Languages ✅ Explained In Video",
+      "votes": 27,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/d8a889c8-d7d8-4125-937e-aa3636ebf08d_1698033491.8860843.png",
+        "https://assets.leetcode.com/users/images/b6c7426a-79f7-4228-8a44-963beca11c95_1698034451.8409886.jpeg",
+        "https://img.youtube.com/vi/OH8TWGJMf30/default.jpg"
+      ],
+      "categories": [
+        "跑分截图",
+        "无关／求赞配图",
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 正文图片只有跑分及求赞图，另有视频封面。",
+      "image_numbers": [
+        125,
+        126,
+        127
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_1635529.html",
+      "title": "Fastest Solution (0ms), Well Explained, C++, Recursion.",
+      "votes": 6,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/b5116ec6-72cf-414f-b0cc-d9efd5f3d4d9_1639896946.4418724.jpeg"
+      ],
+      "categories": [
+        "递归返回／遍历方向"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        128
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_3827081.html",
+      "title": "simple code || Java || recursion || DP",
+      "votes": 6,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/7209115c-be91-4b04-8b51-6f1ab1be1085_1690522831.1890056.jpeg"
+      ],
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        129
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_2206301.html",
+      "title": "✅✅ c++ || 3 recursive methods || well explained  || DP",
+      "votes": 35,
+      "kept": "1",
+      "images": [
+        "https://img.youtube.com/vi/ww4V7vRIzSk/default.jpg"
+      ],
+      "categories": [
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        130
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_3826343.html",
+      "title": "C++/Python recursive minimax/DP||beats 100%",
+      "votes": 6,
+      "kept": "1",
+      "images": [
+        "https://img.youtube.com/vi/ZN9j4MqPGtM/default.jpg"
+      ],
+      "categories": [
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        131
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_2244469.html",
+      "title": "Fibonacci Number - ✅C++ |  Python | O(N) | Easy Solution",
+      "votes": 11,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/f8aff8a1-76f4-4c42-9ca0-7f1acd92d274_1657083585.6473794.png"
+      ],
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        132
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_4564364.html",
+      "title": "🔥Beats 99.51%🔥 || 🔄 Dynamic Programming || Python3🚀❗",
+      "votes": 5,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/1eab287d-7ad3-43da-804b-47a6695eea4a_1712744965.0511005.png",
+        "https://assets.leetcode.com/users/images/2497320c-0311-404c-9357-41478b49d283_1705501916.5996795.png",
+        "https://assets.leetcode.com/users/images/72a7b4bb-7165-4bb5-a455-bcfabcadef66_1705236001.365356.png"
+      ],
+      "categories": [
+        "数学递推／公式推导",
+        "跑分截图",
+        "无关／求赞配图"
+      ],
+      "visual_recursion": false,
+      "group": "其他算法图解",
+      "note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。 数列加法图配跑分和求赞图，未展示递归。",
+      "image_numbers": [
+        133,
+        134,
+        135
+      ],
+      "recursion_status": "非递归",
+      "includes_recursion": false,
+      "recursion_note": "正文代码为迭代／自底向上 DP，未见递归自调用，排除。"
+    },
+    {
+      "id": "solution_1300381.html",
+      "title": "Power of a Matrix with mathematical explanantion | C++ | 0ms beats 100% o(logn)",
+      "votes": 8,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/86f7ccc2-d530-4921-9f0f-504997d4421d_1624791245.262972.png",
+        "https://assets.leetcode.com/users/images/aa08606b-2626-47a5-9bce-944ffc1051f9_1624791649.9581988.png",
+        "https://assets.leetcode.com/users/images/f49595e4-88e2-404a-b1da-e523d0792576_1624791677.0875087.png",
+        "https://assets.leetcode.com/users/images/20fc7426-a2e5-469b-949e-5769d8b386c7_1624791696.4356222.png"
+      ],
+      "categories": [
+        "数学递推／公式推导"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 图解为矩阵快速幂数学推导。",
+      "image_numbers": [
+        136,
+        137,
+        138,
+        139
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_4205567.html",
+      "title": "✅ How to answer in Interview ✅ Fastest✅ Beats 100% ✅ Recursion",
+      "votes": 29,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/c5d28879-321b-4636-978f-8ffb4bc99128_1698204405.5558522.png",
+        "https://assets.leetcode.com/users/images/65bf4461-adc5-47c8-9c6f-49723da3df82_1698204396.1807368.jpeg",
+        "https://img.youtube.com/vi/bfNSZbgII_Q/default.jpg"
+      ],
+      "categories": [
+        "跑分截图",
+        "无关／求赞配图",
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 只有跑分、求赞图与视频封面。",
+      "image_numbers": [
+        140,
+        141,
+        142
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_4205351.html",
+      "title": "C/C++/Python recursion independent of n->one-line||0ms beats 100%",
+      "votes": 10,
+      "kept": "1",
+      "images": [
+        "https://img.youtube.com/vi/PqbPjFAry1w/default.jpg"
+      ],
+      "categories": [
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "仅视频封面",
+      "note": "本地正文只有视频链接、缺失代码或概念说明，不能确认具体递归实现，暂不纳入。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        143
+      ],
+      "recursion_status": "待确认",
+      "includes_recursion": false,
+      "recursion_note": "本地正文只有视频链接、缺失代码或概念说明，不能确认具体递归实现，暂不纳入。"
+    },
+    {
+      "id": "solution_3243889.html",
+      "title": "Explained on whiteboard | Easy to understand",
+      "votes": 6,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/7af6ab25-b94e-4bcf-ab0b-80f50fece98d_1677677380.9008424.png",
+        "https://assets.leetcode.com/users/images/be3f940b-ee25-4548-b1fe-4fa98a0b7731_1677677418.8166118.png",
+        "https://assets.leetcode.com/users/images/08692d08-5839-4348-8c31-2352bf884f84_1677677472.4730532.png",
+        "https://assets.leetcode.com/users/images/11b507b7-132f-4e92-a676-2389bea938e7_1677677507.5712924.png",
+        "https://assets.leetcode.com/users/images/8065032b-cf3b-4326-88da-6a7e488c304d_1677677527.0631957.png"
+      ],
+      "categories": [
+        "递归树／子问题展开",
+        "代码／文字讲解"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        144,
+        145,
+        146,
+        147,
+        148
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_630113.html",
+      "title": "Python/JS/Java/Go/C++ by math [w/ Comment]",
+      "votes": 31,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/brianchiang_tw/image_1589376023.png"
+      ],
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        149
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_1541995.html",
+      "title": "Visualization >> Simple Explanation",
+      "votes": 30,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/679c538c-0c90-46fb-b19e-f277c67c1d6d_1635261303.912942.png",
+        "https://assets.leetcode.com/users/images/b927ec78-caeb-4424-9f30-4953708d5263_1635261681.7006683.png",
+        "https://assets.leetcode.com/users/images/80bf76c1-380c-4965-a0a3-8976b500fcc7_1635261933.051534.png",
+        "https://assets.leetcode.com/users/images/3adbb166-e8b4-4ea6-9b37-e6df8b2628d2_1635262051.9903054.png",
+        "https://assets.leetcode.com/users/images/4b4dcb37-34fb-4035-881b-bfe56d43665c_1635262217.9865322.png",
+        "https://assets.leetcode.com/users/images/adcbe1b2-13ab-42f2-bdd7-127f9e1c7647_1635262284.2307653.png",
+        "https://assets.leetcode.com/users/images/4e819e99-1379-458c-83e2-f41218823a57_1635262557.0769954.png",
+        "https://assets.leetcode.com/users/images/f2c359ed-0a2f-425e-b0ea-ce4aa89970ff_1635262948.1730094.png"
+      ],
+      "categories": [
+        "树结构／组合构造"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 展示满二叉树分解组合；不是调用栈。",
+      "image_numbers": [
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_2534430.html",
+      "title": "Simple C++ Solution implemented using Recursion and Memoization",
+      "votes": 14,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/a3e76135-1bd1-421c-a134-8149f632a50e_1662376766.0762968.png"
+      ],
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        158
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_1466899.html",
+      "title": "✔️ [Javascript + Cpp] Recursive | Memoized | Bottom-up | Explained 🚀🎉",
+      "votes": 14,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/11881584-f1c8-4d88-a3cf-ef96c69af0a1_1631798694.4705927.png"
+      ],
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "visual_recursion": true,
+      "group": "递归相关图解",
+      "note": "本地正文只有视频链接、缺失代码或概念说明，不能确认具体递归实现，暂不纳入。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        159
+      ],
+      "recursion_status": "待确认",
+      "includes_recursion": false,
+      "recursion_note": "本地正文只有视频链接、缺失代码或概念说明，不能确认具体递归实现，暂不纳入。"
+    },
+    {
+      "id": "solution_5935189.html",
+      "title": "🫡Very Detailed illustration Explained + Full Concept + 💡 Thought Process",
+      "votes": 9,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/f1d2aa50-0cf1-461e-be11-311d23a9916e_1729316234.736451.png",
+        "https://assets.leetcode.com/users/images/857aef33-a990-41e6-8ade-42b69465920a_1729316242.916267.png",
+        "https://assets.leetcode.com/users/images/8de9238a-cdf5-4d5e-abf1-99695ad68b50_1729316251.7774692.png",
+        "https://assets.leetcode.com/users/images/4f4020ef-2a17-4d6d-b256-4eb55490c11a_1729316261.3241963.png",
+        "https://assets.leetcode.com/users/images/8ad7795e-f4ee-4976-b436-2dcc09980462_1729316276.5704265.png",
+        "https://assets.leetcode.com/users/images/d8e3abf8-d575-4734-86bd-e30b24ab84a6_1729316293.9406881.png",
+        "https://assets.leetcode.com/users/images/6d52d90b-cc8a-4f75-8aeb-02809b6fe652_1729316304.1138375.png",
+        "https://assets.leetcode.com/users/images/a6d83af1-beff-489b-beb1-5bf614d92652_1729316314.689871.png",
+        "https://assets.leetcode.com/users/images/9e0a00a6-7ae9-4dc8-83a7-75427b7994a5_1729317078.8397803.png",
+        "https://assets.leetcode.com/users/images/9522c867-8906-4ead-b4fb-b6e5d0ab90e7_1729317121.843559.png",
+        "https://assets.leetcode.com/users/images/9b474c17-c103-4253-80d7-20cb32e0c684_1729316403.7565644.png",
+        "https://assets.leetcode.com/users/images/f014284a-35e1-4ff4-8139-b071ce408104_1729316460.8005767.png",
+        "https://assets.leetcode.com/users/images/e3b7b218-151e-4b6d-a8e4-7b539ef9bf56_1729316430.8637516.png",
+        "https://assets.leetcode.com/users/images/dbf0eee1-99bd-4a24-86eb-08267c302a13_1729316499.268893.png",
+        "https://assets.leetcode.com/users/images/8dd36168-6cc9-4fed-905e-8e5420633141_1729316511.3198266.png",
+        "https://assets.leetcode.com/users/images/95d5784c-6405-46c2-8d7d-569a529bdac3_1729316526.4797306.png",
+        "https://assets.leetcode.com/users/images/1560482a-fe4f-479b-837a-c36c3a8aa974_1729316554.7899947.png",
+        "https://img.youtube.com/vi/ncnZWr-Aaes/default.jpg"
+      ],
+      "categories": [
+        "思路推导／子问题缩减",
+        "代码／文字讲解",
+        "视频封面"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 递归参数缩减、镜像反转与返回值推导较完整。",
+      "image_numbers": [
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        177
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_5934497.html",
+      "title": "Interveiwers expect Iterative approach, with added Yotube Video, beats 100%, O(N) time, O(1) space",
+      "votes": 10,
+      "kept": "1",
+      "images": [
+        "https://img.youtube.com/vi/u4wJUF2NCm4/default.jpg"
+      ],
+      "categories": [
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        178
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_4344660.html",
+      "title": "✅ Beats 100% - Explained with [ Video ] - Fastest Recursive Solution - Visualized Too",
+      "votes": 59,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/64e054b1-46d6-47c9-86d1-b5918bdc3b05_1701305503.9059722.png",
+        "https://assets.leetcode.com/users/images/cf12bdda-cdae-4192-ba6d-a4ed389f8fa1_1701305659.669051.png",
+        "https://img.youtube.com/vi/GqS1MXRQW_0/default.jpg"
+      ],
+      "categories": [
+        "跑分截图",
+        "无关／求赞配图",
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 只有跑分、求赞图与视频封面。",
+      "image_numbers": [
+        179,
+        180,
+        181
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_5437958.html",
+      "title": "Josephus problem|| recusion->1-line vs Iteration||0ms beats 100%",
+      "votes": 37,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/cd9cd333-cce8-44e8-b29b-520f3129eb7c_1720437944.4626663.png"
+      ],
+      "categories": [
+        "数学递推／公式推导"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        182
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_2847011.html",
+      "title": "Python code with Intuition | O(n)",
+      "votes": 18,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/d6ca01b4-fbed-4669-87c2-a074d6db46da_1669362182.4144485.png",
+        "https://assets.leetcode.com/users/images/3cb740df-6209-45d3-bda9-914ac9ef33f3_1669362717.3768306.png",
+        "https://assets.leetcode.com/users/images/bc1b95ea-48a5-47fb-a3c1-a68b01a62958_1669362875.6951969.png",
+        "https://assets.leetcode.com/users/images/2821b9b5-ea44-43d3-ab13-6289a6b2dc34_1669363225.32804.png",
+        "https://assets.leetcode.com/users/images/b51242ec-1a48-428a-8cfe-831d632380d7_1669363437.5197673.png",
+        "https://assets.leetcode.com/users/images/e5677ad2-a0e1-4e4c-a7e5-71b54407da71_1669363806.16414.png",
+        "https://assets.leetcode.com/users/images/a38d40f1-375c-4e1c-94f8-cafbccfdb251_1669364000.7314184.png",
+        "https://assets.leetcode.com/users/images/dbad1e65-d9f2-4556-bbca-f408d2c8f3c4_1672772120.906986.png"
+      ],
+      "categories": [
+        "约瑟夫过程／编号映射"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_2181025.html",
+      "title": "C++ Solution || Josephus Problem",
+      "votes": 23,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/3ca609dc-d55a-416c-bcb7-27f891932e1a_1655869639.4225068.gif"
+      ],
+      "categories": [
+        "约瑟夫过程／编号映射"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 GIF 演示淘汰故事，没有展开递归。",
+      "image_numbers": [
+        191
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_2149752.html",
+      "title": "[C++] Josephus Problem | Best Explanation | Recursion | Queue",
+      "votes": 17,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/f904aba6-4dd4-4faa-b0cf-6e9c8d35ab15_1655183599.8877122.png"
+      ],
+      "categories": [
+        "数学递推／公式推导"
+      ],
+      "visual_recursion": true,
+      "group": "递归解法 · 有递归相关图解",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；图片展示递归相关分解、调用或返回。",
+      "image_numbers": [
+        192
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_2726522.html",
+      "title": "Java || Similar To Josephus Problem",
+      "votes": 6,
+      "kept": "1",
+      "images": [
+        "https://assets.leetcode.com/users/images/813244c8-3213-4f8c-b76e-a1a31d84500c_1666285853.7795105.png"
+      ],
+      "categories": [
+        "约瑟夫过程／编号映射"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 仅展示约瑟夫淘汰示例。",
+      "image_numbers": [
+        193
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    },
+    {
+      "id": "solution_2851993.html",
+      "title": "Python - Recursion & Stack - Video Solution",
+      "votes": 11,
+      "kept": "1",
+      "images": [
+        "https://img.youtube.com/vi/BIU7MkszsNg/default.jpg"
+      ],
+      "categories": [
+        "视频封面"
+      ],
+      "visual_recursion": false,
+      "group": "递归解法 · 图片未展示递归过程",
+      "note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。 已逐图查看；详见逐图标签；视频封面未用于判定视频内容。",
+      "image_numbers": [
+        194
+      ],
+      "recursion_status": "已确认递归",
+      "includes_recursion": true,
+      "recursion_note": "已核对正文的递归自调用或递归过程；同篇可能同时包含迭代方法。"
+    }
+  ],
+  "images": [
+    {
+      "n": 0,
+      "url": "https://assets.leetcode.com/users/images/26bff16c-d9de-446a-bd6b-5ceeb9c55404_1726913595.7584646.png",
+      "path": "output/image_review/000.png",
+      "categories": [
+        "流程／数据示意"
+      ],
+      "observation": "链表加法、进位流程与 dummy 节点；不是递归调用过程"
+    },
+    {
+      "n": 1,
+      "url": "https://assets.leetcode.com/users/images/f64cbc27-a20a-4573-aa2d-09d8820afe8e_1726913721.854242.png",
+      "path": "output/image_review/001.png",
+      "categories": [
+        "流程／数据示意"
+      ],
+      "observation": "链表加法、进位流程与 dummy 节点；不是递归调用过程"
+    },
+    {
+      "n": 2,
+      "url": "https://assets.leetcode.com/users/images/50ed4a7a-0651-4e89-aabf-c5d39f5a9213_1726914264.7821214.png",
+      "path": "output/image_review/002.png",
+      "categories": [
+        "流程／数据示意"
+      ],
+      "observation": "链表加法、进位流程与 dummy 节点；不是递归调用过程"
+    },
+    {
+      "n": 3,
+      "url": "https://assets.leetcode.com/users/images/267087b4-5347-4ce1-832b-55364e51e470_1681152399.32624.png",
+      "path": "output/image_review/003.png",
+      "categories": [
+        "DP／状态转移"
+      ],
+      "observation": "正则匹配的状态依赖、DP 表及分支条件"
+    },
+    {
+      "n": 4,
+      "url": "https://assets.leetcode.com/users/images/691610d4-9872-4118-a2e1-98088037f172_1681152410.7458284.png",
+      "path": "output/image_review/004.png",
+      "categories": [
+        "DP／状态转移"
+      ],
+      "observation": "正则匹配的状态依赖、DP 表及分支条件"
+    },
+    {
+      "n": 5,
+      "url": "https://assets.leetcode.com/users/images/7957e76b-6f3b-4922-8c7a-b399ceb2ce2c_1681152426.4691515.png",
+      "path": "output/image_review/005.png",
+      "categories": [
+        "DP／状态转移"
+      ],
+      "observation": "正则匹配的状态依赖、DP 表及分支条件"
+    },
+    {
+      "n": 6,
+      "url": "https://assets.leetcode.com/users/images/9092568d-0cd5-46ad-9797-cac9d3b749f4_1681152758.70305.jpeg",
+      "path": "output/image_review/006.jpg",
+      "categories": [
+        "无关／求赞配图"
+      ],
+      "observation": "表情或求赞配图，不承担算法解释"
+    },
+    {
+      "n": 7,
+      "url": "https://assets.leetcode.com/users/images/b33df742-f7cd-4084-bbb6-6906ff46fd56_1709455718.8010354.png",
+      "path": "output/image_review/007.png",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 8,
+      "url": "https://assets.leetcode.com/users/images/2fd41334-43fd-4c24-8a38-c34a69a9339e_1709456257.6265855.png",
+      "path": "output/image_review/008.png",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 9,
+      "url": "https://assets.leetcode.com/users/images/0161dd3b-ad9f-4cf6-8c43-49c2e670cc21_1699210823.334661.jpeg",
+      "path": "output/image_review/009.jpg",
+      "categories": [
+        "无关／求赞配图"
+      ],
+      "observation": "表情或求赞配图，不承担算法解释"
+    },
+    {
+      "n": 10,
+      "url": "https://assets.leetcode.com/users/images/3d6fe330-4fce-4351-a23a-ec62b3ad48fe_1627782638.5297766.png",
+      "path": "output/image_review/010.png",
+      "categories": [
+        "规则／分支示意"
+      ],
+      "observation": "正则匹配字符与星号的不同情况；无完整调用树"
+    },
+    {
+      "n": 11,
+      "url": "https://assets.leetcode.com/users/images/dec5eaf3-eed2-408d-9f2e-999bda9a3c80_1627782757.7386117.png",
+      "path": "output/image_review/011.png",
+      "categories": [
+        "规则／分支示意"
+      ],
+      "observation": "正则匹配字符与星号的不同情况；无完整调用树"
+    },
+    {
+      "n": 12,
+      "url": "https://assets.leetcode.com/users/images/aa1b88db-4c55-4d11-877f-dbd7ef1940d6_1627783106.4455247.png",
+      "path": "output/image_review/012.png",
+      "categories": [
+        "规则／分支示意"
+      ],
+      "observation": "正则匹配字符与星号的不同情况；无完整调用树"
+    },
+    {
+      "n": 13,
+      "url": "https://assets.leetcode.com/users/images/30385096-f762-4f08-b068-e74c0f16ad95_1627783131.1002207.png",
+      "path": "output/image_review/013.png",
+      "categories": [
+        "规则／分支示意"
+      ],
+      "observation": "正则匹配字符与星号的不同情况；无完整调用树"
+    },
+    {
+      "n": 14,
+      "url": "https://assets.leetcode.com/users/images/e066e3a0-eb4a-4f60-8ff6-8b29810c7bbf_1627783622.9966438.png",
+      "path": "output/image_review/014.png",
+      "categories": [
+        "规则／分支示意"
+      ],
+      "observation": "正则匹配字符与星号的不同情况；无完整调用树"
+    },
+    {
+      "n": 15,
+      "url": "https://assets.leetcode.com/users/images/693abd06-11db-47eb-9bed-92853dcced4f_1665835272.4866369.png",
+      "path": "output/image_review/015.png",
+      "categories": [
+        "调用栈／递归返回"
+      ],
+      "observation": "展示合并链表递归入栈及逐层返回"
+    },
+    {
+      "n": 16,
+      "url": "https://assets.leetcode.com/users/images/c63066ed-9e8c-42c9-aa68-4091e45817b4_1665835300.8266866.png",
+      "path": "output/image_review/016.png",
+      "categories": [
+        "调用栈／递归返回"
+      ],
+      "observation": "展示合并链表递归入栈及逐层返回"
+    },
+    {
+      "n": 17,
+      "url": "https://img.youtube.com/vi/eaRfv5VY7sI/default.jpg",
+      "path": "output/image_review/017.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 18,
+      "url": "https://img.youtube.com/vi/9HDVSJn3obo/default.jpg",
+      "path": "output/image_review/018.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 19,
+      "url": "https://img.youtube.com/vi/-0q1z0Gwh34/default.jpg",
+      "path": "output/image_review/019.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 20,
+      "url": "https://img.youtube.com/vi/yTxbH8q2c6Q/default.jpg",
+      "path": "output/image_review/020.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 21,
+      "url": "https://assets.leetcode.com/users/images/53a7a769-ce39-4d7d-9e37-cd0420f72bf0_1644988593.5987253.jpeg",
+      "path": "output/image_review/021.jpg",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 22,
+      "url": "https://assets.leetcode.com/users/images/f5bbe08e-42e8-42ce-9977-d5f2a58bc653_1690834893.7782896.png",
+      "path": "output/image_review/022.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 23,
+      "url": "https://assets.leetcode.com/users/images/7085cfe8-e298-435b-bc12-739668f3580f_1690834907.7661934.png",
+      "path": "output/image_review/023.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 24,
+      "url": "https://assets.leetcode.com/users/images/78c9effb-98e4-4594-b2ff-b91bce480211_1690834920.5882404.png",
+      "path": "output/image_review/024.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 25,
+      "url": "https://assets.leetcode.com/users/images/fb93b1d2-41f9-44b6-a05d-f24d58f76c8f_1661481740.6021497.jpeg",
+      "path": "output/image_review/025.jpg",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 26,
+      "url": "https://assets.leetcode.com/users/images/edacf671-cf94-4da0-8569-d55c1d682b51_1661481740.3160453.jpeg",
+      "path": "output/image_review/026.jpg",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 27,
+      "url": "https://assets.leetcode.com/users/images/d5342873-a9b1-4b5e-938d-7294231bcf9e_1690831346.3609188.png",
+      "path": "output/image_review/027.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 28,
+      "url": "https://assets.leetcode.com/users/images/6f6aa2b9-35b1-48eb-abd2-06e701276bca_1690831364.0310698.png",
+      "path": "output/image_review/028.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 29,
+      "url": "https://assets.leetcode.com/users/images/399f06f6-0361-4b86-a29d-823f0d42a04a_1618696569.132693.png",
+      "path": "output/image_review/029.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 30,
+      "url": "https://assets.leetcode.com/users/images/1d8eaf14-3512-4e3d-bc46-57e3dd6746f0_1684253393.1944199.png",
+      "path": "output/image_review/030.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 31,
+      "url": "https://assets.leetcode.com/users/images/0409e8be-a0f4-49de-8ca8-7cf14ba869be_1684253489.2341714.png",
+      "path": "output/image_review/031.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 32,
+      "url": "https://assets.leetcode.com/users/images/362d02de-00fc-4e49-a1c2-2c80404593c9_1684253531.1400237.png",
+      "path": "output/image_review/032.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 33,
+      "url": "https://assets.leetcode.com/users/images/dc72258a-ac45-4dfe-8045-4d4cb40b279a_1684253573.5092244.png",
+      "path": "output/image_review/033.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 34,
+      "url": "https://assets.leetcode.com/users/images/05ec86d4-6fc7-4c8b-80b2-17d9c22e173b_1684219328.4818847.jpeg",
+      "path": "output/image_review/034.jpg",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 35,
+      "url": "https://assets.leetcode.com/users/images/af90cb2b-1003-4027-ae43-3e67f2a59cca_1684219425.2694046.jpeg",
+      "path": "output/image_review/035.jpg",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 36,
+      "url": "https://assets.leetcode.com/users/images/f62f9709-1fa5-42bc-8523-07cb507f1e42_1684219589.7843626.jpeg",
+      "path": "output/image_review/036.jpg",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 37,
+      "url": "https://assets.leetcode.com/users/images/43ca3fc2-d1ec-47a5-85d9-bd6eddc3ce47_1684219689.5950298.jpeg",
+      "path": "output/image_review/037.jpg",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 38,
+      "url": "https://assets.leetcode.com/users/images/a4910cb9-5d0c-45bd-a08e-b181626953cf_1684219778.19854.jpeg",
+      "path": "output/image_review/038.jpg",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 39,
+      "url": "https://assets.leetcode.com/users/images/b903dd7c-983c-44c2-8166-289928c97fff_1684213084.129816.png",
+      "path": "output/image_review/039.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 40,
+      "url": "https://img.youtube.com/vi/DIHuNQ-PQZg/default.jpg",
+      "path": "output/image_review/040.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 41,
+      "url": "https://img.youtube.com/vi/fi2vh0nQLi0/default.jpg",
+      "path": "output/image_review/041.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 42,
+      "url": "https://assets.leetcode.com/users/images/9deb0470-dff9-4582-96f2-0bb7ff79689a_1681834820.5916502.png",
+      "path": "output/image_review/042.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 43,
+      "url": "https://assets.leetcode.com/users/images/31705453-d59e-4e43-910a-46087a4be998_1709924284.5475707.png",
+      "path": "output/image_review/043.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 44,
+      "url": "https://assets.leetcode.com/users/images/e33af51f-7ee6-4cbb-bab2-d1e30a830a6c_1709924350.670217.png",
+      "path": "output/image_review/044.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 45,
+      "url": "https://assets.leetcode.com/users/images/d1376bc5-9418-4b7f-8979-dd619ab2a01e_1709924357.8959017.png",
+      "path": "output/image_review/045.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 46,
+      "url": "https://assets.leetcode.com/users/images/8f757d67-4ec7-4eee-933e-6ab93956d60a_1709924601.5630517.jpeg",
+      "path": "output/image_review/046.jpg",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 47,
+      "url": "https://assets.leetcode.com/users/images/d43f6bef-fcf1-47cf-8c1e-45f3ebb7b259_1709924590.9423769.jpeg",
+      "path": "output/image_review/047.jpg",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 48,
+      "url": "https://assets.leetcode.com/users/images/53531780-e79c-4e9f-aaad-ec2a0f696edd_1709924611.2043374.jpeg",
+      "path": "output/image_review/048.jpg",
+      "categories": [
+        "代码／文字讲解"
+      ],
+      "observation": "手写或截图代码与注释，部分包含边界条件和优化说明"
+    },
+    {
+      "n": 49,
+      "url": "https://assets.leetcode.com/users/images/4f0fbee5-91d8-44ee-9f23-7ae7d562ca37_1699066595.5983377.gif",
+      "path": "output/image_review/049.gif",
+      "categories": [
+        "匹配过程动画"
+      ],
+      "observation": "通配符匹配指针推进与回退动画；不是递归栈动画"
+    },
+    {
+      "n": 50,
+      "url": "https://assets.leetcode.com/users/images/ae014f02-b52e-445d-ada2-a367243f8846_1699068400.8442802.gif",
+      "path": "output/image_review/050.gif",
+      "categories": [
+        "匹配过程动画"
+      ],
+      "observation": "通配符匹配指针推进与回退动画；不是递归栈动画"
+    },
+    {
+      "n": 51,
+      "url": "https://assets.leetcode.com/users/images/b714383c-c690-47b0-b2b3-a09b6039d556_1699069692.372215.gif",
+      "path": "output/image_review/051.gif",
+      "categories": [
+        "匹配过程动画"
+      ],
+      "observation": "通配符匹配指针推进与回退动画；不是递归栈动画"
+    },
+    {
+      "n": 52,
+      "url": "https://img.youtube.com/vi/mosNm5bl8Ts/default.jpg",
+      "path": "output/image_review/052.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 53,
+      "url": "https://img.youtube.com/vi/P22N3fd73eM/default.jpg",
+      "path": "output/image_review/053.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 54,
+      "url": "https://assets.leetcode.com/users/images/abe68c78-acda-4118-82cd-557ad7b70592_1642084413.5401745.png",
+      "path": "output/image_review/054.png",
+      "categories": [
+        "数学递推／公式推导"
+      ],
+      "observation": "快速幂、数列、矩阵或约瑟夫递推关系"
+    },
+    {
+      "n": 55,
+      "url": "https://assets.leetcode.com/users/images/0e4a79f7-809b-40b3-8f55-c89f81297d35_1661835688.8905008.jpeg",
+      "path": "output/image_review/055.jpg",
+      "categories": [
+        "排列分块／选择过程"
+      ],
+      "observation": "阶乘分块表与逐位选数过程"
+    },
+    {
+      "n": 56,
+      "url": "https://lh5.googleusercontent.com/DgoKjAy6h0xfEl2LcWJ_aDg93Q0_gXEZkwVjH13b52VEkUtJXhrHjkav0GM5HJV8XyoRTsjN4CZrA8hCJt634hG-7vy6BP_xdpZ7HlPF_PAGCOXqNDPT0ikc_fOaQ90ktFZhPI9g",
+      "path": "output/image_review/056.png",
+      "categories": [
+        "排列分块／选择过程"
+      ],
+      "observation": "阶乘分块表与逐位选数过程"
+    },
+    {
+      "n": 57,
+      "url": "https://lh4.googleusercontent.com/p62qRS1NYnrf8_DPQd3xg8mKTx-OZQ0otukMXtq7RF4xVr_xz4m569bOtFRTrh3QbTldIPMYi0Cco84dRdiH5nYxMppIYRib5drCzGc2fcXiTzrYEIyZLuDmzHjR1KhrYBt9P4_s",
+      "path": "output/image_review/057.png",
+      "categories": [
+        "排列分块／选择过程"
+      ],
+      "observation": "阶乘分块表与逐位选数过程"
+    },
+    {
+      "n": 58,
+      "url": "https://lh5.googleusercontent.com/nv-M9Ju-zoy_O7wtTb8jZZf8f5q4fdr9X987UspvacgJB4E-pVdm-3n4aT5M67KUsBp3LAFNbzNesnBFKz4f5dJoGGhuj51WpulR9dR8zPY821Uu1skTSQ7y4RCfJlfK4HDdD3p-",
+      "path": "output/image_review/058.png",
+      "categories": [
+        "排列分块／选择过程"
+      ],
+      "observation": "阶乘分块表与逐位选数过程"
+    },
+    {
+      "n": 59,
+      "url": "https://lh4.googleusercontent.com/kLizY46WNhTvnZDI4mvG-U1JJ6k_cLVD8UbkczsXeUMKf-xA8CWP_3_8DB-i_YgwQ6gBnSn6HxGfYeym9F4Qf24t6ckMhCWTqsxeUS0ExmM5nP-P4f2Az609jOKui5Cq3mc9ApZg",
+      "path": "output/image_review/059.png",
+      "categories": [
+        "排列分块／选择过程"
+      ],
+      "observation": "阶乘分块表与逐位选数过程"
+    },
+    {
+      "n": 60,
+      "url": "https://lh4.googleusercontent.com/XSVzdDLZjo7kL5vSOEL6WYrmk7t1JqnzLCV67tYFbWBey5s0UiJ0nKFuL_sYYIqEpy2WE9x4ez-am_P4k-6ytuAEx7i1ZGmm2WtTROgS7QRa8HwxT48my-87VuhAq2VtbIs96448",
+      "path": "output/image_review/060.png",
+      "categories": [
+        "排列分块／选择过程"
+      ],
+      "observation": "阶乘分块表与逐位选数过程"
+    },
+    {
+      "n": 61,
+      "url": "https://lh6.googleusercontent.com/ywkmQGIHcK0gpydKJ6PrNH1nTmnfFv7otGzzBTeWSOw9965Mq61wperoFrRi54fVoedVKFG5n2WG9fzbnzMQhGBOzniNsGZw87pnVyFsipAYeda7Rl6CTc2A-zmzpoIO7nWtOS3G",
+      "path": "output/image_review/061.png",
+      "categories": [
+        "排列分块／选择过程"
+      ],
+      "observation": "阶乘分块表与逐位选数过程"
+    },
+    {
+      "n": 62,
+      "url": "https://assets.leetcode.com/users/images/de57d8f1-b056-43f1-a511-7092eef574a3_1661822303.9951882.png",
+      "path": "output/image_review/062.png",
+      "categories": [
+        "排列分块／选择过程"
+      ],
+      "observation": "阶乘分块表与逐位选数过程"
+    },
+    {
+      "n": 63,
+      "url": "https://assets.leetcode.com/users/images/854d11a9-624b-492a-a9f7-0cc6ae5b1d99_1661822341.666998.png",
+      "path": "output/image_review/063.png",
+      "categories": [
+        "排列分块／选择过程"
+      ],
+      "observation": "阶乘分块表与逐位选数过程"
+    },
+    {
+      "n": 64,
+      "url": "https://assets.leetcode.com/users/images/8e2c1e09-bb27-48df-8888-0912df17f2a2_1661835737.2826996.jpeg",
+      "path": "output/image_review/064.jpg",
+      "categories": [
+        "排列分块／选择过程"
+      ],
+      "observation": "阶乘分块表与逐位选数过程"
+    },
+    {
+      "n": 65,
+      "url": "https://assets.leetcode.com/users/images/a436d8ab-0868-4990-9214-74fc5ba59992_1640143095.7645688.jpeg",
+      "path": "output/image_review/065.jpg",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 66,
+      "url": "https://assets.leetcode.com/users/images/e748c0d8-f5b5-4a6b-a183-60aa6bdab5cc_1711164614.1751947.png",
+      "path": "output/image_review/066.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 67,
+      "url": "https://assets.leetcode.com/users/images/63b66dd9-1064-4587-a706-9d16e7870212_1710993501.6268916.png",
+      "path": "output/image_review/067.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 68,
+      "url": "https://img.youtube.com/vi/20M4vc9rGVc/default.jpg",
+      "path": "output/image_review/068.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 69,
+      "url": "https://assets.leetcode.com/users/images/0b44167d-f0c4-409a-bb80-9cab9e6b05e0_1612957822.2802742.png",
+      "path": "output/image_review/069.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 70,
+      "url": "https://assets.leetcode.com/users/images/30824bf7-bd6a-4f0a-9a71-f0e1eced8ff7_1656154953.5404239.jpeg",
+      "path": "output/image_review/070.jpg",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 71,
+      "url": "https://assets.leetcode.com/users/images/9e8e5eac-e8ff-4c23-beef-1eb6c2a385ca_1706457654.9166362.png",
+      "path": "output/image_review/071.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 72,
+      "url": "https://assets.leetcode.com/users/images/ba2f56d4-18de-4ccc-a972-7b0554e6be8a_1706458406.7012293.png",
+      "path": "output/image_review/072.png",
+      "categories": [
+        "无关／求赞配图"
+      ],
+      "observation": "表情或求赞配图，不承担算法解释"
+    },
+    {
+      "n": 73,
+      "url": "https://assets.leetcode.com/users/images/a95d85b9-4549-4960-a10a-5f6614b0dd0a_1664804128.6790764.png",
+      "path": "output/image_review/073.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 74,
+      "url": "https://assets.leetcode.com/users/images/d8fcd8d3-5a75-4ecb-85e2-681b2c98759a_1723213518.202446.png",
+      "path": "output/image_review/074.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 75,
+      "url": "https://assets.leetcode.com/users/images/fbde4436-ff05-4e68-9ce8-2c3831a72d25_1723213522.6917145.png",
+      "path": "output/image_review/075.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 76,
+      "url": "https://assets.leetcode.com/users/images/0983269c-9744-42bb-b2c8-ceddb9c53f8d_1723213525.2782161.png",
+      "path": "output/image_review/076.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 77,
+      "url": "https://assets.leetcode.com/users/images/9ba18d0b-da91-4d06-bcb4-e0dc40bfd34e_1723213535.1843827.png",
+      "path": "output/image_review/077.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 78,
+      "url": "https://assets.leetcode.com/users/images/13f8a2fa-7249-45b0-8eb5-91d865ae8115_1723213537.8953936.png",
+      "path": "output/image_review/078.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 79,
+      "url": "https://assets.leetcode.com/users/images/c57f67f2-9441-4b99-9ad5-2b921c1e2652_1723213540.113058.png",
+      "path": "output/image_review/079.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 80,
+      "url": "https://assets.leetcode.com/users/images/38b7676c-a5dc-4825-a7e2-81316bd56938_1723213551.1550446.png",
+      "path": "output/image_review/080.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 81,
+      "url": "https://assets.leetcode.com/users/images/762b129e-0fab-484e-9cf9-ac8453912b1a_1723213553.9502525.png",
+      "path": "output/image_review/081.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 82,
+      "url": "https://assets.leetcode.com/users/images/21935ff7-9897-42fd-aa89-2abca28864f1_1723213556.1770194.png",
+      "path": "output/image_review/082.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 83,
+      "url": "https://assets.leetcode.com/users/images/5e11752e-e0bb-4131-b4c8-40174e9d9f0a_1723213558.4513872.png",
+      "path": "output/image_review/083.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 84,
+      "url": "https://assets.leetcode.com/users/images/5330362a-262f-4ec4-948b-b30ccdc8a070_1723213560.7062523.png",
+      "path": "output/image_review/084.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 85,
+      "url": "https://assets.leetcode.com/users/images/c3fb74b9-4164-49ff-b355-a90709f256a9_1723213562.565261.png",
+      "path": "output/image_review/085.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 86,
+      "url": "https://assets.leetcode.com/users/images/c4f27e17-0f7a-49d2-ad0b-3da7742793a0_1711034129.3294234.gif",
+      "path": "output/image_review/086.gif",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 87,
+      "url": "https://assets.leetcode.com/users/images/0ec6ff93-d575-4aae-b8ce-abc84f45b9be_1711035226.2436209.gif",
+      "path": "output/image_review/087.gif",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 88,
+      "url": "https://assets.leetcode.com/users/images/0e7c897a-25e4-4475-aa37-e5e40bb4ce6a_1711047280.7046223.gif",
+      "path": "output/image_review/088.gif",
+      "categories": [
+        "无关／求赞配图"
+      ],
+      "observation": "表情或求赞配图，不承担算法解释"
+    },
+    {
+      "n": 89,
+      "url": "https://assets.leetcode.com/users/images/e54d3711-8be9-454a-bb5c-8795a020f3fd_1657341737.6022713.gif",
+      "path": "output/image_review/089.gif",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 90,
+      "url": "https://img.youtube.com/vi/O0By4Zq0OFc/default.jpg",
+      "path": "output/image_review/090.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 91,
+      "url": "https://assets.leetcode.com/users/images/96b7d4a6-64b6-4a11-922e-55c148b558a7_1654239510.008161.png",
+      "path": "output/image_review/091.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 92,
+      "url": "https://assets.leetcode.com/users/images/2e6f2ddf-4f5e-4892-bdc0-99d27289ff9d_1654239786.5388136.png",
+      "path": "output/image_review/092.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 93,
+      "url": "https://assets.leetcode.com/users/images/9791019b-b072-42e3-ac2a-622cef5e9aa2_1654239949.2522185.png",
+      "path": "output/image_review/093.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 94,
+      "url": "https://assets.leetcode.com/users/images/1caa5168-a9c7-4716-8a7f-0202926c8dff_1663236706.4428494.png",
+      "path": "output/image_review/094.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 95,
+      "url": "https://assets.leetcode.com/users/images/fbfc10c4-bd99-4eb6-8b58-552789d868a0_1657184348.77025.png",
+      "path": "output/image_review/095.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 96,
+      "url": "https://assets.leetcode.com/users/images/35ffa0be-12f7-418a-859b-cb3ff6b6983c_1663783983.5716927.jpeg",
+      "path": "output/image_review/096.jpg",
+      "categories": [
+        "显式栈"
+      ],
+      "observation": "展示链表入栈出栈；属于显式数据结构栈"
+    },
+    {
+      "n": 97,
+      "url": "https://assets.leetcode.com/users/images/c13b58b4-3682-40e6-baf8-d5232b04e521_1663783453.6115704.png",
+      "path": "output/image_review/097.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 98,
+      "url": "https://assets.leetcode.com/users/images/42baaf60-a0d6-4e44-a466-e6e3aa127640_1643886890.2685964.jpeg",
+      "path": "output/image_review/098.jpg",
+      "categories": [
+        "数学递推／公式推导"
+      ],
+      "observation": "快速幂、数列、矩阵或约瑟夫递推关系"
+    },
+    {
+      "n": 99,
+      "url": "https://assets.leetcode.com/users/images/43e865cb-dc70-4fd2-bc11-3b4160f05fca_1711069953.3644109.png",
+      "path": "output/image_review/099.png",
+      "categories": [
+        "链表指针／结构变化"
+      ],
+      "observation": "展示链表节点、指针移动、交换或反转；是否递归需结合各篇说明"
+    },
+    {
+      "n": 100,
+      "url": "https://img.youtube.com/vi/8h2UOPDCGPM/default.jpg",
+      "path": "output/image_review/100.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 101,
+      "url": "https://assets.leetcode.com/users/images/019f483d-dd3d-4d09-b822-f4b943cce690_1706213729.9249492.png",
+      "path": "output/image_review/101.png",
+      "categories": [
+        "流程／数据示意"
+      ],
+      "observation": "快慢指针、反转后半段及比较的思维导图"
+    },
+    {
+      "n": 102,
+      "url": "https://img.youtube.com/vi/4SEr7HH4K9w/default.jpg",
+      "path": "output/image_review/102.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 103,
+      "url": "https://assets.leetcode.com/users/images/644d79b7-ff09-4393-9eb2-5aacd7ae93b9_1626600564.1930144.png",
+      "path": "output/image_review/103.png",
+      "categories": [
+        "递归返回／遍历方向"
+      ],
+      "observation": "对比向前迭代与递归回程的遍历方向"
+    },
+    {
+      "n": 104,
+      "url": "https://assets.leetcode.com/users/images/3328bcad-aa9c-4ec8-a26c-944d7bb6a89c_1726711331.547305.png",
+      "path": "output/image_review/104.png",
+      "categories": [
+        "树结构／组合构造"
+      ],
+      "observation": "展示表达式树或满二叉树的分解与组合，区别于函数调用栈"
+    },
+    {
+      "n": 105,
+      "url": "https://img.youtube.com/vi/VFG8O3zHTKU/default.jpg",
+      "path": "output/image_review/105.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 106,
+      "url": "https://img.youtube.com/vi/AVbHDf6H_gE/default.jpg",
+      "path": "output/image_review/106.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 107,
+      "url": "https://assets.leetcode.com/users/images/811924c6-d550-4135-909c-e10f7a58af26_1624537462.121658.png",
+      "path": "output/image_review/107.png",
+      "categories": [
+        "树结构／组合构造"
+      ],
+      "observation": "展示表达式树或满二叉树的分解与组合，区别于函数调用栈"
+    },
+    {
+      "n": 108,
+      "url": "https://img.youtube.com/vi/eIHScR29r8s/default.jpg",
+      "path": "output/image_review/108.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 109,
+      "url": "https://assets.leetcode.com/users/images/1a657d6b-4c36-499b-b280-4a8f1fd144b0_1726718988.8129702.png",
+      "path": "output/image_review/109.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 110,
+      "url": "https://assets.leetcode.com/users/images/86ede243-4b8d-48fc-86e8-eaa4196f0bd6_1726719001.4924624.png",
+      "path": "output/image_review/110.png",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 111,
+      "url": "https://assets.leetcode.com/users/images/a953a3c4-598b-4e4f-9f4e-526b6da9a694_1726719138.5248144.png",
+      "path": "output/image_review/111.png",
+      "categories": [
+        "代码／文字讲解"
+      ],
+      "observation": "手写或截图代码与注释，部分包含边界条件和优化说明"
+    },
+    {
+      "n": 112,
+      "url": "https://assets.leetcode.com/users/images/f017b57c-711f-4b53-b649-cf417986405b_1726719170.00947.png",
+      "path": "output/image_review/112.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 113,
+      "url": "https://assets.leetcode.com/users/images/042db405-5258-413e-adf8-365507eca91f_1726719185.9952478.png",
+      "path": "output/image_review/113.png",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 114,
+      "url": "https://assets.leetcode.com/users/images/e353041b-e018-4eea-bce1-8349f1c71979_1726719197.4782734.png",
+      "path": "output/image_review/114.png",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 115,
+      "url": "https://assets.leetcode.com/users/images/18bcffce-2015-4055-b47f-3d25cd128a03_1726719207.6079047.png",
+      "path": "output/image_review/115.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 116,
+      "url": "https://assets.leetcode.com/users/images/0dfc3768-c430-484b-a665-b3468674b886_1726719229.1751573.png",
+      "path": "output/image_review/116.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 117,
+      "url": "https://assets.leetcode.com/users/images/937cc665-eb48-4817-a1ab-73704dd67a54_1726719282.9935985.png",
+      "path": "output/image_review/117.png",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 118,
+      "url": "https://assets.leetcode.com/users/images/ca55ae59-1160-4d39-b36b-98ebb70f38b1_1726719293.2157547.png",
+      "path": "output/image_review/118.png",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 119,
+      "url": "https://assets.leetcode.com/users/images/8e8a3bce-fcde-4de9-b785-cb7a1f250d3c_1726719312.2877438.png",
+      "path": "output/image_review/119.png",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 120,
+      "url": "https://assets.leetcode.com/users/images/16c96632-12f5-43f4-9fd3-b49c72e74951_1726719312.4471858.png",
+      "path": "output/image_review/120.png",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 121,
+      "url": "https://assets.leetcode.com/users/images/28849cb4-9eb3-4bb5-8082-74afc71b989c_1726719698.3841186.png",
+      "path": "output/image_review/121.png",
+      "categories": [
+        "跑分截图"
+      ],
+      "observation": "提交通过、运行时间或内存截图，不是算法图解"
+    },
+    {
+      "n": 122,
+      "url": "https://assets.leetcode.com/users/images/a09ae12c-2720-4f8e-b243-a9af9b4ff342_1726719353.4487672.png",
+      "path": "output/image_review/122.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 123,
+      "url": "https://img.youtube.com/vi/Z-y47DiYjTc/default.jpg",
+      "path": "output/image_review/123.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 124,
+      "url": "https://assets.leetcode.com/users/images/e4b07063-d5b7-4244-b972-b62684c058b2_1659440138.4830947.jpeg",
+      "path": "output/image_review/124.jpg",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 125,
+      "url": "https://assets.leetcode.com/users/images/d8a889c8-d7d8-4125-937e-aa3636ebf08d_1698033491.8860843.png",
+      "path": "output/image_review/125.png",
+      "categories": [
+        "跑分截图"
+      ],
+      "observation": "提交通过、运行时间或内存截图，不是算法图解"
+    },
+    {
+      "n": 126,
+      "url": "https://assets.leetcode.com/users/images/b6c7426a-79f7-4228-8a44-963beca11c95_1698034451.8409886.jpeg",
+      "path": "output/image_review/126.jpg",
+      "categories": [
+        "无关／求赞配图"
+      ],
+      "observation": "表情或求赞配图，不承担算法解释"
+    },
+    {
+      "n": 127,
+      "url": "https://img.youtube.com/vi/OH8TWGJMf30/default.jpg",
+      "path": "output/image_review/127.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 128,
+      "url": "https://assets.leetcode.com/users/images/b5116ec6-72cf-414f-b0cc-d9efd5f3d4d9_1639896946.4418724.jpeg",
+      "path": "output/image_review/128.jpg",
+      "categories": [
+        "递归返回／遍历方向"
+      ],
+      "observation": "嵌套字符串的分层展开与合并"
+    },
+    {
+      "n": 129,
+      "url": "https://assets.leetcode.com/users/images/7209115c-be91-4b04-8b51-6f1ab1be1085_1690522831.1890056.jpeg",
+      "path": "output/image_review/129.jpg",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 130,
+      "url": "https://img.youtube.com/vi/ww4V7vRIzSk/default.jpg",
+      "path": "output/image_review/130.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 131,
+      "url": "https://img.youtube.com/vi/ZN9j4MqPGtM/default.jpg",
+      "path": "output/image_review/131.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 132,
+      "url": "https://assets.leetcode.com/users/images/f8aff8a1-76f4-4c42-9ca0-7f1acd92d274_1657083585.6473794.png",
+      "path": "output/image_review/132.png",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 133,
+      "url": "https://assets.leetcode.com/users/images/1eab287d-7ad3-43da-804b-47a6695eea4a_1712744965.0511005.png",
+      "path": "output/image_review/133.png",
+      "categories": [
+        "数学递推／公式推导"
+      ],
+      "observation": "快速幂、数列、矩阵或约瑟夫递推关系"
+    },
+    {
+      "n": 134,
+      "url": "https://assets.leetcode.com/users/images/2497320c-0311-404c-9357-41478b49d283_1705501916.5996795.png",
+      "path": "output/image_review/134.png",
+      "categories": [
+        "跑分截图"
+      ],
+      "observation": "提交通过、运行时间或内存截图，不是算法图解"
+    },
+    {
+      "n": 135,
+      "url": "https://assets.leetcode.com/users/images/72a7b4bb-7165-4bb5-a455-bcfabcadef66_1705236001.365356.png",
+      "path": "output/image_review/135.png",
+      "categories": [
+        "无关／求赞配图"
+      ],
+      "observation": "表情或求赞配图，不承担算法解释"
+    },
+    {
+      "n": 136,
+      "url": "https://assets.leetcode.com/users/images/86f7ccc2-d530-4921-9f0f-504997d4421d_1624791245.262972.png",
+      "path": "output/image_review/136.png",
+      "categories": [
+        "数学递推／公式推导"
+      ],
+      "observation": "快速幂、数列、矩阵或约瑟夫递推关系"
+    },
+    {
+      "n": 137,
+      "url": "https://assets.leetcode.com/users/images/aa08606b-2626-47a5-9bce-944ffc1051f9_1624791649.9581988.png",
+      "path": "output/image_review/137.png",
+      "categories": [
+        "数学递推／公式推导"
+      ],
+      "observation": "快速幂、数列、矩阵或约瑟夫递推关系"
+    },
+    {
+      "n": 138,
+      "url": "https://assets.leetcode.com/users/images/f49595e4-88e2-404a-b1da-e523d0792576_1624791677.0875087.png",
+      "path": "output/image_review/138.png",
+      "categories": [
+        "数学递推／公式推导"
+      ],
+      "observation": "快速幂、数列、矩阵或约瑟夫递推关系"
+    },
+    {
+      "n": 139,
+      "url": "https://assets.leetcode.com/users/images/20fc7426-a2e5-469b-949e-5769d8b386c7_1624791696.4356222.png",
+      "path": "output/image_review/139.png",
+      "categories": [
+        "数学递推／公式推导"
+      ],
+      "observation": "快速幂、数列、矩阵或约瑟夫递推关系"
+    },
+    {
+      "n": 140,
+      "url": "https://assets.leetcode.com/users/images/c5d28879-321b-4636-978f-8ffb4bc99128_1698204405.5558522.png",
+      "path": "output/image_review/140.png",
+      "categories": [
+        "跑分截图"
+      ],
+      "observation": "提交通过、运行时间或内存截图，不是算法图解"
+    },
+    {
+      "n": 141,
+      "url": "https://assets.leetcode.com/users/images/65bf4461-adc5-47c8-9c6f-49723da3df82_1698204396.1807368.jpeg",
+      "path": "output/image_review/141.jpg",
+      "categories": [
+        "无关／求赞配图"
+      ],
+      "observation": "表情或求赞配图，不承担算法解释"
+    },
+    {
+      "n": 142,
+      "url": "https://img.youtube.com/vi/bfNSZbgII_Q/default.jpg",
+      "path": "output/image_review/142.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 143,
+      "url": "https://img.youtube.com/vi/PqbPjFAry1w/default.jpg",
+      "path": "output/image_review/143.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 144,
+      "url": "https://assets.leetcode.com/users/images/7af6ab25-b94e-4bcf-ab0b-80f50fece98d_1677677380.9008424.png",
+      "path": "output/image_review/144.png",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 145,
+      "url": "https://assets.leetcode.com/users/images/be3f940b-ee25-4548-b1fe-4fa98a0b7731_1677677418.8166118.png",
+      "path": "output/image_review/145.png",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 146,
+      "url": "https://assets.leetcode.com/users/images/08692d08-5839-4348-8c31-2352bf884f84_1677677472.4730532.png",
+      "path": "output/image_review/146.png",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 147,
+      "url": "https://assets.leetcode.com/users/images/11b507b7-132f-4e92-a676-2389bea938e7_1677677507.5712924.png",
+      "path": "output/image_review/147.png",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 148,
+      "url": "https://assets.leetcode.com/users/images/8065032b-cf3b-4326-88da-6a7e488c304d_1677677527.0631957.png",
+      "path": "output/image_review/148.png",
+      "categories": [
+        "代码／文字讲解"
+      ],
+      "observation": "手写或截图代码与注释，部分包含边界条件和优化说明"
+    },
+    {
+      "n": 149,
+      "url": "https://assets.leetcode.com/users/brianchiang_tw/image_1589376023.png",
+      "path": "output/image_review/149.png",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 150,
+      "url": "https://assets.leetcode.com/users/images/679c538c-0c90-46fb-b19e-f277c67c1d6d_1635261303.912942.png",
+      "path": "output/image_review/150.png",
+      "categories": [
+        "树结构／组合构造"
+      ],
+      "observation": "展示表达式树或满二叉树的分解与组合，区别于函数调用栈"
+    },
+    {
+      "n": 151,
+      "url": "https://assets.leetcode.com/users/images/b927ec78-caeb-4424-9f30-4953708d5263_1635261681.7006683.png",
+      "path": "output/image_review/151.png",
+      "categories": [
+        "树结构／组合构造"
+      ],
+      "observation": "展示表达式树或满二叉树的分解与组合，区别于函数调用栈"
+    },
+    {
+      "n": 152,
+      "url": "https://assets.leetcode.com/users/images/80bf76c1-380c-4965-a0a3-8976b500fcc7_1635261933.051534.png",
+      "path": "output/image_review/152.png",
+      "categories": [
+        "树结构／组合构造"
+      ],
+      "observation": "展示表达式树或满二叉树的分解与组合，区别于函数调用栈"
+    },
+    {
+      "n": 153,
+      "url": "https://assets.leetcode.com/users/images/3adbb166-e8b4-4ea6-9b37-e6df8b2628d2_1635262051.9903054.png",
+      "path": "output/image_review/153.png",
+      "categories": [
+        "树结构／组合构造"
+      ],
+      "observation": "展示表达式树或满二叉树的分解与组合，区别于函数调用栈"
+    },
+    {
+      "n": 154,
+      "url": "https://assets.leetcode.com/users/images/4b4dcb37-34fb-4035-881b-bfe56d43665c_1635262217.9865322.png",
+      "path": "output/image_review/154.png",
+      "categories": [
+        "树结构／组合构造"
+      ],
+      "observation": "展示表达式树或满二叉树的分解与组合，区别于函数调用栈"
+    },
+    {
+      "n": 155,
+      "url": "https://assets.leetcode.com/users/images/adcbe1b2-13ab-42f2-bdd7-127f9e1c7647_1635262284.2307653.png",
+      "path": "output/image_review/155.png",
+      "categories": [
+        "树结构／组合构造"
+      ],
+      "observation": "展示表达式树或满二叉树的分解与组合，区别于函数调用栈"
+    },
+    {
+      "n": 156,
+      "url": "https://assets.leetcode.com/users/images/4e819e99-1379-458c-83e2-f41218823a57_1635262557.0769954.png",
+      "path": "output/image_review/156.png",
+      "categories": [
+        "树结构／组合构造"
+      ],
+      "observation": "展示表达式树或满二叉树的分解与组合，区别于函数调用栈"
+    },
+    {
+      "n": 157,
+      "url": "https://assets.leetcode.com/users/images/f2c359ed-0a2f-425e-b0ea-ce4aa89970ff_1635262948.1730094.png",
+      "path": "output/image_review/157.png",
+      "categories": [
+        "树结构／组合构造"
+      ],
+      "observation": "展示表达式树或满二叉树的分解与组合，区别于函数调用栈"
+    },
+    {
+      "n": 158,
+      "url": "https://assets.leetcode.com/users/images/a3e76135-1bd1-421c-a134-8149f632a50e_1662376766.0762968.png",
+      "path": "output/image_review/158.png",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 159,
+      "url": "https://assets.leetcode.com/users/images/11881584-f1c8-4d88-a3cf-ef96c69af0a1_1631798694.4705927.png",
+      "path": "output/image_review/159.png",
+      "categories": [
+        "递归树／子问题展开"
+      ],
+      "observation": "展示递归分支、子问题展开或层级结构"
+    },
+    {
+      "n": 160,
+      "url": "https://assets.leetcode.com/users/images/f1d2aa50-0cf1-461e-be11-311d23a9916e_1729316234.736451.png",
+      "path": "output/image_review/160.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 161,
+      "url": "https://assets.leetcode.com/users/images/857aef33-a990-41e6-8ade-42b69465920a_1729316242.916267.png",
+      "path": "output/image_review/161.png",
+      "categories": [
+        "代码／文字讲解"
+      ],
+      "observation": "手写或截图代码与注释，部分包含边界条件和优化说明"
+    },
+    {
+      "n": 162,
+      "url": "https://assets.leetcode.com/users/images/8de9238a-cdf5-4d5e-abf1-99695ad68b50_1729316251.7774692.png",
+      "path": "output/image_review/162.png",
+      "categories": [
+        "代码／文字讲解"
+      ],
+      "observation": "手写或截图代码与注释，部分包含边界条件和优化说明"
+    },
+    {
+      "n": 163,
+      "url": "https://assets.leetcode.com/users/images/4f4020ef-2a17-4d6d-b256-4eb55490c11a_1729316261.3241963.png",
+      "path": "output/image_review/163.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 164,
+      "url": "https://assets.leetcode.com/users/images/8ad7795e-f4ee-4976-b436-2dcc09980462_1729316276.5704265.png",
+      "path": "output/image_review/164.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 165,
+      "url": "https://assets.leetcode.com/users/images/d8e3abf8-d575-4734-86bd-e30b24ab84a6_1729316293.9406881.png",
+      "path": "output/image_review/165.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 166,
+      "url": "https://assets.leetcode.com/users/images/6d52d90b-cc8a-4f75-8aeb-02809b6fe652_1729316304.1138375.png",
+      "path": "output/image_review/166.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 167,
+      "url": "https://assets.leetcode.com/users/images/a6d83af1-beff-489b-beb1-5bf614d92652_1729316314.689871.png",
+      "path": "output/image_review/167.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 168,
+      "url": "https://assets.leetcode.com/users/images/9e0a00a6-7ae9-4dc8-83a7-75427b7994a5_1729317078.8397803.png",
+      "path": "output/image_review/168.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 169,
+      "url": "https://assets.leetcode.com/users/images/9522c867-8906-4ead-b4fb-b6e5d0ab90e7_1729317121.843559.png",
+      "path": "output/image_review/169.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 170,
+      "url": "https://assets.leetcode.com/users/images/9b474c17-c103-4253-80d7-20cb32e0c684_1729316403.7565644.png",
+      "path": "output/image_review/170.png",
+      "categories": [
+        "代码／文字讲解"
+      ],
+      "observation": "手写或截图代码与注释，部分包含边界条件和优化说明"
+    },
+    {
+      "n": 171,
+      "url": "https://assets.leetcode.com/users/images/f014284a-35e1-4ff4-8139-b071ce408104_1729316460.8005767.png",
+      "path": "output/image_review/171.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 172,
+      "url": "https://assets.leetcode.com/users/images/e3b7b218-151e-4b6d-a8e4-7b539ef9bf56_1729316430.8637516.png",
+      "path": "output/image_review/172.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 173,
+      "url": "https://assets.leetcode.com/users/images/dbf0eee1-99bd-4a24-86eb-08267c302a13_1729316499.268893.png",
+      "path": "output/image_review/173.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 174,
+      "url": "https://assets.leetcode.com/users/images/8dd36168-6cc9-4fed-905e-8e5420633141_1729316511.3198266.png",
+      "path": "output/image_review/174.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 175,
+      "url": "https://assets.leetcode.com/users/images/95d5784c-6405-46c2-8d7d-569a529bdac3_1729316526.4797306.png",
+      "path": "output/image_review/175.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 176,
+      "url": "https://assets.leetcode.com/users/images/1560482a-fe4f-479b-837a-c36c3a8aa974_1729316554.7899947.png",
+      "path": "output/image_review/176.png",
+      "categories": [
+        "思路推导／子问题缩减"
+      ],
+      "observation": "题目拆解、记忆化、二分镜像与递归参数变化；163 同时含表情配图"
+    },
+    {
+      "n": 177,
+      "url": "https://img.youtube.com/vi/ncnZWr-Aaes/default.jpg",
+      "path": "output/image_review/177.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 178,
+      "url": "https://img.youtube.com/vi/u4wJUF2NCm4/default.jpg",
+      "path": "output/image_review/178.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 179,
+      "url": "https://assets.leetcode.com/users/images/64e054b1-46d6-47c9-86d1-b5918bdc3b05_1701305503.9059722.png",
+      "path": "output/image_review/179.png",
+      "categories": [
+        "跑分截图"
+      ],
+      "observation": "提交通过、运行时间或内存截图，不是算法图解"
+    },
+    {
+      "n": 180,
+      "url": "https://assets.leetcode.com/users/images/cf12bdda-cdae-4192-ba6d-a4ed389f8fa1_1701305659.669051.png",
+      "path": "output/image_review/180.png",
+      "categories": [
+        "无关／求赞配图"
+      ],
+      "observation": "表情或求赞配图，不承担算法解释"
+    },
+    {
+      "n": 181,
+      "url": "https://img.youtube.com/vi/GqS1MXRQW_0/default.jpg",
+      "path": "output/image_review/181.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    },
+    {
+      "n": 182,
+      "url": "https://assets.leetcode.com/users/images/cd9cd333-cce8-44e8-b29b-520f3129eb7c_1720437944.4626663.png",
+      "path": "output/image_review/182.png",
+      "categories": [
+        "数学递推／公式推导"
+      ],
+      "observation": "快速幂、数列、矩阵或约瑟夫递推关系"
+    },
+    {
+      "n": 183,
+      "url": "https://assets.leetcode.com/users/images/d6ca01b4-fbed-4669-87c2-a074d6db46da_1669362182.4144485.png",
+      "path": "output/image_review/183.png",
+      "categories": [
+        "约瑟夫过程／编号映射"
+      ],
+      "observation": "环形淘汰、重新编号与映射；191 为淘汰动画"
+    },
+    {
+      "n": 184,
+      "url": "https://assets.leetcode.com/users/images/3cb740df-6209-45d3-bda9-914ac9ef33f3_1669362717.3768306.png",
+      "path": "output/image_review/184.png",
+      "categories": [
+        "约瑟夫过程／编号映射"
+      ],
+      "observation": "环形淘汰、重新编号与映射；191 为淘汰动画"
+    },
+    {
+      "n": 185,
+      "url": "https://assets.leetcode.com/users/images/bc1b95ea-48a5-47fb-a3c1-a68b01a62958_1669362875.6951969.png",
+      "path": "output/image_review/185.png",
+      "categories": [
+        "约瑟夫过程／编号映射"
+      ],
+      "observation": "环形淘汰、重新编号与映射；191 为淘汰动画"
+    },
+    {
+      "n": 186,
+      "url": "https://assets.leetcode.com/users/images/2821b9b5-ea44-43d3-ab13-6289a6b2dc34_1669363225.32804.png",
+      "path": "output/image_review/186.png",
+      "categories": [
+        "约瑟夫过程／编号映射"
+      ],
+      "observation": "环形淘汰、重新编号与映射；191 为淘汰动画"
+    },
+    {
+      "n": 187,
+      "url": "https://assets.leetcode.com/users/images/b51242ec-1a48-428a-8cfe-831d632380d7_1669363437.5197673.png",
+      "path": "output/image_review/187.png",
+      "categories": [
+        "约瑟夫过程／编号映射"
+      ],
+      "observation": "环形淘汰、重新编号与映射；191 为淘汰动画"
+    },
+    {
+      "n": 188,
+      "url": "https://assets.leetcode.com/users/images/e5677ad2-a0e1-4e4c-a7e5-71b54407da71_1669363806.16414.png",
+      "path": "output/image_review/188.png",
+      "categories": [
+        "约瑟夫过程／编号映射"
+      ],
+      "observation": "环形淘汰、重新编号与映射；191 为淘汰动画"
+    },
+    {
+      "n": 189,
+      "url": "https://assets.leetcode.com/users/images/a38d40f1-375c-4e1c-94f8-cafbccfdb251_1669364000.7314184.png",
+      "path": "output/image_review/189.png",
+      "categories": [
+        "约瑟夫过程／编号映射"
+      ],
+      "observation": "环形淘汰、重新编号与映射；191 为淘汰动画"
+    },
+    {
+      "n": 190,
+      "url": "https://assets.leetcode.com/users/images/dbad1e65-d9f2-4556-bbca-f408d2c8f3c4_1672772120.906986.png",
+      "path": "output/image_review/190.png",
+      "categories": [
+        "约瑟夫过程／编号映射"
+      ],
+      "observation": "环形淘汰、重新编号与映射；191 为淘汰动画"
+    },
+    {
+      "n": 191,
+      "url": "https://assets.leetcode.com/users/images/3ca609dc-d55a-416c-bcb7-27f891932e1a_1655869639.4225068.gif",
+      "path": "output/image_review/191.gif",
+      "categories": [
+        "约瑟夫过程／编号映射"
+      ],
+      "observation": "环形淘汰、重新编号与映射；191 为淘汰动画"
+    },
+    {
+      "n": 192,
+      "url": "https://assets.leetcode.com/users/images/f904aba6-4dd4-4faa-b0cf-6e9c8d35ab15_1655183599.8877122.png",
+      "path": "output/image_review/192.png",
+      "categories": [
+        "数学递推／公式推导"
+      ],
+      "observation": "快速幂、数列、矩阵或约瑟夫递推关系"
+    },
+    {
+      "n": 193,
+      "url": "https://assets.leetcode.com/users/images/813244c8-3213-4f8c-b76e-a1a31d84500c_1666285853.7795105.png",
+      "path": "output/image_review/193.png",
+      "categories": [
+        "约瑟夫过程／编号映射"
+      ],
+      "observation": "环形淘汰、重新编号与映射；191 为淘汰动画"
+    },
+    {
+      "n": 194,
+      "url": "https://img.youtube.com/vi/BIU7MkszsNg/default.jpg",
+      "path": "output/image_review/194.jpg",
+      "categories": [
+        "视频封面"
+      ],
+      "observation": "仅为 YouTube 缩略图，不能据此确认视频内图解质量"
+    }
+  ]
+}

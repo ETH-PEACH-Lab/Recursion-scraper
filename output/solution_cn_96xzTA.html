@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>「手画图解」预测赢家 | 三种写法：递归、记忆化递归、动态规划  – Predict the Winner</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_predict-the-winner.html">Predict the Winner / 预测赢家</a> <span class="sep">›</span> <span class="cur">「手画图解」预测赢家 | 三种写法：递归、记忆化递归、动态规划 </span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">「手画图解」预测赢家 | 三种写法：递归、记忆化递归、动态规划 </div>
+  <div class="meta">
+    <span>👤 xiao_ben_zhu</span>
+    <span>👍 486</span>
+    <span>2020-09-01</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/predict-the-winner/solution/shou-hua-tu-jie-san-chong-xie-fa-di-gui-ji-yi-hua-/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p>不知不觉已入秋，生起凉意，突然想到周杰伦的《一路向北》。</p>
+<h4>思路的形成</h4>
+<p>以 <code>[1, 5, 233, 7]</code> 为例，玩家 1 先手。<br />
+- 如果他选左端的 1，则玩家 2 在剩下的<code>[5, 233, 7]</code>的两端中选。<br />
+- 如果他选右端的 7，则玩家 2 在剩下的<code>[1, 5, 233]</code>的两端中选。</p>
+<p>想到递归了吗？画个图看看，我用数组索引来描述一个子问题：</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1598905756-NBIqZL-image.png" /></p>
+<p>每个节点都是其中一个玩家在选择，下一个节点变成对手在选择，交替在选。</p>
+<p>开始时你选了 x，得 x 分，他没选，得 0 分，你领先 x 分，接下来他选，你选，你们交替地选…请勿绕入递归的细节。</p>
+<p>起初你有 x 分，对手 0 分，<strong>在后面的游戏中</strong>，对手拢共赢你 y 分，如果 x &gt;= y，那你赢了。</p>
+<p>屏蔽掉递归的细节，那是丢给子调用去做的。关注当前的 $x$ 分，子调用应该返回什么去和它比较，才能判断获胜。就不难想到：在剩余轮次中对手净胜分，它大于0，相当于对手<strong>在剩余轮次中获胜</strong>，比起整个游戏，只是<strong>游戏规模小一点而已</strong>。</p>
+<p>于是递归函数：返回当前做选择的玩家，基于当前区间<code>[i,j]</code>，赢过对手的分数。</p>
+<p>怎么计算呢？</p>
+<p><strong>当前选择的分数</strong>，<strong>减去</strong>，<strong>往后对手赢过自己的分数</strong>（<strong>对剩余数组递归</strong>）。因为有两端可选择，所以差值有两个，取较大的判断是否 &gt;= 0。</p>
+<p>可以仔细感受一下这个思路的生成。</p>
+<h4>代码</h4>
+<p>```javascript []<br />
+const PredictTheWinner = (nums) =&gt; {<br />
+  // helper：基于从i到j的数组，当前选择的玩家所能赢对方的分数<br />
+  const helper = (i, j) =&gt; { // i，j是两端的索引<br />
+    if (i == j) {   // 此时只有一种选择，选的人赢对方nums[i]，且没有剩余可选，结束递归<br />
+      return nums[i];<br />
+    }<br />
+    const pickI = nums[i] - helper(i + 1, j); // 选择左端，获得nums[i]，之后输掉helper(i+1,j)分<br />
+    const pickJ = nums[j] - helper(i, j - 1); // 选择右端，获得nums[j]，之后输掉helper(i,j-1)分<br />
+    return Math.max(pickI, pickJ);            // 返回较大者，即在[i,j]数组游戏中胜过对方的分数<br />
+  };</p>
+<p>return helper(0, nums.length - 1) &gt;= 0; // 基于整个数组玩这个游戏，玩家1先手，&gt;=0就获胜<br />
+};</p>
+<pre><code>```golang []
+func PredictTheWinner(nums []int) bool {
+    return helper(0, len(nums) - 1, nums) &gt;= 0
+}
+
+func helper(i, j int, nums []int) int {
+    if i == j {
+        return nums[i]
+    }
+    pickI := nums[i] - helper(i+1, j, nums)
+    pickJ := nums[j] - helper(i, j-1, nums)
+    if pickI &gt; pickJ {
+        return pickI
+    }
+    return pickJ
+}
+</code></pre>
+<h4>记忆化递归</h4>
+<blockquote>
+<p>First make it work, then make it fast.</p>
+</blockquote>
+<p>我们做了哪些重复的计算？<br />
+比如，你先选 1，我再选 7，和你先选 7，我再选 1，都是剩下<code>[5, 233]</code>，来到了相同的状态，没必要再次计算重复子问题。<br />
+我们去存储计算过的子问题的解，当遇到重复的子问题，直接返回命中的存储值。</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1598905968-RpJPSG-image.png" /></p>
+<h4>代码</h4>
+<p>```javascript []<br />
+const PredictTheWinner = (nums) =&gt; {<br />
+  const len = nums.length;<br />
+  const memo = new Array(len);<br />
+  for (let i = 0; i &lt; memo.length; i++) {<br />
+    memo[i] = new Array(len);<br />
+  }</p>
+<p>const helper = (i, j) =&gt; {<br />
+    if (i == j) {                   // base case<br />
+      return nums[i];<br />
+    }<br />
+    if (memo[i][j] !== undefined) { // 如果memo中有缓存值，就直接返回它<br />
+      return memo[i][j]; <br />
+    }<br />
+    const pickI = nums[i] - helper(i + 1, j);<br />
+    const pickJ = nums[j] - helper(i, j - 1);<br />
+    memo[i][j] = Math.max(pickI, pickJ); // 计算结果存入memo<br />
+    return memo[i][j];<br />
+  };</p>
+<p>return helper(0, len - 1) &gt;= 0;<br />
+};</p>
+<pre><code>```golang []
+func PredictTheWinner(nums []int) bool {
+    L := len(nums)
+    memo := make([][]int, L)
+    for i := 0; i &lt; L; i++ {
+        memo[i] = make([]int, L)
+        for j := 0; j &lt; L; j++ {
+            memo[i][j] = -1&lt;&lt;63
+        }
+    }
+    return helper(0, L-1, nums, memo) &gt;= 0
+}
+
+func helper(i, j int, nums []int, memo [][]int) int {
+    if i == j {
+        return nums[i]
+    }
+    if memo[i][j] != -1&lt;&lt;63 { // 如果memo中有缓存值，就直接返回它
+      return memo[i][j]
+    }
+    pickI := nums[i] - helper(i+1, j, nums, memo)
+    pickJ := nums[j] - helper(i, j-1, nums, memo)
+    memo[i][j] = max(pickI, pickJ)
+    return memo[i][j]
+}
+
+func max(a, b int) int {
+    if a &gt; b { return a }
+    return b
+}
+</code></pre>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1613486202-PTjVOD-image.png" /></p>
+<h4>动态规划</h4>
+<p>递归思路中，我们看到大问题的拆解，看到子问题自底而上地解决，计算结果存入 memo。</p>
+<p>我们现在用 for 循环取代递归，按顺序求解子问题，去填二维数组，而不是依靠递归去做这件事。</p>
+<p>动态规划可以理解为不带重复计算的递归，它把中间子问题的解存储在一维或多维数组中。</p>
+<p>我们不应该把思考的重心放在怎么填表，最好先想出正确的递归。只要我们记忆化了正确的递归，就容易看出适不适合用动态规划，DP代码也就水到渠成。如果递归没想对，就写不出正确的DP。</p>
+<p>下图是一位教授的留言。</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1598912968-otNhwv-image.png" /></p>
+<h4>动态规划 解法</h4>
+<p>在记忆化递归的基础上，稍作修改即可。</p>
+<p>比照递归函数的定义，<code>dp[i][j]</code>: 当前玩家在数组<code>[i:j]</code>中先手，所赢过对方的分数。</p>
+<p>比照递归的终止条件，有 base case：当<code>i == j</code>时，<code>dp[i][j] = nums[i]</code>。</p>
+<p>比照递归函数的返回值：<code>max(nums[i] - helper(i+1, j), nums[j] - helper(i, j-1))</code>，有状态转移方程：<code>dp[i][j] = max(nums[i] - dp[i+1][j], nums[j] - dp[i][j-1])</code></p>
+<p>注意，要满足<code>i &lt;= j</code>，所以只用填半张表。</p>
+<p>我们看看状态转移的方向，它指导我们填表时采取什么计算方向，才不会出现：求当前的状态时，它所依赖的状态还没求出来。</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1598906898-vMPYMX-image.png" /></p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1598907763-bUeMVG-image.png" /></p>
+<h4>DP 代码</h4>
+<p>```js []<br />
+const PredictTheWinner = (nums) =&gt; {<br />
+  const len = nums.length;<br />
+  const dp = new Array(len);  // initialize dp array<br />
+  for (let i = 0; i &lt; len; i++) {<br />
+    dp[i] = new Array(len);<br />
+  }<br />
+  for (let i = 0; i &lt; len; i++) {  // base case <br />
+    dp[i][i] = nums[i];<br />
+  }<br />
+  // iteration<br />
+  for (let i = len - 2; i &gt;= 0; i--) { <br />
+    for (let j = i + 1; j &lt; len; j++) {<br />
+      const pickI = nums[i] - dp[i + 1][j];<br />
+      const pickJ = nums[j] - dp[i][j - 1];<br />
+      dp[i][j] = Math.max(pickI, pickJ);<br />
+    }<br />
+  }<br />
+  return dp[0][len - 1] &gt;= 0;<br />
+};</p>
+<pre><code>```golang []
+func PredictTheWinner(nums []int) bool {
+    L := len(nums)
+    dp := make([][]int, L)
+    for i := 0; i &lt; L; i++ {
+        dp[i] = make([]int, L)
+
+    }
+    for i := 0; i &lt; L; i++ {
+        dp[i][i] = nums[i]
+    }
+    for i := L - 2; i &gt;= 0; i-- { 
+        for j := i + 1; j &lt; L; j++ {
+            pickI := nums[i] - dp[i + 1][j]
+            pickJ := nums[j] - dp[i][j - 1]
+            dp[i][j] = max(pickI, pickJ)
+        }
+     }
+    return dp[0][L-1] &gt;= 0
+}
+
+func max(a, b int) int {
+    if a &gt; b { return a }
+    return b
+}
+</code></pre>
+<h4>复盘总结</h4>
+<p>这三板斧的思路是一气呵成的。动态规划最难的部分大概是：准确定义出子问题。</p>
+<p>我们可以从递归出发，画画递归树，想想递归函数应该怎么定义？怎么拆解子问题？再过渡到DP。</p>
+<p>《预测赢家》的每一步做的事是一样的，每一轮选择后，来到什么状态，递归的思路是明显的。</p>
+<p>我们抓住<strong>当前</strong>，不纠结递归细节，把问题拆成当前与之后，所谓之后就是一个规模较小的子问题。</p>
+<h4>DP 思路的生成</h4>
+<p>我们证明了子问题的解可以从规模较小的子问题的解获得，就有了递推公式。</p>
+<p>接着确定出求解子问题的顺序，作为辅助，我们可以画出一个子问题依赖关系的关系图，一个节点就是一个子问题，边代表依赖关系。</p>
+<p>看看这个图是否为有向无环图，如果存在环形依赖，则用不了动态规划，因为后者是顺序计算所有子问题。</p>
+<p>然后我们基于该图，采用合适的计算顺序，自底而上地计算。</p>
+<p>如果我们只想求出最优解的值，则任务完成。如果要找出所有的最优解，那么 DP 是无能为力的，必须用回溯算法去构建答案。</p>
+<p>动态规划有它的局限性。不要轻视递归，它可以发散出很多东西，甚至<strong>帮你想出DP解法</strong>。</p>
+<h4>文字经过反复打磨，保证了易读性，相信你也感受到了这份真诚。如果有疑问或有更好的建议，欢迎提问和友善地反馈。</h4>
+<p>最后修改于：2021-12-20</p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C++ EASY TO SOLVE || Beginner Friendly with detailed explanation and dry run – Reorder List</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_reorder-list.html">Reorder List</a> <span class="sep">›</span> <span class="cur">C++ EASY TO SOLVE || Beginner Friendly with detailed explanation and dry run</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">C++ EASY TO SOLVE || Beginner Friendly with detailed explanation and dry run</div>
+  <div class="meta">
+    <span>👤 Cosmic_Phantom</span>
+    <span>👍 206</span>
+    <span>2021-12-22</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/reorder-list/solutions/1640556/c-easy-to-solve-beginner-friendly-with-detailed-explanation-and-dry-run/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p><strong>Intuition:-</strong><br />
+After reading the question we got the gist that we need to reform the linkedlist in the manner such as<br />
+<code>firstnode-&gt;lastnode-&gt;secondnode-&gt;penultimate node-&gt;third node-&gt;3rd last node ............</code> .<br />
+So there are two ways that comes to my mind while thinking about a approach . Those are ,</p>
+<p><strong>1. Brute Force :-</strong><br />
+* In this we will first traverse to penultimate node and then start relinking each node .</p>
+<p><strong>2.</strong> <strong>Two pointer approach[sometimes referred as Tortoise and hare method]:-</strong><br />
+* We will have two pointers 1st pointer moving at speed of 1node and 2nd pointer moving at speed of twice the node. So basically one is moving at double speed and thus when it will be finished, the other has to be midway) and possibly adjusting it with lists of even length. This creates two halfs of linkedlist<br />
+* Then we reverse the second list and Finally we merge these two lists.</p>
+<p><strong>Brute-Force Algorithm:-</strong><br />
+1. First some base cases that we need to take care i.e if the linked list has zero,one or two elements just return it <br />
+2. Now next we need to find the penultimate node, so after finding it we can start the relinking process<br />
+3. Now start the relinking process as 1st node with last node ,2nd node with penultimate node, 3rd node with 3rd last node ......<br />
+4. Now repeat 2nd and 3rd steps.</p>
+<p><strong>Let's have a dy run before starting the code:-</strong><br />
+<img alt="image" src="https://assets.leetcode.com/users/images/a436d8ab-0868-4990-9214-74fc5ba59992_1640143095.7645688.jpeg" /></p>
+<p><strong>Brute-Force code-:</strong></p>
+<pre><code>//Upvote  and Comment
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        //base case i.e if the linked list has zero,one or two elments just return it
+        if(!head || !head-&gt;next || !head-&gt;next-&gt;next) return;
+
+        //Find the penultimate node i.e second last node of the linkedlist
+        ListNode* penultimate = head;
+        while (penultimate-&gt;next-&gt;next) penultimate = penultimate-&gt;next;
+
+        // Link the penultimate with the second element
+        penultimate-&gt;next-&gt;next = head-&gt;next;
+        head-&gt;next = penultimate-&gt;next;
+
+        //Again set the penultimate to the the last 
+        penultimate-&gt;next = NULL;
+
+        // Do the above steps rcursive
+        reorderList(head-&gt;next-&gt;next);
+    }
+};
+</code></pre>
+<p>.</p>
+<p><strong>Two pointer Approach [Tortoise and Hare method]:-</strong><br />
+<em>This approach is much faster and efficient in terms of Time and Space Complexity the only drawback is that it looks a little bit lengthy but trust me it's easy to understand</em>.</p>
+<p><strong>Two pointer Approach Algorithm:</strong><br />
+1. First let's take two pointers name it as <code>half</code> and <code>temp</code> . <code>temp</code> is faster than <code>half</code> by 1. <br />
+2. When <code>temp</code> reaches the end of linkedlsit <code>half</code> reaches the middle element .So this is how the linkedlist will get divided in two halfes as the center will become a dividing node .<br />
+3. Now reverse the second half . <br />
+4. After reversing the second half, merge the first half and second half</p>
+<p><strong>Let's have a dy run before starting the code:-</strong><br />
+Let's take the same example as above:</p>
+<pre><code>Linked list:[1,2,3,4,5]
+* search for the central element, which will be three in our case
+* split the list in two halfes that will be [1,2,3] and [4,5]
+* Now reverse the second half that will be [5,4]
+* Now merge both the halfes 
+[1,2,3]
+    [5,4]
+=&gt;[1,5,2,4,3]
+
+**See told you it's easy to understand**
+</code></pre>
+<p><strong>Two pointer Approach Code:-</strong></p>
+<pre><code>//Upvote and Comment
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        // base case : linkedlist is empty
+        if (!head) return;
+
+        // finding the middle with the help of two pointer approach
+        ListNode *tmp = head, *half = head, *prev = NULL;
+        while (tmp-&gt;next &amp;&amp; tmp-&gt;next-&gt;next) {
+            tmp = tmp-&gt;next-&gt;next;
+            half = half-&gt;next;
+        }
+
+        // adding one bit in case of lists with even length
+        if (tmp-&gt;next) half = half-&gt;next;
+
+        // Now reverse the second half
+        while (half) {
+            tmp = half-&gt;next;
+            half-&gt;next = prev;
+            prev = half;
+            half = tmp;
+        }
+        half = prev;
+
+        // After reversing the second half, let's merge both the halfes
+        while (head &amp;&amp; half) {
+            tmp = head-&gt;next;
+            prev = half-&gt;next;
+            head-&gt;next = half;
+            half-&gt;next = tmp;
+            head = tmp;
+            half = prev;
+        }
+
+        // Base case : closing when we had even length arrays
+        if (head &amp;&amp; head-&gt;next) head-&gt;next-&gt;next = NULL;
+    }
+};
+</code></pre>
+<p><strong>Time Complexity :</strong> <em><code>O(N) [ O(N) to find mid of list, O(N/2) to reverse the 2nd half and in the end O(N) for relinking purpose  ]</code></em><br />
+<strong>Space Complexity :</strong> <em><code>O(1) [intermediate state variables are the only thing  that we used]</code></em></p>
+<hr />
+</div>
+</div>
+</body>
+</html>

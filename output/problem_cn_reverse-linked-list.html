@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reverse Linked List – CN Solutions</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index_cn.html">🔄 CN Recursion Solutions</a> <span class="sep">›</span> <span class="cur">Reverse Linked List / 反转链表</span></nav>
+<div class="wrap">
+<div class="page-title">206. Reverse Linked List / 反转链表</div>
+<div class="page-sub">
+  <span class="badge b-tag">EASY</span> <span class="badge b-tag">递归</span> <span class="badge b-tag">链表</span>
+  &nbsp;
+  <a href="https://leetcode.cn/problems/reverse-linked-list/" target="_blank" style="font-size:.85em">↗ LeetCode CN</a>
+  &nbsp;·&nbsp;<a href="tutorial_cn_reverse-linked-list.html" style="font-size:.85em">📖 Editorial</a>
+</div>
+
+<details open>
+  <summary style="color:#1a7f37;border-left:3px solid #1a7f37;padding-left:10px;margin:24px 0 12px;cursor:pointer;list-style:none;font-weight:600;font-size:1.05em">
+    ✅ Kept Solutions <span style="font-weight:400;font-size:.9em;margin-left:6px">136</span>
+  </summary>
+  <div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_8aixp1.html"><div class="card-title">动画演示+多种解法 206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 wang_ni_ma</span>
+      <span>👍 2177</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/7d8712af4fbb870537607b1dd95d66c248eb178db4319919c32d9304ee85b602-%E8%BF%AD%E4%BB%A3.gif" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_BCNYHU.html"><div class="card-title">两种方法：递归 / 迭代，本质是尾插法和头插法（Python/Java/C++/C/Go/JS/Rust）</div></a>
+    <div class="meta">
+      <span>👤 endlesscheng</span>
+      <span>👍 2427</span>
+      <span class="badge b-video">📹</span>
+    </div>
+    
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_T3lidC.html"><div class="card-title">一步一步教你如何用递归思想反转链表</div></a>
+    <div class="meta">
+      <span>👤 hardcore-aryabhata</span>
+      <span>👍 103</span>
+      <span class="badge b-video">📹</span><span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1611457276-mnHKos-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_qStuUo.html"><div class="card-title">3种解决方式，栈，双链表，递归（击败了100%的用户）</div></a>
+    <div class="meta">
+      <span>👤 sdwwld</span>
+      <span>👍 46</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/343fd7cce80394422565b4beef398236832cc9ae0f77a85ebceacebe214785af-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_FNKFCp.html"><div class="card-title">逐步图解递归 迭代</div></a>
+    <div class="meta">
+      <span>👤 sucongcjs</span>
+      <span>👍 21</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/7a160b91f4c60a0d7eca56cdd4f8d930b83f3e043c2a333537a53c778bfb1367-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_rihuS8.html"><div class="card-title">JavaScript图解leetcode：反转链表</div></a>
+    <div class="meta">
+      <span>👤 user7746o</span>
+      <span>👍 17</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/f36b449f1eb375883b0858aaa89c664306e678f2b25b2beb4449225b32eb694c.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_HUKzkA.html"><div class="card-title">「代码随想录」206. 反转链表:【双指针法】【递归法】详解！</div></a>
+    <div class="meta">
+      <span>👤 carlsun-2</span>
+      <span>👍 13</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1613611150-TSFuVs-file_1613611150660" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Z2XhLF.html"><div class="card-title">206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 stormsunshine</span>
+      <span>👍 9</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1633224461-UubBSM-10_1.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_lr0vuU.html"><div class="card-title">206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 ShanDanNing</span>
+      <span>👍 10</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1614734020-YfzmaW-640.gif" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_x1SIeG.html"><div class="card-title">LeetCode 206.反转链表 / Reverse Linked List</div></a>
+    <div class="meta">
+      <span>👤 taiyi</span>
+      <span>👍 6</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/04035d72cfc6154374efd71647987b78ba44e45a67ca7342327ed54bdfa6ba65-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_WIkzm8.html"><div class="card-title">206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 Dine</span>
+      <span>👍 5</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1615259962-dmyJxZ-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_mvbauQ.html"><div class="card-title">206.反转链表</div></a>
+    <div class="meta">
+      <span>👤 duanyutian</span>
+      <span>👍 4</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1615537671-QUkmpC-008eGmZEgy1goh77taj0gj31020j4glk.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_ifud3L.html"><div class="card-title">字节题库 - #206 - 简单 - 反转链表 - 2刷</div></a>
+    <div class="meta">
+      <span>👤 superkakayong</span>
+      <span>👍 7</span>
+      <span class="badge b-video">📹</span><span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/8592a61691fca36fe4de296289f60e97d6fcf4a38babf96432e1be5b0639f785-61590328844_.pic.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_R8vXeG.html"><div class="card-title">✅ 反转链表 两种实现（迭代 + 递归⭐）详细说明 + 图解</div></a>
+    <div class="meta">
+      <span>👤 shiraori</span>
+      <span>👍 5</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1683025826-JlZanC-img2.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_401aMy.html"><div class="card-title">JAVA 无帮助函数 递归 图解</div></a>
+    <div class="meta">
+      <span>👤 cyberpunk-10</span>
+      <span>👍 5</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1617792693-oatvoT-%E8%BF%94%E5%9B%9E%E8%BF%87%E7%A8%8B.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_BB8fAf.html"><div class="card-title">❤指针的角色：负责推进的，负责尾随的</div></a>
+    <div class="meta">
+      <span>👤 xiao_ben_zhu</span>
+      <span>👍 5</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/61bcf2e418587ae4d6432bb463a4086a42db91fcbcea92dee1f55d0bdccd26e1-%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20200517191630.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_HNOOSw.html"><div class="card-title">206.java 两种方法详解</div></a>
+    <div class="meta">
+      <span>👤 ustcyyw</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Ez1P4c.html"><div class="card-title">206. 反转链表-迭代, 递归</div></a>
+    <div class="meta">
+      <span>👤 shu-cheng</span>
+      <span>👍 4</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1610611577-YLqsOS-01.001.01.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_fKlWWE.html"><div class="card-title">「206：反转链表」1.迭代  2.递归 3. 头插法 4. 辅助栈</div></a>
+    <div class="meta">
+      <span>👤 1105389168</span>
+      <span>👍 2</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1709865930-LpuncR-iShot_2024-03-08_10.45.13.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_LnfEDw.html"><div class="card-title">【思路分析】 n 多种方式处理反转链表问题</div></a>
+    <div class="meta">
+      <span>👤 xiaowangku</span>
+      <span>👍 3</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1612460706-iNGDgO-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_CPEpOD.html"><div class="card-title">哈哈又是双指针，反转链表三步走</div></a>
+    <div class="meta">
+      <span>👤 xmblgt</span>
+      <span>👍 3</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1600671579-KCTIMZ-%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20200921145608.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_c5Nomp.html"><div class="card-title">【链表】【全网最清晰】【溜达虎爱编程】</div></a>
+    <div class="meta">
+      <span>👤 ldtiger</span>
+      <span>👍 2</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1691558579-TjiphL-lc-0206-02.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Vaj5aN.html"><div class="card-title">【刷爆Leetcode】图解迭代法与递归法</div></a>
+    <div class="meta">
+      <span>👤 xia-xi-uc</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1647784147-BXmzmb-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_c4ossu.html"><div class="card-title">一图秒懂反转链表</div></a>
+    <div class="meta">
+      <span>👤 logilong</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1627620008-UGRBAi-QQ%E6%88%AA%E5%9B%BE20210730123919.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Gtz54V.html"><div class="card-title">链表反转的两种方法</div></a>
+    <div class="meta">
+      <span>👤 lucifercn</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1628770675-xadEbd-%E9%93%BE%E8%A1%A8.gif" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_LP0kmA.html"><div class="card-title">迭代和递归（Java）</div></a>
+    <div class="meta">
+      <span>👤 liweiwei1419</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1749670886-RlobfP-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_IekhrO.html"><div class="card-title">图解算法：双指针、递归 解决问题</div></a>
+    <div class="meta">
+      <span>👤 qian-ikong</span>
+      <span>👍 2</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/84363b7f834898b1e834a42e7cd4dea980982b6ab4608d96b3682ca8a337a639-%E9%80%92%E5%BD%92%E5%9B%BE%E7%A4%BA.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_JdmrAS.html"><div class="card-title">【python3】动画理解递归解法</div></a>
+    <div class="meta">
+      <span>👤 datoo</span>
+      <span>👍 2</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1607233423-gHHyFi-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A81.gif" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Q9CfOi.html"><div class="card-title">迭代+递归两种方式，四种解法</div></a>
+    <div class="meta">
+      <span>👤 rang-dan-dan-fei</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1680829613-BTMxJv-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_caDdec.html"><div class="card-title">反转链表题解——Day4</div></a>
+    <div class="meta">
+      <span>👤 xiang-bian-qiang-de-ke-ai-jing-ling</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1676105494-OzpPTr-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_gpuxco.html"><div class="card-title">「ITCharge」206. 反转链表「迭代」「递归」</div></a>
+    <div class="meta">
+      <span>👤 ITCharge</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1641785503-fNaHIl-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%EF%BC%88%E8%BF%AD%E4%BB%A3%EF%BC%89.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_HvbAFf.html"><div class="card-title">反转链表：迭代 & 递归 详解</div></a>
+    <div class="meta">
+      <span>👤 kevin_tao</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1641973124-ZPxqKF-0206_01.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_TydS1a.html"><div class="card-title">【Nick学习计划系列】算法入门第十天~</div></a>
+    <div class="meta">
+      <span>👤 nickBean</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1639378413-wHbbdc-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_EF1s5w.html"><div class="card-title">递归实现-六行代码教你实现反转链表</div></a>
+    <div class="meta">
+      <span>👤 wu-jing-w0</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1725071380-utvkTa-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Q9CfOi.html"><div class="card-title">迭代+递归两种方式，四种解法</div></a>
+    <div class="meta">
+      <span>👤 rang-dan-dan-fei</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1680829613-BTMxJv-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_HKohDW.html"><div class="card-title">206. 反转链表--javaScript版</div></a>
+    <div class="meta">
+      <span>👤 mou-mou-hao</span>
+      <span>👍 1</span>
+      <span class="badge b-video">📹</span>
+    </div>
+    
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_04KNKL.html"><div class="card-title">递归方法 go 语言实现</div></a>
+    <div class="meta">
+      <span>👤 mao_chi_yu</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1657177659-DytkMh-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_FpvrKW.html"><div class="card-title">206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 intjfyl</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1659537980-bdWGev-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_gpuxco.html"><div class="card-title">「ITCharge」206. 反转链表「迭代」「递归」</div></a>
+    <div class="meta">
+      <span>👤 ITCharge</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1641785503-fNaHIl-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%EF%BC%88%E8%BF%AD%E4%BB%A3%EF%BC%89.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_HvbAFf.html"><div class="card-title">反转链表：迭代 & 递归 详解</div></a>
+    <div class="meta">
+      <span>👤 kevin_tao</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1641973124-ZPxqKF-0206_01.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_TydS1a.html"><div class="card-title">【Nick学习计划系列】算法入门第十天~</div></a>
+    <div class="meta">
+      <span>👤 nickBean</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1639378413-wHbbdc-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_T3X038.html"><div class="card-title">翻转链表 遍历 or 递归</div></a>
+    <div class="meta">
+      <span>👤 ryaninnerpeace</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1628823821-zOeXbV-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_OodzEp.html"><div class="card-title">简单递归， 每次递归时记录前一个节点，同时将当前节点指向前一个节点，一个递归遍历即可完成链表反转</div></a>
+    <div class="meta">
+      <span>👤 smqk</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1637312658-RCAOPc-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_2DEGNO.html"><div class="card-title">递归</div></a>
+    <div class="meta">
+      <span>👤 jiao-chun-peng</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1633074810-KQRRHv-Leetode%E8%8D%89%E7%A8%BF-5.jpeg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_hetGK3.html"><div class="card-title">递归和非递归两种方式解决反转链接：详细通俗的思路分析，代码简洁</div></a>
+    <div class="meta">
+      <span>👤 angela-x</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1644990928-tTjSXi-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Nk448J.html"><div class="card-title">【数据结构入门每日刷题打卡17/33】双指针迭代经典应用&很不错的递归思维体现</div></a>
+    <div class="meta">
+      <span>👤 billSu</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1638344280-OzXqXT-JS.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_VlGsEX.html"><div class="card-title">递归法反转链条</div></a>
+    <div class="meta">
+      <span>👤 he-dong-zhang-zi-heng</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/dc9065e503c41e8a3e0c759b0ffddd4455531f431e3f46cd7cd6a910e4d17b3d-%E9%93%BE%E8%A1%A8.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_hnJJVp.html"><div class="card-title">206.反转链表“题解+图示”</div></a>
+    <div class="meta">
+      <span>👤 6racious-goldvvasserc6o</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1715782961-lwWNkF-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_VKmxTY.html"><div class="card-title">【java】反转链表-递归解法</div></a>
+    <div class="meta">
+      <span>👤 littlefish-k</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1664688976-dQepII-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_iw5eO2.html"><div class="card-title">【红魔】JS版本206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 y72Ad1orXb</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1664936063-ZQeysL-%E7%BD%AA%E6%81%B6%E9%BB%91%E5%90%8D%E5%8D%95.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_HaU3Gz.html"><div class="card-title">递归翻转链表</div></a>
+    <div class="meta">
+      <span>👤 harper-z-d</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1662384328-XXcAiU-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_FKcZVU.html"><div class="card-title">206.反转链表（递归解法）</div></a>
+    <div class="meta">
+      <span>👤 yang-yang-19</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1698464013-uBTULy-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8-%E9%80%92%E5%BD%92%E6%96%B9%E5%BC%8F%E5%9B%9E%E6%BA%AF%E5%9B%BE%E8%A7%A3.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_vKnU6o.html"><div class="card-title">翻转链表递归写法+图</div></a>
+    <div class="meta">
+      <span>👤 xiuer-f</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1700199923-CQhOff-%E7%BF%BB%E8%BD%AC%E9%93%BE%E8%A1%A8%E9%80%92%E5%BD%92.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_TJi1Jb.html"><div class="card-title">lc - 206 反转链表 双指针and递归解法（自用）</div></a>
+    <div class="meta">
+      <span>👤 elated-ishi2akanf4</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1709303856-rDzcpz-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_9KBnAo.html"><div class="card-title">反转链表思路：双指针迭代+递归法解析</div></a>
+    <div class="meta">
+      <span>👤 zAxg0TZLmj</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1709643394-ohofhi-1709643374179.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_3BHCPe.html"><div class="card-title">使用递归解决（206. 反转链表）</div></a>
+    <div class="meta">
+      <span>👤 present-bv</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1710487359-QXiRNI-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_LGTkbP.html"><div class="card-title">js反转链表递归</div></a>
+    <div class="meta">
+      <span>👤 matana</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1757822938-SqmVUi-aad25a8988c6a3c842b0b847a18893f.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_4TxU8W.html"><div class="card-title">链表 ：迭代 / 递归 </div></a>
+    <div class="meta">
+      <span>👤 naughty-morsexsg</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1681294595-sWJMSr-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_TYiB8l.html"><div class="card-title">反转链表三种解法 </div></a>
+    <div class="meta">
+      <span>👤 blur-</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1683098819-APzIrs-IMG_3091.PNG" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_ctFl3X.html"><div class="card-title">206.反转链表（递归，图解）</div></a>
+    <div class="meta">
+      <span>👤 wszxy1016</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1689503873-jsFkNx-212907c7815ebbbe531606a2fe2850a.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_wXBmUB.html"><div class="card-title">递归——反转列表</div></a>
+    <div class="meta">
+      <span>👤 lang-li-xiao-bai-long-ex</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1691894271-utBrIK-%E6%88%AA%E5%B1%8F2023-08-13%2010.37.15.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_hnJJVp.html"><div class="card-title">206.反转链表“题解+图示”</div></a>
+    <div class="meta">
+      <span>👤 6racious-goldvvasserc6o</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1715782961-lwWNkF-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_sMMBmC.html"><div class="card-title">🍥前端食堂题解，超好理解，带你轻松拿下反转链表</div></a>
+    <div class="meta">
+      <span>👤 tongobama</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1612074871-SIgERW-%E9%80%8F%E6%98%8E%E7%9A%84footer.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_JCN3gM.html"><div class="card-title">递归、迭代，三种方法解“反转链表”</div></a>
+    <div class="meta">
+      <span>👤 yunhao-tech</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1679498359-WjobHi-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_HvBrBR.html"><div class="card-title">206+ 92 反转链表：递归+迭代</div></a>
+    <div class="meta">
+      <span>👤 yuhuan0311</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1680608702-QGPATN-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_tizJzU.html"><div class="card-title">206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 fan-3z</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1676961905-wexELW-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_mqOx2W.html"><div class="card-title">206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 ablazeasteroid-h9i57J5evb</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1618453638-znzvzE-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_kAn1wq.html"><div class="card-title">仅作为个人理解的记录</div></a>
+    <div class="meta">
+      <span>👤 doracmon</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1616638392-ZyiKLB-IMG20210325100807.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_ctFl3X.html"><div class="card-title">206.反转链表（递归，图解）</div></a>
+    <div class="meta">
+      <span>👤 wszxy1016</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1689503873-jsFkNx-212907c7815ebbbe531606a2fe2850a.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_j3NVLu.html"><div class="card-title">206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 su-su-shu-shu</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1691462023-cvjEwk-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_GZFkm2.html"><div class="card-title">206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 wangyin717</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1691492743-phNpZF-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_TQ4hJH.html"><div class="card-title">Problem: 206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 nuo-41o</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1719977962-kQkhPl-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_pwFPF0.html"><div class="card-title">反转链表的三种方法</div></a>
+    <div class="meta">
+      <span>👤 flower-ca77</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1720041343-TGKyiq-PNG%E5%9B%BE%E5%83%8F.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_nK9XMT.html"><div class="card-title">206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 yu-zhou-bao-gan-jin-biao-sai-guan-jun</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1719237113-gYCgGB-206.%E7%BF%BB%E8%BD%AC%E9%93%BE%E8%A1%A8.gif" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_aIR8tY.html"><div class="card-title">206. 反转链表（递归）</div></a>
+    <div class="meta">
+      <span>👤 zhao-yong-sheng-3</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1709459019-qEQCqx-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_9KBnAo.html"><div class="card-title">反转链表思路：双指针迭代+递归法解析</div></a>
+    <div class="meta">
+      <span>👤 zAxg0TZLmj</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1709643394-ohofhi-1709643374179.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_TJi1Jb.html"><div class="card-title">lc - 206 反转链表 双指针and递归解法（自用）</div></a>
+    <div class="meta">
+      <span>👤 elated-ishi2akanf4</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1709303856-rDzcpz-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_nj8k7i.html"><div class="card-title">【高频题】【迭代写法】【递归写法】</div></a>
+    <div class="meta">
+      <span>👤 adoring-faradayokw</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1704940554-AJJsTl-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_qoeKbF.html"><div class="card-title">【递归】【迭代】反转链表</div></a>
+    <div class="meta">
+      <span>👤 ppxiao-wang</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1713251149-UDGiii-206%E9%A2%98%E7%9B%AE.gif" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_azzKls.html"><div class="card-title">206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 uuuuu-n</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1713836808-CnQICH-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_TdGcvM.html"><div class="card-title">DFS</div></a>
+    <div class="meta">
+      <span>👤 wan-5o1</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1706237126-dAcKlQ-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_S4rAw9.html"><div class="card-title">递归</div></a>
+    <div class="meta">
+      <span>👤 fghfg</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1706345492-dknjDV-1.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_3BHCPe.html"><div class="card-title">使用递归解决（206. 反转链表）</div></a>
+    <div class="meta">
+      <span>👤 present-bv</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1710487359-QXiRNI-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_LGTkbP.html"><div class="card-title">js反转链表递归</div></a>
+    <div class="meta">
+      <span>👤 matana</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1757822938-SqmVUi-aad25a8988c6a3c842b0b847a18893f.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_F97VdW.html"><div class="card-title">206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 coolhaoyu</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1696424683-RQyJwP-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_9nsla0.html"><div class="card-title">Reverse Linked List链表反向</div></a>
+    <div class="meta">
+      <span>👤 nice-chaumwyq</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1694959448-sGFpxM-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_tizJzU.html"><div class="card-title">206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 fan-3z</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1676961905-wexELW-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_4TxU8W.html"><div class="card-title">链表 ：迭代 / 递归 </div></a>
+    <div class="meta">
+      <span>👤 naughty-morsexsg</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1681294595-sWJMSr-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_HvBrBR.html"><div class="card-title">206+ 92 反转链表：递归+迭代</div></a>
+    <div class="meta">
+      <span>👤 yuhuan0311</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1680608702-QGPATN-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_TYiB8l.html"><div class="card-title">反转链表三种解法 </div></a>
+    <div class="meta">
+      <span>👤 blur-</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1683098819-APzIrs-IMG_3091.PNG" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_RGiYYl.html"><div class="card-title">206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 l-ulu-g</span>
+      <span>👍 0</span>
+      <span class="badge b-video">📹</span>
+    </div>
+    
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_fGWFvS.html"><div class="card-title">206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 121-6</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1677230949-zSrlJS-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_JCN3gM.html"><div class="card-title">递归、迭代，三种方法解“反转链表”</div></a>
+    <div class="meta">
+      <span>👤 yunhao-tech</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1679498359-WjobHi-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_PjZY6J.html"><div class="card-title">用一张图解释递归！</div></a>
+    <div class="meta">
+      <span>👤 已注销</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1649177939-sdDuBa-8fe64b2fd2bc28dc0789af9c4a4f736.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Lrai9O.html"><div class="card-title">递归解反转链表</div></a>
+    <div class="meta">
+      <span>👤 da-jia-du-jiao-wo-a-jiao</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_YSYstk.html"><div class="card-title">【C++】【高频面试母题】206. 反转链表 题解：迭代（辅助三指针）、递归/隐式栈、显式栈</div></a>
+    <div class="meta">
+      <span>👤 Algo-Goer</span>
+      <span>👍 0</span>
+      <span class="badge b-video">📹</span><span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1650955562-skQFcr-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_coeUoK.html"><div class="card-title">递归画图</div></a>
+    <div class="meta">
+      <span>👤 he_scripe</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1651034903-gjZIql-IMG_20220427_124225.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_kku660.html"><div class="card-title">反转链表</div></a>
+    <div class="meta">
+      <span>👤 sharetown-b</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1654780212-kpBfZC-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Lrai9O.html"><div class="card-title">递归解反转链表</div></a>
+    <div class="meta">
+      <span>👤 da-jia-du-jiao-wo-a-jiao</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_SlrPvP.html"><div class="card-title">206.反向链表(迭代)（递归）</div></a>
+    <div class="meta">
+      <span>👤 leon-wolfe</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1653568927-woirpO-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_FjXWEg.html"><div class="card-title">递归实现反转链表</div></a>
+    <div class="meta">
+      <span>👤 yang-760</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1660352563-fFCXOx-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_8zAFdR.html"><div class="card-title">Python3双指针+递归解法</div></a>
+    <div class="meta">
+      <span>👤 Sinkey347</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1660465966-zHHKRM-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_t7dWGy.html"><div class="card-title">递归反转链表</div></a>
+    <div class="meta">
+      <span>👤 CoderKled</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1660034481-fezbHb-iShot_2022-08-09_16.41.07.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_l8dDQn.html"><div class="card-title">反转链表,双指针法和递归法</div></a>
+    <div class="meta">
+      <span>👤 sleepy-nightingalexxl</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1660913643-HdIlms-008eGmZEly1gnrf1oboupg30gy0c44qp.gif" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_ZbdTKD.html"><div class="card-title">python递归实现</div></a>
+    <div class="meta">
+      <span>👤 hhhaa-b</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1647788284-qZfFhn-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_EeR3he.html"><div class="card-title">JavaScript递归版本——击败99.54%</div></a>
+    <div class="meta">
+      <span>👤 will-ka</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1641904629-lsOlFV-Xnip2022-01-11_12-36-59.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_kWho0O.html"><div class="card-title">反转链表（简单）</div></a>
+    <div class="meta">
+      <span>👤 harr1</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1641916168-THLdzT-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_xVJew6.html"><div class="card-title">206. 反转链表（迭代、递归）</div></a>
+    <div class="meta">
+      <span>👤 xiaocheng_tx</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1641390443-TrWDJv-202201052145815.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_JopRik.html"><div class="card-title">206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 已注销</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1642311504-JxBDax-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_39P9nr.html"><div class="card-title">第一次递归成功</div></a>
+    <div class="meta">
+      <span>👤 cha-cha-youki</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1642677045-bfbtyu-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_LYXNG3.html"><div class="card-title">C语言递归详解（关于NewHead的详细解释）</div></a>
+    <div class="meta">
+      <span>👤 chang-le--1</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1619405401-bGfHTT-QQ%E5%9B%BE%E7%89%8720210426104452.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_mqOx2W.html"><div class="card-title">206. 反转链表</div></a>
+    <div class="meta">
+      <span>👤 ablazeasteroid-h9i57J5evb</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1618453638-znzvzE-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_ZHleLg.html"><div class="card-title">[递归]利用go多返回值避免扫描的过程</div></a>
+    <div class="meta">
+      <span>👤 oliverdding</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1618498121-hlRgYt-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_1tdzLe.html"><div class="card-title">一看就能懂的反转链表递归！</div></a>
+    <div class="meta">
+      <span>👤 hidisan</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1628338397-cYiswR-Snipaste_2021-08-07_20-13-05.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_sRLg7x.html"><div class="card-title">206. 反转链表   </div></a>
+    <div class="meta">
+      <span>👤 wang-41</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1630638550-sYvMPM-Cgp9HWEsvomAOduPAAUTWbkX3kE066.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_pQVTVy.html"><div class="card-title">反转链表：单链表反转4种方法</div></a>
+    <div class="meta">
+      <span>👤 bitterSmile</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1629169182-OTbzVe-%E6%9C%AA%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6%20(1).svg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_1tdzLe.html"><div class="card-title">一看就能懂的反转链表递归！</div></a>
+    <div class="meta">
+      <span>👤 hidisan</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1628338397-cYiswR-Snipaste_2021-08-07_20-13-05.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_sdAnez.html"><div class="card-title">递归新思路</div></a>
+    <div class="meta">
+      <span>👤 wwj5921</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/6fe7b4455f376cfbf228644655f48918198d37a91db128901007fa00703f6999-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20200328191314.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_lKkKOC.html"><div class="card-title">206反转链表 递归法图示+逐行步骤剖析</div></a>
+    <div class="meta">
+      <span>👤 yue-da-207</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1600184768-uRhQDL-1-1.JPG" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_7JqeWX.html"><div class="card-title">206. 反转链表（递归方式）</div></a>
+    <div class="meta">
+      <span>👤 saberMaster</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/a2663794d39fef54ce30081d0204503a455f6fbbabec50684457bba94853aec8-%E6%9C%AA%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_s9h3oU.html"><div class="card-title">反转链表</div></a>
+    <div class="meta">
+      <span>👤 tanfy511oo</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1602820656-QIcmcp-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_XSmM4F.html"><div class="card-title">迭代、递归两种方法，逐行注释 清晰明了</div></a>
+    <div class="meta">
+      <span>👤 __sun</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/fadb888b64bed2c49cb95c33b6459ee5a45307f9274d77c69bd3afe4fab90424-%E8%BF%AD%E4%BB%A3.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_3Lfjju.html"><div class="card-title">使用递归或迭代反转链表</div></a>
+    <div class="meta">
+      <span>👤 lingsh</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/12f2393d8f1b4e5b18a739a40440d907f2d50c83f47361ed9f3b78262c58a22e-%E4%BD%BF%E7%94%A8%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_sdAnez.html"><div class="card-title">递归新思路</div></a>
+    <div class="meta">
+      <span>👤 wwj5921</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/6fe7b4455f376cfbf228644655f48918198d37a91db128901007fa00703f6999-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20200328191314.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_knfnaR.html"><div class="card-title">C++ 递归和非递归思路</div></a>
+    <div class="meta">
+      <span>👤 xdb</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/e791059d196a91d04654f11c6af369f3f66dae044ccb7adaf49a4e0cd01028a6-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_XPQJpL.html"><div class="card-title">迭代、递归（C++）</div></a>
+    <div class="meta">
+      <span>👤 biongbiong</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/413ad08c900bd9775682c7f1b7b8104af27b2d94495113f8c8229594b18a02be-23851583155229_.pic_hd.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_yYdD3F.html"><div class="card-title">两种方法递归和遍历实现</div></a>
+    <div class="meta">
+      <span>👤 tinet-shenjg</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/7a1de9558c0cfa04320aee00168bb7965c1243b564f887c7603890888b7a094e-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_iSqOss.html"><div class="card-title">先断链，再递归，后重链</div></a>
+    <div class="meta">
+      <span>👤 chenjw</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/5ed6e25602c58314143cba752fabb9f514a94a16a747a0b54c63e56791f0395e-linklist_reverse.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_iSqOss.html"><div class="card-title">先断链，再递归，后重链</div></a>
+    <div class="meta">
+      <span>👤 chenjw</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/5ed6e25602c58314143cba752fabb9f514a94a16a747a0b54c63e56791f0395e-linklist_reverse.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_A567Kq.html"><div class="card-title">非常好理解的递归解法，欢迎批评指正</div></a>
+    <div class="meta">
+      <span>👤 shui-shou-zv</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/757caf5f348bd7c1fa67f869d78e81e41dde0dc8ef3b26be3dd4bf75d2d76a9f-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_uYMRZ5.html"><div class="card-title">C++解法：反转链表(5)(接近双百递归)</div></a>
+    <div class="meta">
+      <span>👤 cui-tian-xiao</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/e51d680e3f73c56f0b840d5d0094136c464d81bfe88c7562fd8e4a2262f511de-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_s9h3oU.html"><div class="card-title">反转链表</div></a>
+    <div class="meta">
+      <span>👤 tanfy511oo</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1602820656-QIcmcp-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_mnrWRG.html"><div class="card-title">【C++、Python】206. 反转链表：迭代、递归</div></a>
+    <div class="meta">
+      <span>👤 mimosys</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Omc90K.html"><div class="card-title">Java -迭代法和递归法</div></a>
+    <div class="meta">
+      <span>👤 samans</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/a3ab872225d431450999508e9ea782a18f52c4501063749ce310e9620eeeb689.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_LATThD.html"><div class="card-title">反转链表，三种方法</div></a>
+    <div class="meta">
+      <span>👤 Mikchy</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/41212a6b16df2e2f41c1aa8a83612d49579bc6dc6f9be97642bc9843e65d5524-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_KYb3DW.html"><div class="card-title">反转链表</div></a>
+    <div class="meta">
+      <span>👤 shui-he-k</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1607503709-abrDhD-WechatIMG47.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div>
+</details>
+
+</div>
+</body>
+</html>

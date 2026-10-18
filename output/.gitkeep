@@ -1,0 +1,7 @@
+# Output Directory
+
+This directory will contain the scraped data files:
+- `recursion_problems.json` - Full problem details with filtered solutions in JSON format
+- `recursion_problems.csv` - Simplified problem summary in CSV format
+- `filtered_solutions.json` - All filtered solutions (with recursion keyword + media)
+- `filtered_solutions.csv` - Solutions summary table

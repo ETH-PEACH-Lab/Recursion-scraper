@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>✅0ms🔥 Beats 100% in Runtime🔥🔥, Easiest using Recursion✨,Subdividing Problem✨,Clear Explanation✨ – Reverse Nodes in k-Group</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_reverse-nodes-in-k-group.html">Reverse Nodes in k-Group</a> <span class="sep">›</span> <span class="cur">✅0ms🔥 Beats 100% in Runtime🔥🔥, Easiest using Recursion✨,Subdividing Problem✨,Clear Explanation✨</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">✅0ms🔥 Beats 100% in Runtime🔥🔥, Easiest using Recursion✨,Subdividing Problem✨,Clear Explanation✨</div>
+  <div class="meta">
+    <span>👤 ching_Xiang</span>
+    <span>👍 3</span>
+    <span>2024-11-23</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/reverse-nodes-in-k-group/solutions/6076308/0ms-beats-100-in-runtime-easiest-using-recursionsubdividing-problemclear-explanation/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p><img alt="NavinReverseLinkedListsol.jpeg" src="https://assets.leetcode.com/users/images/3c07d420-b733-4760-86a2-0632e9c3a5c3_1732383385.3212132.jpeg" /></p>
+<h1>Intution:</h1>
+<p>First let us understand the question in depth, As per the que, we need to reverse the linked list, but not completely instead just the particular number of consecutive sequence of k number of elements in the linked list.Then leave the elements untouched that are not present  in K-number groups.</p>
+<h1>Subdiving the problem</h1>
+<p>so my first intution was like to reverse the linked list, but each part seperately, As we all know how to reverse a linked list, (if not pls just have a look, it merely takes 5 to 10 mins max), so we can count the number of segments and reverse then seperately then linking back again to form a linked list.</p>
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+<h1>Approach</h1>
+<!-- Describe your approach to solving the problem. -->
+<p>My approach was first to calculate the number of subdivisions with k elements that i can seperate, like literally counting number of k element groups.</p>
+<p>This is done by diving the number of elements by the k value given.(counting the number of elements is done by traversing completely thro the linked list).</p>
+<p>then i have made a helper function solver, that recursively reverses and links to for a complete linked list.</p>
+<p>In this helper function to only reverse k number of groups i have set the base case as</p>
+<pre><code class="language-c++">if(it==0){return head;}
+</code></pre>
+<p>This return the head if the segment values decreased to zero du to recursive calling.</p>
+<p>The arguments sent are head,segments count,k-value.</p>
+<pre><code class="language-c++">ListNode* solver(ListNode* head,int it,int  k)
+</code></pre>
+<p>Here like we do in normal linked list reversal, we have previous,next and current variables initilased with nullptr for prev and nxt and head for cur variable.</p>
+<p>now in a forloop i reverse the linked list upto k elements</p>
+<pre><code class="language-c++">for(int i=1;i&lt;=k;i++){
+            nxt=cur-&gt;next;
+            cur-&gt;next=prev;
+            prev=cur;
+            cur=nxt;
+        }
+</code></pre>
+<p>as the reversed list will be present in prev variable as we need to add i.e link the remaining elements to the end of this reversed k elements, using while loop iam traversing to the edge of the prev variable value;</p>
+<p>after this iam recursively calling the function by assigning the value returned by the recursive call in this way i can link my just reversed linked list with the other linked lists too</p>
+<p>This is done by </p>
+<pre><code class="language-c++">_-&gt;next=solver(nxt,it-1,k);
+</code></pre>
+<p>As u see the other reversed values returned by the recursive calls are returned and linked. </p>
+<h1>Dry-Run:</h1>
+<p>Eg:<br />
+<code>1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5</code><br />
+k=2<br />
+Main Function call</p>
+<pre><code class="language-c++">prev = 2 -&gt; 1 -&gt; nullptr
+nxt = 3 -&gt; 4 -&gt; 5 -&gt; nullptr
+
+_ -&gt; next i.e 1 -&gt; next = solver(nxt,it-1,k)
+</code></pre>
+<p>1st Recursive Call</p>
+<pre><code class="language-c++">prev = 4 -&gt; 3 -&gt; nullptr
+nxt = 5 -&gt; nullptr
+
+_ -&gt; next i.e 3 -&gt; next = solver(nxt,it-1,k)
+
+</code></pre>
+<p>2nd Recursive Call</p>
+<p>will return the head<br />
+<code>5 -&gt; nullptr</code></p>
+<p>as the <code>it</code> value i.e the <code>segments</code> value has reached 0!</p>
+<h3> Backtracking</h3>
+
+<p>2nd to 1st Recursive call </p>
+<p><code>3 -&gt; next = 5 -&gt; nullptr</code></p>
+<p>that makes</p>
+<p><code>4 -&gt; 3 -&gt; 5 -&gt; nullptr</code></p>
+<p>prev variable holds these values as <code>_ -&gt; next</code> here <code>_</code> is ntng but a reference of the prev variable.</p>
+<p>so at last return the prev variable.</p>
+<h3> Main function call </h3>
+
+<p>as <code>_ -&gt; next</code> was waiting for the recursive functions to return the other values, it gets the values as <br />
+<code>4 -&gt; 3 -&gt; 5 -&gt; nullptr</code></p>
+<p>this will be linked with the first reversesd K-valued group which then transoforms into </p>
+<p><code>2 -&gt; 1 -&gt; 4 -&gt; 3 -&gt; 5 -&gt; nullptr</code></p>
+<p>As we see the desired output is attained! now we can return the prev variable!✨</p>
+<h1>Complexity</h1>
+<ul>
+<li>Time complexity:<br />
+Time complexity for this is O(N), As we know N is the input size...</li>
+</ul>
+<!-- Add your time complexity here, e.g. O(n) -->
+
+<ul>
+<li>Space complexity:<br />
+Actual Space complexity is O(N/K) as recursion stack involves but almost this is under O(1)</li>
+</ul>
+<!-- Add your space complexity here, e.g. O(n) -->
+
+<h1>Code</h1>
+<p>```cpp []<br />
+/<em><em><br />
+ * Definition for singly-linked list.<br />
+ * struct ListNode {<br />
+ *     int val;<br />
+ *     ListNode </em>next;<br />
+ *     ListNode() : val(0), next(nullptr) {}<br />
+ *     ListNode(int x) : val(x), next(nullptr) {}<br />
+ *     ListNode(int x, ListNode </em>next) : val(x), next(next) {}<br />
+ * };<br />
+<em>/<br />
+class Solution {<br />
+public:<br />
+    ListNode</em> reverseKGroup(ListNode<em> head, int k) {<br />
+        ios::sync_with_stdio(false);<br />
+        cin.tie(nullptr);<br />
+        ListNode</em> cur=head;<br />
+        int seg=0;<br />
+        while(cur){<br />
+            seg++;<br />
+            cur=cur-&gt;next;<br />
+        }<br />
+        seg=(seg/k);<br />
+        return solver(head,seg,k);<br />
+    }<br />
+    ListNode<em> solver(ListNode</em> head,int it,int  k){<br />
+        if(it==0){return head;}</p>
+<pre><code>    ListNode* prev=nullptr;
+    ListNode* nxt=nullptr;
+    ListNode* cur=head;
+
+    for(int i=1;i&lt;=k;i++){
+        nxt=cur-&gt;next;
+        cur-&gt;next=prev;
+        prev=cur;
+        cur=nxt;
+    }
+    ListNode* _=prev;
+    while(_-&gt;next){
+        _=_-&gt;next;
+    }
+
+    _-&gt;next=solver(nxt,it-1,k);
+    return prev;
+}
+</code></pre>
+<p>};<br />
+```</p>
+<p>That's All! Over!✨ Now move solving your problem! and don't forget to upvote. A lot a hardwork bruh! <br />
+Support if u like!❤️‍</p>
+<p><img alt="LC upvote.jpeg" src="https://assets.leetcode.com/users/images/c44b12c5-7c83-46f4-b6fd-293a133b9221_1732385905.7725992.jpeg" /></p>
+</div>
+</div>
+</body>
+</html>

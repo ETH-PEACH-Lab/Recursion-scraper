@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Memorization Solution || Beats 100% 0ms || C++ || Java || Python || JavaScript – Different Ways to Add Parentheses</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_different-ways-to-add-parentheses.html">Different Ways to Add Parentheses</a> <span class="sep">›</span> <span class="cur">Memorization Solution || Beats 100% 0ms || C++ || Java || Python || JavaScript</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">Memorization Solution || Beats 100% 0ms || C++ || Java || Python || JavaScript</div>
+  <div class="meta">
+    <span>👤 rak3xh</span>
+    <span>👍 1</span>
+    <span>2024-09-19</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/different-ways-to-add-parentheses/solutions/5809016/memorization-solution-beats-100-0ms-c-java-python-javascript/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>LeetCode Problem: Different Ways to Add Parentheses</h1>
+<h2>Problem Statement</h2>
+<p>Given a string expression of numbers and operators, return all possible results from computing all the different possible ways to group numbers and operators. You may return the answer in any order.</p>
+<hr />
+<h2>Intuition and Approach</h2>
+<p>The key to solving this problem is breaking down the string into smaller parts recursively by splitting at every operator (<code>+</code>, <code>-</code>, <code>*</code>). For each operator, we evaluate all possible values from the left and right substrings, and then combine them based on the operator.</p>
+<p>This is essentially a divide-and-conquer problem, where at each step we break the expression into smaller sub-expressions, compute the results for both parts, and then combine the results based on the operator between them.</p>
+<p>We also make use of <strong>memoization</strong> to store results for sub-expressions we've already computed, which helps avoid redundant calculations and speeds up the solution.</p>
+<hr />
+<h2>Algorithm</h2>
+<ol>
+<li>
+<p><strong>Base Case</strong>: If the expression consists only of a single number, we return that number as the only result.</p>
+</li>
+<li>
+<p><strong>Recursive Step</strong>: For each character in the string, if it's an operator, we:<br />
+   - Split the expression into two parts: left and right.<br />
+   - Recursively calculate all possible values for the left and right parts.<br />
+   - Combine the results from the left and right parts using the current operator.</p>
+</li>
+<li>
+<p><strong>Memoization</strong>: We store the results of each sub-expression in a map, so that if the same sub-expression is encountered again, we can retrieve the result in constant time instead of recalculating it.</p>
+</li>
+</ol>
+<hr />
+<h2>Complexity Analysis</h2>
+<h3>Time Complexity:</h3>
+<p>Each operator in the string creates two recursive calls, leading to a tree-like structure with potential exponential growth. In the worst case, this results in a time complexity of <strong>O(n * 2^n)</strong>, where <code>n</code> is the number of characters in the string.</p>
+<ul>
+<li>For each operator, we split the expression into left and right sub-expressions.</li>
+<li>Memoization helps by avoiding redundant calculations, but in the worst case, the time complexity still remains exponential.</li>
+</ul>
+<h3>Space Complexity:</h3>
+<p>The space complexity is dominated by the recursion depth and the memoization storage.</p>
+<ul>
+<li>The depth of recursion is <strong>O(n)</strong>, where <code>n</code> is the length of the expression.</li>
+<li>We store results for all possible sub-expressions in the memoization map, which leads to a space complexity of <strong>O(n * 2^n)</strong>, as there can be that many unique sub-expressions.</li>
+</ul>
+<hr />
+<h2>Code</h2>
+<p>```cpp []<br />
+class Solution {<br />
+public:<br />
+    vector<int> diffWaysToCompute(string expression) {<br />
+        unordered_map<string, vector\<int>> mem; // Initialize the memoization map<br />
+        return ways(expression, mem);<br />
+    }</p>
+<p>private:<br />
+    vector<int> ways(const string&amp; s, unordered_map<string, vector\<int>>&amp; mem) {<br />
+        // Check if the result for the current string is already memoized<br />
+        if (mem.find(s) != mem.end())<br />
+            return mem[s];</p>
+<pre><code>    vector&lt;int&gt; ans;
+
+    // Iterate through each character in the string
+    for (int i = 0; i &lt; s.length(); ++i) {
+        // If the character is an operator
+        if (ispunct(s[i])) {
+            // Recursively compute results for left and right parts
+            vector&lt;int&gt; left = ways(s.substr(0, i), mem);
+            vector&lt;int&gt; right = ways(s.substr(i + 1), mem);
+
+            // Combine results from left and right based on the operator
+            for (const int a : left) {
+                for (const int b : right) {
+                    if (s[i] == '+')
+                        ans.push_back(a + b);
+                    else if (s[i] == '-')
+                        ans.push_back(a - b);
+                    else if (s[i] == '*')
+                        ans.push_back(a * b);
+                }
+            }
+        }
+    }
+
+    // If there are no operators, it means the current string is a number
+    if (ans.empty())
+        ans.push_back(stoi(s));
+
+    // Memoize the result for the current string
+    mem[s] = ans;
+    return ans;
+}
+</code></pre>
+<p>};</p>
+<pre><code>```Java []
+import java.util.*;
+
+class Solution {
+    public List&lt;Integer&gt; diffWaysToCompute(String expression) {
+        Map&lt;String, List&lt;Integer&gt;&gt; mem = new HashMap&lt;&gt;(); // Initialize the memoization map
+        return ways(expression, mem);
+    }
+
+    private List&lt;Integer&gt; ways(String s, Map&lt;String, List&lt;Integer&gt;&gt; mem) {
+        // Check if the result for the current string is already memoized
+        if (mem.containsKey(s))
+            return mem.get(s);
+
+        List&lt;Integer&gt; ans = new ArrayList&lt;&gt;();
+
+        // Iterate through each character in the string
+        for (int i = 0; i &lt; s.length(); i++) {
+            // If the character is an operator
+            if (s.charAt(i) == '+' || s.charAt(i) == '-' || s.charAt(i) == '*') {
+                // Recursively compute results for left and right parts
+                List&lt;Integer&gt; left = ways(s.substring(0, i), mem);
+                List&lt;Integer&gt; right = ways(s.substring(i + 1), mem);
+
+                // Combine results from left and right based on the operator
+                for (int a : left) {
+                    for (int b : right) {
+                        if (s.charAt(i) == '+')
+                            ans.add(a + b);
+                        else if (s.charAt(i) == '-')
+                            ans.add(a - b);
+                        else if (s.charAt(i) == '*')
+                            ans.add(a * b);
+                    }
+                }
+            }
+        }
+
+        // If there are no operators, it means the current string is a number
+        if (ans.isEmpty())
+            ans.add(Integer.parseInt(s));
+
+        // Memoize the result for the current string
+        mem.put(s, ans);
+        return ans;
+    }
+}
+
+</code></pre>
+<p>```Python []<br />
+class Solution:<br />
+    def diffWaysToCompute(self, expression: str):<br />
+        mem = {}  # Initialize the memoization map<br />
+        return self.ways(expression, mem)</p>
+<pre><code>def ways(self, s: str, mem: dict):
+    # Check if the result for the current string is already memoized
+    if s in mem:
+        return mem[s]
+
+    ans = []
+
+    # Iterate through each character in the string
+    for i in range(len(s)):
+        # If the character is an operator
+        if s[i] in "+-*":
+            # Recursively compute results for left and right parts
+            left = self.ways(s[:i], mem)
+            right = self.ways(s[i+1:], mem)
+
+            # Combine results from left and right based on the operator
+            for a in left:
+                for b in right:
+                    if s[i] == '+':
+                        ans.append(a + b)
+                    elif s[i] == '-':
+                        ans.append(a - b)
+                    elif s[i] == '*':
+                        ans.append(a * b)
+
+    # If there are no operators, it means the current string is a number
+    if not ans:
+        ans.append(int(s))
+
+    # Memoize the result for the current string
+    mem[s] = ans
+    return ans
+</code></pre>
+<pre><code>```JavaScript []
+var diffWaysToCompute = function(expression) {
+    const mem = {}; // Initialize the memoization map
+    return ways(expression, mem);
+};
+
+function ways(s, mem) {
+    // Check if the result for the current string is already memoized
+    if (s in mem) return mem[s];
+
+    const ans = [];
+
+    // Iterate through each character in the string
+    for (let i = 0; i &lt; s.length; i++) {
+        // If the character is an operator
+        if (s[i] === '+' || s[i] === '-' || s[i] === '*') {
+            // Recursively compute results for left and right parts
+            const left = ways(s.slice(0, i), mem);
+            const right = ways(s.slice(i + 1), mem);
+
+            // Combine results from left and right based on the operator
+            for (const a of left) {
+                for (const b of right) {
+                    if (s[i] === '+') {
+                        ans.push(a + b);
+                    } else if (s[i] === '-') {
+                        ans.push(a - b);
+                    } else if (s[i] === '*') {
+                        ans.push(a * b);
+                    }
+                }
+            }
+        }
+    }
+
+    // If there are no operators, it means the current string is a number
+    if (ans.length === 0) ans.push(parseInt(s));
+
+    // Memoize the result for the current string
+    mem[s] = ans;
+    return ans;
+}
+
+</code></pre>
+<p><img alt="Screenshot 2024-09-19 211157.png" src="https://assets.leetcode.com/users/images/513d7a86-9067-4fba-b228-4158d6f626d7_1726761241.2241151.png" /></p>
+</div>
+</div>
+</body>
+</html>

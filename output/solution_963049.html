@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>0ms runtime. 3 golang solutions with optimization and explaination. Recursive | Iterative | DP. – Wildcard Matching</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_wildcard-matching.html">Wildcard Matching</a> <span class="sep">›</span> <span class="cur">0ms runtime. 3 golang solutions with optimization and explaination. Recursive | Iterative | DP.</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">0ms runtime. 3 golang solutions with optimization and explaination. Recursive | Iterative | DP.</div>
+  <div class="meta">
+    <span>👤 broook</span>
+    <span>👍 14</span>
+    <span>2020-12-07</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/wildcard-matching/solutions/963049/0ms-runtime-3-golang-solutions-with-optimization-and-explaination-recursive-iterative-dp/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p>This is a wonderful problem, and deserves serious study.</p>
+<ol>
+<li>Recursive solution.  It's not complicated. </li>
+</ol>
+<pre><code>func isMatch(s string, p string) bool {
+    if len(p) == 0 {
+        return len(s) == 0
+    }
+    if len(s) &gt; 0 &amp;&amp; (s[0] == p[0] || p[0] == '?') {
+        return isMatch(s[1:], p[1:])
+    } else if p[0] == '*' {
+        return isMatch(s, p[1:]) || (len(s) &gt; 0 &amp;&amp; isMatch(s[1:], p))
+    }
+    return false
+}
+</code></pre>
+<p>Unfortunately it is judged Time Limit Exceeded.  The test cases is specially designed  for recursive algorithms.</p>
+<p><img src="https://assets.leetcode.com/users/images/de901b4d-393d-42e1-9a8c-c0c11a7218b6_1607409296.4703355.png" width="450px" /></p>
+<p>Let's do some optimization works.</p>
+<p>Optimization 1: Pruning unnecessary recursive calls.<br />
+Thinking about this testcase <code>assert.False(t, isMatch("bbc", "*b*a"))</code>. Every time we match <code>*</code>, if the string can't match the subsequent pattern, the recursive function will call itself two times, the call tree forks.</p>
+<pre><code>isMatch(&quot;bbc&quot;, &quot;*b*a&quot;)         
+  |
+  |-isMatch(&quot;bbc&quot;, &quot;b*a&quot;)   
+  |   |
+  |   |-isMatch(&quot;bc&quot;, &quot;*a&quot;)    
+  |       |
+  |       |-isMatch(&quot;bc&quot;, &quot;a&quot;)
+  |       |
+  |       |-isMatch(&quot;c&quot;, &quot;*a&quot;)  // First fork
+  |           |                 
+  |           |-isMatch(&quot;c&quot;, &quot;a&quot;)
+  |           |
+  |           |-isMatch(&quot;&quot;, &quot;*a&quot;) // Second fork return false. This means that any suffix substring can't match the sub pattern 
+  |                               // starts with the last `*`. &quot;c&quot;,&quot;bc&quot;,&quot;bbc&quot;, none of them can match &quot;*a&quot;. 
+  |                               // **AND OF COURCE** they can't match any pattern ends with &quot;*a&quot;, such as &quot;b*a&quot;,&quot;*b*a&quot;. This's the untimate match.
+  |
+  |-isMatch(&quot;bc&quot;, &quot;*b*a&quot;)  // Third fork, This fork branch is unnecessary, because the result is 
+      |                    // already known after calling isMatch(&quot;&quot;, &quot;*a&quot;).
+      |
+      |-isMatch(&quot;bc&quot;, &quot;b*a&quot;)
+      |   |
+      |   |-isMatch(&quot;c&quot;, &quot;*a&quot;)
+      |....  
+</code></pre>
+<p>Now we know that after matching the pattern starts with the last <code>*</code>, any recursive call fork is unnecessary.<br />
+To avoid alll the unnecessary recursive forks we only need to add a <code>lastStar</code> variant and set the <code>lastStar</code> to <code>true</code> after matching the pattern starts with the last <code>*</code>. <br />
+So, here is the optimized solution:</p>
+<pre><code>func isMatch(s string, p string) bool { 
+    var lastStar bool
+    var helper func(s, p string) bool
+    helper = func(s, p string) bool {
+        if len(p) == 0 {
+            return len(s) == 0
+        }
+        var matched bool
+        if len(s) &gt; 0 &amp;&amp; (p[0] == '?' || s[0] == p[0]) {
+            matched = helper(s[1:], p[1:])
+        } else if p[0] == '*' {
+            matched = len(p) == 1 || helper(s, p[1:]) // cut the pattern string first
+            if !lastStar &amp;&amp; !matched &amp;&amp; len(s) &gt; 0 {
+                matched = helper(s[1:], p) // When running to this line for the first time, the pattern string must start with the last `*`, then cut the string.
+                lastStar = true
+            }
+        }
+        return matched
+    }
+    return helper(s, p)
+}
+</code></pre>
+<p>Optimization 2: Two directions match.<br />
+About this testcase <code>s="abababababababa", p="*b*b*b*b*e"</code>, the solution do many useless work with the prefix containing many <code>*</code>, but the last char "a" doesn't match "e", and it's easy to get. If matching in two directions, back to front and front to back, it can save some time.</p>
+<pre><code class="language-go">func isMatch(s string, p string) bool {
+    var lastStar, frontToBack bool
+    var helper func(s, p string) bool
+    helper = func(s, p string) bool {
+        if len(p) == 0 {
+            return len(s) == 0
+        }
+        var matched bool
+        if frontToBack {
+            if len(s) &gt; 0 &amp;&amp; (p[0] == '?' || s[0] == p[0]) {
+                matched = helper(s[1:], p[1:])
+            } else if p[0] == '*' {
+                matched = len(p) == 1 || helper(s, p[1:])
+                if !lastStar &amp;&amp; !matched &amp;&amp; len(s) &gt; 0 {
+                    matched = helper(s[1:], p)
+                    lastStar = true
+                }
+            }
+        } else {
+            if len(s) &gt; 0 &amp;&amp; (p[len(p)-1] == '?' || s[len(s)-1] == p[len(p)-1]) {
+                matched = helper(s[:len(s)-1], p[:len(p)-1])
+            } else if p[len(p)-1] == '*' {
+                frontToBack = true
+                matched = len(p) == 1 || helper(s, p) //Matching from front to back
+            }
+        }
+        return matched
+    }
+    return helper(s, p)
+}
+</code></pre>
+<ol start="2">
+<li>Iterative solution.<br />
+This solution is based on the same idea of the optimized recursive solution. When matching <code>*</code>, first we compare the follow up chars, if it doesn't match, we just backtrack to the last star. </li>
+</ol>
+<pre><code class="language-go">func isMatch(s string, p string) bool {
+    var i, j, matched, lastStar int
+    lastStar = -1
+    for i &lt; len(s) {
+        if j &lt; len(p) {
+            if p[j] == '?' || s[i] == p[j] {
+                i, j = i+ 1, j+ 1
+                continue
+            }
+            if p[j] == '*' {
+                matched, lastStar = i, j
+                j++
+                continue
+            }
+        }
+        if lastStar &lt; 0 {
+            return false
+        }
+        matched++ // let s[i] matches '*'
+        i, j = matched, lastStar+1
+    }
+
+    for ; j &lt; len(p); j++ {
+        if p[j] != '*' {
+            return false
+        }
+    }
+    return true
+}
+</code></pre>
+<p>Optimization: Two directions match.</p>
+<pre><code class="language-go">func isMatch(s string, p string) bool {
+    var i, j, matched, lastStar, lastI, lastJ int
+    //match from end to front until the last star
+    for lastI, lastJ = len(s)-1, len(p)-1; lastI &gt;= 0 &amp;&amp; lastJ &gt;= 0 &amp;&amp;  p[lastJ] != '*'; {
+        if p[lastJ] == '?' || s[lastI] == p[lastJ] {
+            lastI, lastJ = lastI-1, lastJ-1
+        } else {
+            return false
+        }
+    }
+    if lastJ &lt; 0 {
+        return lastI &lt; 0
+    }
+    if lastI &lt; 0 {
+        for j=0; j&lt;=lastJ; j++ {
+            if p[j] != '*' {
+                return false
+            }
+        }
+        return true
+    }
+    lastStar = -1
+    //match from front to end
+    for i &lt;= lastI {
+        if j &lt;= lastJ {
+            if p[j] == '?' || s[i] == p[j] {
+                i, j = i+1, j+1
+                continue
+            }
+            if p[j] == '*' {
+                matched, lastStar = i, j
+                j++
+                continue
+            }
+        }
+        if lastStar &lt; 0 {
+            return false
+        }
+        matched++
+        i, j = matched, lastStar+1
+    }
+
+    for ; j &lt;= lastJ; j++ {
+        if p[j] != '*' {
+            return false
+        }
+    }
+    return true
+}
+</code></pre>
+<p>Actually I think this solution is ugly. Bu it can get <code>0ms</code> running time.<br />
+<img src="https://assets.leetcode.com/users/images/dfb37fff-ed39-456b-95b1-be03e16e69fe_1607334056.0733168.png" width="500px" /></p>
+<ol start="3">
+<li>DP solution.</li>
+</ol>
+<pre><code>func isMatch(s string, p string) bool {
+    if len(p) == 0 {
+        return len(s) == 0
+    }
+    dp := make([][]bool, len(p) + 1)
+    for i := 0; i &lt; len(dp); i++ {
+        dp[i] = make([]bool, len(s) + 1)
+    }
+    dp[0][0] = true
+    for i:=1;i&lt;=len(p);i++ {
+        dp[i][0] = dp[i-1][0] &amp;&amp; p[i-1] == '*'
+        for j := 1; j &lt;= len(s); j++ {
+            switch p[i-1] {
+            case '?':
+                dp[i][j] = dp[i-1][j-1]
+            case '*':
+                dp[i][j] = dp[i-1][j] || dp[i][j-1]
+            default:
+                dp[i][j] = dp[i-1][j-1] &amp;&amp; p[i-1] == s[j-1]
+            }
+        }
+    }
+    return dp[len(p)][len(s)]
+}
+</code></pre>
+<p>Optimization:</p>
+<p>1.About this testcase <code>s="abcdefghi", p="*fghi"</code>, after loop in which match <code>f</code>, the dp row is <code>[0,0,0,0,0,0,1,0,0,0]</code>, in the next loop which is to match <code>g</code>, we don't need start from the beginning char <code>a</code>. We just start from <code>f</code> which is true correspondingly in dp array . So by saving the first matched position of last loop  to variant <code>firstMatch</code>, we can start from <code>firstMatch</code> directly in the next loop.  Also We don't need match <code>gh</code> to pattern <code>f</code>, because all behind cells are False. So we can save the last matched position to <code>lastMatch</code>, if next pattern char isn't <code>*</code>, in next loop, we can stop at <code>lastMatch + 1</code>.<br />
+2.About this testcase <code>s="ddddddddfdfdfd", p="d*******d"</code>,  the continuous <code>*</code> is exactly same as the pattern "<em>" with only one star. We can shrink the redundant <code>*</code>s to single <code>*</code> at the beginning. <br />
+3. By shrinking the pattern string, we can count the number of <code>non-*</code> chars. That can help to reduce loop length of matching <code>*</code>. In testcase <code>s="abcdefg", p="*?*?*?</code>, there are 3 <code>non-*</code> chars, so in the first loop of matching <code>*</code>, we can just stop matching at char <code>d</code>, because there are 3 more <code>non-*</code> chars in the subsequent pattern.<br />
+4. About this testcase <code>s="ddddddddfdfdfd", p="aaaaaaaaaaa"</code>, we don't need to run to the end to get the result from <code>dp[len(s)][len(p)]</code>.  After the first pattern <code>'a'</code> we already know the string doesn't match the pattern. The subsequent runs are meaningless.<br />
+5. Space optimization using an arrays instead of 2-d arrays. Reduce space from len(s)\</em>len(p)  to len(s). </p>
+<pre><code class="language-go">    ...
+    switch p[i-1] {
+    case '?':
+        dp[i][j] = dp[i-1][j-1]
+    case '*':
+        dp[i][j] = dp[i-1][j] || dp[i][j-1]
+    ...
+</code></pre>
+<p>In dp solution, determining a cell in the 2-d array need three cells which respectively are the left cell, the top cell and the left top cell.<br />
+|a|b|c|.|<br />
+|-|-|-|-|<br />
+|<strong>d</strong>|<em>e</em>|f|.|<br />
+|.|.|.|.|<br />
+In the example in the table above, Determining cell <code>e</code> depends on <code>a</code>,<code>b</code> and <code>d</code>.<br />
+To optimize the space, We can use a temporary variant <code>dpCur</code> save the  temporary result of cell <code>e</code>, because cell <code>e</code> is needed in determing cell 'f'. We can  put <code>dpcur</code> into cell <code>e</code> after determing cell <code>f</code>.</p>
+<pre><code class="language-go">func isMatch(s string, p string) bool {
+    if len(p) == 0 {
+        return len(s) == 0
+    }
+    //shrink redundant `*`.
+    var charCount int
+    var b bytes.Buffer
+    for i := 0; i &lt; len(p); i++ {
+        if p[i] != '*' || i == 0 || p[i] != p[i-1] {
+            b.WriteByte(p[i])
+            if p[i] != '*' {
+                charCount++
+            }
+        }
+    }
+    if charCount &gt; len(s) {
+        return false
+    }
+    if b.Len() &lt; len(p) {
+        p = b.String()
+    }
+
+    var dp = make([]bool, len(s)+1)
+    dp[0] = true
+    var firstMatch,stopMatch, lastMatch,dpCur = 1,0,0,true
+
+    for i := 1; i &lt;= len(p); i++ {
+        dpCur = dp[firstMatch-1] &amp;&amp; p[i-1] == '*'
+        matched := dpCur
+        if p[i-1] == '*' {
+            stopMatch = len(s) - charCount
+        } else {
+            charCount--
+            stopMatch = lastMatch + 1
+            // Don't worry about overflow if `stopMatch &gt; len(s)`. It won't happen.
+        }
+        for j := firstMatch; j &lt;= stopMatch; j++ {
+            switch p[i-1] {
+            case '?':
+                dpCur, dp[j-1] = dp[j-1], dpCur
+            case '*':
+                dpCur, dp[j-1] = dpCur || dp[j], dpCur
+            default:
+                dpCur, dp[j-1] = dp[j-1] &amp;&amp; p[i-1] == s[j-1], dpCur
+            }
+            if dpCur {
+                if !matched {
+                    firstMatch = j
+                    matched = true
+                }
+                lastMatch = j
+            }
+        }
+        if !matched {
+            //we already know s[:j] doesn't match p[:i]. So we don't need more comparing.
+            return false
+        }
+        dp[stopMatch] = dpCur
+    }
+    return dp[len(s)]
+}
+</code></pre>
+<p>I will be really surprised if someone can keep reading to here.</p>
+</div>
+</div>
+</body>
+</html>

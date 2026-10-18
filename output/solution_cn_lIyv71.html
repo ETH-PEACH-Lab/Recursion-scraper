@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>【刷穿LC】多图讲解翻转过程（哨兵技巧） – Reverse Nodes in k-Group</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_reverse-nodes-in-k-group.html">Reverse Nodes in k-Group / K 个一组翻转链表</a> <span class="sep">›</span> <span class="cur">【刷穿LC】多图讲解翻转过程（哨兵技巧）</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">【刷穿LC】多图讲解翻转过程（哨兵技巧）</div>
+  <div class="meta">
+    <span>👤 AC_OIer</span>
+    <span>👍 21</span>
+    <span>2021-01-24</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/reverse-nodes-in-k-group/solution/shua-chuan-lc-duo-tu-jiang-jie-di-gui-gu-6wr0/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h2>迭代解法（哨兵技巧）</h2>
+<p>哨兵技巧我们在前面的多道链表题讲过，让三叶来帮你回忆一下：</p>
+<p><strong>做有关链表的题目，有个常用技巧：添加一个虚拟头结点（哨兵），帮助简化边界情况的判断。</strong></p>
+<p>链表和树的题目天然适合使用递归来做。</p>
+<p>但这次我们先将简单的「递归版本」放一放，先搞清楚迭代版本该如何实现。</p>
+<p>我们可以设计一个翻转函数 <code>reverse</code> ：</p>
+<p><strong>传入节点 <code>root</code> 作为参数，函数的作用是将以 <code>root</code> 为起点的 $k$ 个节点进行翻转。</strong></p>
+<p><strong>当以 <code>root</code> 为起点的长度为 $k$ 的一段翻转完成后，再将下一个起始节点传入，直到整条链表都被处理完成。</strong></p>
+<p><strong>当然，在 <code>reverse</code> 函数真正执行翻转前，需要先确保节点 <code>root</code> 后面至少有 $k$ 个节点。</strong></p>
+<p>我们可以结合图解再来体会一下这个过程：</p>
+<p>假设当前样例为 <code>1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6-&gt;7</code> 和 <code>k = 3</code> ：<br />
+<img alt="640.png" src="https://pic.leetcode.cn/1611504231-hpqWAW-640.png" /></p>
+<p>然后我们调用 <code>reverse(cur, k)</code>，在 <code>reverse()</code> 方法内部，几个指针的指向如图所示，会通过先判断 <code>cur</code> 是否为空，从而确定是否有足够的节点进行翻转：</p>
+<p>然后先通过 <code>while</code> 循环，将中间的数量为 <code>k - 1</code> 的 next 指针进行翻转：<br />
+<img alt="640 (1).png" src="https://pic.leetcode.cn/1611504239-sVeymg-640%20(1).png" /></p>
+<p>最后再处理一下局部的头结点和尾结点，这样一次 <code>reverse(cur, k)</code> 执行就结束了：<br />
+<img alt="640 (2).png" src="https://pic.leetcode.cn/1611504254-SJiHDp-640%20(2).png" /></p>
+<p>回到主方法，将 <code>cur</code> 往前移动 <code>k</code> 步，再调用 <code>reverse(cur, k)</code> 实现 <code>k</code> 个一组翻转：<br />
+<img alt="640 (3).png" src="https://pic.leetcode.cn/1611504265-qZGFAs-640%20(3).png" /></p>
+<p>代码：<br />
+```Java []<br />
+class Solution {<br />
+    public ListNode reverseKGroup(ListNode head, int k) {<br />
+        ListNode dummy = new ListNode(-1);<br />
+        dummy.next = head;<br />
+        ListNode cur = dummy;<br />
+        while (cur != null) {<br />
+            reverse(cur, k);<br />
+            int u = k;  <br />
+            while (u-- &gt; 0 &amp;&amp; cur != null) cur = cur.next;<br />
+        }<br />
+        return dummy.next;<br />
+    }<br />
+    // reverse 的作用是将 root 后面的 k 个节点进行翻转<br />
+    void reverse(ListNode root, int k) {<br />
+        // 检查 root 后面是否有 k 个节点<br />
+        int u = k;<br />
+        ListNode cur = root;<br />
+        while (u-- &gt; 0 &amp;&amp; cur != null) cur = cur.next;<br />
+        if (cur == null) return;</p>
+<pre><code>    // 进行翻转
+    ListNode tail = cur.next;
+    ListNode a = root.next, b = a.next;
+    // 当需要翻转 k 个节点时，中间就有 k - 1 个 next 指针需要翻转
+    while (k-- &gt; 1) {
+        ListNode c = b.next;
+        b.next = a;
+        a = b;
+        b = c;
+    }
+    root.next.next = tail;
+    root.next = a;
+}
+</code></pre>
+<p>}</p>
+<pre><code>* 时间复杂度：会将每个节点处理一遍。复杂度为 $O(n)$
+* 空间复杂度：$O(1)$
+
+
+---
+
+## 递归解法
+
+搞懂了较难的「迭代哨兵」版本之后，常规的「递归无哨兵」版本写起来应该更加容易了。
+
+需要注意的是，当我们不使用「哨兵」时，检查是否足够 $k$ 位，只需要检查是否有 $k - 1$ 个 $next$ 指针即可。
+
+代码：
+```Java []
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        int u = k;
+        ListNode p = head;
+        while (p != null &amp;&amp; u-- &gt; 1) p = p.next;
+        if (p == null) return head;
+
+        ListNode tail = head;
+        ListNode prev = head, cur = prev.next;
+        u = k;
+        while (u-- &gt; 1) {
+            ListNode tmp = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = tmp;
+        }
+        tail.next = reverseKGroup(cur, k);
+        return prev;
+    }
+}
+</code></pre>
+<ul>
+<li>时间复杂度：会将每个节点处理一遍。复杂度为 $O(n)$</li>
+<li>空间复杂度：只有忽略递归带来的空间开销才是 $O(1)$</li>
+</ul>
+<hr />
+<h2>最后</h2>
+<p><strong>如果有帮助到你，请给题解点个赞和收藏，让更多的人看到 ~ ("▔□▔)/</strong></p>
+<p>也欢迎你 <a href="https://oscimg.oschina.net/oscnet/up-19688dc1af05cf8bdea43b2a863038ab9e5.png">关注我</a> 和 加入我们的<a href="https://leetcode.cn/u/ac_oier/">「组队打卡」</a>小群 ，提供写「证明」&amp;「思路」的高质量题解 </p>
+</div>
+</div>
+</body>
+</html>

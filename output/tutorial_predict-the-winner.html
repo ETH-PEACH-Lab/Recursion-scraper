@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Predict the Winner – Editorial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+<style>.vimeo-link{display:inline-flex;align-items:center;gap:8px;
+            background:#1ab7ea;color:#fff;font-weight:600;
+            padding:10px 20px;border-radius:6px;margin:12px 0;font-size:.95em}
+.vimeo-link:hover{background:#0d9bd4;color:#fff;text-decoration:none}</style>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_predict-the-winner.html">Predict the Winner</a> <span class="sep">›</span> <span class="cur">Editorial</span></nav>
+<div class="wrap"><div class="page-title">486. Predict the Winner — Official Editorial</div>
+<div class="page-sub" style="margin-bottom:20px">
+  <span class="badge b-medium">Medium</span> <span class="badge b-tag">Array</span> <span class="badge b-tag">Math</span> <span class="badge b-tag">Dynamic Programming</span> <span class="badge b-tag">Recursion</span> <span class="badge b-tag">Game Theory</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/predict-the-winner/" target="_blank" style="font-size:.85em">↗ Problem</a>
+  &nbsp;·&nbsp;
+  <a href="problem_predict-the-winner.html" style="font-size:.85em">💬 Community Solutions</a>
+</div>
+<div class="sol-body">
+  <p>[TOC]</p>
+<h2>Video Solution</h2>
+<hr />
+<div>
+<div class="video-container">
+      <a href="https://leetcode.com/problems/predict-the-winner/editorial/" target="_blank" class="vimeo-link">▶ Watch Video on LeetCode</a>
+</div>
+</div>
+
+<h2>Solution</h2>
+<hr />
+<h3>Overview</h3>
+<p>Before introducing the following approaches, we need to clarify the requirements of the problem. The problem isn't asking for what the final scores will be, but only if Player 1 will have a score greater than or equal to Player 2. Thus, to make the task easier, we can focus only on the <strong>score difference</strong>.</p>
+<blockquote>
+<ul>
+<li>10 points for Player 1 and 10 points for Player 2 
+or </li>
+<li>100 points for Player 1 and 10 points for Player 2</li>
+</ul>
+<p>There is no difference, as long as Player 1's score is greater than or equal to Player 2's, Player 1 has won.</p>
+</blockquote>
+<p>During Player 1's turn, if he scores <code>x</code> points, his score difference to Player 2 will increase by <code>x</code>. </p>
+<p>Conversely, if Player 2 scores <code>y</code> points during his turn, it will <strong>decrease</strong> the score difference between Player 1 and Player 2 by <code>y</code> points.</p>
+<hr />
+<h3>Approach 1: Recursion</h3>
+<h4>Intuition</h4>
+<p>We can define a recursive function <code>maxDiff(left, right)</code> that takes the starting and ending indices <code>left</code> and <code>right</code> of the list as input to maximize the current score difference between the two players. </p>
+<p>At each step, we simulate the current player selecting a number from the list and then call the function recursively to determine the optimal move for the next player. We update the score difference based on the player's move, and then return the maximum score difference that the first player can achieve.</p>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/486/d1.png" /></p>
+<blockquote>
+<p>Please note that: Both players play optimally, meaning they will choose the move that maximizes the score difference of himself from the other. </p>
+</blockquote>
+<p>Taking the example in the figure, when it is the green player's turn for the subarray <code>nums[left ~ right]</code>, his maximum score difference is denoted by <code>maxDiff(left, right)</code>. He has two choices: <code>nums[left]</code> and <code>nums[right]</code>. </p>
+<p>If he chooses <code>nums[left]</code> and increases the score difference by <code>nums[left]</code>, then the next move will be made by the red player on the remaining array <code>nums[left + 1 ~ right]</code>, and <code>maxDiff(left + 1, right)</code> represents the max score difference that the red player could lead the green player by. </p>
+<p>However, this subproblem <code>maxDiff(left + 1, right)</code> is from the perspective of the red player, and the positive gain for the red player is exactly the negative gain for the green player. Therefore, in our formula for counting the current score gain of green player, the impact factor of the red player's gain is -1.</p>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/486/d2.png" /></p>
+<p>Therefore, by picking <code>nums[left]</code>, the green player's maximum score difference is <code>nums[left]</code> <strong>minus</strong> <code>maxDiff(left + 1, right)</code>. Likewise, by picking <code>nums[right]</code>, his maximum score difference is <code>nums[right]</code> <strong>minus</strong> <code>maxDiff(left, right - 1)</code>.</p>
+<p>The green player shall pick the larger one of the two, that is:</p>
+<p><code>maxDiff(left, right) = max(nums[left] - maxDiff(left + 1, right), nums[right] - maxDiff(left, right - 1))</code>. We can recursively solve the problem until we reach the base case <code>left = right</code>, where the game ends after the last player picks the final number and the maximum score difference he can make is <code>nums[left]</code>.</p>
+<p><br></p>
+<h4>Algorithm</h4>
+<p>1) Define <code>maxDiff(left, right)</code> as the maximum score difference the current player can achieve.
+    - If <code>left = right</code>, return <code>nums[left]</code>.
+    - Otherwise, the current player can pick <code>nums[left]</code> or <code>nums[right]</code>, the maximum score difference he can get is the larger one from <code>nums[left] - maxDiff(left + 1, right)</code> and <code>nums[right] - maxDiff(left, right - 1)</code>.</p>
+<p>2) Return if <code>maxDiff(0, n - 1) &gt;= 0</code>. This call is from the perspective of the first player, and the first player is the winner if the players have the same score (difference of 0).</p>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/Ndrs2fcv/shared" frameBorder="0" width="100%" height="361" name="Ndrs2fcv"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Let $$n$$ be the length of the input array <code>nums</code>.</p>
+<ul>
+<li>
+<p>Time complexity: $$O(2^n)$$ </p>
+<ul>
+<li>The depth of the call stack will be $n$ once the base cases are reached because each call moves <code>left</code> and <code>right</code> closer by one.</li>
+<li>For each problem except the base case, the current player can either pick an element from the front or end. That means each call to <code>maxDiff</code> creates two more calls to <code>maxDiff</code>.</li>
+</ul>
+<p>Thus the recursion tree having a depth of $$n$$ has $$O(2^n)$$ nodes, which is the time it takes to finish the search. <strong>Note that the constraints have <code>n &lt;= 20</code>. This approach would not be feasible for larger values of <code>n</code>.</strong> </p>
+</li>
+<li>
+<p>Space complexity: $$O(n)$$</p>
+<ul>
+<li>The space complexity depends on the number of recursive calls of <code>maxDiff</code>. It takes $$n$$ recursion steps to reach the base case, thus the space complexity is $$O(n)$$.</li>
+</ul>
+</li>
+</ul>
+<p><br/></p>
+<hr />
+<h3>Approach 2: Dynamic Programming, Top-Down</h3>
+<h4>Intuition</h4>
+<blockquote>
+<p>If you are not familiar with Dynamic Programming (DP), you can refer to our <a href="https://leetcode.com/explore/featured/card/dynamic-programming/">Dynamic Programming Explore Card</a> for more information.</p>
+</blockquote>
+<p>In the previous solution, we were calculating all encountered <code>maxScore(left, right)</code> recursively. However, this included a lot of redundant calculations (as highlighted by colors in the figure below). Considering the total number of combinations that left and right can form is only $$O(n^2)$$, if we use a cache to store the calculated <code>maxScore(left, right)</code>, we do not need to repeatedly calculate the same function from then on.</p>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/486/d3.png" /></p>
+<p>Therefore, we can use a hashmap or a two-dimensional array <code>memo</code> as a cache. Every time we calculate the value of <code>maxScore(left, right)</code>, we store it in <code>memo</code>. During the subsequent calculation process, if we find that <code>maxScore(left, right)</code> has already been calculated, we can simply retrieve its value <code>memo[(left, right)]</code> from the <code>memo</code>.</p>
+<p><br></p>
+<h4>Algorithm</h4>
+<p>1) Initialize a 2D array or a hash map <code>memo</code> as a cache.</p>
+<p>2) Define <code>maxDiff(left, right)</code> as the maximum score difference the current player can achieve. If the state <code>(left, right)</code> is already stored in <code>memo</code>, we can just return <code>memo[(left, right)]</code>. Otherwise:
+    - If <code>left = right</code>, return <code>nums[left]</code>.
+    - Otherwise, the current player can pick <code>nums[left]</code> or <code>nums[right]</code>, the maximum score difference he can get is the larger one from <code>nums[left] - maxDiff(left + 1, right)</code> and <code>nums[right] - maxDiff(left, right - 1)</code>.
+    - Store this result in <code>memo</code> to avoid repeated calculations.
+    - Return <code>memo[(left, right)]</code>.</p>
+<p>3) Return if <code>maxDiff(0, n - 1) &gt;= 0</code>. </p>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/3JteddHw/shared" frameBorder="0" width="100%" height="500" name="3JteddHw"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Let $$n$$ be the length of the input array <code>nums</code>.</p>
+<ul>
+<li>
+<p>Time complexity: $$O(n^2)$$</p>
+<ul>
+<li>We use a cache <code>memo</code> to store the computed states. During the recursion, the cache makes sure we don't calculate a state more than once. The number of states <code>(left, right)</code> is $$O(n^2)$$.</li>
+</ul>
+</li>
+<li>
+<p>Space complexity: $$O(n^2)$$</p>
+<ul>
+<li>We use a hashmap or a two-dimensional array <code>memo</code> as memory, it contains at most $$O(n^2)$$ distinct states.</li>
+</ul>
+</li>
+</ul>
+<p><br/></p>
+<hr />
+<h3>Approach 3: Dynamic Programming, Bottom-Up</h3>
+<h4>Intuition</h4>
+<p>With recursion, we start at the original problem <code>(left = 0, right = n - 1)</code> and move down the tree, combining answers to smaller subproblems to eventually form the answer to the original problem. We can also start with the smaller subproblems and build up the solution for the larger problem. We represent all subproblems using a 2D array <code>dp</code>, where <code>dp[left][right]</code> indicates the maximum score that the current player can get by playing on the subarray <code>nums[left ~ right]</code>. We start filling up the 2D array from the base cases, solving smaller subproblems and using their solutions to solve larger subproblems until we reach the final problem <code>dp[0][n - 1]</code>.</p>
+<blockquote>
+<p>Note that <code>dp[left][right]</code> is analogous to what <code>maxDiff(left, right)</code> was in the previous approaches.</p>
+</blockquote>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/486/1.png" /></p>
+<p>First, we fill up the diagonal elements of the 2D array <code>dp[left][left]</code> with the value <code>nums[left]</code>, since the player can only choose one number from this subarray (this is the base case). Then, we move to the next diagonal elements <code>dp[left][left + 1]</code>, where we calculate the maximum score that the current player can get by choosing either <code>nums[left]</code> or <code>nums[left + 1]</code>. After that, we move on to larger subarrays <code>dp[left][left + 2]</code>, <code>dp[left][left + 3]</code>, and so on until we reach the final subarray <code>dp[0][n - 1]</code>. To fill <code>dp[left][right]</code>, we consider two cases: either the current player chooses the number <code>nums[left]</code> or the number <code>nums[right]</code>. </p>
+<ul>
+<li>If he selects <code>nums[left]</code>, his score difference is increased by <code>nums[left] - dp[left + 1][right]</code>.</li>
+<li>If he selects <code>nums[right]</code>, his score difference is increased by <code>nums[right] - dp[left][right - 1]</code>.</li>
+</ul>
+<p>Since we are filling the <code>dp</code> table in a bottom-up manner, both <code>dp[left + 1][right]</code> and <code>dp[left][right - 1]</code> have been solved previously.</p>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/486/2.png" /></p>
+<p>When the iteration ends, <code>dp[0][n - 1]</code> depicts the maximum score difference achieved by the first player, and we can determine if he wins by comparing it with 0.</p>
+<p><br></p>
+<h4>Algorithm</h4>
+<p>1) Initialize an empty array <code>dp</code> of size <code>n * n</code>.</p>
+<p>2) Fill each diagonal value <code>dp[i][i]</code> with <code>nums[i]</code>. </p>
+<p>3) Start with smaller subarrays <code>nums[left ~ left + diff] = nums[left][right]</code>, for each <code>diff</code> from <code>1</code> to <code>n - 1</code>, fill the diagonal cells <code>dp[left][right]</code> as the larger one from:</p>
+<pre><code>- `nums[left] - dp[left + 1][right]`
+- `nums[right] - dp[left][right - 1]`
+</code></pre>
+<p>4) Return if <code>dp[0][n - 1] &gt;= 0</code> when the iteration is complete.</p>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/bw54EcQ9/shared" frameBorder="0" width="100%" height="378" name="bw54EcQ9"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Let $$n$$ be the length of the input array <code>nums</code>.</p>
+<ul>
+<li>
+<p>Time complexity: $$O(n^2)$$</p>
+<ul>
+<li>We create a 2D array of size $$n  imes n$$ as memory. The value of each cell is computed once, which takes $$O(1)$$ time.</li>
+</ul>
+</li>
+<li>
+<p>Space complexity: $$O(n^2)$$</p>
+<ul>
+<li>We create a 2D array of size $$n  imes n$$ as memory.</li>
+</ul>
+</li>
+</ul>
+<p><br/></p>
+<hr />
+<h3>Approach 4: Dynamic Programming, Space-Optimized</h3>
+<h4>Intuition</h4>
+<p>Recall the order of filling in <code>dp</code> in the previous approach. We fill the first diagonal which stands for all subarrays of length 1 in the 1st round, then move on to the upper secondary diagonal that represent all subarrays of length 2, and so on.</p>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/486/3.png" /></p>
+<blockquote>
+<p>We only need the previous (lower) diagonal to fill the current (upper) diagonal.</p>
+</blockquote>
+<p>By observing the pattern of filling <code>dp</code>, we can optimize the space complexity to $O(n)$ by only storing the previous diagonal of <code>dp</code>, and updating <code>new_dp</code> of shorter length. Then we can reset <code>dp</code> as <code>dp = new_dp</code> and reuse it for the next round.</p>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/486/4.png" /></p>
+<p>Furthermore, we don't even need to create <code>new_dp</code>. We can simply update <code>dp</code> in-place repeatedly:</p>
+<ul>
+<li>Begin with: <code>[dp[0], dp[1], dp[2], dp[3]]</code></li>
+<li>Update the 1st element: <code>[new_dp[0], dp[1], dp[2], dp[3]]</code>.</li>
+<li>Update the 2nd element: <code>[new_dp[0], new_dp[1], dp[2], dp[3]]</code></li>
+<li>Update the 3rd element: <code>[new_dp[0], new_dp[1], new_dp[2], dp[3]]</code></li>
+</ul>
+<p>now the first 3 elements in <code>dp</code> will represent <code>new_dp</code>.</p>
+<p><img alt="img" src="https://leetcode.com/articles/Figures/486/5.png" /></p>
+<p>We continue this updating process for <code>n</code> rounds, and the first element in the array represents <code>dp[0][n-1]</code> in the 2D array, which is the maximum score difference achieved by Player 1.</p>
+<p><br></p>
+<h4>Algorithm</h4>
+<p>1) Initialize an empty array <code>dp</code> of size <code>n</code>.</p>
+<p>2) Set each value <code>dp[i]</code> as <code>nums[i]</code>. </p>
+<p>3) Start with each shorter diagonal, for each <code>diff</code> from <code>1</code> to <code>n - 1</code>, update the first <code>n - diff</code> cells in place using every two adjacent cells in <code>dp</code>. <code>dp[left]</code> equals the larger one of:
+    - <code>nums[left] - dp[left + 1]</code>
+    - <code>nums[right] - dp[left]</code></p>
+<p>4) Return if <code>dp[0] &gt;= 0</code> after the iteration is complete.</p>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/oSYHMMxq/shared" frameBorder="0" width="100%" height="310" name="oSYHMMxq"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Let $$n$$ be the length of the input array <code>nums</code>.</p>
+<ul>
+<li>
+<p>Time complexity: $$O(n^2)$$</p>
+<ul>
+<li>We fill <code>n</code> cells of <code>dp</code> in the 1st round, then <code>n - 1</code> cells in the 2nd round, and so on. The total number of updated cells is $$O(n^2)$$, each cell takes constant time. </li>
+</ul>
+</li>
+<li>
+<p>Space complexity: $$O(n)$$</p>
+<ul>
+<li>We only use an array of size $$n$$.</li>
+</ul>
+</li>
+</ul>
+<p><br/></p>
+</div></div>
+</body>
+</html>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>9 Fibonacci Algorithms | The Most Complete Solutions | Image Explanation – Fibonacci Number</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_fibonacci-number.html">Fibonacci Number</a> <span class="sep">›</span> <span class="cur">9 Fibonacci Algorithms | The Most Complete Solutions | Image Explanation</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">9 Fibonacci Algorithms | The Most Complete Solutions | Image Explanation</div>
+  <div class="meta">
+    <span>👤 longluo</span>
+    <span>👍 29</span>
+    <span>2022-03-16</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/fibonacci-number/solutions/1854398/9-fibonacci-algorithms-the-most-complete-solutions-image-explanation/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p><a href="https://leetcode.com/">Leetcode</a> <a href="https://leetcode.com/problems/fibonacci-number">509. Fibonacci Number</a>.</p>
+<p><strong><em>By Frank Luo</em></strong></p>
+<p>The <a href="https://en.wikipedia.org/wiki/Fibonacci_number">Fibonacci Sequence</a> are the numbers in the following integer sequence:</p>
+<p>$1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, \dots$</p>
+<p><img alt="Fibonacci Sequences" src="https://assets.leetcode.com/users/images/38ca0b09-bb5b-4769-92fc-bc58b57e19e2_1647336405.0266523.png" /></p>
+<p>We can see the fibonacci series seqences in the natrual world like the sunflower, the nautilus and the galaxy.</p>
+<p><img alt="Fibonacci Natrual" src="https://assets.leetcode.com/users/images/6879587c-9c7b-445f-b450-478be1ab69a9_1647336416.5666015.jpeg" /></p>
+<p>In mathematical terms, the sequence $F(n)$ of Fibonacci numbers is defined by the recurrence relation </p>
+<p>F(n)=F(n-1)+F(n-2)</p>
+<p>with seed values $F(0) = 0$ and $F(1) = 1$.</p>
+<p>The Fibonacci sequence is often used in introductory computer science courses to explain recurrence relations, dynamic programming, and proofs by induction. Because the Fibonacci sequence is central to several core computer science concepts, the following programming problem has become fairly popular in software engineering interviews.</p>
+<p>Given an input $n$, return the $nth$ number in the Fibonacci sequence.</p>
+<p>Below I've listed $9$ approaches to this problem. These different solutions illustrate different programming and algorithmic techniques that can be used to solve other problems. You'll notice that many of these solutions build from previous solutions.</p>
+<h1>Solution 1 Lookup Table - 32 bit signed integers only</h1>
+<p>If we don't need to solve very large values and are time-sensitive, we can calculate all values in advance.</p>
+<p>This function will work strictly in the case that we’re dealing with $32$ bit signed integers (which could be a constraint in languages like Java, C/C++, etc.)</p>
+<p>The Fibonacci sequence grows very quickly. So fast, that only the first $47$ Fibonacci numbers fit within the range of a $32$ bit signed integer. This method requires only a quick list lookup to find the nth Fibonacci number, so it runs in constant time. Since the list is of fixed length, this method runs in constant space as well.</p>
+<pre><code class="language-java">class Solution {
+    int[] fib_nums = {
+            0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181,
+            6765, 10946, 17711, 28657, 46368, 75025, 121393, 196418, 317811, 514229, 832040,
+            1346269, 2178309, 3524578, 5702887, 9227465, 14930352, 24157817, 39088169, 63245986,
+            102334155, 165580141, 267914296, 433494437, 701408733, 1134903170, 1836311903
+    };
+
+    public int fib(int n) {
+        return fib_nums[n];
+    }
+};
+</code></pre>
+<h2>Analysis</h2>
+<ul>
+<li><strong>Time Complexity</strong>: $O(1)$</li>
+<li><strong>Space Complexity</strong>: $O(1)$</li>
+</ul>
+<h1>Solution 2 Recursion</h1>
+<p>A simple method that is a direct <strong>recursive</strong> implementation mathematical recurrence relation is given above.</p>
+<pre><code class="language-java">//Fibonacci Series using Recursion
+public static int fib(int n) {
+    if (n &lt;= 1) {
+        return n;
+    }
+
+    return fib(n - 1) + fib(n - 2);
+}
+</code></pre>
+<h2>Analysis</h2>
+<ul>
+<li><strong>Time Complexity</strong>: $O(\phi^n)$, where $\phi$ is the golden ratio ($\phi \simeq 1.618...$).</li>
+</ul>
+<p>If we count the number of calls that this algorithm makes for any n, we will find its runtime complexity.</p>
+<p>Let $T(n)$ refer to the number of calls to fib1 that are required to evaluate fib1(n).</p>
+<p>When fib1(0) or fib1(1) is called, fib1 doesn't make any additional recursive calls, so $T(0)$ and $T(1)$ must equal 1.</p>
+<p>For any other n, when fib1(n) is called, fib1(n - 1) and fib1(n - 2) are also called. </p>
+<p>So</p>
+<p>T(n) = 1 + T(n - 1) + T(n - 2)</p>
+<p>Using more advanced mathematical techniques, like generating functions, one can solve the recurrence $T$, and find that $T$ scales as $O(\phi)$.</p>
+<p>If the original recursion tree were to be implemented then this would have been the tree but now for n times the recursion function is called.</p>
+<p>Original tree for recursion:</p>
+<pre><code class="language-txt">                          fib(5)   
+                     /                \\
+               fib(4)                fib(3)   
+             /        \\              /       \\ 
+         fib(3)      fib(2)         fib(2)   fib(1)
+        /    \\       /    \\        /      \\
+  fib(2)   fib(1)  fib(1) fib(0) fib(1) fib(0)
+  /     \\
+fib(1) fib(0)
+</code></pre>
+<p>Optimized tree for recursion for code above:</p>
+<pre><code class="language-txt">    fib(5) 
+    fib(4)
+    fib(3)
+    fib(2)
+    fib(1)
+</code></pre>
+<ul>
+<li><strong>Space Complexity</strong>: $O(n)$ if we consider the function call stack size, otherwise $O(1)$.</li>
+</ul>
+<h1>Solution 3 Dynamic Programming</h1>
+<p>We can avoid the repeated work done in <strong>Recursion</strong> solution by storing the Fibonacci numbers calculated so far. </p>
+<pre><code class="language-java">// Dynamic Programming
+public int fib(int n) {
+    /* Declare an array to store Fibonacci numbers. */
+    int f[] = new int[n + 1]; // 1 extra to handle case, n = 0
+    int i;
+
+    /* 0th and 1st number of the series are 0 and 1*/
+    f[0] = 1;
+    f[1] = 1;
+
+    for (i = 2; i &lt;= n; i++) {
+        /* Add the previous 2 numbers in the series and store it */
+        f[i] = f[i - 1] + f[i - 2];
+    }
+
+    return f[n];
+}
+</code></pre>
+<h2>Analysis</h2>
+<ul>
+<li><strong>Time Complexity</strong>: $O(n)$</li>
+<li><strong>Space Complexity</strong>: $O(n)$</li>
+</ul>
+<h1>Solution 4 DP using memoization(Top down approach)</h1>
+<p>We can avoid the repeated work done in Solution 2 Recursion by storing the Fibonacci numbers calculated so far. We just need to store all the values in an array.</p>
+<pre><code class="language-java">    // Initialize array of dp
+    public static int[] dp = new int[31];
+
+    public static int fib(int n) {
+        if (n &lt;= 1) {
+            return n;
+        }
+
+        // Temporary variables to store values of fib(n-1) &amp; fib(n-2)
+        int first, second;
+
+        if (dp[n - 1] != -1) {
+            first = dp[n - 1];
+        } else {
+            first = fib(n - 1);
+        }
+
+        if (dp[n - 2] != -1) {
+            second = dp[n - 2];
+        } else {
+            second = fib(n - 2);
+        }
+
+        // Memoization
+        return dp[n] = first + second;
+    }
+</code></pre>
+<h2>Analysis</h2>
+<ul>
+<li><strong>Time Complexity</strong>: $O(n)$</li>
+<li><strong>Space Complexity</strong>: $O(n)$</li>
+</ul>
+<h1>Solution 5 Iterative (Space Optimized Method 3)</h1>
+<p>We can optimize the space used in Solution 3 Dynamic Programming by storing the previous two numbers only because that is all we need to get the next Fibonacci number in series. </p>
+<p>This solution is one of the simplest and most efficient algorithms on this list. This function has a loop that runs through n iterations before returning, and each iteration does constant work, making the algorithm run in $O(n)$ time. This function doesn't use any extra data structures, and it isn't recursive, so we can say that it uses $O(1)$ space.</p>
+<pre><code class="language-java">// Fibonacci Series using Space Optimized Method
+class Solution {
+    public int fib(int n) {
+        if (n &lt; 2) {
+            return n;
+        }
+        int p = 0, q = 0, r = 1;
+        for (int i = 2; i &lt;= n; ++i) {
+            p = q; 
+            q = r; 
+            r = p + q;
+        }
+        return r;
+    }
+}
+</code></pre>
+<h2>Analysis</h2>
+<ul>
+<li><strong>Time Complexity</strong>: $O(n)$</li>
+<li><strong>Space Complexity</strong>: $O(1)$</li>
+</ul>
+<h1>Solution 6 Recurrence Matrix</h1>
+<p>This is the most mathematical solution, and it requires some basic understanding of matrix multiplication.</p>
+<p>Consider the following matrix $M$:</p>
+<p>M = \begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \\ \end{bmatrix}</p>
+<p>If $f_{i-1}$ and $f_{i-2}$ are the $i-1$th and the $i-2$th Fibonacci numbers, the following matrix product can give us the ith Fibonacci number $f_{i}$:</p>
+<p>M * \begin{bmatrix} f_{i - 2} \\ f_{i - 1} \end{bmatrix}<br />
+= \begin{bmatrix} f_{i - 1} \\ f_{i - 1} + f_{i - 2} \end{bmatrix}<br />
+= \begin{bmatrix} f_{i - 1} \\ f_{i} \end{bmatrix}</p>
+<p>Using this property of $M$, one can find $f_{n}$ by computing the product</p>
+<p>M^n \cdot \begin{bmatrix} f_0 \\ f_1 \end{bmatrix} = M^n \cdot \begin{bmatrix} 0 \\ 1 \end{bmatrix}</p>
+<p>and returning the first element of the vector.</p>
+<pre><code class="language-java">class Solution {
+    public static int fib(int n) {
+        int F[][] = new int[][]{{1, 1}, {1, 0}};
+        if (n == 0) {
+            return 0;
+        }
+        power(F, n - 1);
+        return F[0][0];
+    }
+
+    /* Helper function that multiplies 2 matrices F and M of size 2*2, and
+    puts the multiplication result back to F[][] */
+    public static void multiply(int F[][], int M[][]) {
+        int x = F[0][0] * M[0][0] + F[0][1] * M[1][0];
+        int y = F[0][0] * M[0][1] + F[0][1] * M[1][1];
+        int z = F[1][0] * M[0][0] + F[1][1] * M[1][0];
+        int w = F[1][0] * M[0][1] + F[1][1] * M[1][1];
+
+        F[0][0] = x;
+        F[0][1] = y;
+        F[1][0] = z;
+        F[1][1] = w;
+    }
+
+    /* Helper function that calculates F[][] raise to the power n and puts the
+    result in F[][]
+    Note that this function is designed only for fib() and won't work as general
+    power function */
+    public static void power(int F[][], int n) {
+        int i;
+        int M[][] = new int[][]{{1, 1}, {1, 0}};
+
+        // n - 1 times multiply the matrix to {{1,0},{0,1}}
+        for (i = 2; i &lt;= n; i++) {
+            multiply(F, M);
+        }
+    }
+}
+</code></pre>
+<h2>Analysis</h2>
+<ul>
+<li><strong>Time Complexity</strong>: $O(n)$ </li>
+<li><strong>Space Complexity</strong>: $O(1)$ </li>
+</ul>
+<h1>Solution 7 Fast Matrix Power(Optimized Method 6)</h1>
+<p>The Solution 6 Recurrence Matrix can be optimized to work in $O(logn)$ time complexity. We can do recursive multiplication to get $\    exttt{power}(M, n)$ in the previous method (Similar to the optimization done in this post).</p>
+<p>The key here is to compute $M^n$ using the successive square method. Using this algorithm, $M^n$ is computed in $O(logn)$ time(Note that for a fixed matrix size, the matrix muliplication algorithm takes a constant amount of time).</p>
+<p>Then, $M^n$ is multiplied by $\begin{bmatrix} 0 \\ 1 \end{bmatrix}$, and the top elemen of the product is returned.</p>
+<p>This algorithm uses $O(logn)$ to compute $M^n$, and constant space, as the intermediary matricies can be reclaimed by the garbage collecter.</p>
+<pre><code class="language-java">class Solution {
+    public int fib(int n) {
+        if (n &lt; 2) {
+            return n;
+        }
+        int[][] q = {{1, 1}, {1, 0}};
+        int[][] res = pow(q, n - 1);
+        return res[0][0];
+    }
+
+    public int[][] pow(int[][] a, int n) {
+        int[][] ret = {{1, 0}, {0, 1}};
+        while (n &gt; 0) {
+            if ((n &amp; 1) == 1) {
+                ret = multiply(ret, a);
+            }
+            n &gt;&gt;= 1;
+            a = multiply(a, a);
+        }
+        return ret;
+    }
+
+    public int[][] multiply(int[][] a, int[][] b) {
+        int[][] c = new int[2][2];
+        for (int i = 0; i &lt; 2; i++) {
+            for (int j = 0; j &lt; 2; j++) {
+                c[i][j] = a[i][0] * b[0][j] + a[i][1] * b[1][j];
+            }
+        }
+        return c;
+    }
+}
+</code></pre>
+<h2>Analysis</h2>
+<ul>
+<li><strong>Time Complexity</strong>: $O(logn)$.</li>
+<li><strong>Space Complexity</strong>: $O(logn)$, if we consider the function call stack size, otherwise $O(1)$.</li>
+</ul>
+<h1>Solution 8 O(logn) Time</h1>
+<p>Below is one more interesting recurrence formula that can be used to find nth Fibonacci number in $O(logn)$ time. </p>
+<p>If $n$ is even then $k = n/2$:</p>
+<p>F(n) = [2F(k-1) + F(k)] \cdot F(k)</p>
+<p>If $n$ is odd then $k = (n + 1)/2$</p>
+<p>F(n) = F(k)F(k) + F(k-1)F(k-1)</p>
+<p>How does this formula work? </p>
+<p>The formula can be derived from above matrix equation. </p>
+<p>A^n=\begin{pmatrix} F_{n+1},&amp;F_n \\ F_n,&amp;F_{n-1} \end{pmatrix}</p>
+<p>Taking determinant on both sides, we get: </p>
+<p>(-1)^n = F_{n+1}F_{n-1} - F_n^2</p>
+<p>Moreover, since $A^nA^m = A^{n+m}$ for any square matrix $A$, the following identities can be derived (they are obtained form two different coefficients of the matrix product)</p>
+<p>F_mF_n + F_{m-1}F_{n-1} = F_{m+n-1}         ------(8.1)</p>
+<p>By putting $n=n+1$ in equation (8.1),</p>
+<p>F_mF_{n+1} + F_{m-1}F_n = F_{m+n}                   ------(8.2)</p>
+<p>Putting $m = n$ in equation(8.1).</p>
+<p>F_{2n-1} = F_n^2 + F_{n-1}^2</p>
+<p>Putting $m = n$ in equation(8.2)</p>
+<p>By putting: $F_{n+1} = F_n + F_{n-1}$</p>
+<p>F_{2n} = (F_{n-1} + F_{n+1})Fn = (2F_{n-1} + F_n)F_n   </p>
+<p>To get the formula to be proved, we simply need to do the following </p>
+<p>If $n$ is even, we can put $k = n/2$<br />
+If $n$ is odd, we can put $k = (n+1)/2$</p>
+<p>Below is the implementation of above idea.  </p>
+<pre><code class="language-java">    public static int MAX = 1000;
+    public static int f[];
+
+    // Returns n'th fibonacci number using
+    // table f[]
+    public static int fib(int n) {
+        if (n == 0) {
+            return 0;
+        }
+
+        if (n == 1 || n == 2) {
+            return (f[n] = 1);
+        }
+
+        // If fib(n) is already computed
+        if (f[n] != 0) {
+            return f[n];
+        }
+
+        int k = (n &amp; 1) == 1 ? (n + 1) / 2 : n / 2;
+
+        // Applying above formula [Note value n&amp;1 is 1 if n is odd, else 0.
+        f[n] = (n &amp; 1) == 1 ? (fib(k) * fib(k) + fib(k - 1) * fib(k - 1)) : (2 * fib(k - 1) + fib(k)) * fib(k);
+
+        return f[n];
+    }
+</code></pre>
+<h2>Analysis</h2>
+<ul>
+<li><strong>Time Complexity</strong>: $O(logn)$ as we divide the problem to half in every recursive call.</li>
+<li><strong>Space Complexity</strong>: $O(logn)$</li>
+</ul>
+<h1>Solution 9 Math Formula</h1>
+<p>We first look at the equation:</p>
+<p>F(n)=F(n-1)+F(n-2)                                      ------(9.1)</p>
+<p>To solve (9.1) for the Fibonacci numbers, we first look at the equation</p>
+<p>x_{n+1} = x_n + x_{n-1}                                     ------(9.2)</p>
+<p>This equation is called a second-order, linear, homogeneous difference equation with constant coefficients, and its method of solution closely follows that of the analogous differential equation. </p>
+<p>Our idea is to guess the general form of a solution, find two such solutions, and then multiply these solutions by unknown constants and add them. This results in a general solution to (9.2), and one can then solve by satisfying the specified initial values.</p>
+<p>To begin, we guess the form of the solution as</p>
+<p>x_n = λ^n                                       ------(9.3)         </p>
+<p>where $λ$ is an unknown constant. </p>
+<p>Substitution of this guess into the equation, results in:</p>
+<p>λ^{n+1} = λ^n + λ^{n-1}</p>
+<p>or upon division by $λ^{n-1}$ and rearrangement of terms,</p>
+<p>λ^2 - λ - 1 = 0</p>
+<p>Use of the quadratic formula yields two roots, both of which are already familiar. We have:</p>
+<p>λ_1 = \frac{1+\sqrt{5}}{2}</p>
+<p>λ_2 = \frac{1-\sqrt{5}}{2}</p>
+<p>We have thus found two independent solutions to (9.2) of the form (9.3), and we can now use these two solutions to find a solution to (9.1). Multiplying the solutions by constants and adding them,  we obatin:</p>
+<p>F(n)=c_1λ_1^n + c_2λ_2^n</p>
+<p>which must satisfy the initial values $F(0)=1$，$F(1)=1$.</p>
+<p>Application of the values for $F0$ and $F1$ results in the system of equations given by</p>
+<p>c_1 + c_2 = 0</p>
+<p>c_1λ_1 - c_2λ_2 = 1</p>
+<p>we can solve for $c_1$ and $c_2$ to obtain:</p>
+<p>$c_1 = \frac{1}{\sqrt{5}}$，$c_2 = -\frac{1}{\sqrt{5}}$.</p>
+<p>then derives the surprising formula:</p>
+<p>F(n)=\frac{1}{\sqrt{5}}\left[ \left(\frac{1+\sqrt{5}}{2}\right)^{n} - \left(\frac{1-\sqrt{5}}{2}\right)^{n} \right]</p>
+<p>known as <strong>Binet’s formula</strong>.</p>
+<p>In this method we directly implement the formula for nth term in the fibonacci series. </p>
+<pre><code class="language-java">class Solution {
+    public int fib(int n) {
+        double sqrt5 = Math.sqrt(5);
+        double fibN = Math.pow((1 + sqrt5) / 2, n) - Math.pow((1 - sqrt5) / 2, n);
+        return (int) Math.round(fibN / sqrt5);
+    }
+}
+</code></pre>
+<h2>Analysis</h2>
+<ul>
+<li><strong>Time Complexity</strong>: $O(logn)$, this is because calculating $phi^n$ takes $logn$ time</li>
+<li><strong>Space Complexity</strong>: $O(1)$.</li>
+</ul>
+<hr />
+<p>All suggestions are welcome. <br />
+If you have any query or suggestion please comment below.<br />
+Please upvote if you like it. Thank you:-)</p>
+<p>Explore More <a href="https://leetcode.com/discuss/general-discussion/1868912/My-Leetcode-Solutions-All-In-One">Leetcode Solutions</a>. </p>
+</div>
+</div>
+</body>
+</html>

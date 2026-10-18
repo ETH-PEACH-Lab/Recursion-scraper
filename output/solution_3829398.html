@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SIMPLE SOLUTION EXPLAINED ⭐ WITH AN EXAMPLE💀🚀 – Predict the Winner</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_predict-the-winner.html">Predict the Winner</a> <span class="sep">›</span> <span class="cur">SIMPLE SOLUTION EXPLAINED ⭐ WITH AN EXAMPLE💀🚀</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">SIMPLE SOLUTION EXPLAINED ⭐ WITH AN EXAMPLE💀🚀</div>
+  <div class="meta">
+    <span>👤 jatinwadhwa921</span>
+    <span>👍 7</span>
+    <span>2023-07-28</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/predict-the-winner/solutions/3829398/simple-solution-explained-with-an-example/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>Intuition</h1>
+<!-- Describe your first thoughts on how to solve this problem. -->
+
+<p>The question is really simple, if we start looking in a certain direction..The direction will be something like this</p>
+<p><strong>1) Player 1 needs to get maximum score</strong></p>
+<p><strong>2) If player 2 gets the chance, he should get minimum score</strong></p>
+<p>Now, the question comes=&gt; How do we do that</p>
+<p>The fist thing, you need to clear in your mind is that, we need to figure out all the cases..<strong>If we need to figure out all the cases, then the best thing is recusrion only...</strong></p>
+<p>Let us say, <strong>Player 1 is playing</strong>,</p>
+<p>He will have 2 options </p>
+<p><strong>Option 1) He can choose from the start of array, let us say start  = i</strong></p>
+<p><strong>Option 2) He can choose from the end of array, let us say end = j</strong></p>
+<p>Now if he choose from start, then his score will increase by <strong>nums[i]</strong>and for the next turn, player 2 will have the option to choose from <strong>index i+1 to j</strong></p>
+<p>In code it will look like this...</p>
+<pre><code>int a = nums[i] + solve(i+1,j,nums, chance_of_second_player)
+</code></pre>
+<p>Now if he choose option 2, then his score will increase by <strong>nums[j]</strong> and for the next turn , player 2 has to choose from index <strong>i to j-1</strong></p>
+<p>In code it will look like this ...</p>
+<pre><code>int b = nums[j]+ solve(i,j-1,nums,chance_of_second_player)
+
+</code></pre>
+<p>Now, In the starting of the question , I told you that we will maximize player 1 score </p>
+<p>SO out of these 2 options , <strong>we need to return the maximum</strong>, In code it will look like this </p>
+<pre><code>return max(a,b);
+</code></pre>
+<p>Now, let us say, player 2 chance has come</p>
+<p>Now, Initially i told you , we will be calculating the score of player 1 and for <strong>player 2</strong> we will try to get the minimum score</p>
+<h2>Now, in the recursive function, i am trying to get the max score of <strong>player 1 =&gt; remember this</strong></h2>
+<p>Player 2 will also have <strong>2 options</strong> </p>
+<p>Option 1) He can choose from the start , so if he choose from the start, so for the next player has to choose from <strong>i+1 to j</strong> </p>
+<p>We <strong>won't include his score nums[i]</strong>, because we are not calculating his score...so we don't care about his score, we will just think of player 1</p>
+<p>In code it will look like this </p>
+<pre><code>int c = solve(i+1,j,chance_of_first_player)
+</code></pre>
+<p>Option 2) He can choose from the end, so if we choose from the end, so for the next player that is (1), he will have option to choose <strong>from i to j-1</strong>, and we won't include the score of player 2, <strong>because we don't want it</strong></p>
+<p>In code...</p>
+<pre><code>int d = solve(i,j-1,chance_of_first_player)
+</code></pre>
+<p>Now , i ask you a really simple question , For player 2 , what do we want..</p>
+<p>We want that he should loose, so to loose..whatever he choose..<strong>it should be minimum</strong>...Pls think it for a while...</p>
+<p>Now there were 2 options for him <strong>c and d</strong> and if we want him to loose , <strong>we will choose the minimum out of two</strong>.....SIMPLEEEE</p>
+<p>In code </p>
+<pre><code>return min(c,d);
+
+</code></pre>
+<p>Now, what will be the base case</p>
+<p>1) i was our start index, j was our end index...Now just think if  <strong>i becomes greater then j</strong>, then how can we choose anything...so </p>
+<pre><code>if(i&gt;j)
+{
+return 0;
+}
+</code></pre>
+<p>Now, how do we memoize it</p>
+<p>The ans is simple...</p>
+<p>Three things are changing <br />
+1) start index<br />
+2) end index<br />
+3) Turn of player(1st or 2nd)</p>
+<p>Just make a 3-d dp array and store the results there....</p>
+<p>That is how you do dynamic programming...</p>
+<p>Now, we got the max score of player 1</p>
+<p>We know the total sum of our array</p>
+<p>so (total_sum_of_array - max score of player 1)  will give the score of player 2, Now you just check which one is big .... ;)</p>
+<h1>Complexity</h1>
+<ul>
+<li>Time complexity:</li>
+</ul>
+<!-- Add your time complexity here, e.g. O(n) -->
+<p>We know the length of array is maximum 20(given in the question) , and we are making a 3-d dp array <br />
+of start_index , end_index and 2 players , so </p>
+<p>start index can go from 1 to 20<br />
+end can go from 20 to 1<br />
+2 players ( 1 and 2)</p>
+<p>so 20 * 20 *2</p>
+<p>Or mathematically we can write O(N * N * 2) =&gt;<strong>O(N * N )</strong></p>
+<ul>
+<li>Space complexity:</li>
+</ul>
+<!-- Add your space complexity here, e.g. O(n) -->
+<p>We are using a 3-d dp array so,</p>
+<p><strong>O(N * N * 2)</strong></p>
+<h1>Code</h1>
+<pre><code>class Solution {
+public:
+
+
+    int solve(int i,int j,vector&lt;int&gt;&amp; nums,int chance,int dp[21][21][3])
+    {
+
+
+        if(i&gt;j)
+        {
+            return 0;
+        }
+
+
+        if(dp[i][j][chance]!=-1)
+        {
+            return dp[i][j][chance];
+        }
+        if(chance==0)
+        {
+
+            int a = nums[i]+solve(i+1,j,nums,1,dp);
+            int b = nums[j]+solve(i,j-1,nums,1,dp);
+
+            dp[i][j][chance] = max(a,b);
+            return dp[i][j][chance];
+
+        }
+        else
+        {
+
+            int a = solve(i+1,j,nums,0,dp);
+            int b = solve(i,j-1,nums,0,dp);
+
+            dp[i][j][chance] = min(a,b);
+            return dp[i][j][chance];
+        }
+
+    }
+
+
+
+    bool PredictTheWinner(vector&lt;int&gt;&amp; nums) {
+
+
+        int dp[21][21][3];
+
+        for(int i=0; i&lt;=20; i++)
+        {
+            for(int j=0; j&lt;=20; j++)
+            {
+                for(int k=0; k&lt;=2; k++)
+                {
+                    dp[i][j][k]=-1;
+                }
+            }
+        }
+
+        if(nums.size()==1)
+        {
+            return true;
+        }
+
+        int i = 0;
+        int j = nums.size()-1;
+
+        int sum = 0;
+
+        for(int i=0; i&lt;nums.size(); i++)
+        {
+            sum+=nums[i];
+        }
+
+        int chance = 0;
+        int a = solve(i,j,nums,chance,dp);
+
+        int b = sum-a;
+
+        if(a&gt;=b)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+
+    }
+};
+</code></pre>
+<p><strong>TIME FOR A MEME NOW</strong></p>
+<p><img alt="WhatsApp Image 2023-07-28 at 20.15.51.jpeg" src="https://assets.leetcode.com/users/images/94f33d2d-f6b9-4bd5-9d08-54cb0fb670ff_1690555635.1041806.jpeg" /></p>
+<h1><strong>IF YOU LIKE MY SOLUTION, PLEASE UPVOTE...</strong></h1>
+</div>
+</div>
+</body>
+</html>

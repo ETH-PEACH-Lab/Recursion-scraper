@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>动画演示 递归 #25 K个一组反转链表 – Reverse Nodes in k-Group</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_reverse-nodes-in-k-group.html">Reverse Nodes in k-Group / K 个一组翻转链表</a> <span class="sep">›</span> <span class="cur">动画演示 递归 #25 K个一组反转链表</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">动画演示 递归 #25 K个一组反转链表</div>
+  <div class="meta">
+    <span>👤 hardcore-aryabhata</span>
+    <span>👍 17</span>
+    <span>2021-02-05</span>
+    <span class="badge b-video">📹</span><span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/reverse-nodes-in-k-group/solution/dong-hua-yan-shi-di-gui-25-kge-yi-zu-fan-y6hv/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h1>题目描述：</h1>
+<p>给你一个链表，每 k 个节点一组进行翻转，请你返回翻转后的链表。<br />
+k 是一个正整数，它的值小于或等于链表的长度。<br />
+如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。</p>
+<h3>示例:</h3>
+<p>给你这个链表：1-&gt;2-&gt;3-&gt;4-&gt;5</p>
+<p>当 k = 2 时，应当返回: 2-&gt;1-&gt;4-&gt;3-&gt;5</p>
+<p>当 k = 3 时，应当返回: 3-&gt;2-&gt;1-&gt;4-&gt;5</p>
+<h1>先看代码</h1>
+<p>这里先给出整体实现的代码，可以先对着代码注释理解一下整体思路</p>
+<pre><code class="language-java">public ListNode reverseKGroup(ListNode head, int k) {
+    // nextHead指向链表中除去k个节点之后的头节点
+    // 初始指向节点head
+    ListNode nextHead = head;
+    // 链表中剩余节点个数
+    int remainNum = 0;
+    while (remainNum &lt; k){
+        // 根据题意如果链表剩余节点个数不足k个
+        // 则不需要反转，因此直接返回head
+        if (nextHead == null) {
+            return head;
+        }
+        remainNum++;
+        nextHead = nextHead.next;
+    }
+
+    // 递归反转链表中除去前k个节点的后续节点
+    ListNode subList = reverseKGroup(nextHead,k);
+    // 反转链表中前k个节点
+    ListNode newHead = reverseTopN(head, k);
+    // 前k个节点反转后，head指向的节点是反转后的链表中的最后一个节点
+    // 因此head指向的节点的后继指针指向subList
+    head.next = subList;
+    return newHead;
+}
+</code></pre>
+<h1>思路分析:</h1>
+<p>在<a href="https://mp.weixin.qq.com/s?__biz=MzUzNzc2NTAxNg==&amp;mid=2247484459&amp;idx=1&amp;sn=93ff9bc1bc5efce6a8a314b8000739e9&amp;chksm=fae0b1dccd9738ca23f2527270291fe60726ec57e5b9cb716d19c9c90d5f798b15213c2169c7&amp;token=1031893547&amp;lang=zh_CN#rd">宏观视角看递归</a>这篇文章中，我们说链表具有天然的递归属性，因为一个链表，可以看做是一个节点后挂着另一个链表，即递归中更小的子问题。</p>
+<p>那么对于题目给定的链表其更小的子问题是什么呢？</p>
+<p>由于是k个一组反转链表，所以对于给定的链表除去前k个节点，剩余的节点组成的链表依旧满足k个一组反转链表这个条件，这就是这个题目的子问题。</p>
+<p>子问题有了，就可以初步写出如下的递归代码，其中subList是除去前k个节点后剩余的链表k个一组反转后的头结点。</p>
+<pre><code class="language-java">public ListNode reverseKGroup(ListNode head, int k) {
+    // 递归反转链表中除去前k个节点的后续节点
+    ListNode subList = reverseKGroup(除去前k个节点后剩余的链表,k);
+}
+</code></pre>
+<p>接着，我们看下如何确定除去前k个节点后剩余的链表这个问题。</p>
+<p>方法是从头节点head开始遍历链表，遍历的过程中记录已遍历的节点个数remainNum，同时用变量nextHead记录下一个待遍历的节点。</p>
+<p>当remainNum与k相等时，变量nextHead指向的节点及其之后的所有节点就是除去前K个节点之后剩余的链表。至此，代码可以进一步完善如下：</p>
+<pre><code class="language-java">public ListNode reverseKGroup(ListNode head, int k) {
+    // nextHead指向链表中除去k个节点之后的头节点
+    // 初始指向节点head
+    ListNode nextHead = head;
+    // 链表中剩余节点个数
+    int remainNum = 0;
+    while (remainNum &lt; k){
+        remainNum++;
+        nextHead = nextHead.next;
+    }
+
+    // 递归反转链表中除去前k个节点的后续节点
+    ListNode subList = reverseKGroup(nextHead,k);
+}
+</code></pre>
+<p>细心的你应该注意到，在这里有一个问题，那就是如果剩余的节点个数小于K，那么上述代码中的while循环内nextHead=nextHead.next就会出现空指针的问题。</p>
+<p>剩余的节点个数小于K的情况，根据题意可知，这时不需要对这些节点进行反转，因此对于这种情况直接返回即可。这也是这道题目的递归终止条件。</p>
+<p>到这里，代码可以进一步完善如下：</p>
+<pre><code class="language-java">public ListNode reverseKGroup(ListNode head, int k) {
+    // nextHead指向链表中除去k个节点之后的头节点
+    // 初始指向节点head
+    ListNode nextHead = head;
+    // 链表中剩余节点个数
+    int remainNum = 0;
+    while (remainNum &lt; k){
+        // 根据题意如果链表剩余节点个数不足k个
+        // 则不需要反转，因此直接返回head
+        if (nextHead == null) {
+            return head;
+        }
+        remainNum++;
+        nextHead = nextHead.next;
+    }
+
+    // 递归反转链表中除去前k个节点的后续节点
+    ListNode subList = reverseKGroup(nextHead,k);
+}
+</code></pre>
+<p>接着我们看下对于题目给出的示例，经过上述代码逻辑处理后是一个什么结果。</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1612532302-PQhrqT-image.png" /></p>
+<p>在这里我们以k=2为一组进行链表反转。因此，在除去前2个节点后，nextHead指向节点3。在经过reverseKGroup(nextHead,2)递归反转后，链表结构如下图所示。<strong>注意在这里，不要试图去在大脑中复现reverseKGroup这个递推公式的调用过程，只需知道其执行后的结果就可以了。</strong></p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1612532322-WETEQa-image.png" /></p>
+<p>到此，我们完成了除去前2个节点之后，剩余节点的反转。接着要做的是反转前k=2个节点。反转后结果如下图所示：</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1612532343-zZHAGF-image.png" /></p>
+<p>这时，只需将head的后继指针指向变量subList所指向的节点，就完成了K个一组反转链表这个任务。</p>
+<p><img alt="image.png" src="https://pic.leetcode.cn/1612532354-EZwvyE-image.png" /></p>
+<p><br><br />
+在加上反转链表中前k个节点的代码后，代码进一步完善如下：</p>
+<pre><code class="language-java">public ListNode reverseKGroup(ListNode head, int k) {
+    // nextHead指向链表中除去k个节点之后的头节点
+    // 初始指向节点head
+    ListNode nextHead = head;
+    // 链表中剩余节点个数
+    int remainNum = 0;
+    while (remainNum &lt; k){
+        // 根据题意如果链表剩余节点个数不足k个
+        // 则不需要反转，因此直接返回head
+        if (nextHead == null) {
+            return head;
+        }
+        remainNum++;
+        nextHead = nextHead.next;
+    }
+
+    // 递归反转链表中除去前k个节点的后续节点
+    ListNode subList = reverseKGroup(nextHead,k);
+    // 反转链表中前k个节点
+    ListNode newHead = reverseTopN(head, k);
+    // 前k个节点反转后，head指向的节点是反转后的链表中的最后一个节点
+    // 因此head指向的节点的后继指针指向subList
+    head.next = subList;
+    return newHead;
+}
+</code></pre>
+<p>最后我们看下如何反转链表中的前K个节点。反转前K=2个节点，动画演示如下：</p>
+<p><img alt="...eetCode25反转前K个节点.mov" src="b93ed94c-b24c-4973-8dcc-07b8f7a29f8d" /></p>
+<p><br><br />
+反转前K个节点的代码实现如下:</p>
+<pre><code class="language-java">private ListNode reverseTopN(ListNode head, int n) {
+    ListNode prev = null;
+    // 当前考察的节点
+    ListNode cur = head;
+    // num小于n，则表示当前节点需要反转
+    for(int num = 0; num &lt; n; num++){
+        // 当前节点的下一个节点
+        ListNode next = cur.next;
+        // 当前节点的后继指针指向prev
+        cur.next = prev;
+        // prev指向当前节点
+        // 表示其是next节点反转后的前一个节点
+        prev = cur;
+        // cur指向下一个节点
+        // 表示下一个节点是待反转节点
+        cur = next;
+    }
+    return prev;
+}
+</code></pre>
+<p><br></p>
+<p>感谢您的阅读，觉得不错还请帮忙点个赞，在此谢过</p>
+<p>如有错误欢迎留言指出</p>
+<p>更多内容关注公众号「<a href="https://mp.weixin.qq.com/s?__biz=MzUzNzc2NTAxNg==&amp;mid=2247484556&amp;idx=1&amp;sn=53a3c97935d39d9c2a1a432276028e36&amp;chksm=fae0b17bcd97386d319d71aa67ecbafc400db0b628f07d3023bef1d1a16bd8088538c5172895&amp;token=1811861142&amp;lang=zh_CN#rd">编程狂想曲</a>」查看</p>
+</div>
+</div>
+</body>
+</html>

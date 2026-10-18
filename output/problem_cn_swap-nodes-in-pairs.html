@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Swap Nodes in Pairs – CN Solutions</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index_cn.html">🔄 CN Recursion Solutions</a> <span class="sep">›</span> <span class="cur">Swap Nodes in Pairs / 两两交换链表中的节点</span></nav>
+<div class="wrap">
+<div class="page-title">24. Swap Nodes in Pairs / 两两交换链表中的节点</div>
+<div class="page-sub">
+  <span class="badge b-tag">MEDIUM</span> <span class="badge b-tag">递归</span> <span class="badge b-tag">链表</span>
+  &nbsp;
+  <a href="https://leetcode.cn/problems/swap-nodes-in-pairs/" target="_blank" style="font-size:.85em">↗ LeetCode CN</a>
+  
+</div>
+
+<details open>
+  <summary style="color:#1a7f37;border-left:3px solid #1a7f37;padding-left:10px;margin:24px 0 12px;cursor:pointer;list-style:none;font-weight:600;font-size:1.05em">
+    ✅ Kept Solutions <span style="font-weight:400;font-size:.9em;margin-left:6px">76</span>
+  </summary>
+  <div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Chj46n.html"><div class="card-title">【图解】迭代/递归，一张图秒懂！（Python/Java/C++/C/Go/JS）</div></a>
+    <div class="meta">
+      <span>👤 endlesscheng</span>
+      <span>👍 889</span>
+      <span class="badge b-video">📹</span><span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1691121590-SWAYuj-lc24-c.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_mjoiwt.html"><div class="card-title">动画演示 迭代+递归 24. 两两交换链表中的节点</div></a>
+    <div class="meta">
+      <span>👤 wang_ni_ma</span>
+      <span>👍 239</span>
+      <span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/4ddf5a9e08578f875313a617e601746789072136df5e7722d5236f51cd7baf76-stack%E6%96%B9%E5%BC%8F.gif" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_bn27L6.html"><div class="card-title">超强gif助你理解使用“递归法”求解本题</div></a>
+    <div class="meta">
+      <span>👤 chun-meng-da-xiao-yang</span>
+      <span>👍 27</span>
+      <span class="badge b-video">📹</span><span class="badge b-image">🖼</span><span class="badge" style="background:#f0f0ff;color:#5b21b6">🎞</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/f98018f19db0751d5c7fb6aa4abbf37a45da6b1dfccb111d9c9c94f24508cd41-6.gif" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_qFdHTE.html"><div class="card-title">递归和非递归共3种方式解决，都击败了100%的用户</div></a>
+    <div class="meta">
+      <span>👤 sdwwld</span>
+      <span>👍 18</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1602553720-Cktnge-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_3Gsy3A.html"><div class="card-title">动画演示 递归与迭代 #24 两两交换链表中节点</div></a>
+    <div class="meta">
+      <span>👤 hardcore-aryabhata</span>
+      <span>👍 23</span>
+      <span class="badge b-video">📹</span><span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1612530323-tVAMhk-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_tmh3Q6.html"><div class="card-title">字节题库 - #24 - 中等 - 两两交换链表中的节点 - 1刷</div></a>
+    <div class="meta">
+      <span>👤 superkakayong</span>
+      <span>👍 4</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/973b03cc2ac4234ef9d5170422d3fab81f417e0b33be4ea73b1cb45abf5f3953-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_ahUKnk.html"><div class="card-title">一种思考链表节点交换的思路加递归解法</div></a>
+    <div class="meta">
+      <span>👤 ronden</span>
+      <span>👍 3</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1599272968-aQAqDS-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_XzwJBg.html"><div class="card-title">清晰图解  递归   python3</div></a>
+    <div class="meta">
+      <span>👤 cumt_scx</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/b027ce30a0aa79486a789b11e5eb6abb7935dd1f6fe76d7c9c9a1c68e9b782c2-%E6%A2%81%E6%AC%A2.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_BJJmcB.html"><div class="card-title">24. 两两交换链表中的节点  </div></a>
+    <div class="meta">
+      <span>👤 Dine</span>
+      <span>👍 4</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1602641720-Pusvcb-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_aXqSbo.html"><div class="card-title">C++五行简单实现(递归) 0ms</div></a>
+    <div class="meta">
+      <span>👤 tragicomedy_</span>
+      <span>👍 2</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/633542597311698a30bda942bbaaa06eb4b1132bd7e765c09f157ffd952bece4-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_gvIeuu.html"><div class="card-title">24. 两两交换链表中的节点</div></a>
+    <div class="meta">
+      <span>👤 Geralt_U</span>
+      <span>👍 3</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/e6a23f7b05c378414dc3140e3005088e28f4b73b40ef49fe8694608213065a4f-24_1.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_tj67VQ.html"><div class="card-title">递归就能不讲武德了吗</div></a>
+    <div class="meta">
+      <span>👤 he-ke</span>
+      <span>👍 3</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1607141576-jXVldv-%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20201205121227.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_GuDbnm.html"><div class="card-title">【图解】递归 + 迭代</div></a>
+    <div class="meta">
+      <span>👤 yu-shu-7f</span>
+      <span>👍 3</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1684378493-xHvFTJ-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_v9PPkx.html"><div class="card-title">24. 两两交换链表中的结点</div></a>
+    <div class="meta">
+      <span>👤 stormsunshine</span>
+      <span>👍 3</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1633581600-AdsTNn-18_1.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_qc04lL.html"><div class="card-title">【简洁明晰】递归非递归两种 链表两两交换 c++</div></a>
+    <div class="meta">
+      <span>👤 yyx_dev</span>
+      <span>👍 2</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1673265055-yklIEz-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_lwhxIs.html"><div class="card-title">24. 两两交换链表中的节点（三种解答方法）</div></a>
+    <div class="meta">
+      <span>👤 sun-wu-kong-8</span>
+      <span>👍 2</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1681380081-aqDlzO-489D5DF57EDC1A744F95DEBABB2BDF3A.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Nv8o4q.html"><div class="card-title">「24. 两两交换链表中的节点」1. 迭代   2. 头递归  3. 尾递归</div></a>
+    <div class="meta">
+      <span>👤 1105389168</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1706084271-YLEKDj-iShot_2024-01-24_16.15.16.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_zfrBrp.html"><div class="card-title">用递归的方法来交换相邻的两个节点</div></a>
+    <div class="meta">
+      <span>👤 cool-pasteurui7</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1717258629-FYnHqJ-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_xLHNDp.html"><div class="card-title">时间打败100%，空间打败90%。思路超好理解</div></a>
+    <div class="meta">
+      <span>👤 hoyoq</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1691415840-LWTwkM-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Z5nyFb.html"><div class="card-title">运行时间0ms，不同的递归，迭代。</div></a>
+    <div class="meta">
+      <span>👤 15066212pp</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1690888663-rLuEVG-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_SZc0Ok.html"><div class="card-title">【Nick】比较简单的递归思想！</div></a>
+    <div class="meta">
+      <span>👤 nickBean</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1655214202-VwCbXf-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_x14tOW.html"><div class="card-title">递归解题方案</div></a>
+    <div class="meta">
+      <span>👤 godshadow</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1643274092-wdQznO-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_RHJrEz.html"><div class="card-title">Iteration & Recursion 两种解法 JS 实现</div></a>
+    <div class="meta">
+      <span>👤 konemorris1625</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1636947670-rxdPXs-file_1636947670085" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_r6fSn3.html"><div class="card-title">【Java】迭代 + 递归 两种思路 高效解决 “链表交换”问题</div></a>
+    <div class="meta">
+      <span>👤 leetcoder-youzg</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1602567058-wtKuWD-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_ACtorb.html"><div class="card-title">3行的Python递归代码</div></a>
+    <div class="meta">
+      <span>👤 simzhou</span>
+      <span>👍 1</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/57bf55b5b989425ef4c4a4a8285a83269fe6d730f18df723daca2785a09023f4-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_JgtqAe.html"><div class="card-title">链表迭代与链表递归两种思路对比实现</div></a>
+    <div class="meta">
+      <span>👤 xiao-long-yao-zao-shui</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1671281803-KoOOPm-1.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_QcObJo.html"><div class="card-title">24. 两两交换链表中的节点，递归法</div></a>
+    <div class="meta">
+      <span>👤 vigilant-devvdneybi5</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1705585708-sLxDgj-IMG_0460(20240118-214448).PNG" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_G3FF1v.html"><div class="card-title">24. 两两交换链表中的节点</div></a>
+    <div class="meta">
+      <span>👤 adoring-vvingztp</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1709099943-CQgBFA-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_6vmlr4.html"><div class="card-title">Problem: 24. 两两交换链表中的节点题解</div></a>
+    <div class="meta">
+      <span>👤 trusting-svvansongpq</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1695493357-rRtpfO-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_INY20B.html"><div class="card-title">递归</div></a>
+    <div class="meta">
+      <span>👤 wangpengcufe-2</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1691313662-fxndWw-%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20230806165216.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_wfDLNO.html"><div class="card-title">用递归解决两两交换链表中的节点</div></a>
+    <div class="meta">
+      <span>👤 hopeful-sandersonnyw</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1690792730-bYCTkb-9b14ba7ffde9a7f69988c32db1357096.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_fumkiG.html"><div class="card-title">交换节点</div></a>
+    <div class="meta">
+      <span>👤 elated-tubdd</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1725705350-rvFAMV-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_k9WdaH.html"><div class="card-title">🍥前端食堂题解，超好理解，带你轻松拿下两两交换链表中的节点</div></a>
+    <div class="meta">
+      <span>👤 tongobama</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1611944952-PENuRy-list.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_u5323v.html"><div class="card-title">c++递归</div></a>
+    <div class="meta">
+      <span>👤 __bwcldy</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1615087380-ctNSlt-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_w1Wb08.html"><div class="card-title">C 语言使用递归或迭代“两两交换链表中的节点”</div></a>
+    <div class="meta">
+      <span>👤 su-mo-chi</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1620445268-XcDhuH-%E9%80%92%E5%BD%92.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_GdInT9.html"><div class="card-title">递归python3：超简单图解</div></a>
+    <div class="meta">
+      <span>👤 tagrenla</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1692884649-rfIkSX-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_INY20B.html"><div class="card-title">递归</div></a>
+    <div class="meta">
+      <span>👤 wangpengcufe-2</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1691313662-fxndWw-%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20230806165216.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_wfDLNO.html"><div class="card-title">用递归解决两两交换链表中的节点</div></a>
+    <div class="meta">
+      <span>👤 hopeful-sandersonnyw</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1690792730-bYCTkb-9b14ba7ffde9a7f69988c32db1357096.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_fumkiG.html"><div class="card-title">交换节点</div></a>
+    <div class="meta">
+      <span>👤 elated-tubdd</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1725705350-rvFAMV-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_G3FF1v.html"><div class="card-title">24. 两两交换链表中的节点</div></a>
+    <div class="meta">
+      <span>👤 adoring-vvingztp</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1709099943-CQgBFA-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_ceV4FR.html"><div class="card-title">24. 两两交换链表中的节点的递归和迭代法</div></a>
+    <div class="meta">
+      <span>👤 er-huo-xian-sen-7</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1709775346-YxfrIz-CC623D754B7734CB429BB4433161631F.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_QcObJo.html"><div class="card-title">24. 两两交换链表中的节点，递归法</div></a>
+    <div class="meta">
+      <span>👤 vigilant-devvdneybi5</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1705585708-sLxDgj-IMG_0460(20240118-214448).PNG" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_3FEKNZ.html"><div class="card-title">DFS</div></a>
+    <div class="meta">
+      <span>👤 wan-5o1</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1706268337-BpLiNu-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_6vmlr4.html"><div class="card-title">Problem: 24. 两两交换链表中的节点题解</div></a>
+    <div class="meta">
+      <span>👤 trusting-svvansongpq</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1695493357-rRtpfO-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_7vk6Mf.html"><div class="card-title">递归快解</div></a>
+    <div class="meta">
+      <span>👤 zhu-jing-zhi-yuan-z</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode.cn/1679796150-hmmGXS-41f8e0bdf4d03bfaca9e02c7ac11ec8.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_hV5JuJ.html"><div class="card-title">递归解法</div></a>
+    <div class="meta">
+      <span>👤 rex_-9</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1649600702-UuzAhG-%E5%9B%BE%E7%89%87.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_9xABw8.html"><div class="card-title">链表递归解法</div></a>
+    <div class="meta">
+      <span>👤 bei-luo-shi-men-6</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1648807240-VSbCCp-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_M8cXa7.html"><div class="card-title">前序递归</div></a>
+    <div class="meta">
+      <span>👤 unruffled-almeidaeck</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_u5323v.html"><div class="card-title">c++递归</div></a>
+    <div class="meta">
+      <span>👤 __bwcldy</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1615087380-ctNSlt-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_k9WdaH.html"><div class="card-title">🍥前端食堂题解，超好理解，带你轻松拿下两两交换链表中的节点</div></a>
+    <div class="meta">
+      <span>👤 tongobama</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1611944952-PENuRy-list.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_kQevtE.html"><div class="card-title">迭代+递归解决交换节点</div></a>
+    <div class="meta">
+      <span>👤 edte</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1639299441-pHiIgi-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_VbwosH.html"><div class="card-title">0ms，在所有 Rust 提交中击败了 100.00% 的用户</div></a>
+    <div class="meta">
+      <span>👤 tom-22b</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1640598750-AruLMy-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_vUumR2.html"><div class="card-title">递归遍历</div></a>
+    <div class="meta">
+      <span>👤 wangyk</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1620275032-ikyqEA-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_oXlCiv.html"><div class="card-title">Java 递归100%题解</div></a>
+    <div class="meta">
+      <span>👤 yb618i</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_0TjfCZ.html"><div class="card-title">24题，两两交换链表中的节点，递归简洁易懂，迭代高效严谨，任君选择</div></a>
+    <div class="meta">
+      <span>👤 codingkeeper</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1625442144-dEKWpr-%E9%80%92%E5%BD%92%E8%A7%A3%E6%B3%95%E7%A4%BA%E6%84%8F%E5%9B%BE.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_dN4jHv.html"><div class="card-title">两两交换链表中的节点</div></a>
+    <div class="meta">
+      <span>👤 li-kou-854</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1624976312-RRcGLR-QQ%E5%9B%BE%E7%89%8720210629221818.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Wn8ls9.html"><div class="card-title">24. 两两交换链表中的节点</div></a>
+    <div class="meta">
+      <span>👤 ray-king-ray</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1622821601-ZAgfLV-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20210604234619.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_lu4e7O.html"><div class="card-title">两两交换链表中的节点</div></a>
+    <div class="meta">
+      <span>👤 617076674</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/6072c90f462fd9c88f7849665d60ab278557e6ece6821121fabb2d0e807b1c74-question0024-1.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Vej2Qo.html"><div class="card-title">24.两两交换链表中的节点</div></a>
+    <div class="meta">
+      <span>👤 xiu-mu-diao</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/4768df78f80c47412fd57be6d2d4a5a777fe4489974d296af164f5bdbed56ea0-1568964086.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_o5wjnw.html"><div class="card-title">迭代和递归求解</div></a>
+    <div class="meta">
+      <span>👤 niumain</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/7812f8195352bf398d5e0f2a60cfeba2cff3ac087e09992e29c5a5e0b2445d2e-24%E9%93%BE%E8%A1%A8%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_E547Ts.html"><div class="card-title">个人的递归理解</div></a>
+    <div class="meta">
+      <span>👤 F0fs7S8vFL</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1599965055-UZerkv-7ae9e8a85de4c01870d7e251ea41c27.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Li8e3q.html"><div class="card-title">递归解法- C++ 100%击败</div></a>
+    <div class="meta">
+      <span>👤 hydrogen-peroxide</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1600186051-aLSnnD-Snipaste_2020-09-15_23-52-33.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_EATwMw.html"><div class="card-title">c++递归</div></a>
+    <div class="meta">
+      <span>👤 kiwi-23</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/3482957842639105ced5ac1a03022272e60d9109419d0bc794ab4e31e892f823-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_99q4Rl.html"><div class="card-title">递归法手画一步步跟着代码初学者适用</div></a>
+    <div class="meta">
+      <span>👤 nuan-mu-si-lan-wu-sa-nan-dian</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/c28872ec9055309f95fdc738f09e088f9e9e023cedcf96c1ad923597b0a43215-0607DC87-0A50-46BB-86AE-A8FEA015717D.jpeg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_AnEu3y.html"><div class="card-title">图解清晰理解递归思路</div></a>
+    <div class="meta">
+      <span>👤 it_pf</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1602572016-BCxdJz-2.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_1OiCCT.html"><div class="card-title">递归解两两交换链表中的节点</div></a>
+    <div class="meta">
+      <span>👤 adoring-i2itchie</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1602558834-VHEaHR-%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A120201013111309.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Ykppom.html"><div class="card-title">[Code24] 链表反转+递归+Java</div></a>
+    <div class="meta">
+      <span>👤 super771</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1602564644-wfwaYA-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_BdSAZu.html"><div class="card-title">清晰图解理解递归版本的交换节点</div></a>
+    <div class="meta">
+      <span>👤 it_pf</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1602571787-gcvuZk-%E5%9B%BE%E8%A7%A3%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E8%8A%82%E7%82%B9.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Z6kOJ2.html"><div class="card-title">两两交换链表中的节点</div></a>
+    <div class="meta">
+      <span>👤 guguguCorn</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/86ef3de736b146efdadcf5e7ee410b2a2c5acaf8fd641a2d7c0dfe70a35900f9-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_YqKgbV.html"><div class="card-title">常规递归极速C路，只有图解</div></a>
+    <div class="meta">
+      <span>👤 fan-lin-3</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/b7449a6d6db516d2280124fcbc281235e7923431bcf3103fc2137c9e3863e5f3-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20191218233714.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_EtbiFj.html"><div class="card-title">js 递归</div></a>
+    <div class="meta">
+      <span>👤 shinyhwong</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/b04701be73de0cd0dfef3139f50338d3cb4fd91ec59596455e2855b5dc59e104-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_0868ne.html"><div class="card-title">24. 两两交换链表中的节点</div></a>
+    <div class="meta">
+      <span>👤 qin-zhen-7</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/30d7cb51f8949534bad7452f97a602ce9c9b1722037ada0f7dbaab534e788b3d-image.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_o5wjnw.html"><div class="card-title">迭代和递归求解</div></a>
+    <div class="meta">
+      <span>👤 niumain</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/7812f8195352bf398d5e0f2a60cfeba2cff3ac087e09992e29c5a5e0b2445d2e-24%E9%93%BE%E8%A1%A8%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_Li8e3q.html"><div class="card-title">递归解法- C++ 100%击败</div></a>
+    <div class="meta">
+      <span>👤 hydrogen-peroxide</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1600186051-aLSnnD-Snipaste_2020-09-15_23-52-33.png" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_E547Ts.html"><div class="card-title">个人的递归理解</div></a>
+    <div class="meta">
+      <span>👤 F0fs7S8vFL</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/1599965055-UZerkv-7ae9e8a85de4c01870d7e251ea41c27.jpg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div><div class="card">
+  <div class="card-inner">
+    <a href="solution_cn_99q4Rl.html"><div class="card-title">递归法手画一步步跟着代码初学者适用</div></a>
+    <div class="meta">
+      <span>👤 nuan-mu-si-lan-wu-sa-nan-dian</span>
+      <span>👍 0</span>
+      <span class="badge b-image">🖼</span>
+    </div>
+    <img src="https://pic.leetcode-cn.com/c28872ec9055309f95fdc738f09e088f9e9e023cedcf96c1ad923597b0a43215-0607DC87-0A50-46BB-86AE-A8FEA015717D.jpeg" loading="lazy" style="height:60px;width:auto;max-width:120px;border-radius:4px;object-fit:cover;margin-top:8px;display:block" onerror="this.remove()">
+  </div>
+</div>
+</details>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>✅ 🔥 0 ms Runtime Beats 100% User🔥||  Code Idea ✅ ||  Algorithm & Solving Step  ✅ || – Decode String</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_decode-string.html">Decode String</a> <span class="sep">›</span> <span class="cur">✅ 🔥 0 ms Runtime Beats 100% User🔥||  Code Idea ✅ ||  Algorithm & Solving Step  ✅ ||</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">✅ 🔥 0 ms Runtime Beats 100% User🔥||  Code Idea ✅ ||  Algorithm & Solving Step  ✅ ||</div>
+  <div class="meta">
+    <span>👤 DishAnK_22</span>
+    <span>👍 15</span>
+    <span>2024-12-09</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/decode-string/solutions/6127581/0-ms-runtime-beats-100-user-code-idea-algorithm-solving-step/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p><img alt="Screenshot 2024-12-09 at 8.46.01 AM.png" src="https://assets.leetcode.com/users/images/3c499238-b727-4a31-8683-ba91ffe15f28_1733714215.6595583.png" /></p>
+<p>✅  IF YOU LIKE THIS SOLUTION, PLEASE UPVOTE AT THE END ✅ :</p>
+<h3><strong>Intuition</strong> :</h3>
+<ol>
+<li>
+<p><strong>Stack for Decoding</strong>:<br />
+   - When encountering a <code>[</code>, it signals the start of a new substring. Use a stack to keep track of the current decoding context (string being built and the repeat count).<br />
+   - When encountering a <code>]</code>, it signals the end of a substring. Pop from the stack to complete the repetition for the substring.</p>
+</li>
+<li>
+<p><strong>Building the Decoded String</strong>:<br />
+   - Iterate through the string, keeping track of:</p>
+<ul>
+<li>Numbers (to get the repeat count).</li>
+<li>Letters (to build the current substring).</li>
+<li>Use the stack to manage contexts for nested encodings.</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h3><strong>Algorithm</strong> :</h3>
+<ol>
+<li>
+<p>Initialize:<br />
+   - A stack to store the context (<code>current_string</code> and <code>repeat_count</code>) before encountering <code>[</code>.<br />
+   - A temporary string (<code>current_string</code>) to build the decoded result for the current context.<br />
+   - A variable (<code>num</code>) to parse the repeat count.</p>
+</li>
+<li>
+<p>Iterate through the string:<br />
+   - If the character is a digit, build the number (<code>num</code>) for the repeat count.<br />
+   - If the character is <code>[</code>, push the current string and repeat count to the stack, and reset <code>current_string</code> and <code>num</code>.<br />
+   - If the character is <code>]</code>, pop from the stack to get the last context, and repeat the <code>current_string</code> the specified number of times, appending it to the previous string.<br />
+   - If the character is a letter, append it to <code>current_string</code>.</p>
+</li>
+<li>
+<p>At the end, <code>current_string</code> contains the decoded result.</p>
+</li>
+</ol>
+<hr />
+<h3><strong>Complexity</strong> :</h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(n), where n is the length of the string. Each character is processed once.</li>
+<li><strong>Space Complexity</strong>: O(n), due to the stack used for managing nested contexts.</li>
+</ul>
+<hr />
+<h3><strong>Python Implementation</strong> :</h3>
+<pre><code class="language-python">class Solution:
+    def decodeString(self, s: str) -&gt; str:
+        stack = []
+        current_string = &quot;&quot;
+        num = 0
+
+        for char in s:
+            if char.isdigit():
+                # Build the number for repeat count
+                num = num * 10 + int(char)
+            elif char == &quot;[&quot;:
+                # Push the current context to stack
+                stack.append((current_string, num))
+                current_string = &quot;&quot;
+                num = 0
+            elif char == &quot;]&quot;:
+                # Pop and combine the repeated substring
+                last_string, repeat_count = stack.pop()
+                current_string = last_string + current_string * repeat_count
+            else:
+                # Append character to the current string
+                current_string += char
+
+        return current_string
+</code></pre>
+<hr />
+<h3><strong>C++ Implementation</strong> :</h3>
+<pre><code class="language-cpp">#include &lt;string&gt;
+#include &lt;stack&gt;
+using namespace std;
+
+class Solution {
+public:
+    string decodeString(string s) {
+        stack&lt;pair&lt;string, int&gt;&gt; st;
+        string current_string = &quot;&quot;;
+        int num = 0;
+
+        for (char c : s) {
+            if (isdigit(c)) {
+                num = num * 10 + (c - '0');
+            } else if (c == '[') {
+                st.push({current_string, num});
+                current_string = &quot;&quot;;
+                num = 0;
+            } else if (c == ']') {
+                auto [last_string, repeat_count] = st.top();
+                st.pop();
+                current_string = last_string + string(repeat_count, ' ').replace(0, current_string.size() * repeat_count, current_string);
+            } else {
+                current_string += c;
+            }
+        }
+
+        return current_string;
+    }
+};
+</code></pre>
+<hr />
+<h3><strong>Java Implementation</strong> :</h3>
+<pre><code class="language-java">import java.util.Stack;
+
+class Solution {
+    public String decodeString(String s) {
+        Stack&lt;Pair&lt;String, Integer&gt;&gt; stack = new Stack&lt;&gt;();
+        StringBuilder currentString = new StringBuilder();
+        int num = 0;
+
+        for (char c : s.toCharArray()) {
+            if (Character.isDigit(c)) {
+                num = num * 10 + (c - '0');
+            } else if (c == '[') {
+                stack.push(new Pair&lt;&gt;(currentString.toString(), num));
+                currentString.setLength(0);
+                num = 0;
+            } else if (c == ']') {
+                Pair&lt;String, Integer&gt; last = stack.pop();
+                StringBuilder temp = new StringBuilder(last.getKey());
+                for (int i = 0; i &lt; last.getValue(); i++) {
+                    temp.append(currentString);
+                }
+                currentString = temp;
+            } else {
+                currentString.append(c);
+            }
+        }
+
+        return currentString.toString();
+    }
+}
+</code></pre>
+<hr />
+<h3><strong>Examples</strong> :</h3>
+<h4>Example 1:</h4>
+<p>Input: <code>s = "3[a]2[bc]"</code><br />
+Output: <code>"aaabcbc"</code></p>
+<p><strong>Explanation</strong>:<br />
+- <code>3[a]</code> → <code>"aaa"</code><br />
+- <code>2[bc]</code> → <code>"bcbc"</code><br />
+- Combined: <code>"aaabcbc"</code></p>
+<h4>Example 2:</h4>
+<p>Input: <code>s = "3[a2[c]]"</code><br />
+Output: <code>"accaccacc"</code></p>
+<p><strong>Explanation</strong>:<br />
+- <code>a2[c]</code> → <code>"acc"</code><br />
+- <code>3[acc]</code> → <code>"accaccacc"</code></p>
+<h4>Example 3:</h4>
+<p>Input: <code>s = "2[abc]3[cd]ef"</code><br />
+Output: <code>"abcabccdcdcdef"</code></p>
+<p><strong>Explanation</strong>:<br />
+- <code>2[abc]</code> → <code>"abcabc"</code><br />
+- <code>3[cd]</code> → <code>"cdcdcd"</code><br />
+- Combined: <code>"abcabccdcdcdef"</code></p>
+<hr />
+<p><img alt="image.png" src="https://assets.leetcode.com/users/images/6a4c989f-3dd3-4efe-b36f-2c9e3701954a_1733714353.012948.png" /></p>
+</div>
+</div>
+</body>
+</html>

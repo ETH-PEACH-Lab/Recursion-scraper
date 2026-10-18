@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第K个语法符号 – K-th Symbol in Grammar</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_k-th-symbol-in-grammar.html">K-th Symbol in Grammar / 第K个语法符号</a> <span class="sep">›</span> <span class="cur">第K个语法符号</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">第K个语法符号</div>
+  <div class="meta">
+    <span>👤 LeetCode-Solution</span>
+    <span>👍 57</span>
+    <span>2022-10-19</span>
+    <span class="badge" style="background:#fff3c4;color:#9a6700">🏆 Official</span>
+    <a href="https://leetcode.cn/problems/k-th-symbol-in-grammar/solution/di-kge-yu-fa-fu-hao-by-leetcode-solution-zgwd/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h4>方法一：递归</h4>
+<p><strong>思路与算法</strong></p>
+<p>首先题目给出一个 $n$ 行的表（索引从 $1$ 开始）。并给出表的构造规则为：第一行仅有一个 $0$，然后接下来的每一行可以由上一行中 $0$ 替换为 $01$，$1$ 替换为 $10$ 来生成。</p>
+<ul>
+<li>比如当 $n = 3$ 时，第 $1$ 行是 $0$，第 $2$ 行是 $01$，第 $3$ 行是 $0110$。</li>
+</ul>
+<p>现在要求表第 $n$ 行中第 $k$ 个数字，$1 \le k \le 2 ^ n$。首先我们可以看到第 $i$ 行中会有 $2^{i-1}$ 个数字，$1 \le i \le n$，且其中第 $j$ 个数字按照构造规则会生第 $i + 1$ 行中的第 $2<em>j - 1$ 和 $2</em>j$ 个数字，$1 \le j \le 2^{i-1}$。即对于第 $i + 1$ 行中的第 $x$ 个数字 $  extit{num}_1$，$1 \le x \le 2^i$，会被第 $i$ 行中第 $\lfloor \frac{x + 1}{2} \rfloor$ 个数字 $ extit{num}_2$ 生成。且满足规则：</p>
+<ul>
+<li>
+<p>当 $   extit{num}_2 = 0$ 时，$   extit{num}_2$ 会生成 $01$：</p>
+<p>extit{num}_1 = \begin{cases}<br />
+0, &amp; x \equiv 1 \pmod{2} \<br />
+1, &amp; x \equiv 0 \pmod{2} \<br />
+\end{cases}</p>
+</li>
+<li>
+<p>当 $num_2 = 1$ 时，$ extit{num}_2$ 会生成 $10$：</p>
+<p>extit{num}_1 = \begin{cases}<br />
+1, &amp; x \equiv 1 \pmod{2} \<br />
+0, &amp; x \equiv 0 \pmod{2} \<br />
+\end{cases}</p>
+</li>
+</ul>
+<p>并且进一步总结我们可以得到：$ extit{num}_1 = (x \And 1) \oplus 1 \oplus   extit{num}_2$，其中 $\And$ 为「与」运算符， $\oplus$ 为「异或」运算符。那么我们从第 $n$ 不断往上递归求解，并且当在第一行时只有一个数字，直接返回 $0$ 即可。</p>
+<p><strong>代码</strong></p>
+<p>```Python [sol1-Python3]<br />
+class Solution:<br />
+    def kthGrammar(self, n: int, k: int) -&gt; int:<br />
+        if n == 1:<br />
+            return 0<br />
+        return (k &amp; 1) ^ 1 ^ self.kthGrammar(n - 1, (k + 1) // 2)</p>
+<pre><code>
+```Java [sol1-Java]
+class Solution {
+    public int kthGrammar(int n, int k) {
+        if (n == 1) {
+            return 0;
+        }
+        return (k &amp; 1) ^ 1 ^ kthGrammar(n - 1, (k + 1) / 2);
+    }
+}
+</code></pre>
+<p>```C# [sol1-C#]<br />
+public class Solution {<br />
+    public int KthGrammar(int n, int k) {<br />
+        if (n == 1) {<br />
+            return 0;<br />
+        }<br />
+        return (k &amp; 1) ^ 1 ^ KthGrammar(n - 1, (k + 1) / 2);<br />
+    }<br />
+}</p>
+<pre><code>
+```C++ [sol1-C++]
+class Solution {
+public:
+    int kthGrammar(int n, int k) {
+        if (n == 1) {
+            return 0;
+        }
+        return (k &amp; 1) ^ 1 ^ kthGrammar(n - 1, (k + 1) / 2);
+    }
+};
+</code></pre>
+<p>```C [sol1-C]<br />
+int kthGrammar(int n, int k){<br />
+    if (n == 1) {<br />
+        return 0;<br />
+    }<br />
+    return (k &amp; 1) ^ 1 ^ kthGrammar(n - 1, (k + 1) / 2);<br />
+}</p>
+<pre><code>
+```JavaScript [sol1-JavaScript]
+var kthGrammar = function(n, k) {
+    if (n === 1) {
+        return 0;
+    }
+    return (k &amp; 1) ^ 1 ^ kthGrammar(n - 1, (k + 1) / 2);
+};
+</code></pre>
+<p>```go [sol1-Golang]<br />
+func kthGrammar(n, k int) int {<br />
+    if n == 1 {<br />
+        return 0<br />
+    }<br />
+    return k&amp;1 ^ 1 ^ kthGrammar(n-1, (k+1)/2)<br />
+}</p>
+<pre><code>
+**复杂度分析**
+
+- 时间复杂度：$O(n)$，其中 $n$ 为题目给定表的行数，递归深度为 $n$。
+- 空间复杂度：$O(n)$，其中 $n$ 为题目给定表的行数，主要为递归的空间开销。
+
+#### 方法二：找规律 + 递归
+
+**思路与算法**
+
+按照方法一，我们可以尝试写表中的前几行：
+
+- $0$
+- $01$
+- $0110$
+- $01101001$
+- $\cdots$
+
+我们可以注意到规律：每一行的后半部分正好为前半部分的“翻转”——前半部分是 $0$ 后半部分变为 $1$，前半部分是 $1$，后半部分变为 $0$。且每一行的前半部分和上一行相同。我们可以通过「数学归纳法」来进行证明。
+
+有了这个性质，那么我们再次思考原问题：对于查询某一个行第 $k$ 个数字，如果 $k$ 在后半部分，那么原问题就可以转化为求解该行前半部分的对应位置的“翻转”数字，又因为该行前半部分与上一行相同，所以又转化为上一行对应对应的“翻转”数字。那么按照这样一直递归下去，并在第一行时返回数字 $0$ 即可。
+
+**代码**
+
+```Python [sol2-Python3]
+class Solution:
+    def kthGrammar(self, n: int, k: int) -&gt; int:
+        if k == 1:
+            return 0
+        if k &gt; (1 &lt;&lt; (n - 2)):
+            return 1 ^ self.kthGrammar(n - 1, k - (1 &lt;&lt; (n - 2)))
+        return self.kthGrammar(n - 1, k)
+</code></pre>
+<p>```Java [sol2-Java]<br />
+class Solution {<br />
+    public int kthGrammar(int n, int k) {<br />
+        if (k == 1) {<br />
+            return 0;<br />
+        }<br />
+        if (k &gt; (1 &lt;&lt; (n - 2))) {<br />
+            return 1 ^ kthGrammar(n - 1, k - (1 &lt;&lt; (n - 2)));<br />
+        }<br />
+        return kthGrammar(n - 1, k);<br />
+    }<br />
+}</p>
+<pre><code>
+```C# [sol2-C#]
+public class Solution {
+    public int KthGrammar(int n, int k) {
+        if (k == 1) {
+            return 0;
+        }
+        if (k &gt; (1 &lt;&lt; (n - 2))) {
+            return 1 ^ KthGrammar(n - 1, k - (1 &lt;&lt; (n - 2)));
+        }
+        return KthGrammar(n - 1, k);
+    }
+}
+</code></pre>
+<p>```C++ [sol2-C++]<br />
+class Solution {<br />
+public:<br />
+    int kthGrammar(int n, int k) {<br />
+        if (k == 1) {<br />
+            return 0;<br />
+        }<br />
+        if (k &gt; (1 &lt;&lt; (n - 2))) {<br />
+            return 1 ^ kthGrammar(n - 1, k - (1 &lt;&lt; (n - 2)));<br />
+        }<br />
+        return kthGrammar(n - 1, k);<br />
+    }<br />
+};</p>
+<pre><code>
+```C [sol2-C]
+int kthGrammar(int n, int k){
+    if (k == 1) {
+        return 0;
+    }
+    if (k &gt; (1 &lt;&lt; (n - 2))) {
+        return 1 ^ kthGrammar(n - 1, k - (1 &lt;&lt; (n - 2)));
+    }
+    return kthGrammar(n - 1, k);
+}
+</code></pre>
+<p>```JavaScript [sol2-JavaScript]<br />
+var kthGrammar = function(n, k) {<br />
+    if (k === 1) {<br />
+        return 0;<br />
+    }<br />
+    if (k &gt; (1 &lt;&lt; (n - 2))) {<br />
+        return 1 ^ kthGrammar(n - 1, k - (1 &lt;&lt; (n - 2)));<br />
+    }<br />
+    return kthGrammar(n - 1, k);<br />
+};</p>
+<pre><code>
+```go [sol2-Golang]
+func kthGrammar(n, k int) int {
+    if k == 1 {
+        return 0
+    }
+    if k &gt; 1&lt;&lt;(n-2) {
+        return 1 ^ kthGrammar(n-1, k-1&lt;&lt;(n-2))
+    }
+    return kthGrammar(n-1, k)
+}
+</code></pre>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：$O(n)$，其中 $n$ 为题目给定表的行数。</li>
+<li>空间复杂度：$O(n)$，其中 $n$ 为题目给定表的行数，主要为递归的空间开销。</li>
+</ul>
+<h4>方法三：找规律 + 位运算</h4>
+<p><strong>思路与算法</strong></p>
+<p>在「方法二」的基础上，我们来进行优化，本质上我们其实只需要求在过程中的“翻转”总次数，如果“翻转”为偶数次则原问题求解为 $0$，否则为 $1$。</p>
+<p>首先我们修改行的索引从 $0$ 开始，此时原先第 $p$ 行的索引现在为 $p - 1$ 行，第 $i$ 行有 $2 ^ i$ 位。那么对于某一行 $i$ 中下标为 $x$ 的数字，如果 $x &lt; 2^{i - 1}$ 那么等价于求 $i - 1$ 中下标为 $x$ 的数字，否则 $x$ 的二进制位的从右往左第 $i + 1$ 位为 $1$，此时需要减去该位（“翻转”一次），然后递归求解即可。所以我们可以看到最后“翻转”的总次数只和初始状态下的下标 $x$ 二进制表示中 $1$ 的个数有关。因此原问题中求“翻转”的总次数就等价于求 $k - 1$ 的二进制表示中 $1$ 的个数，求解方法具体可以参考题库题目<a href="https://leetcode.cn/problems/number-of-1-bits/solution/wei-1de-ge-shu-by-leetcode-solution-jnwf/">「191. 位1的个数」的官方题解</a> 来更进一步学习求解。</p>
+<p><strong>代码</strong></p>
+<p>```Python [sol3-Python3]<br />
+class Solution:<br />
+    def kthGrammar(self, n: int, k: int) -&gt; int:<br />
+        # return (k - 1).bit_count() &amp; 1<br />
+        k -= 1<br />
+        res = 0<br />
+        while k:<br />
+            k &amp;= k - 1<br />
+            res ^= 1<br />
+        return res</p>
+<pre><code>
+```Java [sol3-Java]
+class Solution {
+    public int kthGrammar(int n, int k) {
+        // return Integer.bitCount(k - 1) &amp; 1;
+        k--;
+        int res = 0;
+        while (k &gt; 0) {
+            k &amp;= k - 1;
+            res ^= 1;
+        }
+        return res;
+    }
+}
+</code></pre>
+<p>```C# [sol3-C#]<br />
+public class Solution {<br />
+    public int KthGrammar(int n, int k) {<br />
+        k--;<br />
+        int res = 0;<br />
+        while (k &gt; 0) {<br />
+            k &amp;= k - 1;<br />
+            res ^= 1;<br />
+        }<br />
+        return res;<br />
+    }<br />
+}</p>
+<pre><code>
+```C++ [sol3-C++]
+class Solution {
+public:
+    int kthGrammar(int n, int k) {
+        // return __builtin_popcount(k - 1) &amp; 1;
+        k--;
+        int res = 0;
+        while (k &gt; 0) {
+            k &amp;= k - 1;
+            res ^= 1;
+        }
+        return res;
+    }
+};
+</code></pre>
+<p>```C [sol3-C]<br />
+int kthGrammar(int n, int k){<br />
+    k--;<br />
+    int res = 0;<br />
+    while (k &gt; 0) {<br />
+        k &amp;= k - 1;<br />
+        res ^= 1;<br />
+    }<br />
+    return res;<br />
+}</p>
+<pre><code>
+```JavaScript [sol3-JavaScript]
+var kthGrammar = function(n, k) {
+    k--;
+    let res = 0;
+    while (k &gt; 0) {
+        k &amp;= k - 1;
+        res ^= 1;
+    }
+    return res;
+};
+</code></pre>
+<p><code>go [sol3-Golang]
+func kthGrammar(n, k int) (ans int) {
+    // return bits.OnesCount(uint(k-1)) &amp; 1
+    for k--; k &gt; 0; k &amp;= k - 1 {
+        ans ^= 1
+    }
+    return
+}</code></p>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：$O(\log k)$，其中 $k$ 为题目给定查询的下标。</li>
+<li>空间复杂度：$O(1)$，仅使用常量变量。</li>
+</ul>
+</div>
+</div>
+</body>
+</html>

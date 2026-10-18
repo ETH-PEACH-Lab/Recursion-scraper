@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>【Anthony_4926】暴力递归转动态规划 – Regular Expression Matching</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_regular-expression-matching.html">Regular Expression Matching / 正则表达式匹配</a> <span class="sep">›</span> <span class="cur">【Anthony_4926】暴力递归转动态规划</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">【Anthony_4926】暴力递归转动态规划</div>
+  <div class="meta">
+    <span>👤 Anthony_4926</span>
+    <span>👍 0</span>
+    <span>2023-04-03</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/regular-expression-matching/solution/anthony_4926-bao-li-di-gui-zhuan-dong-ta-txzx/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <h2><a href="https://leetcode.cn/problems/regular-expression-matching/description/?favorite=2cktkvj">10. 正则表达式匹配 - 力扣（Leetcode）</a></h2>
+<p>给你一个字符串 <code>s</code> 和一个字符规律 <code>p</code>，请你来实现一个支持 <code>'.'</code> 和 <code>'*'</code> 的正则表达式匹配。</p>
+<ul>
+<li><code>'.'</code> 匹配任意单个字符</li>
+<li><code>'*'</code> 匹配零个或多个前面的那一个元素</li>
+</ul>
+<p>所谓匹配，是要涵盖 <strong>整个</strong> 字符串 <code>s</code>的，而不是部分字符串。</p>
+<p><strong>示例 1：</strong></p>
+<pre><code>输入： s = &quot;aa&quot;, p = &quot;a&quot;
+输出： false
+解释： &quot;a&quot; 无法匹配 &quot;aa&quot; 整个字符串。
+</code></pre>
+<p><strong>示例 2:</strong></p>
+<pre><code>输入： s = &quot;aa&quot;, p = &quot;a*&quot;
+输出： true
+解释： 因为 '*' 代表可以匹配零个或多个前面的那一个元素, 在这里前面的元素就是 'a'。因此，字符串 &quot;aa&quot; 可被视为 'a' 重复了一次。
+</code></pre>
+<p><strong>示例 3：</strong></p>
+<pre><code>输入： s = &quot;ab&quot;, p = &quot;.*&quot;
+输出： true
+解释： &quot;.*&quot; 表示可匹配零个或多个（'*'）任意字符（'.'）。
+</code></pre>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= s.length &lt;= 20</code></li>
+<li><code>1 &lt;= p.length &lt;= 20</code></li>
+<li><code>s</code> 只包含从 <code>a-z</code> 的小写字母。</li>
+<li><code>p</code> 只包含从 <code>a-z</code> 的小写字母，以及字符 <code>.</code> 和 <code>*</code>。</li>
+<li>保证每次出现字符 <code>*</code> 时，前面都匹配到有效的字符</li>
+</ul>
+<h2>思路</h2>
+<p>如果这个题你用s去匹配p能玩废自己。换个思路，用p去匹配s。<br />
+在用p匹配的过程中，其实总结起来就是用p中的如下四个“<strong>匹配单元</strong>”去匹配：<code>.*</code>、<code>字母*</code>、<code>.</code>、<code>字母</code>。<br />
+p从j位置开始的“<strong>匹配单元</strong>”能够匹配s从i开始多少个字符。</p>
+<p><code>.*</code>可以匹配s中任意多个字符，没有相等的要求。</p>
+<p><code>字母*</code>同样可以匹配s中任意多个字符，但是有要求匹配单元中的字母要与s中的字符相同。</p>
+<p><code>.</code>能匹配s中任意一个字符</p>
+<p><code>字母</code>必须与s中i位置的字符相同。</p>
+<p>于是匹配过程的第一步就是要看<strong>匹配单元</strong>是什么。如果<strong>匹配单元</strong>是<code>.*</code>和<code>字母*</code>，因为可以匹配s中任意多个字符，那么我们就从零个、1个、...一直到s的最后一个进行匹配。这是暴力的方法，但是是最好理解的方法。优化方法后边会说。</p>
+<p><img alt="未命名文件-导出 (9).png" src="https://pic.leetcode.cn/1680495606-Vxaxuc-%E6%9C%AA%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6-%E5%AF%BC%E5%87%BA%20(9).png" /></p>
+<p>匹配上了，就从已经匹配完的位置继续向后匹配。当两者匹配的位置都来到末尾，说明在之前的匹配过程中都是匹配上了的。可以返回true</p>
+<p>于是，暴力递归的解法如下</p>
+<h2>暴力递归</h2>
+<pre><code class="language-go">// s从i位置向后匹配
+// p从j位置向后匹配
+// 可以理解为i, j之前都是可以匹配的
+func process(s, p string, i, j int) bool {
+    // i和j都来到了最后，匹配成功
+    if i &gt;= len(s) &amp;&amp; j &gt;= len(p) {
+        return true
+    }
+
+    if j+1 &lt; len(p) &amp;&amp; p[j+1] == '*' { // 判断有没有机会构成通配的【匹配单元】
+        // 无论是哪种通配的【匹配单元】都能匹配零个
+        // 即i位置的字符没有被匹配，下次还是从i位置开始匹配
+        var r bool
+        if p[j] == '.' { // 该情况的【匹配单元】是 【.*】，没有相等的要求
+            for k := 0; i+k-1 &lt; len(s); k++ {
+                r = process(s, p, i+k, j+2) // 本次匹配上k个，下次从i+k位置开始匹配
+                if r {
+                    return true
+                }
+            }
+        } else { // 该情况的【匹配单元】是 【.*】，有相等的要求
+            for k := 0; k==0 || (i+k-1 &lt; len(s) &amp;&amp; s[i+k-1] == p[j]); k++ {
+                r = process(s, p, i+k, j+2) // 本次匹配上k个，下次从i+k位置开始匹配
+                if r {
+                    return true
+                }
+            }
+        }
+    } else if i &lt; len(s) &amp;&amp; j &lt; len(p) &amp;&amp; (p[j] == s[i] || p[j] == '.') {
+        // 字母相等，或者匹配单元是【.】
+        return process(s, p, i+1, j+1)
+    }
+
+    return false
+
+}
+</code></pre>
+<h2>暴力递归转动态规划</h2>
+<p>暴力递归的参数列表中有两个变量，所以需要二维的dp表，dp表尺寸根据两个参数的取值范围设置。</p>
+<p>动态规划需要搞清楚(i, j)位置的依赖关系。这个依赖关系根据暴力递归就能够总结出来。</p>
+<p><strong>1. 当匹配单元是<code>.*</code>时</strong></p>
+<p>f(i, j)依赖于f(i+k, j+2)。对应暴力递归中的代码是</p>
+<pre><code class="language-go">for k := 0; i+k-1 &lt; len(s); k++ {
+    r = process(s, p, i+k, j+2) // 本次匹配上k个，下次从i+k位置开始匹配
+    if r {
+    return true
+    }
+}
+</code></pre>
+<p>根据以上代码，能够推出(i, j)依赖的位置是下图中(a)的绿色位置。此时就能够推断出dp表的填写顺序可以是从左向右，从下到上。但是，但我们统计(i, j)位置的值是要通过遍历绿色的位置来获取么？<br />
+并不是，看图(b)中的蓝色位置。我们在填蓝色位置的值时，它依赖的是紫色的位置，因此紫色位置值的结果已经保存在了蓝色位置中。因此，最终(i, j)位置依赖的是图(c)中的橙色位置，即(i+1, j)和(i, j+2)</p>
+<p><img alt="未命名文件-导出 (14).png" src="https://pic.leetcode.cn/1680495583-TevhBT-%E6%9C%AA%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6-%E5%AF%BC%E5%87%BA%20(14).png" /></p>
+<p><strong>2. 当匹配单元是<code>字母*</code>时</strong><br />
+f(i, j)依赖于f(i+k, j+2)，但是有相等的限制。对应暴力递归中的代码是</p>
+<pre><code class="language-go">for k := 0; k==0 || (i+k-1 &lt; len(s) &amp;&amp; s[i+k-1] == p[j]); k++ {
+    r = process(s, p, i+k, j+2) // 本次匹配上k个，下次从i+k位置开始匹配
+    if r {
+        return true
+    }
+}
+</code></pre>
+<p>(i, j)能够依赖依赖下一行的j+2位置是有条件的，从<code>s[i+k-1] == p[j]</code>可以看出，当<code>s[i]=p[j]</code>时(i, j)才能依赖于(i+1, j+2)。</p>
+<p>即此种匹配单元的依赖情况可以分为两种：</p>
+<ul>
+<li><code>s[i]=p[j]</code>时，依赖于(i+1, j+2)和(i, j+2)</li>
+<li><code>s[i]!=p[j]</code>时,无法依赖于下一行，只依赖于(i, j+2)</li>
+</ul>
+<p><strong>最后一种依赖</strong></p>
+<p>根据暴力递归，最后一种的依赖关系很清楚，只依赖于(i+1, j+1)</p>
+<pre><code class="language-go">if i &lt; len(s) &amp;&amp; j &lt; len(p) &amp;&amp; (p[j] == s[i] || p[j] == '.') {
+    // 字母相等，或者匹配单元是【.】
+    return process(s, p, i+1, j+1)
+}
+</code></pre>
+<p><strong>dp表初始化</strong></p>
+<p>当i， j都来到最后，表示匹配成功。即下图中的(a)。</p>
+<p>当j来到最后，如果i还没来到最后，说明s中还有字符没匹配，就都是false，即下图中的(b)。</p>
+<p>当i来到最后，需要判断j位置的匹配单元是不是通配那两种。如果不是通配那肯定是匹配不上了。如果是通配，依赖于通配后边的。事实上只有j后边都是通配的时候p才能成功匹配s。初始化的代码如下</p>
+<pre><code class="language-go">dp[len(s)][len(p)] = true
+    for j:=len(p)-1; j&gt;=0; j--{
+        if p[j] == '*'{
+            dp[len(s)][j-1] = dp[len(s)][j+1]
+    }
+}
+</code></pre>
+<p><img alt="未命名文件-导出 (15).png" src="https://pic.leetcode.cn/1680495570-BqGmwX-%E6%9C%AA%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6-%E5%AF%BC%E5%87%BA%20(15).png" /></p>
+<h2>动态规划代码</h2>
+<pre><code class="language-go">func isMatch(s string, p string) bool {
+    dp := make([][]bool, len(s)+1)
+    for i := range dp {
+        dp[i] = make([]bool, len(p)+1)
+    }
+    dp[len(s)][len(p)] = true
+    for j:=len(p)-1; j&gt;=0; j--{
+        if p[j] == '*'{
+            dp[len(s)][j-1] = dp[len(s)][j+1]
+        }
+    }
+
+    for i:= len(s)-1; i&gt;=0; i--{
+        for j:=len(p)-1; j&gt;=0; j--{
+            if j+1 &lt; len(p) &amp;&amp; p[j+1] == '*' { 
+                if p[j] == '.' {
+                    dp[i][j] = dp[i][j+2] || dp[i+1][j]
+                } else { 
+                    if s[i] == p[j] {
+                        dp[i][j] = dp[i][j+2] || dp[i+1][j]
+                    }else{
+                        dp[i][j] = dp[i][j+2]
+                    }   
+                }
+            } else if (p[j] == s[i] || p[j] == '.') {
+                dp[i][j] = dp[i][j] || dp[i+1][j+1]
+            }
+        }
+    }
+
+    return dp[0][0]
+}
+</code></pre>
+</div>
+</div>
+</body>
+</html>

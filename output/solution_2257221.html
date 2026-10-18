@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C++ | Solution with Comments | Brute Force and Optimal || Easy Understanding – Permutation Sequence</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_permutation-sequence.html">Permutation Sequence</a> <span class="sep">›</span> <span class="cur">C++ | Solution with Comments | Brute Force and Optimal || Easy Understanding</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">C++ | Solution with Comments | Brute Force and Optimal || Easy Understanding</div>
+  <div class="meta">
+    <span>👤 Tejender_Upadhyay</span>
+    <span>👍 24</span>
+    <span>2022-07-09</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/permutation-sequence/solutions/2257221/c-solution-with-comments-brute-force-and-optimal-easy-understanding/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p><strong><em>Please Upvote if it helps you...</em></strong><br />
+<img alt="image" src="https://assets.leetcode.com/users/images/308215da-c176-4c85-9e1d-0200c754cf7f_1657345920.9695845.gif" /></p>
+<hr />
+<p><strong><em>Solution 1: Brute Force Solution</em></strong></p>
+<hr />
+<hr />
+<p><strong><em>Approach:</em></strong></p>
+<hr />
+<p>The extreme naive solution is to generate all the possible permutations of the given sequence.  This is achieved using recursion and every permutation generated is stored in some other data structure (here we have used a vector). Finally, we sort the data structure in which we have stored all the sequences and return the Kth sequence from it.</p>
+<hr />
+<hr />
+<p><strong><em>C++ Code:-</em></strong></p>
+<hr />
+<pre><code>class Solution {
+  public:
+    //function to generate all possible permutations of a string
+    void solve(string &amp; s, int index, vector &lt; string &gt; &amp; res) {
+      if (index == s.size()) {
+        res.push_back(s);
+        return;
+      }
+      for (int i = index; i &lt; s.size(); i++) {
+        swap(s[i], s[index]);
+        solve(s, index + 1, res);
+        swap(s[i], s[index]);
+      }
+    }
+string getPermutation(int n, int k) {
+    string s;
+    vector &lt; string &gt; res;
+    //create string
+    for (int i = 1; i &lt;= n; i++) {
+      s.push_back(i + '0');
+    }
+    solve(s, 0, res);
+    //sort the generated permutations
+    sort(res.begin(), res.end());
+    //make k 0-based indexed to point to kth sequence
+    auto it = res.begin() + (k - 1);
+    return *it;
+  }
+};
+</code></pre>
+<hr />
+<hr />
+<p><strong><em>Time complexity: O(N!  N) +O(N! Log N!)</em></strong></p>
+<p><strong><em>Reason:</em></strong>  The recursion takes O(N!)  time because we generate every possible permutation and another O(N)  time is required to make a deep copy and store every sequence in the data structure. Also, O(N! Log N!)  time required to sort the data structure</p>
+<p><strong><em>Space complexity: O(N)</em></strong> </p>
+<p><strong><em>Reason:</em></strong> Result stored in a vector, we are auxiliary space taken by recursion</p>
+<hr />
+<hr />
+<p><strong><em>Solution 2:(Optimal Approach)</em></strong></p>
+<p>Say we have N = 4  and K = 17. Hence the number sequence is {1,2,3,4}. </p>
+<hr />
+<p><strong><em>Intuition:</em></strong></p>
+<p>Since this is a permutation we can assume that there are four positions that need to be filled using the four numbers of the sequence. First, we need to decide which number is to be placed at the first index. Once the number at the first index is decided we have three more positions and three more numbers.  Now the problem is shorter. We can repeat the technique that was used previously until all the positions are filled. The technique is explained below.</p>
+<hr />
+<hr />
+<p><strong><em>Approach:</em></strong></p>
+<p><strong><em>STEP 1:</em></strong></p>
+<p>Mathematically speaking there can be 4 variations while generating the permutation. We can have our permutation starting with either 1 or 2 or 3 or 4. If the first position is already occupied by one number there are three more positions left. The remaining three numbers can be permuted among themselves while filling the 3 positions and will generate 3! = 6 sequences. Hence each block will have 6 permutations adding up to a total of 6*4 = 24 permutations. If we consider the sequences as 0-based and in the sorted form we observe:- </p>
+<p>The 0th – 5th permutation will start with 1 <br />
+The 6th – 11th permutation will start with 2<br />
+The 12th – 17th permutation will start with 3 <br />
+The 18th – 23rd permutation will start with 4.</p>
+<p>(For better understanding refer to the picture below.) </p>
+<p><img alt="image" src="https://assets.leetcode.com/users/images/d01d09a0-37d2-4152-89ec-87dadd9ac1c1_1657345602.0382993.png" /></p>
+<p>We make K = 17-1 considering 0-based indexing. Since each of the four blocks illustrated above comprises 6 permutations, therefore, the 16th permutation will lie in (16 / 6 ) = 2nd block, and our answer is the (16 % 6) = 4th sequence from the 2nd block. Therefore 3 occupies the first position of the sequence and K = 4.</p>
+<p><img alt="image" src="https://assets.leetcode.com/users/images/ba557ff2-c1cb-45a3-99f9-26eee5183535_1657345592.8419704.png" /></p>
+<hr />
+<p><strong><em>STEP 2:</em></strong></p>
+<p>Our new search space comprises three elements {1,2,4} where K = 4 . Using the previous technique we can consider the second position to be occupied can be any one of these 3 numbers. Again one block can start with 1, another can start with 2 and the last one can start with 4 . Since one position is fixed, the remaining two numbers of each block can form 2! = 2  sequences. In sorted order :</p>
+<p>The 0th – 1st sequence starts with 1 <br />
+The 2nd – 3rd sequence starts with 2 <br />
+The 4th – 5th sequence starts with 4<br />
+<img alt="image" src="https://assets.leetcode.com/users/images/971c94d9-7368-4160-b681-9ae4fb1c2688_1657345583.4629538.png" /></p>
+<p>The 4th permutation will lie in (4/2) = 2nd block and our answer is the 4%2 = 0th sequence from the 2nd block. Therefore 4 occupies the second position and K = 0.</p>
+<hr />
+<p><strong><em>STEP 3:</em></strong></p>
+<p>The new search space will have two elements {1 ,2} and K = 0. One block starts with 1 and the other block starts with 2. The other remaining number can form only one 1! = 1 sequence. In sorted form –</p>
+<p>The  0th sequence starts with 1 <br />
+The  1st sequence. starts with 2<br />
+<img alt="image" src="https://assets.leetcode.com/users/images/e75d4c48-36b5-4952-aebf-805e73a66da5_1657345575.3617208.png" /></p>
+<p>The 0th permutation will lie in the (0/1) = 0th block and our answer is the 0%1 = 0th sequence from the 0th block. Therefore 1 occupies the 3rd position and K = 0.</p>
+<hr />
+<p><strong><em>STEP 4:</em></strong></p>
+<p>Now the only block has 2 in the first position and no remaining number is present.<br />
+<img alt="image" src="https://assets.leetcode.com/users/images/0c53bf48-30eb-4f5a-9ca7-5a1995a0da9a_1657345567.3807125.png" /></p>
+<p>This is the point where we place 2 in the last position and stop.</p>
+<hr />
+<p><strong><em>The final answer is 3412.</em></strong></p>
+<hr />
+<hr />
+<p>C++ Code:-</p>
+<hr />
+<pre><code>string getPermutation(int n, int k) {
+      int fact = 1;
+      vector &lt; int &gt; numbers;
+      for (int i = 1; i &lt; n; i++) {
+        fact = fact * i;
+        numbers.push_back(i);
+      }
+      numbers.push_back(n);
+      string ans = &quot;&quot;;
+      k = k - 1;
+      while (true) {
+        ans = ans + to_string(numbers[k / fact]);
+        numbers.erase(numbers.begin() + k / fact);
+        if (numbers.size() == 0) {
+          break;
+        }
+
+        k = k % fact;
+        fact = fact / numbers.size();
+      }
+      return ans;
+    }
+</code></pre>
+<hr />
+<hr />
+<p><strong><em>Time Complexity: O(N)  O(N) = O(N^2)</em></strong></p>
+<p><strong><em>Reason:</em></strong> We are placing N numbers in N positions. This will take O(N) time. For every number, we are reducing the search space by removing the element already placed in the previous step. This takes another O(N) time.</p>
+<p><strong><em>Space Complexity: O(N)</em></strong></p>
+<p><strong><em>Reason:</em></strong> We are storing  the numbers in a data structure(here vector)</p>
+<hr />
+<hr />
+</div>
+</div>
+</body>
+</html>

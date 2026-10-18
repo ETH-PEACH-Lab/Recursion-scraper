@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wildcard Matching – Editorial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+<style>.vimeo-link{display:inline-flex;align-items:center;gap:8px;
+            background:#1ab7ea;color:#fff;font-weight:600;
+            padding:10px 20px;border-radius:6px;margin:12px 0;font-size:.95em}
+.vimeo-link:hover{background:#0d9bd4;color:#fff;text-decoration:none}</style>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_wildcard-matching.html">Wildcard Matching</a> <span class="sep">›</span> <span class="cur">Editorial</span></nav>
+<div class="wrap"><div class="page-title">44. Wildcard Matching — Official Editorial</div>
+<div class="page-sub" style="margin-bottom:20px">
+  <span class="badge b-hard">Hard</span> <span class="badge b-tag">String</span> <span class="badge b-tag">Dynamic Programming</span> <span class="badge b-tag">Greedy</span> <span class="badge b-tag">Recursion</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/wildcard-matching/" target="_blank" style="font-size:.85em">↗ Problem</a>
+  &nbsp;·&nbsp;
+  <a href="problem_wildcard-matching.html" style="font-size:.85em">💬 Community Solutions</a>
+</div>
+<div class="sol-body">
+  <p>[TOC]</p>
+<h2>Solution</h2>
+<hr />
+<h3>Approach 1: Recursion with Memoization</h3>
+<p><strong>Intuition</strong></p>
+<p>The first idea here is a recursion. It is a relatively straightforward approach but quite time-consuming because of the huge recursion depth for long input strings.</p>
+<ul>
+<li>
+<p>If the strings are equal (<code>p == s</code>), then return <code>True</code>.</p>
+</li>
+<li>
+<p>If the pattern matches any string (<code>p == '*'</code>), then return <code>True</code>.</p>
+</li>
+<li>
+<p>If <code>p</code> is empty, or <code>s</code> is empty, return <code>False</code>.</p>
+</li>
+<li>
+<p>If the current characters match (<code>p[0] == s[0]</code> or <code>p[0] == '?'</code>), then compare the next ones and return <code>isMatch(s[1:], p[1:])</code>.</p>
+</li>
+<li>
+<p>If the current pattern character is a star (<code>p[0] == '*'</code>), then there are two possible situations:</p>
+<ul>
+<li>
+<p>The star matches no characters, and hence the answer is <code>isMatch(s, p[1:])</code>.</p>
+</li>
+<li>
+<p>The star matches one or more characters, and so the answer is <code>isMatch(s[1:], p)</code>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>If <code>p[0] != s[0]</code>, return <code>False</code>.</p>
+</li>
+</ul>
+<p><img alt="pic" src="https://leetcode.com/articles/Figures/44/stupid.png" /></p>
+<p>The problem with this algorithm is that it doesn't pass all test cases because of time limit issues, and hence has to be optimized. Here is what could be done:</p>
+<ol>
+<li>
+<p><em>Memoization</em>. That is a standard way to optimize the recursion. Let's have a memoization hashmap using pair <code>(s, p)</code> as a key and match/don't match as a boolean value. One could keep all already checked pairs <code>(s, p)</code> in this hashmap, so that if there are any duplicate checks, the answer is right here, and there is no need to proceed to the computations again.</p>
+</li>
+<li>
+<p><em>Clean up of the input data</em>. Whether the patterns with multiple stars in a row <code>a****bc**cc</code> are valid wildcards or not, they could be simplified without any data loss to <code>a*bc*cc</code>. Such a cleanup helps to decrease the recursion depth. </p>
+</li>
+</ol>
+<p><strong>Algorithm</strong></p>
+<p>Here is the algorithm.</p>
+<ul>
+<li>
+<p>Clean up the input by replacing more than one star in a row with a single star: <code>p = remove_duplicate_stars(p)</code>.</p>
+</li>
+<li>
+<p>Initiate the memoization hashmap <code>dp</code>.</p>
+</li>
+<li>
+<p>Return the helper function with a cleaned input: <code>helper(s, p)</code>.</p>
+</li>
+<li>
+<p><code>helper(s, p)</code>:</p>
+<ul>
+<li>
+<p>If <code>(s, p)</code> is already known and stored in <code>dp</code>, return the value.</p>
+</li>
+<li>
+<p>If the strings are equal (<code>p == s</code>), or the pattern matches any string (<code>p == '*'</code>), add <code>dp[(s, p)] = True</code>.</p>
+</li>
+<li>
+<p>Else if <code>p</code> is empty, or <code>s</code> is empty, add <code>dp[(s, p)] = False</code>.</p>
+</li>
+<li>
+<p>Else if the current characters match (<code>p[0] == s[0]</code> or <code>p[0] == '?'</code>), then compare the next ones and add <code>dp[(s, p)] = helper(s[1:], p[1:])</code>.</p>
+</li>
+<li>
+<p>Else if the current pattern character is a star (<code>p[0] == '*'</code>), then there are two possible situations: the star matches no characters, and the star matches one or more characters: <code>dp[(s, p)] = helper(s, p[1:]) or helper(s[1:], p)</code>.</p>
+</li>
+<li>
+<p>Else <code>p[0] != s[0]</code>, then add <code>dp[(s, p)] = False</code>.</p>
+</li>
+<li>
+<p>Now when the value is computed, return it: <code>dp[(s, p)]</code>.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Implementation</strong>   </p>
+<iframe src="https://leetcode.com/playground/C8VDAToH/shared" frameBorder="0" width="100%" height="500" name="C8VDAToH"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>
+<p>Time complexity: $$O(S \cdot P \cdot (S + P))$$</p>
+<ul>
+<li>
+<p>Removing duplicate stars requires us to traverse the string <code>p</code> once, this requires $$O(P)$$ time. </p>
+</li>
+<li>
+<p>Regarding the helper function, every non-memoized recursive call we will: </p>
+<ol>
+<li>
+<p>Check if <code>helper(s, p)</code> has already been calculated.  This takes $$O(S + P)$$ time to create a hash of the tuple <code>(s, p)</code> the first time and $$O(1)$$ time to check if the result has already been cached.</p>
+</li>
+<li>
+<p>Go through our if statements.  If <code>(s, p)</code> is one of the base cases, this will take $$O(min(S, P))$$ time for the string equality check or just $$O(1)$$ time for other checks, otherwise, it will take $$O(S + P)$$ time to create a substring <code>s[1:]</code> and a substring <code>p[1:]</code>.  Here, let's assume the worst-case scenario where most of the non-memoized recursive calls require $$O(S + P)$$ time.  </p>
+</li>
+<li>
+<p>Then we will cache our result, which takes $$O(1)$$ time since the hash for tuple <code>(s, p)</code> was already created when we checked if the result for <code>(s, p)</code> is already cached.</p>
+</li>
+</ol>
+<p>So in total, we spend $$O(2 \cdot (S + P)) = O(S + P)$$ time on every non-memoized call ($$S + P$$ for creating a hash and $$S + P$$ for creating substrings).  We can only have as many non-memoized calls as there are combinations of <code>s</code> and <code>p</code>. Therefore, in the worst case, we can have $$S \cdot P$$ non-memoized calls. This gives us a total time spent on non-memoized calls of $$O(S \cdot P \cdot (S + P))$$.</p>
+</li>
+<li>
+<p>As for the memoized calls, for each non-memoized call, we can make at most 2 additional calls to <code>helper</code>.  This means that there will be at most $$S \cdot P$$ memoized calls.  Each memoized call takes $$O(S + P)$$ time to create the hash for <code>(s, p)</code> and $$O(1)$$ time to get the cached result.  So the total time spent on memoized calls is $$O(S \cdot P \cdot (S + P))$$ which is a loose upper bound. </p>
+</li>
+<li>
+<p>Adding all 3 time complexities together we get: $$O(P + 2 \cdot S \cdot P \cdot (S + P)) = O(S \cdot P \cdot (S + P))$$.</p>
+<blockquote>
+<p>Note: This approach can be optimized by using two pointers to track the current position on <code>s</code> and <code>p</code> instead of passing substrings of <code>s</code> and <code>p</code> as arguments.  To improve readability, this was not implemented here, however, doing so will reduce the time complexity to $$O(S \cdot P)$$ since hashing two integers takes $$O(1)$$ time and each recursive call to <code>helper</code> would no longer require creating new substrings which takes linear time.  Thus the total time complexity is $$O(1)$$ per call for a maximum of $$S \cdot P$$ non-memoized calls and $$S \cdot P$$ memoized calls.</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p>Space complexity: $$O(S \cdot P)$$. Creating a new string <code>p</code> requires $$O(P)$$ space. The recursion call stack may exceed <code>max(S, P)</code> in cases such as <code>(s, p)</code> = <code>(aaab, *a*b)</code>, however, it is bounded by $$O(S + P)$$.  Lastly, the hashmap requires $$O(S \cdot P)$$ space to memoize the result of each call to <code>helper</code>.
+<br />
+<br /></p>
+</li>
+</ul>
+<hr />
+<h3>Approach 2: Dynamic Programming</h3>
+<p><strong>Intuition</strong></p>
+<p>The recursion approach above shows how painful the large recursion depth could be, so let's try something more iterative. </p>
+<p>Memoization from the first approach gives an idea to try dynamic programming. The problem is very similar to <a href="https://leetcode.com/problems/edit-distance/solution/">Edit Distance problem</a>, so let's use exactly the same approach here.</p>
+<p>The idea would be to reduce the problem to simple ones. For example, there is a string <code>adcebdk</code> and pattern <code>*a*b?k</code>, and we want to compute if there is a match for them: <code>D = True/False</code>. One could notice that it seems to be more simple for short strings and patterns and so it would be logical to relate a match <code>D[p_len][s_len]</code> with the lengths <code>p_len</code> and <code>s_len</code> of input pattern and string correspondingly.</p>
+<p>Let's go further and introduce a match <code>D[p_idx][s_idx]</code> which is a match between the first <code>p_idx</code> characters of the pattern and the first <code>s_idx</code> characters of the string.</p>
+<p><img alt="pic" src="https://leetcode.com/articles/Figures/44/dp_match2_fixed.png" /></p>
+<p>It turns out that one could compute <code>D[p_idx][s_idx]</code>, knowing a match without the last characters <code>D[p_idx - 1][s_idx - 1]</code>.</p>
+<p>If the last characters are the same or the pattern character is '?', then </p>
+<blockquote>
+<p>$$D[p_{idx}][s_{idx}] = D[p_{idx} - 1][s_{idx} - 1] \qquad (1)$$</p>
+</blockquote>
+<p><img alt="pic" src="https://leetcode.com/articles/Figures/44/word_match3.png" /></p>
+<p>If the pattern character is '*' and there was a match on the previous step <code>D[p_idx - 1][s_idx - 1] = True</code>, then </p>
+<ul>
+<li>
+<p>The star at the end of the pattern still results in a match. </p>
+</li>
+<li>
+<p>The star could match as many characters as you wish.</p>
+</li>
+</ul>
+<blockquote>
+<p>$$D[p_{idx} - 1][i] =     extrm{True}, i \ge s_{idx} - 1 \qquad(2)$$</p>
+</blockquote>
+<p>So each step of the computation would be done based on the previous ones, as follows: </p>
+<p><img alt="pic" src="https://leetcode.com/articles/Figures/44/if_match.png" /></p>
+<p><img alt="pic" src="https://leetcode.com/articles/Figures/44/dpstar.png" /></p>
+<p><strong>Algorithm</strong></p>
+<ul>
+<li>
+<p>Start from the table <code>D</code> filled with <code>False</code> everywhere but <code>D[0][0] = True</code>.</p>
+</li>
+<li>
+<p>Apply rules (1) and (2) in a loop and return <code>D[p_len][s_len]</code> as an answer.</p>
+</li>
+</ul>
+<p><img alt="pic" src="https://leetcode.com/articles/Figures/44/fixed.png" /></p>
+<p><strong>Implementation</strong></p>
+<iframe src="https://leetcode.com/playground/AVMvpQ67/shared" frameBorder="0" width="100%" height="500" name="AVMvpQ67"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>Time complexity: $$O(S \cdot P)$$ where $$S$$ and $$P$$ are lengths of the input string and the pattern respectively. </li>
+<li>Space complexity: $$O(S \cdot P)$$ to store the matrix.
+<br />
+<br /></li>
+</ul>
+<hr />
+<h3>Approach 3: Backtracking</h3>
+<p><strong>Intuition</strong></p>
+<p>Complexity $$O(S \cdot P)$$ is much better than $$O(S \cdot P \cdot (S + P))$$, but still could be improved. There is no need to compute the entire matrix, i.e., to check all the possibilities for each star:</p>
+<ul>
+<li>Star matches zero characters.</li>
+<li>Star matches one character.</li>
+<li>Star matches two characters. </li>
+</ul>
+<p>...</p>
+<ul>
+<li>Star matches all remaining characters.  </li>
+</ul>
+<p>Let's just pick up the first opportunity "matches zero characters" and proceed further. If this assumption would lead to "no match" situation, then <em>backtrack</em>: come back to the previous star, assume now that it matches one more character (one), and proceed again. Again "no match" situation? <em>Backtrack again</em>: come back to the previous star, and assume now that it matches one more character (two), etc. </p>
+<p><img alt="pic" src="https://leetcode.com/articles/Figures/44/backtrack.png" /></p>
+<p><strong>Algorithm</strong></p>
+<p>Here is the algorithm.</p>
+<ul>
+<li>
+<p>Let's use two pointers here: <code>s_idx</code> to iterate over the string, and <code>p_idx</code> to iterate over the pattern. While <code>s_idx &lt; s_len</code>:</p>
+<ul>
+<li>
+<p>If there are still characters in the pattern (<code>p_idx &lt; p_len</code>) and the characters under the pointers match (<code>p[p_idx] == s[s_idx]</code> or <code>p[p_idx] == '?'</code>), then move forward by increasing both pointers.</p>
+</li>
+<li>
+<p>Otherwise, if there are still characters in the pattern (<code>p_idx &lt; p_len</code>), and <code>p[p_idx] == '*'</code>, then first check "match zero characters" situation, i.e., increase only pattern pointer <code>p_idx++</code>. Write down for a possible backtrack the star position in <code>star_idx</code> variable, and the current string pointer in <code>s_tmp_idx</code> variable.</p>
+</li>
+<li>
+<p>Else if there is "no match" situation: the pattern is used up <code>p_idx &lt; p_len</code> or the characters under the pointers don't match. </p>
+<ul>
+<li>
+<p>If there were no stars in the pattern, i.e., no <code>star_idx</code>, return <code>False</code>.</p>
+</li>
+<li>
+<p>If there was a star, then backtrack: set pattern pointer just after the last star <code>p_idx = star_idx + 1</code>, and string pointer <code>s_idx = s_tmp_idx + 1</code>, i.e., assume that this time the star matches <em>one more character</em>. Save the current string pointer for the possible backtrack <code>s_tmp_idx = s_idx</code>.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Return <code>True</code> if all remaining characters in the pattern are stars. </p>
+</li>
+</ul>
+<p><strong>Implementation</strong></p>
+<iframe src="https://leetcode.com/playground/Wnff39GC/shared" frameBorder="0" width="100%" height="500" name="Wnff39GC"></iframe>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>Time complexity: $$O(\min(S, P))$$ for the best case and better than $$O(S \log P)$$ for the average case, where $$S$$ and $$P$$ are lengths of the input string and the pattern correspondingly. Please refer to <a href="https://arxiv.org/pdf/1407.0950.pdf">this article</a> for detailed proof. However, in the worst-case scenario, this algorithm requires $$O(S \cdot P)$$ time.</li>
+<li>Space complexity: $$O(1)$$ since it's a constant space solution.
+<br />
+<br /></li>
+</ul>
+<hr />
+<h3>Further reading</h3>
+<p>There are a lot of search-related questions around this problem that could pop up during the interview. To prepare, you could read about <a href="https://en.wikipedia.org/wiki/String-searching_algorithm">string searching algorithm</a> and <a href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm">KMP algorithm</a>.</p>
+</div></div>
+</body>
+</html>

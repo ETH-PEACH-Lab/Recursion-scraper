@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Different Ways to Add Parentheses – Editorial</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+<style>.vimeo-link{display:inline-flex;align-items:center;gap:8px;
+            background:#1ab7ea;color:#fff;font-weight:600;
+            padding:10px 20px;border-radius:6px;margin:12px 0;font-size:.95em}
+.vimeo-link:hover{background:#0d9bd4;color:#fff;text-decoration:none}</style>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_different-ways-to-add-parentheses.html">Different Ways to Add Parentheses</a> <span class="sep">›</span> <span class="cur">Editorial</span></nav>
+<div class="wrap"><div class="page-title">241. Different Ways to Add Parentheses — Official Editorial</div>
+<div class="page-sub" style="margin-bottom:20px">
+  <span class="badge b-medium">Medium</span> <span class="badge b-tag">Math</span> <span class="badge b-tag">String</span> <span class="badge b-tag">Dynamic Programming</span> <span class="badge b-tag">Recursion</span> <span class="badge b-tag">Memoization</span>
+  &nbsp;
+  <a href="https://leetcode.com/problems/different-ways-to-add-parentheses/" target="_blank" style="font-size:.85em">↗ Problem</a>
+  &nbsp;·&nbsp;
+  <a href="problem_different-ways-to-add-parentheses.html" style="font-size:.85em">💬 Community Solutions</a>
+</div>
+<div class="sol-body">
+  <p>[TOC]</p>
+<h2>Solution</h2>
+<hr />
+<h3>Overview</h3>
+<p>We are given a string <code>expression</code> containing:
+1. Numbers from 0 - 99.
+2. Operators (+, -, *)  </p>
+<p>Our task is to determine all possible results obtainable by grouping the numbers and operators in various ways.</p>
+<hr />
+<h3>Approach 1: Recursion</h3>
+<h4>Intuition</h4>
+<p>When we add parentheses to an expression, they group parts of the expression, telling us to evaluate those parts first. To decide where to place these parentheses, we look at each operator in the expression. Each operator offers a chance to split the expression into two smaller parts: everything before the operator and everything after it. These smaller parts are similar to our original problem, so we use recursion to solve them.</p>
+<p>We start by defining our base cases, where we can return a result without further recursion:
+1. If the expression is empty, return an empty list.
+2. If the expression is a single digit, return a list with that number.
+3. If the expression has two characters and the first is a digit, the second must also be a digit. We convert the expression to a number and return it in a list.</p>
+<p>For longer expressions, we find operators to split the expression. We iterate through each character, and when we find an operator, we recursively evaluate the parts before and after it. We store the results of these evaluations in separate lists. Then, we combine the results from the left and right parts using the operator and store the final values in a list.</p>
+<p>Here’s a visual example of how a recursion subtree might look:</p>
+<p><img alt="" src="https://leetcode.com/articles/Figures/241/subtree.png" /></p>
+<p>By the end of the process, the <code>results</code> list will contain all possible results from grouping the numbers and operators in the expression.</p>
+<h4>Algorithm</h4>
+<ul>
+<li>Initialize a list <code>results</code> to store the possible outcomes.</li>
+<li>If the input string is empty, return the empty <code>results</code> list.</li>
+<li>Check if <code>expression</code> is a single character:</li>
+<li>If so, convert it to an integer and add it to <code>results</code>.</li>
+<li>Return <code>results</code>.</li>
+<li>Check if <code>expression</code> has only two characters and starts with a digit:</li>
+<li>If so, convert the entire string to an integer and add it to <code>results</code>.</li>
+<li>Return <code>results</code>.</li>
+<li>Iterate through each character of <code>expression</code>:</li>
+<li>Set the current character as <code>currentChar</code>.</li>
+<li>If <code>currentChar</code> is a digit, continue to the next iteration.</li>
+<li>Recursively call <code>diffWaysToCompute</code> for the left part of <code>expression</code> (from indices <code>0</code> to <code>i-1</code>) and set it to a list <code>leftResults</code>.</li>
+<li>Recursively call <code>diffWaysToCompute</code> for the right part of <code>expression</code> (from indices <code>i+1</code> to the end) and set it to a list <code>rightResults</code>.</li>
+<li>Iterate through <code>leftValue</code> in <code>leftResults</code>:<ul>
+<li>For each <code>leftValue</code>, iterate through each <code>rightValue</code> in the <code>rightResults</code>:</li>
+<li>Initialize a variable <code>computedResult</code> to store the result of the current operation.</li>
+<li>Perform the operation (addition, subtraction, or multiplication) based on the current character.</li>
+<li>Add the <code>computedResult</code> to the <code>results</code> list.</li>
+</ul>
+</li>
+<li>Return <code>results</code> as our answer.</li>
+</ul>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/a5L9xDMj/shared" frameBorder="0" width="100%" height="500" name="a5L9xDMj"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Let $n$ be the the length of the input string <code>expression</code>.</p>
+<ul>
+<li>
+<p>Time complexity: $O(n \cdot 2^n)$</p>
+<p>For each sub-expression, we iterate through the string to identify the operators, which takes $O(n)$ time. However, the key aspect is the recursive combination of results from the left and right sub-expressions. The number of results grows exponentially because each sub-expression produces multiple results, and combining these results takes $O(k     imes l)$, where $k$ and $l$ are the numbers of results from the left and right sub-problems, respectively.</p>
+<p>There were some suggestions to model the number of results using Catalan numbers which we deemed as incorrect. Catalan numbers apply when counting distinct ways to fully parenthesize an expression or structure. In this problem, however, we're not just counting valid ways to split the expression but also calculating and combining all possible results. This introduces exponential growth in the number of possible results, not the polynomial growth typical of Catalan numbers. The number of combinations grows exponentially with the depth of recursive splitting, which means the overall complexity is driven by the exponential growth in results.</p>
+<p>Thus, the time complexity of the algorithm is $O(n \cdot 2^n)$, where the $O(2^n)$ factor reflects the exponential growth in the number of ways to combine results from sub-expressions.</p>
+</li>
+<li>
+<p>Space complexity: $O(2^n)$</p>
+<p>The algorithm stores the intermediate results at each step. Since the total number of results can be equal to the $O(2^n)$, the space complexity of the algorithm is $O(2^n)$.</p>
+</li>
+</ul>
+<hr />
+<h3>Approach 2: Memoization</h3>
+<h4>Intuition</h4>
+<p>When dealing with complex expressions, we often find ourselves repeating the same calculations. Take the expression <code>2 + 2 - 2 - 2 - 2</code>. You could group it in different ways:</p>
+<ol>
+<li><code>((2 + 2) - (2 - 2) - 2)</code></li>
+<li><code>((2 + 2) - 2 - (2 - 2))</code></li>
+</ol>
+<p>As you can see, the sub-expression (2 + 2) is evaluated more than once.</p>
+<p>To avoid this, we can store the results of these sub-calculations. This way, if we hit the same sub-problem again, we can use the stored result instead of recalculating it, which speeds things up.</p>
+<p>Another issue with the previous method was that it repeatedly created substrings of the expression. Since creating a substring takes $O(n)$ time, where $n$ is the length of the string, this can be quite slow. Instead, we’ll pass the entire <code>expression</code> to each recursive call and use <code>start</code> and <code>end</code> indices to specify the part we're interested in. This avoids the costly substring operations.</p>
+<p>In our updated approach, each state in the recursion is defined by the <code>start</code> and <code>end</code> indices. We use a 2D array for memoization, where each cell <code>memo[i][j]</code> holds the list of possible results for the sub-expression from index <code>i</code> to index <code>j</code>.</p>
+<blockquote>
+<p>Note: There is an alternative way to apply memoization in this problem. Consider the expression "2-2-2". This can be grouped in two ways: <code>(2 - 2) - 2</code> and <code>2 - (2 - 2)</code>. As you can see, the expression "2 - 2" is being evaluated repeatedly, even though the instances do not share the same indices.</p>
+<p>To memoize this, we need to store the substring itself as the state of the sub-problem. This can be achieved by using a map with the substring as the key and the list of results as the value. Whenever we encounter the same substring, we can return the result from the map.</p>
+<p>While this approach leads us to identify and cache more sub-problems, it forces us to use substrings in our recursion. In an interview setting, you can highlight both approaches and discuss their advantages and disadvantages for extra credit.</p>
+</blockquote>
+<h4>Algorithm</h4>
+<p>Main method <code>diffWaysToCompute</code>:</p>
+<ul>
+<li>Initialize a 2D array <code>memo</code> to store computed results for sub-expressions.</li>
+<li>Call the <code>computeResults</code> method with the full expression range and return the result.</li>
+</ul>
+<p>Helper method <code>computeResults(expression, memo, start, end)</code>:</p>
+<ul>
+<li>Check if the result for the range <code>[start, end]</code> is memoized. If so, return the memoized result.</li>
+<li>Initialize a list <code>results</code> to store computed values for the current sub-expression.</li>
+<li>Check if the current range is a single digit:</li>
+<li>
+<ul>
+<li>If so, convert <code>expression</code> to an integer and add it to <code>results</code>.</li>
+</ul>
+</li>
+<li>Return <code>results</code>.</li>
+<li>Check if the current range is a two-digit number:</li>
+<li>If so, compute its value and add it to <code>results</code>.</li>
+<li>Return <code>results</code>.</li>
+<li>Iterate through each character in the current range of the expression:</li>
+<li>Skip the current iteration if the character is a digit.</li>
+<li>Recursively call <code>computeResults</code> for the left part of the expression up to the current character (from <code>start</code> to <code>i-1</code>). Store the result in <code>leftResults</code>.</li>
+<li>Recursively call <code>computeResults</code> for the right part of the expression after the current character (from <code>i+1</code> to <code>end</code>). Store the result in <code>rightResults</code>.</li>
+<li>Iterate through each <code>leftValue</code> in the <code>leftResults</code>:<ul>
+<li>For each <code>leftValue</code>, iterate through each <code>rightValue</code> in <code>rightResults</code>:</li>
+<li>Perform the operation (addition, subtraction, or multiplication) based on the current character.</li>
+<li>Add the computed result to the <code>results</code> list.</li>
+</ul>
+</li>
+<li>Store the result in <code>memo</code> for the range <code>[start, end]</code>.</li>
+<li>Return the <code>results</code> list.</li>
+</ul>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/4xf4Rnor/shared" frameBorder="0" width="100%" height="500" name="4xf4Rnor"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Let $n$ be the the length of the input string <code>expression</code>.</p>
+<ul>
+<li>
+<p>Time complexity: $O(n \cdot 2^n)$</p>
+<p>The algorithm uses memoization to store the results of sub-problems, ensuring that each sub-problem is evaluated exactly once. There are at most $O(n^2)$ possible sub-problems, as each sub-problem is defined by its start and end indices, both ranging from $0$ to $n-1$. </p>
+<p>Despite the efficiency gains from memoization, the time complexity is still dominated by the recursive nature of the algorithm. The recursion tree expands exponentially, with a growth factor of $O(2^n)$.</p>
+<p>Thus, the overall time complexity remains $O(n \cdot 2^n)$.</p>
+</li>
+<li>
+<p>Space complexity: $O(n^2 \cdot 2^n)$</p>
+<p>The space complexity is $O(n^2 \cdot 2^n)$, where $O(n^2)$ comes from the memoization table storing results for all sub-problems, and $O(2^n)$ accounts for the space required to store the exponentially growing number of results for each sub-problem. The recursion stack depth is at most $O(n)$, which is dominated by the exponential complexity and can therefore be omitted from the overall space complexity analysis.</p>
+</li>
+</ul>
+<hr />
+<h3>Approach 3: Tabulation</h3>
+<h4>Intuition</h4>
+<p>Recursive solutions can use up a lot of stack space, which might lead to stack overflow errors. To avoid this, we'll switch to an iterative approach and build our solution step by step.</p>
+<p>We’ll use a 2-D array, called <code>dp</code>, to keep track of intermediate results. This table will have dimensions <code>n x n</code>, where <code>n</code> is the length of our input <code>expression</code>. Each cell <code>dp[i][j]</code> will store all possible results for the sub-expression starting at index <code>i</code> and ending at index <code>j</code>. For instance, <code>dp[0][2]</code> will hold all possible results for the first three characters of the expression.</p>
+<p>First, we need to fill in our base cases. We loop through the <code>expression</code> to identify all single-digit and double-digit numbers.
+1. For single-digit numbers, add the digit's value to <code>dp[i][i]</code>.
+2. For double-digit numbers, add the number's value to <code>dp[i][i+1]</code>.</p>
+<p>Next, we handle longer sub-expressions. We start with lengths of 3 and go up to the length of the <code>expression</code>. For each length, we consider all possible starting points in the expression. This double loop structure ensures we consider all possible substrings of <code>expression</code>. For each sub-expression, we try different ways to split it. We go through each character and, when we find an operator, split the expression at that point. We then combine the results from the left and right parts using the operator.</p>
+<p>After we've filled our entire <code>dp</code> table, the cell <code>dp[0][n-1]</code> contains all possible results for the entire expression. We can return this list as our final answer.</p>
+<h4>Algorithm</h4>
+<p>Main method <code>diffWaysToCompute</code>:</p>
+<ul>
+<li>Initialize a variable <code>n</code> to store the length of the input string <code>expression</code>.</li>
+<li>Create a 2D array <code>dp</code> of lists to store the results of sub-problems.</li>
+<li>Initialize the base cases using the <code>initializeBaseCases</code> method.</li>
+<li>Iterate through all possible sub-expression lengths, starting from <code>3</code> up to <code>n</code>.</li>
+<li>For each length, iterate through all possible <code>start</code> positions of the sub-expression.</li>
+<li>Set <code>end</code> as <code>start + length - 1</code>.</li>
+<li>Calculate the results for the sub-expression <code>[start, end]</code> using the <code>processSubexpression</code> method.</li>
+<li>Return <code>dp[0][n-1]</code>, which contains all possible results for the entire <code>expression</code>.</li>
+</ul>
+<p>Helper method <code>initializeBaseCases(expression, dp)</code>:</p>
+<ul>
+<li>Initialize the <code>dp</code> array.</li>
+<li>Handle base cases by iterating through the <code>expression</code>:</li>
+<li>For single digits, add the digit value to <code>dp[i][i]</code>.</li>
+<li>For two-digit numbers, add the number value to <code>dp[i][i+1]</code>.</li>
+</ul>
+<p>Helper method <code>processSubexpression(expression, dp, start, end)</code>:</p>
+<ul>
+<li>Try all possible <code>split</code> positions from <code>start</code> to <code>end</code>:</li>
+<li>If the character is numeric, continue to the next iteration</li>
+<li>If not, retrieve the results of the left sub-expression from <code>dp[start][split-1]</code> and assign it to <code>leftResults</code>.</li>
+<li>Retrieve the results of the right sub-expression from <code>dp[split+1][end]</code> and assign it to <code>rightResults</code>.</li>
+<li>Call <code>computeResults</code> with <code>leftResults</code>, <code>rightResults</code>, and the operator at the <code>split</code> position.</li>
+</ul>
+<p>Helper method <code>computeResults(op, leftResults, rightResults, results)</code>:</p>
+<ul>
+<li>For each combination of <code>leftResults</code> and <code>rightResults</code>:</li>
+<li>Perform the operation specified by <code>op</code>.</li>
+<li>Add the result to <code>results</code>.</li>
+</ul>
+<h4>Implementation</h4>
+<iframe src="https://leetcode.com/playground/3Gw7Y5ZR/shared" frameBorder="0" width="100%" height="500" name="3Gw7Y5ZR"></iframe>
+
+<h4>Complexity Analysis</h4>
+<p>Let $n$ be the the length of the input string <code>expression</code>.</p>
+<ul>
+<li>
+<p>Time complexity: $O(n \cdot 2^n)$</p>
+<p>Similar to the memoization approach, the algorithm evaluates each sub-problem exactly once. Thus, the time complexity remains the same as Approach 2: $O(n \cdot 2^n)$.</p>
+</li>
+<li>
+<p>Space complexity: $O(n^2 \cdot 2^n)$</p>
+<p>The space complexity is similar to the previous approach, with one key difference: the absence of the recursive stack space. </p>
+<p>However, the <code>dp</code> table dominates the space complexity anyway, keeping the overall space complexity as $O(n^2 \cdot 2^n)$.</p>
+</li>
+</ul>
+<hr />
+</div></div>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>java不同方式测试 – K-th Symbol in Grammar</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_k-th-symbol-in-grammar.html">K-th Symbol in Grammar / 第K个语法符号</a> <span class="sep">›</span> <span class="cur">java不同方式测试</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">java不同方式测试</div>
+  <div class="meta">
+    <span>👤 8MjQUzwVBU</span>
+    <span>👍 0</span>
+    <span>2020-04-27</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.cn/problems/k-th-symbol-in-grammar/solution/javabu-tong-fang-shi-ce-shi-by-8mjquzwvbu/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p><strong>一、暴力破解</strong><br />
+一看到题目时，就首先尝试暴力破解，首先求出第N行的字符串，再得到第K个字符，果不其然<strong>超出时间限制</strong></p>
+<p>```java []<br />
+class Solution {<br />
+    public int kthGrammar(int N, int K) {<br />
+        if (N == 1)<br />
+            return 0;<br />
+        StringBuilder sBuilder = new StringBuilder();<br />
+        sBuilder.append("01");<br />
+        for (int i = 2; i &lt; N; i++) {<br />
+            int len = sBuilder.length();<br />
+            for (int j = len &gt;&gt; 1; j &lt; len; j++) {<br />
+                sBuilder.append(sBuilder.charAt(j));<br />
+                sBuilder.append(1 - Integer.parseInt(sBuilder.charAt(j) + ""));<br />
+            }<br />
+        }<br />
+        return Integer.parseInt(sBuilder.charAt(K - 1) + "");<br />
+    }<br />
+}</p>
+<pre><code>时间复杂度：O(2^N),因为没一行都是前一行的2倍
+空间复杂度：O(2^N)
+
+
+居然上一种暴力破解超出时间限制，那就尝试优化时间复杂度
+认真分析一下其实是有规律的
+N ------ 字符串
+1 ------ 0
+2 ------ 01
+3 ------ 0110
+4 ------ 01101001
+5 ------ 0110100110010110
+6 ------ 01101001100101101001011001101001
+
+每一行的前一半的字符串都等于上一行，后一半中的前一半等于上一行的后一半，后一半中的后一半等于前一行的后一半
+
+如第3行和第4行
+![44cbc650c91608711787d68069b2047.jpg](https://pic.leetcode.cn/1966d3dd2820b1f221dfed1f13373100318fb7e650e8274ebd0e39610c153c9a-44cbc650c91608711787d68069b2047.jpg)
+```java []
+class Solution {
+    public int kthGrammar(int N, int K) {
+        if (N == 1)
+            return 0;
+        StringBuilder sBuilder = new StringBuilder();
+        sBuilder.append(&quot;01&quot;);
+        for (int i = 2; i &lt; N; i++) {
+            String hou = sBuilder.toString().substring(sBuilder.length() / 2);
+            String qian = sBuilder.toString().substring(0, sBuilder.length() / 2);
+            sBuilder.append(hou).append(qian);
+        }
+        return Integer.parseInt(sBuilder.charAt(K - 1) + &quot;&quot;);
+    }
+}
+</code></pre>
+<p>时间复杂度：O(N)<br />
+空间复杂度：O(2^N)<br />
+很显然这样是优化了时间复杂度，但还存在一个bug就是<strong>超出内存限制</strong>，所以我们还得寻找更优懂得算法；</p>
+<p><strong>二、递归</strong><br />
+经过前面两种算法我们很清楚，<strong>有些事用暴力是解决不了问题的</strong>，所以我们不在这钻牛角尖了<br />
+只好再去分析是否有其他奇妙之处</p>
+<p>每一行都是上一行的2倍，0转为01，1转为10，这不就是完全二叉树嘛<br />
+<img alt="1e6dbe2a7c833606d366b38b4176ecd.jpg" src="https://pic.leetcode.cn/bae2d565d47d5f3a09b45425026f65ac7a6f02a13caed8b36d49813c862aed77-1e6dbe2a7c833606d366b38b4176ecd.jpg" /></p>
+<p>需要查找那位字符就去寻找他的根，但不需要特意去创建一个二叉树，只需要使用递归到第一行（0），开始不断返回，还需要判断是左子树还是右子树，通过判断奇偶来就是，奇为左，偶为右。</p>
+<p><code>java []
+class Solution {
+    public int kthGrammar(int N, int K) {
+        //已知条件N=1时为0
+        if (N == 1)
+            return 0;
+        //寻找上一行的根，因为一位字符可以生成两位数，使用每一行的字符都是上一行的(K + 1)/2位生成的
+        int i = kthGrammar(N - 1, (K + 1) &gt;&gt; 1);
+        if (i == 0)
+            //0转为01
+            return (K &amp; 1) == 0 ? 1 : 0;//判断K的奇偶
+        else
+            //0转为10
+            return (K &amp; 1) == 0 ? 0 : 1;//判断K的奇偶
+        //return (~K &amp; 1) ^ kthGrammar(N - 1, (K + 1) / 2);可以直接采用位运算计算
+    }
+}</code><br />
+时间复杂度：O（N）<br />
+空间复杂度：O（1）</p>
+</div>
+</div>
+</body>
+</html>

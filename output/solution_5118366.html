@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>✅Detailed Explanation💯3 Approaches🔥Stack | Recursion | Reversal🔥O(1) space🔥Efficient🔥🔥 – Remove Nodes From Linked List</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:#f6f8fa;color:#24292f;line-height:1.6}
+a{color:#0969da;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* nav */
+.topnav{background:#24292f;padding:14px 28px;display:flex;align-items:center;gap:10px;
+        font-size:.9em;flex-wrap:wrap}
+.topnav a{color:#cdd9e5}.topnav a:hover{color:#fff;text-decoration:none}
+.topnav .sep{color:#555}.topnav .cur{color:#fff}
+
+/* layout */
+.wrap{max-width:900px;margin:32px auto;padding:0 16px}
+.page-title{font-size:1.7em;font-weight:700;margin-bottom:6px}
+.page-sub{color:#57606a;margin-bottom:28px;font-size:.95em}
+
+/* card */
+.card{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:10px;
+      transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.card-inner{padding:18px 22px}
+.card-inner a{color:inherit}
+.card-inner a:hover{text-decoration:none}
+.card-title{font-size:1.05em;font-weight:600;margin-bottom:8px;color:#24292f}
+.card-inner a:hover .card-title{color:#0969da}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82em;color:#57606a}
+
+/* badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.78em;font-weight:500;white-space:nowrap}
+.b-easy{background:#dafbe1;color:#1a7f37}
+.b-medium{background:#fff8c5;color:#9a6700}
+.b-hard{background:#ffebe9;color:#cf222e}
+.b-video{background:#ffebe9;color:#cf222e}
+.b-image{background:#ddf4ff;color:#0969da}
+.b-tag{background:#edf2ff;color:#3451b2;font-weight:400}
+
+/* solution content */
+.sol-header{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:22px 26px;margin-bottom:12px}
+.sol-header .stitle{font-size:1.35em;font-weight:700;margin-bottom:10px}
+.sol-body{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:26px}
+.sol-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.sol-body h1,.sol-body h2,.sol-body h3{margin:20px 0 10px;font-weight:600}
+.sol-body h1{font-size:1.4em}.sol-body h2{font-size:1.2em}.sol-body h3{font-size:1.05em}
+.sol-body p{margin-bottom:12px}
+.sol-body pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;
+              padding:14px 16px;overflow-x:auto;margin:12px 0;font-size:.88em}
+.sol-body code{background:#f6f8fa;padding:2px 5px;border-radius:4px;
+               font-size:.88em;font-family:'SFMono-Regular',Consolas,monospace}
+.sol-body pre code{background:none;padding:0}
+.sol-body ul,.sol-body ol{padding-left:24px;margin-bottom:12px}
+.sol-body li{margin-bottom:4px}
+.sol-body blockquote{border-left:3px solid #d0d7de;padding-left:14px;
+                     color:#57606a;margin:12px 0}
+.sol-body table{border-collapse:collapse;width:100%;margin:12px 0}
+.sol-body th,.sol-body td{border:1px solid #d0d7de;padding:7px 12px;text-align:left}
+.sol-body th{background:#f6f8fa;font-weight:600}
+.sol-body hr{border:none;border-top:1px solid #d0d7de;margin:18px 0}
+.sol-body strong{font-weight:600}
+.video-wrap{margin:14px 0;border-radius:6px;overflow:hidden}
+.video-wrap iframe{border-radius:6px}
+.empty{text-align:center;padding:48px;color:#57606a;background:#fff;
+       border:1px solid #d0d7de;border-radius:8px}
+.lc-link{font-size:.8em;color:#0969da;white-space:nowrap}
+.lc-link:hover{text-decoration:underline}
+.sub-btns{display:flex;gap:10px;flex-wrap:wrap}
+.sub-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+         border-radius:6px;font-size:.88em;font-weight:500;text-decoration:none;
+         transition:background .15s,transform .1s}
+.sub-btn:hover{transform:translateY(-1px);text-decoration:none}
+.sub-tut{background:#dafbe1;color:#1a7f37;border:1px solid #aef0b7}
+.sub-tut:hover{background:#c6f0ce}
+.sub-sol{background:#ddf4ff;color:#0550ae;border:1px solid #aad9f9}
+.sub-sol:hover{background:#c5e8fa}
+.sub-none{background:#f6f8fa;color:#8c959f;border:1px solid #d0d7de;cursor:default}
+.sub-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:.85em}
+.no-sol-section{margin-top:24px;border:1px solid #d0d7de;border-radius:8px;
+                background:#fff;overflow:hidden}
+.no-sol-section summary{padding:14px 20px;font-weight:600;font-size:.95em;
+                         color:#57606a;cursor:pointer;user-select:none;
+                         list-style:none;display:flex;align-items:center;gap:8px}
+.no-sol-section summary::before{content:"▶";font-size:.7em;transition:transform .2s}
+.no-sol-section[open] summary::before{transform:rotate(90deg)}
+.no-sol-section summary:hover{background:#f6f8fa}
+.no-sol-list{padding:12px 12px 4px;border-top:1px solid #d0d7de}
+
+/* review page */
+.review-bar{position:sticky;top:0;z-index:100;background:#24292f;
+            padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.review-bar .r-counter{color:#cdd9e5;font-size:.9em}
+.review-bar button{padding:8px 18px;border:none;border-radius:6px;cursor:pointer;
+                   font-size:.88em;font-weight:600}
+.btn-export{background:#2ea043;color:#fff}.btn-export:hover{background:#3fb950}
+.btn-clear{background:#444;color:#cdd9e5}.btn-clear:hover{background:#555}
+.pagination{display:flex;align-items:center;gap:10px;justify-content:center;
+            padding:24px 0 8px}
+.pagination button{padding:7px 16px;border:1px solid #d0d7de;border-radius:6px;
+                   background:#fff;cursor:pointer;font-size:.9em;font-weight:500}
+.pagination button:hover:not(:disabled){background:#f6f8fa;border-color:#0969da;color:#0969da}
+.pagination button:disabled{opacity:.4;cursor:default}
+.pagination .page-info{color:#57606a;font-size:.88em;min-width:140px;text-align:center}
+.page-input{width:54px;padding:5px 8px;border:1px solid #d0d7de;border-radius:6px;
+            font-size:.9em;text-align:center;-moz-appearance:textfield}
+.page-input::-webkit-inner-spin-button,.page-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.filter-btn{padding:5px 12px;border:1px solid #555;border-radius:6px;background:transparent;
+            color:#cdd9e5;cursor:pointer;font-size:.82em;white-space:nowrap}
+.filter-btn:hover{border-color:#aaa;color:#fff}
+.filter-btn-active{background:#2ea043;border-color:#2ea043;color:#fff}
+.r-problem{margin-bottom:28px}
+.r-problem-title{font-size:1.05em;font-weight:700;padding:10px 0 8px;
+                 border-bottom:2px solid #d0d7de;margin-bottom:10px;
+                 display:flex;align-items:center;gap:10px}
+.r-problem-title a{color:#0969da;font-size:.85em;font-weight:400}
+.sol-row{padding:10px 14px;border:1px solid #d0d7de;border-radius:8px;
+         margin-bottom:8px;background:#fff;transition:background .15s}
+.sol-row.unselected{background:#f6f8fa;border-color:#d0d7de;opacity:.55}
+.sol-row input[type=checkbox]{margin-top:4px;width:17px;height:17px;
+                               flex-shrink:0;cursor:pointer;accent-color:#2ea043}
+.sol-row .r-info{flex:1;min-width:0}
+.sol-row .r-title{font-weight:600;font-size:.95em;margin-bottom:5px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sol-row .r-title a{color:#24292f}.sol-row .r-title a:hover{color:#0969da}
+.sol-row .r-meta{font-size:.8em;color:#57606a;display:flex;gap:10px;flex-wrap:wrap}
+.sol-row .r-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.sol-row .r-thumbs img{width:120px;height:80px;object-fit:cover;border-radius:5px;
+                        border:1px solid #d0d7de;cursor:zoom-in;transition:transform .15s}
+.sol-row .r-thumbs img:hover{transform:scale(1.05);z-index:1;position:relative}
+.sol-row .r-novid{display:inline-flex;align-items:center;justify-content:center;
+                  width:120px;height:80px;border-radius:5px;border:1px solid #d0d7de;
+                  font-size:2em;background:#f6f8fa}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="index.html">🔄 Recursion Solutions</a> <span class="sep">›</span> <a href="problem_remove-nodes-from-linked-list.html">Remove Nodes From Linked List</a> <span class="sep">›</span> <span class="cur">✅Detailed Explanation💯3 Approaches🔥Stack | Recursion | Reversal🔥O(1) space🔥Efficient🔥🔥</span></nav>
+<div class="wrap">
+<div class="sol-header">
+  <div class="stitle">✅Detailed Explanation💯3 Approaches🔥Stack | Recursion | Reversal🔥O(1) space🔥Efficient🔥🔥</div>
+  <div class="meta">
+    <span>👤 Saketh3011</span>
+    <span>👍 376</span>
+    <span>2024-05-06</span>
+    <span class="badge b-image">🖼</span>
+    <a href="https://leetcode.com/problems/remove-nodes-from-linked-list/solutions/5118366/detailed-explanation3-approachesstack-recursion-reversalo1-spaceefficient/" target="_blank" style="font-size:.85em">↗ 查看原 Solution</a>
+  </div>
+</div>
+<div class="sol-body">
+  <p><img alt="image.png" src="https://assets.leetcode.com/users/images/161b9529-1c1f-451e-b4e5-00b641f31c04_1714962198.2813554.png" /><br />
+<a href="https://leetcode.com/problems/remove-nodes-from-linked-list/submissions/1250452066">Submission Link</a></p>
+<h2>Problem Explanation:</h2>
+<p>We are given a linked list and the task is to remove every node which has a node with a greater value anywhere to its right.</p>
+<hr />
+<h1>Method 1: Monotonic Stack Approach</h1>
+<h2>Intuition:</h2>
+<p>One approach is to traverse the linked list and maintain a stack to store nodes in non-decreasing order of their values. While traversing, if we encounter a node with a value greater than the top element of the stack, we pop elements from the stack until the condition is met. This ensures that the stack contains only nodes with the highest values seen so far. Finally, we reverse the stack to get the modified linked list.</p>
+<h2>Approach:</h2>
+<ol>
+<li>Initialize a stack to store nodes in non-increasing order of their values.</li>
+<li>Traverse the linked list:<ul>
+<li>If the current node's value is greater than the top element of the stack, pop elements from the stack until the condition is met.</li>
+<li>Push the current node onto the stack.</li>
+</ul>
+</li>
+<li>Reverse the stack to obtain the modified linked list.</li>
+<li>Return the head of the modified linked list.</li>
+</ol>
+<h2>⚙️ Dry Run:</h2>
+<h4><strong>Given Linked List:</strong> 5 -&gt; 2 -&gt; 13 -&gt; 3 -&gt; 8</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;">Node</th>
+<th style="text-align: center;">Stack</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Step 1</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr>
+<td style="text-align: center;">Step 2</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">5, 2</td>
+</tr>
+<tr>
+<td style="text-align: center;">Step 3</td>
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">~~5, 2,~~ 13</td>
+</tr>
+<tr>
+<td style="text-align: center;">Step 4</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">13, 3</td>
+</tr>
+<tr>
+<td style="text-align: center;">Step 5</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">13, ~~3,~~ 8</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Stack: [13, 8]</strong><br />
+Now Creating Linked List using stack from top-bottom from tail to head.</p>
+<h4>Result: 13 -&gt; 8</h4>
+<h2>Complexity:</h2>
+<ul>
+<li>⏰ Time complexity: O(n), where n is the number of nodes in the linked list.<ul>
+<li>Outer while: O(n)</li>
+<li>Inner while: O(n - k), where k is length of resultand linked list</li>
+<li>Stack while: O(k)</li>
+<li>Total Time complexity: O(n) + O(n-k) + O(k) = O(2n) -&gt; O(n). This is a linear 2 pass solution.<br />
+<strong>Note:</strong> Even thought there is nested while loop TC is O(n) because a node is pushed and popped from the stack at most once.</li>
+</ul>
+</li>
+<li>Space complexity: O(n), to store nodes in the stack.</li>
+</ul>
+<h2>‍ Code</h2>
+<p>``` python []<br />
+class Solution:<br />
+    def removeNodes(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:<br />
+        cur = head<br />
+        stack = []<br />
+        while cur:<br />
+            while stack and stack[-1].val &lt; cur.val:<br />
+                stack.pop()<br />
+            stack.append(cur)<br />
+            cur = cur.next</p>
+<pre><code>    nxt = None
+    while stack:
+        cur = stack.pop()
+        cur.next = nxt
+        nxt = cur
+
+    return cur
+</code></pre>
+<pre><code>``` java []
+class Solution {
+    public ListNode removeNodes(ListNode head) {
+        ListNode cur = head;
+        Stack&lt;ListNode&gt; stack = new Stack&lt;&gt;();
+
+        while (cur != null) {
+            while (!stack.isEmpty() &amp;&amp; stack.peek().val &lt; cur.val) {
+                stack.pop();
+            }
+            stack.push(cur);
+            cur = cur.next;
+        }
+
+        ListNode nxt = null;
+        while (!stack.isEmpty()) {
+            cur = stack.pop();
+            cur.next = nxt;
+            nxt = cur;
+        }
+
+        return cur;
+    }
+}
+</code></pre>
+<p>``` cpp []<br />
+class Solution {<br />
+public:<br />
+    ListNode<em> removeNodes(ListNode</em> head) {<br />
+        ListNode* cur = head;<br />
+        stack<ListNode*> stack;</p>
+<pre><code>    while (cur != nullptr) {
+        while (!stack.empty() &amp;&amp; stack.top()-&gt;val &lt; cur-&gt;val) {
+            stack.pop();
+        }
+        stack.push(cur);
+        cur = cur-&gt;next;
+    }
+
+    ListNode* nxt = nullptr;
+    while (!stack.empty()) {
+        cur = stack.top();
+        stack.pop();
+        cur-&gt;next = nxt;
+        nxt = cur;
+    }
+
+    return cur;
+}
+</code></pre>
+<p>};</p>
+<pre><code>```javascript []
+var removeNodes = function(head) {
+    let cur = head;
+    let stack = [];
+
+    while (cur !== null) {
+        while (stack.length &gt; 0 &amp;&amp; stack[stack.length - 1].val &lt; cur.val) {
+            stack.pop();
+        }
+        stack.push(cur);
+        cur = cur.next;
+    }
+
+    let nxt = null;
+    while (stack.length &gt; 0) {
+        cur = stack.pop();
+        cur.next = nxt;
+        nxt = cur;
+    }
+
+    return cur;
+
+};
+</code></pre>
+<hr />
+<h1>Method 2: Recursive Approach</h1>
+<h2>Intuition:</h2>
+<p>We can use recursion to traverse the linked list and at each step, we compare the current node's value with the value of the next greater node. If the next greater node has a value less than the current node, we keep the current node; otherwise, we skip the current node.</p>
+<h2>Approach:</h2>
+<ol>
+<li>Recursively traverse the linked list.</li>
+<li>At each step, compare the current node's value with the value of the next greater node.</li>
+<li>If the next greater node has a value less than the current node, keep the current node; otherwise, skip the current node.</li>
+<li>Return the head of the modified linked list.</li>
+</ol>
+<h2>Complexity:</h2>
+<ul>
+<li>⏰ Time complexity: O(n), where n is the number of nodes in the linked list.</li>
+<li>Space complexity: O(n), due to the recursive stack space.</li>
+</ul>
+<h2>‍ Code</h2>
+<p>``` python []<br />
+class Solution:<br />
+    def removeNodes(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:<br />
+        if not head:<br />
+            return None<br />
+        node = head<br />
+        # Gives next greater node<br />
+        nxt_greater = self.removeNodes(node.next)</p>
+<pre><code>    node.next = nxt_greater
+    if not nxt_greater or node.val &gt;= nxt_greater.val:
+        return node
+    return nxt_greater
+</code></pre>
+<pre><code>``` java []
+class Solution {
+    public ListNode removeNodes(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        ListNode node = head;
+        ListNode nxtGreater = removeNodes(node.next);
+
+        node.next = nxtGreater;
+        if (nxtGreater == null || node.val &gt;= nxtGreater.val) {
+            return node;
+        }
+        return nxtGreater;
+    }
+}
+</code></pre>
+<p>``` cpp []<br />
+class Solution {<br />
+public:<br />
+    ListNode<em> removeNodes(ListNode</em> head) {<br />
+        if (head == nullptr) {<br />
+            return nullptr;<br />
+        }<br />
+        ListNode<em> node = head;<br />
+        ListNode</em> nxtGreater = removeNodes(node-&gt;next);</p>
+<pre><code>    node-&gt;next = nxtGreater;
+    if (nxtGreater == nullptr || node-&gt;val &gt;= nxtGreater-&gt;val) {
+        return node;
+    }
+    return nxtGreater;
+}
+</code></pre>
+<p>};</p>
+<pre><code>```javascript []
+var removeNodes = function(head) {
+    if (!head) {
+        return null;
+    }
+    let node = head;
+    let nxtGreater = removeNodes(node.next);
+
+    node.next = nxtGreater;
+    if (!nxtGreater || node.val &gt;= nxtGreater.val) {
+        return node;
+    }
+    return nxtGreater;
+};
+</code></pre>
+<hr />
+<h1>Method 3: Reverse and Filter Approach (Best)</h1>
+<h2>Intuition:</h2>
+<p>We can reverse the given linked list first. Then we traverse the reversed list, keeping nodes whose values are greater than or equal to the previous node's value. After traversing, we reverse the resulting list to obtain the modified linked list.</p>
+<h2>Approach:</h2>
+<ol>
+<li>Reverse the given linked list.</li>
+<li>Initialize a dummy node to hold the result.</li>
+<li>Traverse the reversed list, keeping nodes whose values are greater than or equal to the previous node's value.</li>
+<li>Reverse the resulting list to obtain the modified linked list.</li>
+<li>Return the head of the modified linked list.</li>
+</ol>
+<h2>⚙️ Dry Run:</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Process</th>
+<th style="text-align: center;">Linked List</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Given Linked List</td>
+<td style="text-align: center;">5 -&gt; 2 -&gt; 13 -&gt; 3 -&gt; 8</td>
+</tr>
+<tr>
+<td style="text-align: center;">Reverse it</td>
+<td style="text-align: center;">8-&gt; 3 -&gt; 13 -&gt; 2 -&gt; 5</td>
+</tr>
+<tr>
+<td style="text-align: center;">Remove Nodes smaller than Previous nodes</td>
+<td style="text-align: center;">8 -&gt; 13</td>
+</tr>
+<tr>
+<td style="text-align: center;">Reverse it again</td>
+<td style="text-align: center;">13 -&gt; 8</td>
+</tr>
+</tbody>
+</table>
+<h2>Complexity:</h2>
+<ul>
+<li>⏰ Time complexity: O(n), where n is the number of nodes in the linked list. 3 pass.</li>
+<li>Space complexity: O(1), as no extra space is used apart from a few pointers.</li>
+</ul>
+<h2>‍ Code:</h2>
+<p>``` python []<br />
+class Solution:<br />
+    def removeNodes(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:<br />
+        # Reverse the list<br />
+        prev, curr = None, head<br />
+        while curr:<br />
+            curr.next, prev, curr = prev, curr, curr.next</p>
+<pre><code>    # Initialize a dummy node to hold the result
+    dummy_head = ListNode(-1)
+    temp_prev, curr = dummy_head, prev
+    # Traverse the reversed list, keeping nodes greater or equal to previous
+    while curr:
+        if curr.val &gt;= temp_prev.val:
+            temp_prev.next = curr
+            temp_prev = curr
+            curr = curr.next
+        else:
+            curr = curr.next
+    temp_prev.next = None
+
+    # Reverse the result list again
+    new_prev = None
+    curr = dummy_head.next
+    while curr:
+        curr.next, new_prev, curr = new_prev, curr, curr.next
+
+    return new_prev
+</code></pre>
+<pre><code>``` java []
+class Solution {
+    public ListNode removeNodes(ListNode head) {
+        ListNode prev = null, curr = head;
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        ListNode dummyHead = new ListNode(-1);
+        ListNode tempPrev = dummyHead;
+        curr = prev;
+
+        while (curr != null) {
+            if (curr.val &gt;= tempPrev.val) {
+                tempPrev.next = curr;
+                tempPrev = curr;
+                curr = curr.next;
+            } else {
+                curr = curr.next;
+            }
+        }
+        tempPrev.next = null;
+
+        ListNode newPrev = null, newCurr = dummyHead.next;
+        while (newCurr != null) {
+            ListNode next = newCurr.next;
+            newCurr.next = newPrev;
+            newPrev = newCurr;
+            newCurr = next;
+        }
+
+        return newPrev;
+    }
+}
+</code></pre>
+<p>``` cpp []<br />
+class Solution {<br />
+public:<br />
+    ListNode<em> removeNodes(ListNode</em> head) {<br />
+        ListNode <em>prev = nullptr, </em>curr = head;<br />
+        while (curr != nullptr) {<br />
+            // ListNode* next = curr-&gt;next;<br />
+            // curr-&gt;next = prev;<br />
+            // prev = curr;<br />
+            // curr = next;<br />
+            swap(curr-&gt;next, prev);<br />
+            swap(prev, curr);<br />
+        }</p>
+<pre><code>    ListNode* dummyHead = new ListNode(-1);
+    ListNode* tempPrev = dummyHead;
+    curr = prev;
+
+    while (curr != nullptr) {
+        if (curr-&gt;val &gt;= tempPrev-&gt;val) {
+            tempPrev-&gt;next = curr;
+            tempPrev = curr;
+            curr = curr-&gt;next;
+        } else {
+            curr = curr-&gt;next;
+        }
+    }
+    tempPrev-&gt;next = nullptr;
+
+    ListNode *newPrev = nullptr, *newCurr = dummyHead-&gt;next;
+    while (newCurr != nullptr) {
+        // ListNode* next = newCurr-&gt;next;
+        // newCurr-&gt;next = newPrev;
+        // newPrev = newCurr;
+        // newCurr = next;
+        swap(newCurr-&gt;next, newPrev);
+        swap(newPrev, newCurr);
+    }
+
+    return newPrev;
+}
+</code></pre>
+<p>};</p>
+<pre><code>``` javascript []
+var removeNodes = function(head) {
+    let prev = null;
+    let curr = head;
+    while (curr !== null) {
+        let next = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = next;
+    }
+
+    let dummyHead = new ListNode(-1);
+    let tempPrev = dummyHead;
+    curr = prev;
+
+    while (curr !== null) {
+        if (curr.val &gt;= tempPrev.val) {
+            tempPrev.next = curr;
+            tempPrev = curr;
+            curr = curr.next;
+        } else {
+            curr = curr.next;
+        }
+    }
+    tempPrev.next = null;
+
+    let newPrev = null;
+    let newCurr = dummyHead.next;
+    while (newCurr !== null) {
+        let next = newCurr.next;
+        newCurr.next = newPrev;
+        newPrev = newCurr;
+        newCurr = next;
+    }
+
+    return newPrev;
+};
+</code></pre>
+<hr />
+<h1>Futher Optimising Code - Filter and Reversal at same time</h1>
+<h2>Intuition:</h2>
+<p>Instead of filting and reversing serpately we can do both at once.</p>
+<h2>Complexity:</h2>
+<ul>
+<li>⏰ Time complexity: O(n), 2 pass</li>
+<li>Space complexity: O(1)</li>
+</ul>
+<h2>‍ Code</h2>
+<p>``` python []<br />
+class Solution:<br />
+    def removeNodes(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:<br />
+        if not head or not head.next:<br />
+            return head</p>
+<pre><code>    prev, curr = None, head
+    while curr:
+        curr.next, prev, curr = prev, curr, curr.next
+
+    curr, prev.next = prev.next, None
+    while curr:
+        temp = curr.next
+        if curr.val &gt;= prev.val:
+            curr.next = prev
+            prev = curr
+        curr = temp
+
+    return prev
+</code></pre>
+<pre><code>``` java []
+class Solution {
+    public ListNode removeNodes(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode prev = null, curr = head;
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        curr = prev.next;
+        prev.next = null;
+        while (curr != null) {
+            ListNode temp = curr.next;
+            if (curr.val &gt;= prev.val) {
+                curr.next = prev;
+                prev = curr;
+            }
+            curr = temp;
+        }
+
+        return prev;
+    }
+}
+</code></pre>
+<p>``` cpp []<br />
+class Solution {<br />
+public:<br />
+    ListNode<em> removeNodes(ListNode</em> head) {<br />
+        if (head == nullptr || head-&gt;next == nullptr) {<br />
+            return head;<br />
+        }</p>
+<pre><code>    ListNode* prev = nullptr;
+    ListNode* curr = head;
+    while (curr != nullptr) {
+        ListNode* next = curr-&gt;next;
+        curr-&gt;next = prev;
+        prev = curr;
+        curr = next;
+    }
+
+    curr = prev-&gt;next;
+    prev-&gt;next = nullptr;
+    while (curr != nullptr) {
+        ListNode* temp = curr-&gt;next;
+        if (curr-&gt;val &gt;= prev-&gt;val) {
+            curr-&gt;next = prev;
+            prev = curr;
+        }
+        curr = temp;
+    }
+
+    return prev;
+}
+</code></pre>
+<p>};</p>
+<pre><code>``` javascript []
+var removeNodes = function(head) {
+    if (!head || !head.next) {
+        return head;
+    }
+
+    let prev = null;
+    let curr = head;
+    while (curr !== null) {
+        let next = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = next;
+    }
+
+    curr = prev.next;
+    prev.next = null;
+    while (curr !== null) {
+        let temp = curr.next;
+        if (curr.val &gt;= prev.val) {
+            curr.next = prev;
+            prev = curr;
+        }
+        curr = temp;
+    }
+
+    return prev;
+};
+</code></pre>
+<h2>⚙️ Dry Run:</h2>
+<h4>Given Linked List: 5 -&gt; 2 -&gt; 13 -&gt; 3 -&gt; 8</h4>
+<p><strong>First Reverse it: 8-&gt; 3 -&gt; 13 -&gt; 2 -&gt; 5</strong><br />
+<strong>Filter and reverse:</strong><br />
+prev | curr | Linked List | Resultant Linked List<br />
+:---:|:---:|:---:|:---:|<br />
+8   |   3    | 8 <strong>x</strong> 3 -&gt; 13 -&gt; 2 -&gt; 5 | 8 -&gt; null<br />
+8   |   13   | 8 &lt;- 13 <strong>x</strong> 2 -&gt; 5 | 13 -&gt; 8 -&gt; null<br />
+13  |   2    | 13 -&gt; 8 <strong>x</strong> 2 -&gt; 5 | 13 -&gt; 8 -&gt; null<br />
+13  |   5    | 13 -&gt; 8 <strong>x</strong> 5 | 13 -&gt; 8 -&gt; null</p>
+<p>Each node and its's pointers<br />
+5 -&gt; null | 2 -&gt; 5 | 13 -&gt; 8 | 3 -&gt; 13 | 8 -&gt; null<br />
+:---:|:---:|:---:|:---:|:---:</p>
+<h4>Result: 13 -&gt; 8</h4>
+<hr />
+<h1>Please consider giving an Upvote!</h1>
+<p><img alt="upvote.png" src="https://assets.leetcode.com/users/images/5fbeecf2-18f6-4dce-a4a0-f11c859e46ad_1714711173.2665718.png" /></p>
+</div>
+</div>
+</body>
+</html>
