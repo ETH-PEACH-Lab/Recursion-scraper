@@ -27,8 +27,6 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);l
 .chip .n{font-family:var(--mono);font-size:11px;color:var(--muted)}
 .chip[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
 .chip[aria-pressed="true"] .n{color:var(--bg);opacity:.75}
-.chip.lc{background:var(--lc);color:var(--lc-ink);border-color:transparent}
-.chip.lc[aria-pressed="true"]{background:var(--lc-ink);color:var(--surface)}
 .chip.reset{border-style:dashed}
 .chip:focus-visible,.row:focus-visible,.sheet button:focus-visible,.thumb:focus-visible,a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px;align-items:start}
@@ -54,7 +52,6 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);l
 .row .ds{font-size:13px;color:var(--muted);font-style:normal}
 .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px;font-style:normal}
 .tag{font:600 11px/1 var(--body);padding:3px 7px;border:1px solid var(--hair);border-radius:9px;color:var(--muted);white-space:nowrap}
-.tag.lc{background:var(--lc);border-color:transparent;color:var(--lc-ink)}
 .tag .k{font-family:var(--mono);font-size:10px;margin-left:3px}
 .new{font:700 10px/1 var(--body);background:var(--accent);color:var(--surface);padding:3px 5px;border-radius:4px;font-style:normal;letter-spacing:.02em}
 .ic{flex:0 0 auto;background:var(--tile);border-radius:8px;padding:2px 4px;display:flex}
@@ -175,12 +172,15 @@ function rowBtn(c, cls){
   return `<button class="row ${cls}${n ? '' : ' dim'}" data-id="${c.id}" aria-label="${esc(c.name)}: ${n} examples">
     <span class="txt"><span class="nm">${esc(c.name)}${newB(c.new)}</span>${c.desc && cls !== 'subrow' ? `<span class="ds">${esc(c.desc)}</span>` : ''}<span class="tags">${tagsFor(c.id)}</span></span>${icon(c.icon)}</button>`;
 }
+const hasAny = id => examplesFor(id).length > 0;  // hide codings with no example in any source
 function itemHTML(c){
-  if (!c.subs.length) return `<div class="item">${rowBtn(c, '')}</div>`;
-  return `<div class="item has-subs">${rowBtn(c, 'parent')}<div class="subs">${c.subs.map(s => rowBtn(s, 'subrow')).join('')}</div></div>`;
+  if (!hasAny(c.id)) return '';
+  const subs = c.subs.filter(s => hasAny(s.id));
+  if (!subs.length) return `<div class="item">${rowBtn(c, '')}</div>`;
+  return `<div class="item has-subs">${rowBtn(c, 'parent')}<div class="subs">${subs.map(s => rowBtn(s, 'subrow')).join('')}</div></div>`;
 }
 function secHTML(d){
-  const body = d.groups.map(([g, cs]) => (g ? `<div class="grp">${esc(g)}</div>` : '') + cs.map(itemHTML).join('')).join('');
+  const body = d.groups.map(([g, cs]) => { const inner = cs.map(itemHTML).join(''); return inner ? (g ? `<div class="grp">${esc(g)}</div>` : '') + inner : ''; }).join('');
   return `<section class="sec" style="--c:${d.color}55"><h2><span class="t">${esc(d.name)}</span><span class="q">${esc(d.q)}</span></h2><div class="box${d.id === 'code' ? ' codebox' : ''}">${body}</div></section>`;
 }
 function render(){
@@ -189,7 +189,7 @@ function render(){
   $('#grid').innerHTML = cols.map(c => `<div class="col">${c.join('')}</div>`).join('');
   $('#foot').innerHTML = secHTML(DATA.dims.find(d => d.id === 'code'));
   const exs = DATA.examples.filter(passes), imgs = exs.reduce((a, e) => a + e.imgs.length, 0);
-  const nCod = Object.keys(META).length;
+  const nCod = Object.keys(META).filter(hasAny).length;
   $('#lede').innerHTML = `<b>${nCod} codings</b> across 8 dimensions, backed by <b>${exs.length} examples</b> and <b>${imgs} source images</b>${active.size ? ' in the selected sources' : ' from textbooks and LeetCode'}. Select a coding to see the figures behind it.`;
   const counts = {}; for (const e of DATA.examples) counts[e.src] = (counts[e.src] || 0) + 1;
   $('#filters').innerHTML = `<span class="lab">Sources</span>` + DATA.sources.map(s => `<button class="chip${isLC(s.id) ? ' lc' : ''}" data-src="${s.id}" aria-pressed="${active.has(s.id)}" title="${esc(s.name)}">${esc(s.id)}<span class="n">${counts[s.id] || 0}</span></button>`).join('')
