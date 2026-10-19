@@ -192,7 +192,7 @@ function tagsFor(id){
   return DATA.sources.filter(s => counts[s.id]).map(s => `<span class="tag${isLC(s.id) ? ' lc' : ''}">${esc(s.id)}${counts[s.id] > 1 || s.id === 'LeetCode' ? `<span class="k">×${counts[s.id]}</span>` : ''}</span>`).join('');
 }
 const icon = k => k && DATA.icons[k] ? `<span class="ic" aria-hidden="true">${DATA.icons[k]}</span>` : '';
-const newB = n => n ? ` <span class="new">${T.new}</span>` : '';
+const newB = n => '';  // the “new” badge was dropped
 
 function rowBtn(c, cls){
   const n = examplesFor(c.id).filter(passes).length;

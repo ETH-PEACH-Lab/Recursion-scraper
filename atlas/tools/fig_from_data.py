@@ -20,7 +20,7 @@ def tags(i):
     t = "".join(f'<span class="tag">{H.escape(s)}{" ×" + str(cnt[s]) if cnt[s] > 1 else ""}</span>' for s in order if s in cnt)
     return f' <span class="tags">{t}</span>' if t else ""
 NEW = "new" if lang == "en" else "新增"
-nb = lambda c: f' <span class="new">{NEW}</span>' if c.get("new") else ""
+nb = lambda c: ""  # the “new” badge was dropped
 ic = lambda k: f'<div class="ic">{ICON[k]}</div>' if k and k in ICON else ""
 
 def item(c):
@@ -46,7 +46,6 @@ code_items = [c for _, cs in dims["code"]["groups"] for c in cs if exs(c["id"])]
 code = "".join(f'<div class="crow"><div class="n">{H.escape(c["name"])}</div><div class="d">{H.escape(c["desc"])}</div>{tags(c["id"])}</div>' for c in code_items)
 codesec = f'<div class="sec"><h2><span style="box-shadow: inset 0 -5px 0 {dims["code"]["color"]}55">{H.escape(dims["code"]["name"])}</span></h2><div class="box"><div class="bottom">{code}</div></div></div>'
 legend = '<div class="legend">' + "".join(f'<div><span class="tag">{H.escape(s["id"])}</span> {H.escape(s["name"])}</div>' for s in D["sources"]) \
-         + f'<div><span class="new">{NEW}</span> {"coding found only in the LeetCode set" if lang == "en" else "只在 LeetCode 中出现的编码"}</div>' \
          + f'<div><span class="tag">×n</span> {"number of examples" if lang == "en" else "例子数"}</div></div>'
 cap = ("Figure X: A design space for recursion diagrams, listing the possible codings for each of the eight dimensions."
        if lang == "en" else "图 X：递归图示的设计空间，列出八个维度下可能的编码。")

@@ -142,7 +142,7 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);l
 </defs></svg></div>
 <div class="wrap">
   <header>
-    <div class="topline"><h1>Recursion Diagram Atlas</h1><a class="lang" href="zh/index.html" hreflang="zh">中文</a></div>
+    <div class="topline"><h1>Recursion Diagram Atlas</h1><a class="lang" hidden></a></div>
     <p class="lede" id="lede"></p>
     <div class="filters" id="filters" role="group" aria-label="Filter by source"></div>
   </header>
@@ -192,7 +192,7 @@ function tagsFor(id){
   return DATA.sources.filter(s => counts[s.id]).map(s => `<span class="tag${isLC(s.id) ? ' lc' : ''}">${esc(s.id)}${counts[s.id] > 1 || s.id === 'LeetCode' ? `<span class="k">×${counts[s.id]}</span>` : ''}</span>`).join('');
 }
 const icon = k => k && DATA.icons[k] ? `<span class="ic" aria-hidden="true">${DATA.icons[k]}</span>` : '';
-const newB = n => n ? ` <span class="new">${T.new}</span>` : '';
+const newB = n => '';  // the “new” badge was dropped
 
 function rowBtn(c, cls){
   const n = examplesFor(c.id).filter(passes).length;
