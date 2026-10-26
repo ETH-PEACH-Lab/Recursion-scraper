@@ -18,15 +18,6 @@ def code(x, y, widths, c=CG):
     return lines(x, y, widths, c, 2, 7)
 
 NEW = {
- # recursion type
- "t_struct": svg("".join(nd(22 + i * 20, 20, c=GY, f=GYF) for i in range(5)) + "".join(ln(29 + i * 20, 20, 35 + i * 20, 20, GY) for i in range(4))
-                 + f'<path d="M34 32 V38 H106 V32" fill="none" stroke="{GY}" stroke-width="1.4"/>' + tx(70, 51, "rest", GY, 10)),
- "t_gen": svg(tx(59, 19, "gcd(12, 8)", GY, 11, mono=True) + ln(59, 24, 59, 34, GY)
-              + f'<path d="M55 31 L59 35 L63 31" fill="none" stroke="{GY}" stroke-width="1.4"/>' + tx(59, 48, "gcd(8, 4)", GY, 11, mono=True)),
- "t_linear": svg("".join(nd(20 + i * 26, 28, c=GY, f=GYF) for i in range(4)) + "".join(ln(28 + i * 26, 28, 38 + i * 26, 28, GY) for i in range(3))),
- "t_tree": svg(tree(c=GY, f=GYF)),
- "t_recproc": svg(centred([18, 40, 62, 84, 62, 40, 18], GY)),
- "t_iterproc": svg(centred([46, 46, 46, 46, 46, 46, 46], GY)),
  # decomposition: trusted subcall
  "leap": svg(nd(20, 28) + ln(28, 28, 44, 28, OR) + box(46, 16, 56, 24, PK, "#FBE3F1", "3 2") + tx(74, 32, "trust", PK, 10, w=600)),
  # self-referential data
@@ -54,8 +45,7 @@ NEW = {
  "c_prose": svg(lines(10, 14, [44, 50, 38, 46, 30], GY, 1.8) + nd(88, 14) + nd(76, 40) + nd(100, 40) + ln(85, 20, 79, 34, OR) + ln(91, 20, 97, 34, OR)),
 }
 
-USE = {"t-struct": "t_struct", "t-gen": "t_gen", "t-linear": "t_linear", "t-tree": "t_tree", "t-recproc": "t_recproc",
-       "t-iterproc": "t_iterproc", "leap": "leap", "selfref-list": "sr_list", "selfref-tree": "sr_tree", "selfref-doll": "sr_doll",
+USE = {"leap": "leap", "selfref-list": "sr_list", "selfref-tree": "sr_tree", "selfref-doll": "sr_doll",
        "ret-compose": "combine", "r-full": "r_full", "r-partial": "r_partial", "base-edge": "base_edge", "base-prune": "base_prune",
        "c-is": "c_is", "c-side": "c_side", "c-arrows": "c_arrows", "c-ids": "c_ids", "c-rec": "c_rec", "c-prose": "c_prose"}
 

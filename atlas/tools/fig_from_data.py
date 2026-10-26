@@ -8,7 +8,8 @@ g = runpy.run_path(os.path.join(FIG, "build.py")); sys.argv = sys_argv
 ICON, DEFS, CSS = g["ICON"], g["DEFS"], g["CSS"]
 
 D = json.load(open(os.path.join(SITE, "data.json" if lang == "en" else "data_zh.json")))
-ICON = {**ICON, **D["icons"]}  # icons added after build.py (icons_extra.py) live in the data
+ICON = {**ICON, **D["icons"]}
+dims = {d["id"]: d for d in D["dims"]}  # icons added after build.py (icons_extra.py) live in the data
 EX = D["examples"]
 KIDS = {c["id"]: [s["id"] for s in c["subs"]] for d in D["dims"] for _, cs in d["groups"] for c in cs}
 def exs(i):
@@ -34,26 +35,32 @@ def item(c):
     cells = "".join(f'<div class="sub"><div><span>{H.escape(s["name"])}{nb(s)}</span>{tags(s["id"])}</div>{ic(s.get("icon"))}</div>' for s in subs)
     return f'<div class="row split">{left}<div class="subs">{cells}</div></div>'
 
-def table(ds):
-    """One design-space table: concept | dimension | coding, one coding per row."""
+def table(parts):
+    """One design-space table: concept | dimension | coding, one coding per row.
+    parts: (dim id, group indices or None for all); a dim split across halves is marked as continued."""
     H3 = ("Concept", "Dimension", "Coding") if lang == "en" else ("概念", "维度", "编码")
+    CONT = " (cont.)" if lang == "en" else "（续）"
     body = ""
-    for d in ds:
-        gs = [(g, [c for c in cs if exs(c["id"])]) for g, cs in d["groups"]]
+    for k, idx in parts:
+        d = dims[k]
+        cont = bool(idx) and idx[0] > 0
+        q = "" if cont else f'<span class="q">{H.escape(d["q"])}</span>'
+        gs = [(g, [c for c in cs if exs(c["id"])]) for j, (g, cs) in enumerate(d["groups"]) if idx is None or j in idx]
         gs = [(g, cs) for g, cs in gs if cs]
         n = sum(len(cs) for _, cs in gs)
         if not n: continue
         rows, first = "", True
         for g, cs in gs:
             for k, c in enumerate(cs):
-                rows += "<tr>" + (f'<th class="cc" rowspan="{n}"><span class="t" style="box-shadow: inset 0 -5px 0 {d["color"]}55">{H.escape(d["name"])}</span><span class="q">{H.escape(d["q"])}</span></th>' if first else "") \
+                rows += "<tr>" + (f'<th class="cc" rowspan="{n}"><span class="t" style="box-shadow: inset 0 -5px 0 {d["color"]}55">{H.escape(d["name"])}{CONT if cont else ""}</span>{q}</th>' if first else "") \
                     + (f'<th class="dc" rowspan="{len(cs)}">{H.escape(g or "")}</th>' if k == 0 else "") + f'<td class="kc">{item(c)}</td></tr>'
                 first = False
         body += f"<tbody>{rows}</tbody>"
     return f'<table class="dt"><thead><tr>{"".join(f"<th>{h}</th>" for h in H3)}</tr></thead>{body}</table>'
 
-dims = {d["id"]: d for d in D["dims"]}
-LEFT, RIGHT = ["type", "decomp"], ["selfref", "retcomb", "base", "code"]
+# decomposition is split between its structure and its choices / elision to balance the halves
+LEFT = [("selfref", None), ("base", None), ("decomp", [0])]
+RIGHT = [("decomp", [1, 2]), ("retcomb", None), ("code", None)]
 legend = '<div class="legend">' + "".join(f'<div><span class="tag">{H.escape(s["id"])}</span> {H.escape(s["name"])}</div>' for s in D["sources"]) \
          + f'<div><span class="tag">×n</span> {"number of examples" if lang == "en" else "例子数"}</div></div>'
 cap = ("Figure X: A design space for recursion diagrams, read as one table in two halves. Each recursion concept lists the dimensions along which it is drawn."
@@ -91,7 +98,7 @@ body{padding:22px 26px 14px!important}
 if lang == "zh":
     extra += "body{font-family:Inter,'Noto Sans CJK SC',sans-serif}.cap{font-family:'Noto Serif CJK SC','Noto Sans CJK SC',serif}.sub{font-style:normal}"
 page = f'''<!doctype html><html lang="{'en' if lang == 'en' else 'zh-CN'}"><head><meta charset="utf-8"><style>{CSS}{extra}</style></head><body>{DEFS}
-<div class="halves">{table([dims[k] for k in LEFT])}{table([dims[k] for k in RIGHT])}</div>{legend}
+<div class="halves">{table(LEFT)}{table(RIGHT)}</div>{legend}
 {'' if 'nocap' in sys.argv else f'<div class="cap">{cap}</div>'}</body></html>'''
 open(out, "w").write(page)
 print("wrote", out)
