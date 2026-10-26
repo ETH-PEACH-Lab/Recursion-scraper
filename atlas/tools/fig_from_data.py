@@ -1,9 +1,9 @@
 """Static design-space figure (EN / ZH) generated from the atlas data, so the figure matches the website."""
-import json, os, runpy, sys, html as H
+import json, os, runpy, sys, tempfile, html as H
 FIG = os.path.dirname(os.path.abspath(__file__))
-SITE = os.path.join(FIG, "..", "site")
+SITE = os.path.join(FIG, "..")
 lang = sys.argv[1]; out = sys.argv[2]; NOCAP = 'nocap' in sys.argv
-sys_argv = sys.argv; sys.argv = ["build.py", "/tmp/claude-0/_unused.html"]
+sys_argv = sys.argv; sys.argv = ["build.py", os.path.join(tempfile.gettempdir(), "_unused.html")]
 g = runpy.run_path(os.path.join(FIG, "build.py")); sys.argv = sys_argv
 ICON, DEFS, CSS = g["ICON"], g["DEFS"], g["CSS"]
 
@@ -47,8 +47,8 @@ code = "".join(f'<div class="crow"><div class="n">{H.escape(c["name"])}</div><di
 codesec = f'<div class="sec"><h2><span style="box-shadow: inset 0 -5px 0 {dims["code"]["color"]}55">{H.escape(dims["code"]["name"])}</span></h2><div class="box"><div class="bottom">{code}</div></div></div>'
 legend = '<div class="legend">' + "".join(f'<div><span class="tag">{H.escape(s["id"])}</span> {H.escape(s["name"])}</div>' for s in D["sources"]) \
          + f'<div><span class="tag">×n</span> {"number of examples" if lang == "en" else "例子数"}</div></div>'
-cap = ("Figure X: A design space for recursion diagrams, listing the possible codings for each of the eight dimensions."
-       if lang == "en" else "图 X：递归图示的设计空间，列出八个维度下可能的编码。")
+cap = ("Figure X: A design space for recursion diagrams. The recursion type is set by the problem; each recursion concept lists the ways it is drawn."
+       if lang == "en" else "图 X：递归图示的设计空间。递归类型由问题决定；每个递归概念下列出它的画法。")
 extra = """
 .tags{display:inline-flex;flex-wrap:wrap;gap:3px;margin-left:6px;vertical-align:1px;font-weight:400}
 .tag{font-size:10.5px!important;padding:2px 5px!important}
@@ -65,15 +65,17 @@ body{padding:22px 26px 14px!important}
 .new{font-size:11px;font-weight:700;color:#fff;background:#C8692F;border-radius:4px;padding:1px 5px;vertical-align:middle;font-style:normal}
 .legend{width:100%;margin:14px 0 0;grid-template-columns:repeat(5,auto)!important;justify-content:start;font-size:12.5px!important;display:grid;grid-template-columns:repeat(3,1fr);gap:8px 20px;font-size:14px;color:#3B4048}
 .legend div{display:flex;align-items:center;gap:8px}
+.codefoot{width:60%;margin:16px auto 0}
 """
 if lang == "zh":
     extra += "body{font-family:Inter,'Noto Sans CJK SC',sans-serif}.cap{font-family:'Noto Serif CJK SC','Noto Sans CJK SC',serif}.sub{font-style:normal}"
 page = f'''<!doctype html><html lang="{'en' if lang == 'en' else 'zh-CN'}"><head><meta charset="utf-8"><style>{CSS}{extra}</style></head><body>{DEFS}
 <div class="cols">
-<div class="col">{section(dims["concepts"])}{section(dims["node"])}{section(dims["code"])}</div>
-<div class="col">{section(dims["visual"])}{section(dims["flow"])}</div>
-<div class="col">{section(dims["annot"])}{section(dims["elision"])}{section(dims["subd"])}</div>
-</div>{legend}
+<div class="col">{section(dims["type"])}{section(dims["selfref"])}{section(dims["base"])}</div>
+<div class="col">{section(dims["decomp"])}</div>
+<div class="col">{section(dims["retcomb"])}{section(dims["global"])}{section(dims["other"])}</div>
+</div>
+<div class="codefoot">{section(dims["code"])}</div>{legend}
 {'' if 'nocap' in sys.argv else f'<div class="cap">{cap}</div>'}</body></html>'''
 open(out, "w").write(page)
 print("wrote", out)
