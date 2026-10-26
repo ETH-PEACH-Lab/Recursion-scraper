@@ -8,6 +8,7 @@ g = runpy.run_path(os.path.join(FIG, "build.py")); sys.argv = sys_argv
 ICON, DEFS, CSS = g["ICON"], g["DEFS"], g["CSS"]
 
 D = json.load(open(os.path.join(SITE, "data.json" if lang == "en" else "data_zh.json")))
+ICON = {**ICON, **D["icons"]}  # icons added after build.py (icons_extra.py) live in the data
 EX = D["examples"]
 KIDS = {c["id"]: [s["id"] for s in c["subs"]] for d in D["dims"] for _, cs in d["groups"] for c in cs}
 def exs(i):
@@ -52,11 +53,11 @@ def table(ds):
     return f'<table class="dt"><thead><tr>{"".join(f"<th>{h}</th>" for h in H3)}</tr></thead>{body}</table>'
 
 dims = {d["id"]: d for d in D["dims"]}
-LEFT, RIGHT = ["type", "selfref", "decomp"], ["retcomb", "base", "global", "other", "code"]
+LEFT, RIGHT = ["type", "decomp"], ["selfref", "retcomb", "base", "code"]
 legend = '<div class="legend">' + "".join(f'<div><span class="tag">{H.escape(s["id"])}</span> {H.escape(s["name"])}</div>' for s in D["sources"]) \
          + f'<div><span class="tag">×n</span> {"number of examples" if lang == "en" else "例子数"}</div></div>'
-cap = ("Figure X: A design space for recursion diagrams, read as one table in two halves. The recursion type is set by the problem; each recursion concept lists the dimensions along which it is drawn."
-       if lang == "en" else "图 X：递归图示的设计空间（一张表，分左右两半）。递归类型由问题决定；每个递归概念下列出它的画法维度。")
+cap = ("Figure X: A design space for recursion diagrams, read as one table in two halves. Each recursion concept lists the dimensions along which it is drawn."
+       if lang == "en" else "图 X：递归图示的设计空间（一张表，分左右两半）。每个递归概念下列出它的画法维度。")
 extra = """
 .tags{display:inline-flex;flex-wrap:wrap;gap:3px;margin-left:6px;vertical-align:1px;font-weight:400}
 .tag{font-size:10.5px!important;padding:2px 5px!important}

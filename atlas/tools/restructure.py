@@ -2,7 +2,7 @@
 
 Layer 0: recursion type (a property of the problem, not a design choice).
 Layer 1 → 2: each recursion concept, with the ways it is drawn under it.
-Global choices and code correspondence sit outside the concepts.
+Code correspondence sits outside the concepts.
 Run once: python3 restructure.py (it refuses to run on already migrated data).
 """
 import json, os, sys
@@ -28,7 +28,7 @@ def S(id, name=None, icon=None):
     return dict(id=id, name=name or o["name"], icon=icon if icon is not None else o.get("icon"), new=False)
 
 DIMS = [
- dict(id="type", name="Recursion type", q="What kind of recursion is it? Set by the problem, not chosen by the drawer.", col=0, color="#7A808A", groups=[
+ dict(id="type", name="Recursion type", q="What kind of recursion is it?", col=0, color="#7A808A", groups=[
    ("Source (HtDP, MIT 6.102)", [
      C("t-struct", "Structural recursion", "Follows the data definition: first/rest, left/right."),
      C("t-gen", "Generative recursion", "Subproblems are computed, not parts of the data.")]),
@@ -38,9 +38,6 @@ DIMS = [
    ("Process (SICP §1.2.1)", [
      C("t-recproc", "Recursive process", "Work deferred and done on the way back."),
      C("t-iterproc", "Iterative process", "State carried down; nothing left to do on return.")])]),
- dict(id="selfref", name="Self-referential data", q="Which data refers to itself, and what sits inside one node?", col=0, color="#C8692F", groups=[
-   ("Data", [C("selfref-list", desc="A list whose rest is again a list."), C("selfref-tree", desc="A tree whose children are trees."), C("selfref-doll", desc="A pictorial object holding a smaller copy.")]),
-   ("Node content", [C("n-data"), C("n-call"), C("n-state"), C("n-partial")])]),
  dict(id="decomp", name="Decomposition", q="How are the smaller instances laid out, and how many calls are drawn?", col=1, color="#2F64B0", groups=[
    ("Structure", [C("nested", subs=["v-boxbox", "v-brackets", "v-treemap"]),
                   C("tree", subs=["v-calltree", "v-statetree", "v-choicetree", "v-resulttree"]),
@@ -50,6 +47,9 @@ DIMS = [
    ("Elision (calls)", [C("e-full"), C("e-pat"), C("e-unpat"), C("e-black"),
                         C("deferred", subs=["e-trace", "e-done"]),
                         C("leap", "Trusted subcall", "The subcall’s result is used without drawing inside it (leap of faith).")])]),
+ dict(id="selfref", name="Self-referential data", q="Which data refers to itself, and what sits inside one node?", col=0, color="#C8692F", groups=[
+   ("Data", [C("selfref-list", desc="A list whose rest is again a list."), C("selfref-tree", desc="A tree whose children are trees."), C("selfref-doll", desc="A pictorial object holding a smaller copy.")]),
+   ("Node content", [C("n-data"), C("n-call"), C("n-state"), C("n-partial")])]),
  dict(id="retcomb", name="Return & combine", q="How do results come back, and how many returns are drawn?", col=2, color="#23826A", groups=[
    ("Flow", [C("f-up"), C("f-round"), C("f-rewrite")]),
    ("Marks", [C("a-ret"), C("ret-compose", "Combine step", "How sub-results merge is drawn."), C("a-path"), C("a-callstep")]),
@@ -61,11 +61,6 @@ DIMS = [
      C("a-base", "Marked", "Labelled or highlighted as the base case.", "base"),
      C("base-edge", "Reached, not marked", "The last call is drawn but not singled out."),
      C("base-prune", "Dead-end leaf", "A failed branch ends the recursion.")])]),
- dict(id="global", name="Global choices", q="Choices about the whole diagram, not one concept.", col=2, color="#7E6BD0", groups=[
-   ("Instance", [C("g-concrete", "Concrete instance", "Real input values."), C("n-sym")]),
-   ("Panels", [C("s-time"), C("s-scen"), C("s-rep")])]),
- dict(id="other", name="Other", q="Problem-specific or analysis marks, outside the concepts.", col=2, color="#9A9A9A", groups=[("Marks", [
-     C("a-role"), C("a-cursor"), C("overlap"), C("a-dup"), C("cost", subs=["cost-level", "cost-total"])])]),
  dict(id="code", name="Code Correspondence", q="How does it tie back to the code?", col=3, color="#3E8E3E", groups=[("Link", [
      C("c-is"),
      C("c-link", "Linked to the code", "Placed next to it, arrowed into it, or sharing its names.", subs=["c-side", "c-arrows", "c-ids"]),
@@ -73,7 +68,7 @@ DIMS = [
 ]
 
 RENAME = {"f-down": "r-none", "state-stack": "v-stack"}
-DROP = {"decomp-struct", "decomp-gen", "f-static", "ret-value", "choice-branch", "choice-prune", "choice-back", "state-acc"}
+DROP = {"n-sym", "s-time", "s-scen", "s-rep", "a-role", "a-cursor", "overlap", "a-dup", "cost-level", "cost-total", "decomp-struct", "decomp-gen", "f-static", "ret-value", "choice-branch", "choice-prune", "choice-back", "state-acc"}
 
 # Recursion type per example (index into examples): source, calls per step, process; one value each, the closest fit.
 TYPE = {
@@ -86,8 +81,6 @@ TYPE = {
 TCODE = {"s": "t-struct", "g": "t-gen", "l": "t-linear", "t": "t-tree", "r": "t-recproc", "i": "t-iterproc"}
 RET_NONE = {19, 29, 37, 38}   # recursive process, way back not drawn
 RET_PARTIAL = {20}            # only the final return 12
-CONCRETE = {1, 2, 3, 6, 7, 8, 10, 11, 12, 13, 14, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34,
-            35, 36, 37, 38, 39, 40, 41, 42, 43, 45, 46, 47}
 
 for i, e in enumerate(D["examples"]):
     old = e["codes"]
@@ -101,7 +94,6 @@ for i, e in enumerate(D["examples"]):
     if i in RET_NONE: add("r-none")
     elif i in RET_PARTIAL: add("r-partial")
     elif {"f-up", "f-round", "f-rewrite", "ret-value"} & set(old): add("r-full")
-    if i in CONCRETE: add("g-concrete")
     e["codes"] = new
 
 D["dims"] = DIMS
