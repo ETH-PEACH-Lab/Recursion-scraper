@@ -2,7 +2,7 @@
 import json, os
 HERE = os.path.dirname(os.path.abspath(__file__))
 T_EN = """{
- new:'new', sources:'Sources', showAll:'Show all', check:'Check:', also:'Also coded as', open:'Open original ↗',
+ new:'new', hConcept:'Concept', hDim:'Dimension', hCode:'Coding', sources:'Sources', showAll:'Show all', check:'Check:', also:'Also coded as', open:'Open original ↗',
  close:'Close', viewer:'Image viewer', closeViewer:'Close viewer', prev:'Previous image', next:'Next image', emptyNone:'No example coded yet.',
  nEx:n => n + ' examples',
  lede:(c, e, i, f) => `<b>${c} codings</b>, organised as recursion type → concept → how it is drawn, backed by <b>${e} examples</b> and <b>${i} source images</b>${f ? ' in the selected sources' : ' from textbooks and LeetCode'}. Select a coding to see the figures behind it.`,
@@ -12,7 +12,7 @@ T_EN = """{
  enlarge:(j, t) => `Enlarge image ${j} of ${t}`, alt:(t, j) => `${t}, image ${j}`, imgOf:(i, n) => `image ${i} of ${n}`
 }"""
 T_ZH = """{
- new:'新增', sources:'来源', showAll:'显示全部', check:'核对：', also:'同时编码为', open:'查看原文 ↗',
+ new:'新增', hConcept:'概念', hDim:'维度', hCode:'编码', sources:'来源', showAll:'显示全部', check:'核对：', also:'同时编码为', open:'查看原文 ↗',
  close:'关闭', viewer:'图片查看', closeViewer:'关闭图片', prev:'上一张', next:'下一张', emptyNone:'还没有编码到例子。',
  nEx:n => n + ' 个例子',
  lede:(c, e, i, f) => `共 <b>${c} 个编码</b>，按“递归类型 → 概念 → 怎么画”组织，有 <b>${e} 个例子</b>、<b>${i} 张来源图片</b>${f ? '（已按来源筛选）' : '，来自教材和 LeetCode'}。点击任意编码，查看它背后的原图。`,

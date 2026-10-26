@@ -60,7 +60,7 @@ GRP.update({
  "Source (HtDP, MIT 6.102)": "来源（HtDP、MIT 6.102）", "Calls per step (SICP §1.2)": "每步调用次数（SICP §1.2）",
  "Process (SICP §1.2.1)": "过程（SICP §1.2.1）", "Data": "数据", "Node content": "节点内容", "Choices": "选择",
  "Elision (calls)": "省略（调用）", "Flow": "流向", "Marks": "标注", "Elision (returns)": "省略（返回）",
- "Instance": "实例", "Panels": "面板",
+ "Instance": "实例", "Panels": "面板", "Marking": "标记方式", "Marks": "标注", "Link": "对应方式",
 })
 COD.update({
  "t-struct": ("结构递归", "按数据定义拆分：first/rest、左/右子树。"), "t-gen": ("生成递归", "子问题是算出来的，不是数据本身的一部分。"),

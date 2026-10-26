@@ -57,16 +57,16 @@ DIMS = [
      C("r-full", "All returns drawn", "Every call’s result is shown coming back."),
      C("r-partial", "Some returns drawn", "Only some results, e.g. the final one."),
      C("r-none", "Returns not drawn", "Calls only; for a recursive process the way back is missing.", "down")])]),
- dict(id="base", name="Base case", q="Is the stopping point shown, and how?", col=0, color="#D0469B", groups=[(None, [
+ dict(id="base", name="Base case", q="Is the stopping point shown, and how?", col=0, color="#D0469B", groups=[("Marking", [
      C("a-base", "Marked", "Labelled or highlighted as the base case.", "base"),
      C("base-edge", "Reached, not marked", "The last call is drawn but not singled out."),
      C("base-prune", "Dead-end leaf", "A failed branch ends the recursion.")])]),
  dict(id="global", name="Global choices", q="Choices about the whole diagram, not one concept.", col=2, color="#7E6BD0", groups=[
    ("Instance", [C("g-concrete", "Concrete instance", "Real input values."), C("n-sym")]),
    ("Panels", [C("s-time"), C("s-scen"), C("s-rep")])]),
- dict(id="other", name="Other", q="Problem-specific or analysis marks, outside the concepts.", col=2, color="#9A9A9A", groups=[(None, [
+ dict(id="other", name="Other", q="Problem-specific or analysis marks, outside the concepts.", col=2, color="#9A9A9A", groups=[("Marks", [
      C("a-role"), C("a-cursor"), C("overlap"), C("a-dup"), C("cost", subs=["cost-level", "cost-total"])])]),
- dict(id="code", name="Code Correspondence", q="How does it tie back to the code?", col=3, color="#3E8E3E", groups=[(None, [
+ dict(id="code", name="Code Correspondence", q="How does it tie back to the code?", col=3, color="#3E8E3E", groups=[("Link", [
      C("c-is"),
      C("c-link", "Linked to the code", "Placed next to it, arrowed into it, or sharing its names.", subs=["c-side", "c-arrows", "c-ids"]),
      C("c-text", "Linked through math or prose", "An equation or a written explanation, not the code.", subs=["c-rec", "c-prose"])])]),

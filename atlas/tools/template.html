@@ -3,7 +3,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,600&family=JetBrains+Mono:wght@500&display=swap">
 <style>
-/* Layout: the paper's design-space table, three ruled columns plus a footer band; a coding opens a side sheet of source figures. */
+/* Layout: one design-space table (concept | dimension | coding); a coding opens a side sheet of source figures. */
 :root{
   --bg:#FFFFFF; --surface:#FFFFFF; --sub:#F3F4F6; --ink:#1C2128; --muted:#5A6370; --rule:#1C2128; --hair:#D6DAE0;
   --tile:#FFFFFF; --accent:#B4561F; --accent-soft:#FBE4D2; --lc:#FCE3C4; --lc-ink:#7A3A0E; --focus:#2F64B0;
@@ -29,15 +29,18 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);l
 .chip[aria-pressed="true"] .n{color:var(--bg);opacity:.75}
 .chip.reset{border-style:dashed}
 .chip:focus-visible,.row:focus-visible,.sheet button:focus-visible,.thumb:focus-visible,a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px;align-items:start}
-.col{display:flex;flex-direction:column;gap:22px;min-width:0}
-.sec h2{font-size:21px;font-weight:700;margin:0 0 6px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-.sec h2 span.t{box-shadow:inset 0 -5px 0 var(--c)}
-.sec h2 .q{font-size:13px;font-weight:400;color:var(--muted)}
-.box{background:var(--surface);border:1.5px solid var(--rule);border-top:4px solid var(--rule)}
-.grp{padding:6px 14px;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;border-bottom:1px solid var(--rule)}
-.item{border-bottom:1px solid var(--rule);display:grid;grid-template-columns:minmax(0,1fr)}
-.item:last-child{border-bottom:none}
+.dt{width:100%;border-collapse:collapse;background:var(--surface);border:1.5px solid var(--rule);border-top:4px solid var(--rule)}
+.dt thead th{text-align:left;padding:8px 14px;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;border-bottom:1.5px solid var(--rule)}
+.dt tbody{border-top:2.5px solid var(--rule)}
+.dt th.cc,.dt th.dc{vertical-align:top;text-align:left;border-right:1px solid var(--rule)}
+.dt th.cc{width:18%;padding:14px}
+.dt th.cc .t{font-size:20px;font-weight:700;box-shadow:inset 0 -5px 0 var(--c)}
+.dt th.cc .q{display:block;margin-top:8px;font-size:13px;font-weight:400;color:var(--muted)}
+.dt th.dc{width:14%;padding:14px;border-top:1px solid var(--rule);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.dt tr.dstart th.dc{border-top:none}
+.dt td.kc{padding:0;border-top:1px solid var(--rule)}
+.dt tr.dstart td.kc{border-top:none}
+.item{display:grid;grid-template-columns:minmax(0,1fr)}
 .item.has-subs{grid-template-columns:minmax(0,42%) minmax(0,58%)}
 .subs{border-left:1px solid var(--rule);display:flex;flex-direction:column}
 .row{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 14px;min-height:64px;width:100%}
@@ -58,11 +61,6 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);l
 .ic svg{display:block;width:118px;height:56px}
 .row.dim{opacity:.32}
 .row.dim:hover{opacity:.6}
-.codebox{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
-.codebox .item{border-bottom:1px solid var(--rule)}
-.codebox .item:nth-child(odd){border-right:1px solid var(--rule)}
-.codebox .item:nth-last-child(-n+2){border-bottom:none}
-.foot{max-width:900px;width:100%;margin:0 auto}
 .note{color:var(--muted);font-size:13px;margin:0;max-width:80ch}
 /* sheet */
 .scrim{position:fixed;inset:0;background:var(--scrim);z-index:20}
@@ -119,9 +117,8 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);l
 .lb button:hover{background:rgba(255,255,255,.12)}
 .lb button:focus-visible{outline:2px solid #8DB4F0}
 .lb button[disabled]{opacity:.25;cursor:default}
-@media (max-width:1100px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:720px){.grid{grid-template-columns:minmax(0,1fr)}.item.has-subs{grid-template-columns:minmax(0,1fr)}.subs{border-left:none;border-top:1px solid var(--rule)}
-  .codebox{grid-template-columns:minmax(0,1fr)}.codebox .item:nth-child(odd){border-right:none}.codebox .item:nth-last-child(2){border-bottom:1px solid var(--rule)}
+@media (max-width:720px){.item.has-subs{grid-template-columns:minmax(0,1fr)}.subs{border-left:none;border-top:1px solid var(--rule)}
+  .dt,.dt tbody,.dt tr,.dt th,.dt td{display:block;width:auto}.dt thead{display:none}.dt th.cc,.dt th.dc{border-right:none;width:auto}.dt th.cc{border-bottom:1px solid var(--rule)}.dt th.dc{background:var(--sub);padding:6px 14px;border-top:none;border-bottom:1px solid var(--rule)}.dt td.kc{border-top:none;border-bottom:1px solid var(--rule)}.dt tbody tr:last-child td.kc{border-bottom:none}
   .ic svg{width:96px;height:46px}.lb-stage{grid-template-columns:minmax(0,1fr)}.lb-stage .nav{display:none}}
 @media (prefers-reduced-motion:no-preference){.sheet{animation:slide .18s ease-out}@keyframes slide{from{transform:translateX(24px);opacity:.6}to{transform:none;opacity:1}}}
 </style>
@@ -133,8 +130,7 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);l
     <p class="lede" id="lede"></p>
     <div class="filters" id="filters" role="group" aria-label="__FILTERLABEL__"></div>
   </header>
-  <div class="grid" id="grid"></div>
-  <div class="foot" id="foot"></div>
+  <div id="grid"></div>
   <p class="note">__NOTE__</p>
 </div>
 <div id="layer"></div>
@@ -184,15 +180,25 @@ function itemHTML(c){
   if (!subs.length) return `<div class="item">${rowBtn(c, '')}</div>`;
   return `<div class="item has-subs">${rowBtn(c, 'parent')}<div class="subs">${subs.map(s => rowBtn(s, 'subrow')).join('')}</div></div>`;
 }
-function secHTML(d){
-  const body = d.groups.map(([g, cs]) => { const inner = cs.map(itemHTML).join(''); return inner ? (g ? `<div class="grp">${esc(g)}</div>` : '') + inner : ''; }).join('');
-  return `<section class="sec" style="--c:${d.color}55"><h2><span class="t">${esc(d.name)}</span><span class="q">${esc(d.q)}</span></h2><div class="box${d.id === 'code' ? ' codebox' : ''}">${body}</div></section>`;
+function tableHTML(){
+  let body = '';
+  for (const d of DATA.dims) {
+    const gs = d.groups.map(([g, cs]) => [g, cs.filter(c => hasAny(c.id))]).filter(([, cs]) => cs.length);
+    const n = gs.reduce((a, [, cs]) => a + cs.length, 0); if (!n) continue;
+    let rows = '', first = true;
+    for (const [g, cs] of gs) cs.forEach((c, i) => {
+      rows += `<tr${first ? ' class="dstart"' : ''}>`
+        + (first ? `<th class="cc" rowspan="${n}" scope="rowgroup" style="--c:${d.color}55"><span class="t">${esc(d.name)}</span><span class="q">${esc(d.q)}</span></th>` : '')
+        + (i === 0 ? `<th class="dc" rowspan="${cs.length}">${esc(g || '')}</th>` : '')
+        + `<td class="kc">${itemHTML(c)}</td></tr>`;
+      first = false;
+    });
+    body += `<tbody>${rows}</tbody>`;
+  }
+  return `<table class="dt"><thead><tr><th>${T.hConcept}</th><th>${T.hDim}</th><th>${T.hCode}</th></tr></thead>${body}</table>`;
 }
 function render(){
-  const cols = [[], [], []];
-  for (const d of DATA.dims) if (d.col < 3) cols[d.col].push(secHTML(d));
-  $('#grid').innerHTML = cols.map(c => `<div class="col">${c.join('')}</div>`).join('');
-  $('#foot').innerHTML = secHTML(DATA.dims.find(d => d.id === 'code'));
+  $('#grid').innerHTML = tableHTML();
   const exs = DATA.examples.filter(passes), imgs = exs.reduce((a, e) => a + e.imgs.length, 0);
   const nCod = Object.keys(META).filter(hasAny).length;
   $('#lede').innerHTML = T.lede(nCod, exs.length, imgs, active.size > 0);

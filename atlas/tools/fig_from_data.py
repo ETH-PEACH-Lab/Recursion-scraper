@@ -33,22 +33,30 @@ def item(c):
     cells = "".join(f'<div class="sub"><div><span>{H.escape(s["name"])}{nb(s)}</span>{tags(s["id"])}</div>{ic(s.get("icon"))}</div>' for s in subs)
     return f'<div class="row split">{left}<div class="subs">{cells}</div></div>'
 
-def section(d, cls=""):
+def table(ds):
+    """One design-space table: concept | dimension | coding, one coding per row."""
+    H3 = ("Concept", "Dimension", "Coding") if lang == "en" else ("概念", "维度", "编码")
     body = ""
-    for gname, cs in d["groups"]:
-        inner = "".join(item(c) for c in cs)
-        if inner: body += (f'<div class="grp">{H.escape(gname)}</div>' if gname else "") + inner
-    return f'<div class="sec"><h2><span style="box-shadow: inset 0 -5px 0 {d["color"]}55">{H.escape(d["name"])}</span></h2><div class="box{cls}">{body}</div></div>'
+    for d in ds:
+        gs = [(g, [c for c in cs if exs(c["id"])]) for g, cs in d["groups"]]
+        gs = [(g, cs) for g, cs in gs if cs]
+        n = sum(len(cs) for _, cs in gs)
+        if not n: continue
+        rows, first = "", True
+        for g, cs in gs:
+            for k, c in enumerate(cs):
+                rows += "<tr>" + (f'<th class="cc" rowspan="{n}"><span class="t" style="box-shadow: inset 0 -5px 0 {d["color"]}55">{H.escape(d["name"])}</span><span class="q">{H.escape(d["q"])}</span></th>' if first else "") \
+                    + (f'<th class="dc" rowspan="{len(cs)}">{H.escape(g or "")}</th>' if k == 0 else "") + f'<td class="kc">{item(c)}</td></tr>'
+                first = False
+        body += f"<tbody>{rows}</tbody>"
+    return f'<table class="dt"><thead><tr>{"".join(f"<th>{h}</th>" for h in H3)}</tr></thead>{body}</table>'
 
 dims = {d["id"]: d for d in D["dims"]}
-# code correspondence as a two-column block
-code_items = [c for _, cs in dims["code"]["groups"] for c in cs if exs(c["id"])]
-code = "".join(f'<div class="crow"><div class="n">{H.escape(c["name"])}</div><div class="d">{H.escape(c["desc"])}</div>{tags(c["id"])}</div>' for c in code_items)
-codesec = f'<div class="sec"><h2><span style="box-shadow: inset 0 -5px 0 {dims["code"]["color"]}55">{H.escape(dims["code"]["name"])}</span></h2><div class="box"><div class="bottom">{code}</div></div></div>'
+LEFT, RIGHT = ["type", "selfref", "decomp"], ["retcomb", "base", "global", "other", "code"]
 legend = '<div class="legend">' + "".join(f'<div><span class="tag">{H.escape(s["id"])}</span> {H.escape(s["name"])}</div>' for s in D["sources"]) \
          + f'<div><span class="tag">×n</span> {"number of examples" if lang == "en" else "例子数"}</div></div>'
-cap = ("Figure X: A design space for recursion diagrams. The recursion type is set by the problem; each recursion concept lists the ways it is drawn."
-       if lang == "en" else "图 X：递归图示的设计空间。递归类型由问题决定；每个递归概念下列出它的画法。")
+cap = ("Figure X: A design space for recursion diagrams, read as one table in two halves. The recursion type is set by the problem; each recursion concept lists the dimensions along which it is drawn."
+       if lang == "en" else "图 X：递归图示的设计空间（一张表，分左右两半）。递归类型由问题决定；每个递归概念下列出它的画法维度。")
 extra = """
 .tags{display:inline-flex;flex-wrap:wrap;gap:3px;margin-left:6px;vertical-align:1px;font-weight:400}
 .tag{font-size:10.5px!important;padding:2px 5px!important}
@@ -65,17 +73,24 @@ body{padding:22px 26px 14px!important}
 .new{font-size:11px;font-weight:700;color:#fff;background:#C8692F;border-radius:4px;padding:1px 5px;vertical-align:middle;font-style:normal}
 .legend{width:100%;margin:14px 0 0;grid-template-columns:repeat(5,auto)!important;justify-content:start;font-size:12.5px!important;display:grid;grid-template-columns:repeat(3,1fr);gap:8px 20px;font-size:14px;color:#3B4048}
 .legend div{display:flex;align-items:center;gap:8px}
-.codefoot{width:60%;margin:16px auto 0}
+.halves{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
+.dt{width:100%;border-collapse:collapse;border:1.5px solid #1C2128;border-top:4px solid #1C2128}
+.dt thead th{text-align:left;padding:7px 12px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#6B717A;font-weight:600;border-bottom:1.5px solid #1C2128}
+.dt tbody{border-top:2.5px solid #1C2128}
+.dt th.cc,.dt th.dc{vertical-align:top;text-align:left;border-right:1px solid #1C2128;border-top:1px solid #1C2128}
+.dt th.cc{width:150px;padding:10px 12px}
+.dt th.cc .t{font-size:18px;font-weight:700}
+.dt th.cc .q{display:block;margin-top:6px;font-size:12px;font-weight:400;color:#6B717A;line-height:1.35}
+.dt th.dc{width:105px;padding:10px 12px;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#6B717A;font-weight:600}
+.dt td.kc{padding:0;border-top:1px solid #1C2128}
+.dt td.kc .row{border-bottom:none}
+.dt .sub:last-child{border-bottom:none}
+.row.split>.main{flex:0 0 170px!important}
 """
 if lang == "zh":
     extra += "body{font-family:Inter,'Noto Sans CJK SC',sans-serif}.cap{font-family:'Noto Serif CJK SC','Noto Sans CJK SC',serif}.sub{font-style:normal}"
 page = f'''<!doctype html><html lang="{'en' if lang == 'en' else 'zh-CN'}"><head><meta charset="utf-8"><style>{CSS}{extra}</style></head><body>{DEFS}
-<div class="cols">
-<div class="col">{section(dims["type"])}{section(dims["selfref"])}{section(dims["base"])}</div>
-<div class="col">{section(dims["decomp"])}</div>
-<div class="col">{section(dims["retcomb"])}{section(dims["global"])}{section(dims["other"])}</div>
-</div>
-<div class="codefoot">{section(dims["code"])}</div>{legend}
+<div class="halves">{table([dims[k] for k in LEFT])}{table([dims[k] for k in RIGHT])}</div>{legend}
 {'' if 'nocap' in sys.argv else f'<div class="cap">{cap}</div>'}</body></html>'''
 open(out, "w").write(page)
 print("wrote", out)
