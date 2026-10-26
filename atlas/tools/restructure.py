@@ -71,6 +71,11 @@ for i, e in enumerate(D["examples"]):
     e["codes"] = new
 
 D["dims"] = DIMS
+# sources are named by course, not number
+for src in D["sources"]:
+    if src["id"] == "MIT 6.102": src["id"], src["name"] = "Software Construction", "MIT Software Construction course notes"
+for e in D["examples"]:
+    if e["src"] == "MIT 6.102": e["src"] = "Software Construction"
 known = {c["id"] for d in DIMS for _, cs in d["groups"] for c in cs} | {s["id"] for d in DIMS for _, cs in d["groups"] for c in cs for s in c["subs"]}
 missing = {c for e in D["examples"] for c in e["codes"]} - known
 assert not missing, missing

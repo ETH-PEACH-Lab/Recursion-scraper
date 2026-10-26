@@ -1,6 +1,6 @@
 # Recursion Diagram Atlas
 
-An interactive design space for recursion diagrams, built from textbook figures (LYAH, SICP, HtDP, DCIC, CLRS, MIT 6.102) and LeetCode solutions with 5 or more votes from this scraper.
+An interactive design space for recursion diagrams, built from textbook figures (LYAH, SICP, HtDP, DCIC, CLRS, MIT Software Construction) and LeetCode solutions with 5 or more votes from this scraper.
 
 - `index.html` – the site. Open it in a browser, or serve this folder (`python3 -m http.server`). Click a coding to see the source figures behind it; filter by source at the top.
 - `data.json` – codings, examples, image list and review notes (the site embeds the same data).

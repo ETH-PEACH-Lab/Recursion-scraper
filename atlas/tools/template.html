@@ -3,7 +3,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,600&family=JetBrains+Mono:wght@500&display=swap">
 <style>
-/* Layout: three design-space tables in a row (concept | dimension | coding); a coding opens a side sheet of source figures. */
+/* Layout: three design-space tables, stacked (concept | dimension | coding); a coding opens a side sheet of source figures. */
 :root{
   --bg:#FFFFFF; --surface:#FFFFFF; --sub:#F3F4F6; --ink:#1C2128; --muted:#5A6370; --rule:#1C2128; --hair:#D6DAE0;
   --tile:#FFFFFF; --accent:#B4561F; --accent-soft:#FBE4D2; --lc:#FCE3C4; --lc-ink:#7A3A0E; --focus:#2F64B0;
@@ -16,11 +16,9 @@
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.4;
   padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:28px 48px}
-.wrap{max-width:1760px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.wrap{max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
 header{display:flex;flex-direction:column;gap:10px}
 h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);line-height:1.1;margin:0;text-wrap:balance}
-.lede{margin:0;color:var(--muted);max-width:70ch;font-size:16px}
-.lede b{color:var(--ink);font-weight:600}
 .filters{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .filters .lab{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-right:4px}
 .chip{font:600 13px/1 var(--body);padding:6px 10px;border-radius:999px;border:1px solid var(--hair);background:var(--surface);color:var(--ink);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
@@ -29,17 +27,15 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);l
 .chip[aria-pressed="true"] .n{color:var(--bg);opacity:.75}
 .chip.reset{border-style:dashed}
 .chip:focus-visible,.row:focus-visible,.sheet button:focus-visible,.thumb:focus-visible,a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
-.tables{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) minmax(0,1fr);gap:16px;align-items:start}
-.tables .item.has-subs{grid-template-columns:minmax(0,1fr)}.tables .subs{border-left:none;border-top:1px solid var(--hair)}
-.tables .row{padding:8px 10px;min-height:0}.tables .row.subrow{min-height:0;padding-left:22px}.tables .ic svg{width:68px;height:32px}.tables .ic{padding:0}
+.tables{display:flex;flex-direction:column;gap:28px}
 .dt{width:100%;border-collapse:collapse;background:var(--surface);border:1.5px solid var(--rule);border-top:4px solid var(--rule)}
 .dt thead th{text-align:left;padding:8px 14px;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;border-bottom:1.5px solid var(--rule)}
 .dt tbody{border-top:2.5px solid var(--rule)}
 .dt th.cc,.dt th.dc{vertical-align:top;text-align:left;border-right:1px solid var(--rule)}
-.dt th.cc{width:19%;padding:12px 8px}
-.dt th.cc .t{font-size:17px;font-weight:700;box-shadow:inset 0 -5px 0 var(--c)}
+.dt th.cc{width:18%;padding:14px}
+.dt th.cc .t{font-size:20px;font-weight:700;box-shadow:inset 0 -5px 0 var(--c)}
 .dt th.cc .q{display:block;margin-top:8px;font-size:13px;font-weight:400;color:var(--muted)}
-.dt th.dc{width:13%;padding:12px 6px;border-top:1px solid var(--rule);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.dt th.dc{width:14%;padding:14px;border-top:1px solid var(--rule);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
 .dt tr.dstart th.dc{border-top:none}
 .dt td.kc{padding:0;border-top:1px solid var(--rule)}
 .dt tr.dstart td.kc{border-top:none}
@@ -65,7 +61,6 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);l
 .ic svg{display:block;width:118px;height:56px}
 .row.dim{opacity:.32}
 .row.dim:hover{opacity:.6}
-.note{color:var(--muted);font-size:13px;margin:0;max-width:80ch}
 /* sheet */
 .scrim{position:fixed;inset:0;background:var(--scrim);z-index:20}
 .sheet{position:fixed;top:0;right:0;bottom:0;width:min(760px,100%);background:var(--surface);z-index:21;display:flex;flex-direction:column;
@@ -121,7 +116,6 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);l
 .lb button:hover{background:rgba(255,255,255,.12)}
 .lb button:focus-visible{outline:2px solid #8DB4F0}
 .lb button[disabled]{opacity:.25;cursor:default}
-@media (max-width:1300px){.tables{grid-template-columns:minmax(0,1fr)}.dt th.cc{width:18%}.dt th.dc{width:14%}}
 @media (max-width:720px){.item.has-subs{grid-template-columns:minmax(0,1fr)}.subs{border-left:none;border-top:1px solid var(--rule)}
   .dt,.dt tbody,.dt tr,.dt th,.dt td{display:block;width:auto}.dt thead{display:none}.dt th.cc,.dt th.dc{border-right:none;width:auto}.dt th.cc{border-bottom:1px solid var(--rule)}.dt th.dc{background:var(--sub);padding:6px 14px;border-top:none;border-bottom:1px solid var(--rule)}.dt td.kc{border-top:none;border-bottom:1px solid var(--rule)}.dt tbody tr:last-child td.kc{border-bottom:none}
   .ic svg{width:96px;height:46px}.lb-stage{grid-template-columns:minmax(0,1fr)}.lb-stage .nav{display:none}}
@@ -132,11 +126,9 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);l
 <div class="wrap">
   <header>
     <div class="topline"><h1>__TITLE__</h1><a class="lang" href="__LANGHREF__" hreflang="__LANGCODE__">__LANGLABEL__</a></div>
-    <p class="lede" id="lede"></p>
     <div class="filters" id="filters" role="group" aria-label="__FILTERLABEL__"></div>
   </header>
   <div class="tables" id="grid"></div>
-  <p class="note">__NOTE__</p>
 </div>
 <div id="layer"></div>
 
@@ -203,11 +195,8 @@ function tableHTML(ds){
   return `<table class="dt"><thead><tr><th>${T.hConcept}</th><th>${T.hDim}</th><th>${T.hCode}</th></tr></thead>${body}</table>`;
 }
 function render(){
-  const cols = [...new Set(DATA.dims.map(d => d.col))].sort((a, b) => a - b);  // one table per column, side by side
+  const cols = [...new Set(DATA.dims.map(d => d.col))].sort((a, b) => a - b);  // one table per column, stacked
   $('#grid').innerHTML = cols.map(k => tableHTML(DATA.dims.filter(d => d.col === k))).join('');
-  const exs = DATA.examples.filter(passes), imgs = exs.reduce((a, e) => a + e.imgs.length, 0);
-  const nCod = Object.keys(META).filter(hasAny).length;
-  $('#lede').innerHTML = T.lede(nCod, exs.length, imgs, active.size > 0);
   const counts = {}; for (const e of DATA.examples) counts[e.src] = (counts[e.src] || 0) + 1;
   $('#filters').innerHTML = `<span class="lab">${T.sources}</span>` + DATA.sources.map(s => `<button class="chip${isLC(s.id) ? ' lc' : ''}" data-src="${s.id}" aria-pressed="${active.has(s.id)}" title="${esc(s.name)}">${esc(s.id)}<span class="n">${counts[s.id] || 0}</span></button>`).join('')
     + (active.size || vact.size ? `<button class="chip reset" data-src="__all">${T.showAll}</button>` : '');

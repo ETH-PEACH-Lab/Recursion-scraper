@@ -78,7 +78,7 @@ COD.update({
  "c-text": ("通过公式或文字", "对应的是方程或文字说明，而不是代码。"),
 })
 SRC = {"LYAH": "Learn You a Haskell（Haskell 教材）", "SICP": "计算机程序的构造和解释（SICP）", "HtDP": "程序设计方法（HtDP）",
-       "DCIC": "A Data-Centric Introduction to Computing", "CLRS": "算法导论（CLRS）", "MIT 6.102": "MIT 6.102 课程讲义",
+       "DCIC": "A Data-Centric Introduction to Computing", "CLRS": "算法导论（CLRS）", "Software Construction": "MIT 软件构造（Software Construction）课程讲义",
        "LeetCode": "LeetCode 题解，vote ≥ 5"}
 TITLE = {
  "NumList data definition": "NumList 数据定义", "nl-link nesting": "nl-link 嵌套", "Fig 44 · Building a list": "图 44 · 构造列表",
