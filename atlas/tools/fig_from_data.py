@@ -86,7 +86,8 @@ body{padding:22px 26px 14px!important}
 .legend{width:100%;margin:14px 0 0;grid-template-columns:repeat(5,auto)!important;justify-content:start;font-size:12.5px!important;display:grid;grid-template-columns:repeat(3,1fr);gap:8px 20px;font-size:14px;color:#3B4048}
 .legend div{display:flex;align-items:center;gap:8px}
 .halves{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr);gap:20px;align-items:start}
-.subs,.sub>div{min-width:0}.sub .tags{flex-wrap:wrap}
+.subs,.sub>div{min-width:0}
+.n .tags,.sub .tags{display:inline!important;margin:0 0 0 6px!important}.n .tag,.sub .tag{display:inline-block;margin:1px 3px 1px 0;vertical-align:1px}
 .dt{width:100%;border-collapse:collapse;border:1.5px solid #1C2128;border-top:4px solid #1C2128}
 .dt thead th{text-align:left;padding:7px 12px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#6B717A;font-weight:600;border-bottom:1.5px solid #1C2128}
 .dt tbody{border-top:2.5px solid #1C2128}
