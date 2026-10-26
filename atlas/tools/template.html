@@ -27,20 +27,20 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);l
 .chip[aria-pressed="true"] .n{color:var(--bg);opacity:.75}
 .chip.reset{border-style:dashed}
 .chip:focus-visible,.row:focus-visible,.sheet button:focus-visible,.thumb:focus-visible,a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
-.tables{display:flex;flex-direction:column;gap:28px}
-.dt{width:100%;border-collapse:collapse;background:var(--surface);border:1.5px solid var(--rule);border-top:4px solid var(--rule)}
+.tables{display:flex;flex-direction:column;align-items:flex-start;gap:28px}
+.dt{width:auto;max-width:100%;border-collapse:collapse;background:var(--surface);border:1.5px solid var(--rule);border-top:4px solid var(--rule)}
 .dt thead th{text-align:left;padding:8px 14px;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;border-bottom:1.5px solid var(--rule)}
 .dt tbody{border-top:2.5px solid var(--rule)}
 .dt th.cc,.dt th.dc{vertical-align:top;text-align:left;border-right:1px solid var(--rule)}
-.dt th.cc{width:18%;padding:14px}
+.dt th.cc{padding:14px;min-width:150px;max-width:220px}
 .dt th.cc .t{font-size:20px;font-weight:700;box-shadow:inset 0 -5px 0 var(--c)}
 .dt th.cc .q{display:block;margin-top:8px;font-size:13px;font-weight:400;color:var(--muted)}
-.dt th.dc{width:14%;padding:14px;border-top:1px solid var(--rule);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.dt th.dc{padding:14px;white-space:nowrap;border-top:1px solid var(--rule);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
 .dt tr.dstart th.dc{border-top:none}
 .dt td.kc{padding:0;border-top:1px solid var(--rule)}
 .dt tr.dstart td.kc{border-top:none}
 .item{display:grid;grid-template-columns:minmax(0,1fr)}
-.item.has-subs{grid-template-columns:minmax(0,42%) minmax(0,58%)}
+.item.has-subs{grid-template-columns:250px auto}
 .subs{border-left:1px solid var(--rule);display:flex;flex-direction:column}
 .row{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 14px;min-height:64px;width:100%}
 .row:hover{background:var(--accent-soft)}
@@ -48,7 +48,7 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);l
 .row.subrow:last-child{border-bottom:none}
 .row.subrow:hover{background:var(--accent-soft)}
 .row.parent{align-items:flex-start}
-.row .txt{display:flex;flex-direction:column;gap:3px;min-width:0}
+.row .txt{display:flex;flex-direction:column;gap:3px;min-width:0;max-width:34ch}
 .row .nm{font-weight:700;font-size:16px;display:block}
 .row .nm .tags{display:inline;margin:0 0 0 6px;font-weight:400}.row .nm .tag{display:inline-block;margin:2px 4px 2px 0;vertical-align:2px}
 .row.subrow .nm{font-weight:400;font-size:15px}
@@ -117,7 +117,7 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,40px);l
 .lb button:focus-visible{outline:2px solid #8DB4F0}
 .lb button[disabled]{opacity:.25;cursor:default}
 @media (max-width:720px){.item.has-subs{grid-template-columns:minmax(0,1fr)}.subs{border-left:none;border-top:1px solid var(--rule)}
-  .dt,.dt tbody,.dt tr,.dt th,.dt td{display:block;width:auto}.dt thead{display:none}.dt th.cc,.dt th.dc{border-right:none;width:auto}.dt th.cc{border-bottom:1px solid var(--rule)}.dt th.dc{background:var(--sub);padding:6px 14px;border-top:none;border-bottom:1px solid var(--rule)}.dt td.kc{border-top:none;border-bottom:1px solid var(--rule)}.dt tbody tr:last-child td.kc{border-bottom:none}
+  .tables{align-items:stretch}.dt,.dt tbody,.dt tr,.dt th,.dt td{display:block;width:auto}.dt thead{display:none}.dt th.cc,.dt th.dc{border-right:none;width:auto;max-width:none}.dt th.cc{border-bottom:1px solid var(--rule)}.dt th.dc{background:var(--sub);padding:6px 14px;border-top:none;border-bottom:1px solid var(--rule)}.dt td.kc{border-top:none;border-bottom:1px solid var(--rule)}.dt tbody tr:last-child td.kc{border-bottom:none}
   .ic svg{width:96px;height:46px}.lb-stage{grid-template-columns:minmax(0,1fr)}.lb-stage .nav{display:none}}
 @media (prefers-reduced-motion:no-preference){.sheet{animation:slide .18s ease-out}@keyframes slide{from{transform:translateX(24px);opacity:.6}to{transform:none;opacity:1}}}
 </style>
