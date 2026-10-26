@@ -5,7 +5,6 @@ argv = sys.argv; sys.argv = ["build.py", os.path.join(tempfile.gettempdir(), "_u
 g = runpy.run_path(os.path.join(HERE, "build.py")); sys.argv = argv
 svg, nd, ln, tx, tree = g["svg"], g["nd"], g["ln"], g["tx"], g["tree"]
 OR, ORF, BL, BLF, PK, GR, GRF, GY = (g[k] for k in ("OR", "ORF", "BL", "BLF", "PK", "GR", "GRF", "GY"))
-GYF, CG = "#EEEFF1", "#3E8E3E"
 
 def lines(x, y, widths, c, sw=2.2, step=7):
     return "".join(ln(x, y + i * step, x + w, y + i * step, c, sw) for i, w in enumerate(widths))
@@ -14,8 +13,6 @@ def centred(widths, c, y=7, step=7):
 def box(x, y, w, h, c, f="none", dash="", rx=4):
     d = f' stroke-dasharray="{dash}"' if dash else ""
     return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{rx}" fill="{f}" stroke="{c}" stroke-width="1.5"{d}/>'
-def code(x, y, widths, c=CG):
-    return lines(x, y, widths, c, 2, 7)
 
 NEW = {
  # decomposition: trusted subcall
@@ -35,19 +32,10 @@ NEW = {
  # base case
  "base_edge": svg(tx(59, 33, "f(1) → f(0)", OR, 12, mono=True)),
  "base_prune": svg(tree(hi=["d"], hic=PK, hif="#FBE3F1") + tx(50, 52, "×", PK, 12, w=700)),
- # code correspondence
- "c_is": svg(tx(14, 16, "(f 3)", CG, 10, "start", True) + tx(14, 30, "= (* 3 (f 2))", CG, 10, "start", True) + tx(14, 44, "= (* 3 2)", CG, 10, "start", True)),
- "c_side": svg(box(10, 8, 46, 40, CG) + code(16, 16, [30, 22, 34, 18, 26]) + nd(88, 14) + nd(76, 40) + nd(100, 40) + ln(85, 20, 79, 34, OR) + ln(91, 20, 97, 34, OR)),
- "c_arrows": svg(box(10, 8, 46, 40, CG) + code(16, 16, [30, 22, 34, 18, 26]) + nd(94, 28)
-                 + f'<path d="M86 28 Q70 28 52 23" fill="none" stroke="{CG}" stroke-width="1.4" marker-end="url(#aG)"/>'),
- "c_ids": svg(tx(14, 20, "def fib(n):", CG, 10, "start", True) + box(58, 30, 46, 18, OR, ORF) + tx(81, 43, "fib(3)", OR, 10, mono=True)),
- "c_rec": svg(tx(59, 33, "T(n) = 2T(n/2) + n", CG, 11).replace('font-family="Inter"', 'font-family="DejaVu Serif" font-style="italic"')),
- "c_prose": svg(lines(10, 14, [44, 50, 38, 46, 30], GY, 1.8) + nd(88, 14) + nd(76, 40) + nd(100, 40) + ln(85, 20, 79, 34, OR) + ln(91, 20, 97, 34, OR)),
 }
 
 USE = {"leap": "leap", "selfref-list": "sr_list", "selfref-tree": "sr_tree", "selfref-doll": "sr_doll",
-       "ret-compose": "combine", "r-full": "r_full", "r-partial": "r_partial", "base-edge": "base_edge", "base-prune": "base_prune",
-       "c-is": "c_is", "c-side": "c_side", "c-arrows": "c_arrows", "c-ids": "c_ids", "c-rec": "c_rec", "c-prose": "c_prose"}
+       "ret-compose": "combine", "r-full": "r_full", "r-partial": "r_partial", "base-edge": "base_edge", "base-prune": "base_prune"}
 
 if __name__ == "__main__":
     path = os.path.join(HERE, "..", "data.json") if len(sys.argv) < 2 else sys.argv[1]

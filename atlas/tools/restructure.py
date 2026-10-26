@@ -1,7 +1,6 @@
 """Migrate data.json from the Figure-9-style dimensions to the concept-first structure.
 
 Each recursion concept, with the ways it is drawn under it.
-Code correspondence sits outside the concepts.
 Run once: python3 restructure.py (it refuses to run on already migrated data).
 """
 import json, os, sys
@@ -50,14 +49,10 @@ DIMS = [
      C("r-full", "All returns drawn", "Every call’s result is shown coming back."),
      C("r-partial", "Some returns drawn", "Only some results, e.g. the final one."),
      C("r-none", "Returns not drawn", "Calls only; for a recursive process the way back is missing.", "down")])]),
- dict(id="code", name="Code Correspondence", q="How does it tie back to the code?", col=3, color="#3E8E3E", groups=[("Link", [
-     C("c-is"),
-     C("c-link", "Linked to the code", "Placed next to it, arrowed into it, or sharing its names.", subs=["c-side", "c-arrows", "c-ids"]),
-     C("c-text", "Linked through math or prose", "An equation or a written explanation, not the code.", subs=["c-rec", "c-prose"])])]),
 ]
 
 RENAME = {"f-down": "r-none", "state-stack": "v-stack"}
-DROP = {"n-sym", "s-time", "s-scen", "s-rep", "a-role", "a-cursor", "overlap", "a-dup", "cost-level", "cost-total", "decomp-struct", "decomp-gen", "f-static", "ret-value", "choice-branch", "choice-prune", "choice-back", "state-acc"}
+DROP = {"c-is", "c-side", "c-arrows", "c-ids", "c-rec", "c-prose", "n-sym", "s-time", "s-scen", "s-rep", "a-role", "a-cursor", "overlap", "a-dup", "cost-level", "cost-total", "decomp-struct", "decomp-gen", "f-static", "ret-value", "choice-branch", "choice-prune", "choice-back", "state-acc"}
 
 RET_NONE = {19, 29, 37, 38}   # recursive process, way back not drawn
 RET_PARTIAL = {20}            # only the final return 12
